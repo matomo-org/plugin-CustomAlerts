@@ -15,6 +15,7 @@ Install it via Piwik Marketplace
 ## FAQ
 
 __Q- What exactly is included in this feature?__
+
 A- Here is the complete list of features that are included in this project:
 
 * Define new Alert ("Big drop in purchases")
@@ -27,9 +28,11 @@ A- Here is the complete list of features that are included in this project:
 * Define the Alert: when Visits decrease 50%, when purchases are more than 50 per day, etc.
 
 __Q- What reports are available to the Alert system?__
+
 A - You can create an alert for any available report in Piwik. Plugins can define new reports which will be automatically picked up by Alerts.
 
 __Q- What alert conditions are available?__
+
 A- You can create alerts for the following metrics:
 
 * Visits, Visits Evolution, Unique Visits
