@@ -54,7 +54,8 @@ class Processor extends \Piwik\Plugin
 
 	public function processAlerts($period)
 	{
-		$alerts = API::getInstance()->getAllAlerts($period);
+        $model  = new Model();
+		$alerts = $model->getAllAlerts($period);
 
 		foreach ($alerts as $alert) {
 			$this->processAlert($period, $alert);

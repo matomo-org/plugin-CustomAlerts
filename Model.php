@@ -76,7 +76,7 @@ class Model
     {
         $tables = array('alert', 'alert_log', 'alert_site');
         foreach ($tables as $table) {
-            $sql = "DROP TABLE " . Common::prefixTable($table);
+            $sql = "DROP TABLE IF EXISTS " . Common::prefixTable($table);
             Db::exec($sql);
         }
     }
@@ -91,8 +91,8 @@ class Model
      */
 	public function getAlert($idAlert)
 	{
-        $query = sprintf('SELECT * FROM %s WHERE idalert = ?', Common::prefixTable('alert'), intval($idAlert));
-		$alert = Db::fetchAll($query);
+        $query = sprintf('SELECT * FROM %s WHERE idalert = ?', Common::prefixTable('alert'));
+		$alert = Db::fetchAll($query, array(intval($idAlert)));
 
 		if (empty($alert)) {
 			throw new Exception(Piwik::translate('CustomAlerts_AlertDoesNotExist', $idAlert));
@@ -100,9 +100,7 @@ class Model
 
 		$alert = array_shift($alert);
 
-		if (!Piwik::isUserIsSuperUserOrTheUser($alert['login'])) {
-			throw new Exception(Piwik::translate('CustomAlerts_AccessException', $idAlert));
-		}
+        $this->checkUserHasPermissionForAlert($idAlert, $alert);
 
         $alert['idSites'] = $this->fetchSiteIdsTheAlertWasDefinedOn($idAlert);
 
@@ -111,19 +109,16 @@ class Model
 
 	/**
 	 * Returns the Alerts that are defined on the idSites given.
-	 * If no value is given, all Alerts for the current user will
-	 * be returned.
 	 *
 	 * @param array $idSites
 	 */
 	public function getAlerts($idSites)
 	{
-		if (count($idSites)) {
-			Piwik::checkUserHasViewAccess($idSites);
-		} else {
-			Piwik::checkUserHasSomeViewAccess();
-			$idSites = SitesManagerApi::getInstance()->getSitesIdWithAtLeastViewAccess();
-		}
+        if (empty($idSites)) {
+            return array();
+        }
+
+        Piwik::checkUserHasViewAccess($idSites);
 
         $idSites = array_map('intval', $idSites);
 
@@ -150,6 +145,7 @@ class Model
 
 		$sql = "SELECT pa.idalert AS idalert,
 				pal.idsite AS idsite,
+				pal.ts_triggered AS ts_triggered,
 				pa.name    AS alert_name,
 				ps.name    AS site_name,
 				login,
@@ -297,6 +293,9 @@ class Model
      */
 	public function editAlert($idAlert, $name, $idSites, $period, $email, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue)
 	{
+        // make sure alert exists and user has permission to read
+        $this->getAlert($idAlert);
+
 		if (!is_array($idSites)) {
 			$idSites = array($idSites);
 		}
@@ -309,7 +308,6 @@ class Model
 		$alert = array(
 			'name'             => $name,
 			'period'           => $period,
-			'login'            => 'admin', //Piwik::getCurrentUserLogin(),
 			'enable_mail'      => (boolean) $email,
 			'metric'           => $metric,
 			'metric_condition' => $metricCondition,
@@ -365,7 +363,7 @@ class Model
 			throw new Exception(Piwik::translate('CustomAlerts_AlertDoesNotExist', $idAlert));
 		}
 
-		Piwik::checkUserIsSuperUserOrTheUser($alert['login']);
+        $this->checkUserHasPermissionForAlert($idAlert, $alert);
 
         $db = Db::get();
 		$db->update(
@@ -383,7 +381,7 @@ class Model
             throw new Exception(Piwik::translate('CustomAlerts_AlertDoesNotExist', $idAlert));
         }
 
-        Piwik::checkUserIsSuperUserOrTheUser($alert['login']);
+        $this->checkUserHasPermissionForAlert($idAlert, $alert);
 
         $db = Db::get();
         $db->insert(
@@ -396,7 +394,7 @@ class Model
         );
     }
 
-    public function fetchSiteIdsTheAlertWasDefinedOn($idAlert)
+    private function fetchSiteIdsTheAlertWasDefinedOn($idAlert)
     {
         $sql     = "SELECT idsite FROM ".Common::prefixTable('alert_site')." WHERE idalert = ?";
         $sites   = Db::fetchAll($sql, $idAlert, \PDO::FETCH_COLUMN);
@@ -476,6 +474,18 @@ class Model
     {
         $idAlert = Db::fetchOne("SELECT max(idalert) + 1 FROM " . Common::prefixTable('alert'));
         return $idAlert;
+    }
+
+    /**
+     * @param $idAlert
+     * @param $alert
+     * @throws \Exception
+     */
+    private function checkUserHasPermissionForAlert($idAlert, $alert)
+    {
+        if (!Piwik::isUserIsSuperUserOrTheUser($alert['login'])) {
+            throw new Exception(Piwik::translate('CustomAlerts_AccessException', $idAlert));
+        }
     }
 
 }

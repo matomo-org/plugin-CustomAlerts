@@ -33,7 +33,8 @@ class Notifier extends \Piwik\Plugin
 	 */
 	public function sendNewAlerts($period)
 	{
-		$triggeredAlerts = API::getInstance()->getTriggeredAlerts($period, Date::today());
+        $model           = new Model();
+		$triggeredAlerts = $model->getTriggeredAlerts($period, Date::today(), false);
 
         $alertsPerLogin = array();
 		foreach($triggeredAlerts as $triggeredAlert) {
@@ -71,10 +72,11 @@ class Notifier extends \Piwik\Plugin
      * Returns the Alerts that were triggered in $format.
      *
      * @param array $triggeredAlerts
-     * @param string $format Can be 'html', 'tsv' or empty for php array
-     * @return array|string
+     * @param string $format Can be 'html' or 'tsv'
+     * @throws \Exception
+     * @return string
      */
-	private function formatAlerts($triggeredAlerts, $format = null)
+	public function formatAlerts($triggeredAlerts, $format)
 	{
 		switch ($format) {
 			case 'html':
@@ -97,7 +99,7 @@ class Notifier extends \Piwik\Plugin
 				return $tsv;
 		}
 
-        return $triggeredAlerts;
+        throw new \Exception('Unsupported format');
 	}
 
     /**

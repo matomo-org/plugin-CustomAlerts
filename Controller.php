@@ -87,8 +87,7 @@ class Controller extends \Piwik\Plugin\Controller
 		$view->alert     = API::getInstance()->getAlert($idAlert);
 		$view->sitesList = SitesManagerApi::getInstance()->getSitesWithAtLeastViewAccess();
 
-        $model = new Model();
-		$view->sitesDefined = $model->fetchSiteIdsTheAlertWasDefinedOn($idAlert);
+		$view->sitesDefined = $view->alert['idSites'];
 
 		$view->alerts                = MetadataApi::getInstance()->getReportMetadata();
 		$view->alertGroupConditions  = Processor::getGroupConditions();

@@ -42,19 +42,9 @@ class API extends \Piwik\Plugin\API
      * @param array $idSites
      * @return array
      */
-	public function getAlerts($idSites = array())
+	public function getAlerts($idSites)
 	{
         return $this->getModel()->getAlerts($idSites);
-	}
-
-	public function getTriggeredAlerts($period, $date, $login = false)
-	{
-        return $this->getModel()->getTriggeredAlerts($period, $date, $login);
-	}
-
-	public function getAllAlerts($period)
-	{
-        return $this->getModel()->getAllAlerts($period);
 	}
 
 	/**
