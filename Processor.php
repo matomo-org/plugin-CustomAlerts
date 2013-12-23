@@ -64,83 +64,50 @@ class Processor extends \Piwik\Plugin
 
     private function processAlert($period, $alert)
     {
-        $report  = $alert['report'];
-        $metric  = $alert['metric'];
-        $idSite  = $alert['idsite'];
-        $idAlert = $alert['idalert'];
-
-        $params = array(
-            "method" => $report,
-            "format" => "original",
-            "idSite" => $idSite,
-            "period" => $period,
-            "date"   => Date::today()->subPeriod(1, $period)->toString()
-        );
-
-        // Get the data for the API request
-        $request = new Piwik\API\Request($params);
-        $result  = $request->process();
-
-        // TODO are we always getting a dataTable?
-        $metricOne = $this->getMetricFromTable($result, $metric, $alert['report_condition'], $alert['report_matched']);
+        $metricOne = $this->getValueForAlertInPast($period, $alert, 1);
 
         // Do we have data? stop otherwise.
         if (is_null($metricOne)) {
             return;
         }
 
-        // Can we already trigger the alert?
-        switch ($alert['metric_condition']) {
-            case 'greater_than':
-                if ($metricOne > floatval($alert['metric_matched'])) {
-                    $this->triggerAlert($idAlert, $idSite);
-                }
-                return;
-            case 'less_than':
-                if ($metricOne < floatval($alert['metric_matched'])) {
-                    $this->triggerAlert($idAlert, $idSite);
-                }
-                return;
-        }
+        $metricTwo = $this->getValueForAlertInPast($period, $alert, 2);
 
-        $params['date'] = Date::today()->subPeriod(2, $period)->toString();
-
-        // Get the data for the API request
-        $request = new Piwik\API\Request($params);
-        $result  = $request->process();
-
-        $metricTwo = $this->getMetricFromTable($result, $alert['metric'], $alert['report_condition'], $alert['report_matched']);
-
-        $percentage = ($metricOne / 100) * $metricTwo;
-
-        switch ($alert['metric_condition']) {
-            case 'decrease_more_than':
-                if (($metricTwo - $metricOne) > $alert['metric_matched']) {
-                    $this->triggerAlert($idAlert, $idSite);
-                }
-                break;
-            case 'increase_more_than':
-                if (($metricOne - $metricTwo) > $alert['metric_matched']) {
-                    $this->triggerAlert($idAlert, $idSite);
-                }
-                break;
-            case 'percentage_decrease_more_than':
-                if ($metricOne < $metricTwo && $percentage > $alert['metric_matched']) {
-                    $this->triggerAlert($idAlert, $idSite);
-                }
-                break;
-            case 'percentage_increase_more_than':
-                if ($metricOne > $metricTwo && $percentage > $alert['metric_matched']) {
-                    $this->triggerAlert($idAlert, $idSite);
-                }
-                break;
+        if ($this->shouldBeTriggered($alert, $metricOne, $metricTwo)) {
+            $this->triggerAlert($alert);
         }
     }
 
-	private function triggerAlert($idAlert, $idSite)
+    protected function shouldBeTriggered($alert, $metricOne, $metricTwo)
+    {
+        if (!empty($metricTwo)) {
+            $percentage = ((($metricOne / $metricTwo) * 100) - 100);
+        } else {
+            $percentage = $metricOne;
+        }
+
+        switch ($alert['metric_condition']) {
+            case 'greater_than':
+                return ($metricOne > floatval($alert['metric_matched']));
+            case 'less_than':
+                return ($metricOne < floatval($alert['metric_matched']));
+            case 'decrease_more_than':
+                return (($metricTwo - $metricOne) > $alert['metric_matched']);
+            case 'increase_more_than':
+                return (($metricOne - $metricTwo) > $alert['metric_matched']);
+            case 'percentage_decrease_more_than':
+                return ((-1 * $alert['metric_matched']) > $percentage && $percentage < 0);
+            case 'percentage_increase_more_than':
+                return ($alert['metric_matched'] < $percentage && $percentage >= 0);
+        }
+
+        throw new \Exception('Metric condition is not supported');
+    }
+
+	private function triggerAlert($alert)
 	{
         $model = new Model();
-        $model->triggerAlert($idAlert, $idSite);
+        $model->triggerAlert($alert['idalert'], $alert['idsite']);
 	}
 
     /**
@@ -151,7 +118,7 @@ class Processor extends \Piwik\Plugin
      *
      * @return mixed
      */
-	private function getMetricFromTable($dataTable, $metric, $filterCond = '', $filterValue = '')
+	protected function getMetricFromTable($dataTable, $metric, $filterCond = '', $filterValue = '')
 	{
 		// Do we have a condition? Then filter..
 		if (!empty($filterValue)) {
@@ -159,14 +126,13 @@ class Processor extends \Piwik\Plugin
 		}
 
 		if ($dataTable->getRowsCount() > 1) {
-			$dataTable->filter('Truncate');
+			$dataTable->filter('Truncate', array(0, null, $metric));
 		}
-
 		// ToDo
 		//$dataTable->filter('AddColumnsProcessedMetrics');
 
 		$dataRow = $dataTable->getFirstRow();
-		
+
 		if ($dataRow) {
 			return $dataRow->getColumn($metric);
 		}
@@ -179,7 +145,7 @@ class Processor extends \Piwik\Plugin
      * @param $condition
      * @param $value
      */
-    private function filterDataTable($dataTable, $condition, $value)
+    protected function filterDataTable($dataTable, $condition, $value)
     {
         $invert = false;
 
@@ -203,7 +169,7 @@ class Processor extends \Piwik\Plugin
                 $pattern = $value;
                 break;
             case 'does_not_contain':
-                $pattern = sprintf("[^%s]", $value);
+                $pattern = $value;
                 $invert = true;
                 break;
             case 'starts_with':
@@ -223,6 +189,36 @@ class Processor extends \Piwik\Plugin
         }
 
         $dataTable->filter('Pattern', array('label', $pattern, $invert));
+    }
+
+    /**
+     * @param  string $period
+     * @param  array  $alert
+     * @param  int    $subPeriodN
+     *
+     * @return array
+     */
+    private function getValueForAlertInPast($period, $alert, $subPeriodN)
+    {
+        $report  = $alert['report'];
+        $metric  = $alert['metric'];
+        $idSite  = $alert['idsite'];
+
+        $params = array(
+            'method' => $report,
+            'format' => 'original',
+            'idSite' => $idSite,
+            'period' => $period,
+            'date' => Date::today()->subPeriod($subPeriodN, $period)->toString()
+        );
+
+        // Get the data for the API request
+        $request = new Piwik\API\Request($params);
+        $result  = $request->process();
+
+        // TODO are we always getting a dataTable?
+        $value = $this->getMetricFromTable($result, $metric, $alert['report_condition'], $alert['report_matched']);
+        return $value;
     }
 
 }
