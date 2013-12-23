@@ -140,6 +140,14 @@ class ProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertFilterResult('does_not_end_with', 'NoneMatChIng', array(10, 33, 90, 65, 67, 100));
     }
 
+    /**
+     * @expectedException \Exception
+     */
+    public function test_filterDataTable_shouldThrowException_IfConditionIsInvalid()
+    {
+        $this->assertFilterResult('noTValIdConDitiOn', 't', array());
+    }
+
     public function test_getMetricFromTable()
     {
         $this->assertMetricFromTable('visits', '', '', 365);

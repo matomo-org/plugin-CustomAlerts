@@ -120,7 +120,6 @@ class Processor extends \Piwik\Plugin
      */
 	protected function getMetricFromTable($dataTable, $metric, $filterCond = '', $filterValue = '')
 	{
-		// Do we have a condition? Then filter..
 		if (!empty($filterValue)) {
             $this->filterDataTable($dataTable, $filterCond, $filterValue);
 		}
@@ -128,8 +127,6 @@ class Processor extends \Piwik\Plugin
 		if ($dataTable->getRowsCount() > 1) {
 			$dataTable->filter('Truncate', array(0, null, $metric));
 		}
-		// ToDo
-		//$dataTable->filter('AddColumnsProcessedMetrics');
 
 		$dataRow = $dataTable->getFirstRow();
 
@@ -159,33 +156,35 @@ class Processor extends \Piwik\Plugin
                 break;
             case 'does_not_match_exactly':
                 $pattern = sprintf("^%s$", $value);
-                $invert = true;
+                $invert  = true;
                 break;
             case 'does_not_match_regex':
                 $pattern = sprintf("%s", $value);
-                $invert = true;
+                $invert  = true;
                 break;
             case 'contains':
                 $pattern = $value;
                 break;
             case 'does_not_contain':
                 $pattern = $value;
-                $invert = true;
+                $invert  = true;
                 break;
             case 'starts_with':
                 $pattern = sprintf("^%s", $value);
                 break;
             case 'does_not_start_with':
                 $pattern = sprintf("^%s", $value);
-                $invert = true;
+                $invert  = true;
                 break;
             case 'ends_with':
                 $pattern = sprintf("%s$", $value);
                 break;
             case 'does_not_end_with':
                 $pattern = sprintf("%s$", $value);
-                $invert = true;
+                $invert  = true;
                 break;
+            default:
+                throw new \Exception('Filter condition not supported');
         }
 
         $dataTable->filter('Pattern', array('label', $pattern, $invert));
@@ -200,25 +199,20 @@ class Processor extends \Piwik\Plugin
      */
     private function getValueForAlertInPast($period, $alert, $subPeriodN)
     {
-        $report  = $alert['report'];
-        $metric  = $alert['metric'];
-        $idSite  = $alert['idsite'];
-
         $params = array(
-            'method' => $report,
+            'method' => $alert['report'],
             'format' => 'original',
-            'idSite' => $idSite,
+            'idSite' => $alert['idsite'],
             'period' => $period,
-            'date' => Date::today()->subPeriod($subPeriodN, $period)->toString()
+            'date'   => Date::today()->subPeriod($subPeriodN, $period)->toString()
         );
 
         // Get the data for the API request
         $request = new Piwik\API\Request($params);
-        $result  = $request->process();
+        $table   = $request->process();
 
         // TODO are we always getting a dataTable?
-        $value = $this->getMetricFromTable($result, $metric, $alert['report_condition'], $alert['report_matched']);
-        return $value;
+        return $this->getMetricFromTable($table, $alert['metric'], $alert['report_condition'], $alert['report_matched']);
     }
 
 }
