@@ -25,6 +25,13 @@ use Piwik\Plugins\UsersManager\API as UsersManagerApi;
  */
 class Notifier extends \Piwik\Plugin
 {
+    protected function getTriggeredAlerts($period)
+    {
+        $model = new Model();
+
+        return $model->getTriggeredAlerts($period, Date::today(), false);
+    }
+
 	/**
 	 * Sends a list of the triggered alerts to
 	 * $recipient.
@@ -33,8 +40,7 @@ class Notifier extends \Piwik\Plugin
 	 */
 	public function sendNewAlerts($period)
 	{
-        $model           = new Model();
-		$triggeredAlerts = $model->getTriggeredAlerts($period, Date::today(), false);
+		$triggeredAlerts = $this->getTriggeredAlerts($period);
 
         $alertsPerLogin = array();
 		foreach($triggeredAlerts as $triggeredAlert) {
@@ -49,11 +55,11 @@ class Notifier extends \Piwik\Plugin
 
         foreach ($alertsPerLogin as $login => $alerts) {
             $recipient = $this->getEmailAddressFromLogin($login);
-            $this->sendAlertsPerEmailToRecipient($alerts, $recipient);
+            $this->sendAlertsPerEmailToRecipient($alerts, new Piwik\Mail(), $recipient);
         }
 	}
 
-    private function getEmailAddressFromLogin($login)
+    protected function getEmailAddressFromLogin($login)
     {
         if (empty($login)) {
             return '';
@@ -76,7 +82,7 @@ class Notifier extends \Piwik\Plugin
      * @throws \Exception
      * @return string
      */
-	public function formatAlerts($triggeredAlerts, $format)
+	protected function formatAlerts($triggeredAlerts, $format)
 	{
 		switch ($format) {
 			case 'html':
@@ -104,15 +110,15 @@ class Notifier extends \Piwik\Plugin
 
     /**
      * @param array  $alerts
+     * @param Piwik\Mail $mail
      * @param string $recipient Email address
      */
-    private function sendAlertsPerEmailToRecipient($alerts, $recipient)
+    protected function sendAlertsPerEmailToRecipient($alerts, Piwik\Mail $mail, $recipient)
     {
         if (empty($recipient) || empty($alerts)) {
             return;
         }
 
-        $mail = new Piwik\Mail();
         $mail->addTo($recipient);
         $mail->setSubject('Piwik alert [' . Date::today() . ']');
 
