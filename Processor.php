@@ -54,8 +54,7 @@ class Processor extends \Piwik\Plugin
 
 	public function processAlerts($period)
 	{
-        $model  = new Model();
-		$alerts = $model->getAllAlerts($period);
+        $alerts = $this->getAllAlerts($period);
 
 		foreach ($alerts as $alert) {
 			$this->processAlert($period, $alert);
@@ -103,12 +102,6 @@ class Processor extends \Piwik\Plugin
 
         throw new \Exception('Metric condition is not supported');
     }
-
-	private function triggerAlert($alert)
-	{
-        $model = new Model();
-        $model->triggerAlert($alert['idalert'], $alert['idsite']);
-	}
 
     /**
      * @param DataTable $dataTable DataTable
@@ -213,6 +206,18 @@ class Processor extends \Piwik\Plugin
 
         // TODO are we always getting a dataTable?
         return $this->getMetricFromTable($table, $alert['metric'], $alert['report_condition'], $alert['report_matched']);
+    }
+
+    private function triggerAlert($alert)
+    {
+        $model = new Model();
+        $model->triggerAlert($alert['idalert'], $alert['idsite']);
+    }
+
+    private function getAllAlerts($period)
+    {
+        $model = new Model();
+        return $model->getAllAlerts($period);
     }
 
 }

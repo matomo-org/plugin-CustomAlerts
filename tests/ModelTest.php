@@ -43,6 +43,8 @@ class ModelTest extends \DatabaseTestCase
         $this->createAlert('Initial2', 'week', array($this->idSite,$this->idSite2));
         $this->createAlert('Initial3', 'month', array($this->idSite2));
         $this->setUser();
+
+        Translate::unloadEnglishTranslation();
     }
 
     public function tearDown()
@@ -75,7 +77,7 @@ class ModelTest extends \DatabaseTestCase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage General_ExceptionPrivilegeAccessWebsite
+     * @expectedExceptionMessage checkUserHasViewAccess Fake exception
      */
     public function test_addAlert_ShouldFail_IfNotEnoughPermissions()
     {
@@ -88,6 +90,7 @@ class ModelTest extends \DatabaseTestCase
      */
     public function test_addAlert_ShouldFail_IfInvalidMetricProvided()
     {
+        $this->setSuperUser();
         $this->createAlert('InvalidMetric', 'week', null, $metric = 'nb_notExisting');
     }
 
@@ -97,6 +100,7 @@ class ModelTest extends \DatabaseTestCase
      */
     public function test_addAlert_ShouldFail_IfInvalidReportProvided()
     {
+        $this->setSuperUser();
         $this->createAlert('InvalidReport', 'week', null, 'nb_visits', 'IkReport.NotExisTing');
     }
 
@@ -148,8 +152,8 @@ class ModelTest extends \DatabaseTestCase
     }
 
     /**
-     * @expectedException \Piwik\NoAccessException
-     * @expectedExceptionMessage General_ExceptionPrivilegeAccessWebsite
+     * @expectedException \Exception
+     * @expectedExceptionMessage checkUserHasViewAccess Fake exception
      */
     public function test_editAlert_ShouldFail_IfNotPermissionForWebsites()
     {
@@ -217,7 +221,7 @@ class ModelTest extends \DatabaseTestCase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage General_ExceptionPrivilege
+     * @expectedExceptionMessage checkUserHasViewAccess Fake exception
      */
     public function test_getAlerts_shouldFail_IfUserDoesNotHaveAccessToWebsite()
     {
@@ -226,7 +230,7 @@ class ModelTest extends \DatabaseTestCase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage General_ExceptionPrivilege
+     * @expectedExceptionMessage checkUserHasViewAccess Fake exception
      */
     public function test_getAllAlerts_shouldFail_IfUserIsNotTheSuperUser()
     {
@@ -319,8 +323,8 @@ class ModelTest extends \DatabaseTestCase
     }
 
     /**
-     * @expectedException \Piwik\NoAccessException
-     * @expectedExceptionMessage General_ExceptionCheckUserIsSuperUserOrTheUser
+     * @expectedException \Exception
+     * @expectedExceptionMessage checkUserIsSuperUser Fake exception
      */
     public function test_triggerAlert_shouldVerifyWhetherUserIsActuallyTheUser()
     {

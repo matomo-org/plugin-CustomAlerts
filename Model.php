@@ -423,7 +423,7 @@ class Model
 		$report = MetadataApi::getInstance()->getMetadata($idSite, $module, $action);
 
 		// If there is no report matching module + action for idSite it's not valid.
-		if(count($report) == 0) {
+		if (empty($report)) {
 			return false;
 		}
 
@@ -439,7 +439,7 @@ class Model
 			$allMetrics = array_merge($allMetrics, $report[0]['processedMetricsGoal']);
 		}
 
-		if (!in_array($alert['metric'], array_keys($allMetrics))) {
+		if (empty($allMetrics) || !in_array($alert['metric'], array_keys($allMetrics))) {
 			return false;
 		}
 
