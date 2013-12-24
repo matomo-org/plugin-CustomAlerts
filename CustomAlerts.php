@@ -13,7 +13,7 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
-use Piwik;
+use Piwik\Piwik;
 use Piwik\Db;
 use Piwik\Menu\MenuTop;
 use Piwik\ScheduledTask;
@@ -39,6 +39,7 @@ class CustomAlerts extends \Piwik\Plugin
 	public function getJsFiles(&$jsFiles)
 	{
 		$jsFiles[] = "plugins/CustomAlerts/javascripts/ui.dropdownchecklist.js";
+		$jsFiles[] = "plugins/CustomAlerts/javascripts/alerts.js";
 	}
 
 	public function getCssFiles(&$cssFiles)
@@ -58,7 +59,9 @@ class CustomAlerts extends \Piwik\Plugin
 
 	public function addTopMenu()
 	{
-        MenuTop::addEntry("Alerts", array("module" => "CustomAlerts", "action" => "index"), true, 9);
+        $title = Piwik::translate('CustomAlerts_Alerts');
+
+        MenuTop::addEntry($title, array("module" => "CustomAlerts", "action" => "index"), true, 9);
 	}
 
 	public function getScheduledTasks(&$tasks)

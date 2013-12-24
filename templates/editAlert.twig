@@ -2,36 +2,11 @@
 
 {% block content %}
 
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#idSites").dropdownchecklist({ width: 150, maxDropHeight: 200, textFormatFunction: function(options) {
-        var selectedOptions = options.filter(":selected");
-        var countOfSelected = selectedOptions.size();
-        var size = options.size();
-        switch(countOfSelected) {
-            case 0: return "0 other Websites";
-            case 1: return selectedOptions.text();
-            case size: return "all other Websites";
-            default: return countOfSelected + " Websites";
-        }
-    }});    
-});
-</script>
-
-<style type="text/css">
-.inp {
-    -moz-border-radius:4px 4px 4px 4px;
-    background:url("../../../themes/default/images/inp_bg.png") repeat-x scroll 0 0 #FFFFFF;
-    border:1px solid #D4D4D4;
-    color:#255792;
-    padding:3px 10px;
-}
-</style>
-
-<div class="centerLargeDiv">
+<div class="alerts centerLargeDiv">
 <div class="entityEditContainer">
     <div class="entityCancel">
-        Cancel and <a class="entityCancelLink" href="{{ linkTo({'module': 'CustomAlerts', 'action': 'index'}) }}">return to the list of alerts</a>
+        {% set backlink = linkTo({'module': 'CustomAlerts', 'action': 'index'}) %}
+        {{ 'CustomAlerts_CancelAndReturnToAlerts'|translate('<a class="entityCancelLink" href="' ~ backlink ~ '">', "</a>")|raw }}
     </div>
     <form method="POST" onSubmit="onSubmit(event)">
         <h2>{{ 'CustomAlerts_EditAlert'|translate }}</h2>
@@ -52,9 +27,9 @@ $(document).ready(function() {
         <tr>
             <td><label for="period">{{ 'General_Period'|translate }}</label></td>
             <td><select class="period inp" name="period" id="period">
-                <option value="day" {% if alert.period == 'day' %}selected="selected"{% endif %}>{{ 'General_PeriodDay'|translate }}</option>
-                <option value="week" {% if alert.period == 'week' %}selected="selected"{% endif %}>{{ 'General_PeriodWeek'|translate }}</option>
-                <option value="month" {% if alert.period == 'month' %}selected="selected"{% endif %}>{{ 'General_PeriodMonth'|translate }}</option>
+                <option value="day" {% if alert.period == 'day' %}selected="selected"{% endif %}>{{ 'CoreHome_PeriodDay'|translate }}</option>
+                <option value="week" {% if alert.period == 'week' %}selected="selected"{% endif %}>{{ 'CoreHome_PeriodWeek'|translate }}</option>
+                <option value="month" {% if alert.period == 'month' %}selected="selected"{% endif %}>{{ 'CoreHome_PeriodMonth'|translate }}</option>
             </select></td>
         </tr>
         <tr>
@@ -101,7 +76,7 @@ $(document).ready(function() {
                 {% set reportName=module ~ '.' ~ action %}
 				{% if reportName == alert.report %}
 				{% for metricName, metricValue in report.metrics %}
-					<option value="{$metricName}" {%  if metricName == alert.metric %}selected="selected"{% endif %}>{{ metricValue }}</option>
+					<option value="{{ metricName }}" {%  if metricName == alert.metric %}selected="selected"{% endif %}>{{ metricValue }}</option>
 				{% endfor %}
 				{% endif %}
 			{% endfor %}
@@ -127,87 +102,8 @@ $(document).ready(function() {
     </form>
 </div>
 </div>
+
 <script type="text/javascript">
-function updateMetrics() {
-    var idSites = "";
-    $("#idSites :selected").each(function(i,selected) {
-        idSites = idSites + "&idSites[]=" + $(selected).val();
-    });
-
-    $.ajax({
-        type: "GET",
-        url: piwik.piwik_url,
-        data: 'module=API&method=API.getReportMetadata'
-            + '&idSite=' + piwik.idSite
-            + '&period=' + $(".period").val()
-            + '&date=' + piwik.currentDateString
-            + '&token_auth=' + piwik.token_auth
-            + '&format=JSON' + idSites,
-        dataType: "json",
-        success: function(data) {
-            updateForm(data);
-        }
-    });
-}
-
-$('.period').change(function() {
-  updateMetrics();
-});
-
-$('.reports').change(function() {
-    updateMetrics();
-});
-
-$('#idSites').change(function() {
-    updateMetrics();
-});
-
-function updateForm(data) {
-    currentGroup = $('.reports').val();
-    options = "";
-    for(var i = 0; i < data.length; i++)
-    {
-        value = data[i].module + '.' + data[i].action;
-	if(currentGroup == undefined) {
-		options += '<option selected="selected" value="' + value + '">' + data[i].name + '</option>';
-		currentGroup = value;
-	}
-	else {
-		options += '<option value="' + value + '">' + data[i].name + '</option>';
-	}
-
-        if(value == currentGroup)
-        {
-            metrics = data[i].metrics;
-
-            mOptions = "";
-            for(var metric in metrics)
-            {
-                mOptions += '<option value="' + metric + '">' + metrics[metric] + '</option>';
-            }
-            $('.metrics').html(mOptions);
-
-            if(data[i].dimension != undefined)
-            {
-                $('#reportInfo').text("("+ data[i].dimension + ")");
-                $('.reportCondition').removeAttr('disabled');
-                $('.reportValue').removeAttr('disabled');
-		$('td.reportConditionField').show();
-		$('td.reportValueField').show();
-            }
-            else
-            {
-                $('#reportInfo').text("");
-                $('.reportCondition').attr('disabled', 'disabled');
-                $('.reportValue').attr('disabled', 'disabled');
-		$('td.reportConditionField').hide();
-		$('td.reportValueField').hide();
-            }
-        }
-    }
-    $('.reports').html(options);
-    $('.reports').val(currentGroup);
-}
 
 function onSubmit(event)
 {
@@ -245,10 +141,6 @@ function onSubmit(event)
     return false;
 }
 
-
-$(document).ready(function() {
-	updateMetrics();
-});
 </script>
 
 {% endblock %}
