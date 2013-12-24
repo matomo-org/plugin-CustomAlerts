@@ -22,6 +22,11 @@ class CustomProcessor extends Processor {
         return parent::getMetricFromTable($dataTable, $metric, $filterCond, $filterValue);
     }
 
+    public function processAlert($alert)
+    {
+        parent::processAlert($alert);
+    }
+
     public function shouldBeTriggered($alert, $metricOne, $metricTwo)
     {
         return parent::shouldBeTriggered($alert, $metricOne, $metricTwo);
@@ -232,7 +237,63 @@ class ProcessorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertShouldNotBeTriggered('percentage_increase_more_than', 43, 100, 70);
         $this->assertShouldNotBeTriggered('percentage_increase_more_than', 43, null, null);
+    }
 
+    public function test_processAlert()
+    {
+        $alert = array(
+            'idalert' => 1,
+            'period'  => 'week',
+            'idsite'  => 1,
+            'metric_condition' => 'increase_more_than',
+            'metric_matched'   => '4',
+        );
+
+        $methods = array('getValueForAlertInPast', 'triggerAlert');
+        $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomProcessor', $methods);
+        $processorMock->expects($this->at(0))
+                      ->method('getValueForAlertInPast')
+                      ->with($this->equalTo($alert), $this->equalTo(1))
+                      ->will($this->returnValue(15));
+
+        $processorMock->expects($this->at(1))
+                      ->method('getValueForAlertInPast')
+                      ->with($this->equalTo($alert), $this->equalTo(2))
+                      ->will($this->returnValue(10));
+
+        $processorMock->expects($this->once())
+                      ->method('triggerAlert')
+                      ->with($this->equalTo($alert));
+
+        $processorMock->processAlert($alert);
+    }
+
+    public function test_processAlert_shouldOnlyBeTriggeredIfAlertMatches()
+    {
+        $alert = array(
+            'idalert' => 1,
+            'period'  => 'week',
+            'idsite'  => 1,
+            'metric_condition' => 'increase_more_than',
+            'metric_matched'   => '5',
+        );
+
+        $methods = array('getValueForAlertInPast', 'triggerAlert');
+        $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomProcessor', $methods);
+        $processorMock->expects($this->at(0))
+                      ->method('getValueForAlertInPast')
+                      ->with($this->equalTo($alert), $this->equalTo(1))
+                      ->will($this->returnValue(15));
+
+        $processorMock->expects($this->at(1))
+                      ->method('getValueForAlertInPast')
+                      ->with($this->equalTo($alert), $this->equalTo(2))
+                      ->will($this->returnValue(10));
+
+        $processorMock->expects($this->never())
+                      ->method('triggerAlert');
+
+        $processorMock->processAlert($alert);
     }
 
     /**
