@@ -66,43 +66,46 @@ class CustomAlerts extends \Piwik\Plugin
 
 	public function getScheduledTasks(&$tasks)
 	{
+        $processor = new \Piwik\Plugins\CustomAlerts\Processor();
+        $notifier  = new \Piwik\Plugins\CustomAlerts\Notifier();
+
 		$tasks[] = new ScheduledTask(
-		    'Piwik\Plugins\CustomAlerts\Processor',
+            $processor,
 		    'processAlerts',
             'day',
 		    ScheduledTime::factory('daily')
 		);
 
         $tasks[] = new ScheduledTask(
-            'Piwik\Plugins\CustomAlerts\Notifier',
+            $notifier,
             'sendNewAlerts',
             'day',
             ScheduledTime::factory('daily')
         );
 
 		$tasks[] = new ScheduledTask(
-            'Piwik\Plugins\CustomAlerts\Processor',
+            $processor,
 		    'processAlerts',
             'week',
             ScheduledTime::factory('weekly')
 		);
 
         $tasks[] = new ScheduledTask(
-            'Piwik\Plugins\CustomAlerts\Notifier',
+            $notifier,
             'sendNewAlerts',
             'week',
             ScheduledTime::factory('weekly')
         );
 
 		$tasks[] = new ScheduledTask(
-            'Piwik\Plugins\CustomAlerts\Processor',
+            $processor,
 		    'processAlerts',
             'month',
             ScheduledTime::factory('monthly')
 		);
 
         $tasks[] = new ScheduledTask(
-            'Piwik\Plugins\CustomAlerts\Notifier',
+            $notifier,
             'sendNewAlerts',
             'month',
             ScheduledTime::factory('monthly')
