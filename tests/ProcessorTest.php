@@ -17,7 +17,7 @@ class CustomProcessor extends Processor {
         parent::filterDataTable($dataTable, $condition, $value);
     }
 
-    public function getMetricFromTable($dataTable, $metric, $filterCond, $filterValue)
+    public function getMetricFromTable($dataTable, $metric, $filterCond = '', $filterValue = '')
     {
         return parent::getMetricFromTable($dataTable, $metric, $filterCond, $filterValue);
     }
