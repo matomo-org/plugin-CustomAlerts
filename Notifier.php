@@ -13,9 +13,11 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
-use Piwik;
+use Piwik\Mail;
+use Piwik\Piwik;
 use Piwik\DataTable;
 use Piwik\Date;
+use Piwik\View;
 use Piwik\Db;
 use Piwik\Plugins\UsersManager\API as UsersManagerApi;
 
@@ -55,7 +57,7 @@ class Notifier extends \Piwik\Plugin
 
         foreach ($alertsPerLogin as $login => $alerts) {
             $recipient = $this->getEmailAddressFromLogin($login);
-            $this->sendAlertsPerEmailToRecipient($alerts, new Piwik\Mail(), $recipient);
+            $this->sendAlertsPerEmailToRecipient($alerts, new Mail(), $recipient);
         }
 	}
 
@@ -63,6 +65,10 @@ class Notifier extends \Piwik\Plugin
     {
         if (empty($login)) {
             return '';
+        }
+
+        if ($login == Piwik::getSuperUserLogin()) {
+            return Piwik::getSuperUserEmail();
         }
 
         $user = UsersManagerApi::getInstance()->getUser($login);
@@ -86,7 +92,7 @@ class Notifier extends \Piwik\Plugin
 	{
 		switch ($format) {
 			case 'html':
-				$view = new Piwik\View('@CustomAlerts/htmlTriggeredAlerts');
+				$view = new View('@CustomAlerts/htmlTriggeredAlerts');
 				$view->triggeredAlerts = $triggeredAlerts;
 
 				return $view->render();
@@ -110,10 +116,10 @@ class Notifier extends \Piwik\Plugin
 
     /**
      * @param array  $alerts
-     * @param Piwik\Mail $mail
+     * @param Mail $mail
      * @param string $recipient Email address
      */
-    protected function sendAlertsPerEmailToRecipient($alerts, Piwik\Mail $mail, $recipient)
+    protected function sendAlertsPerEmailToRecipient($alerts, Mail $mail, $recipient)
     {
         if (empty($recipient) || empty($alerts)) {
             return;
@@ -122,11 +128,11 @@ class Notifier extends \Piwik\Plugin
         $mail->addTo($recipient);
         $mail->setSubject('Piwik alert [' . Date::today() . ']');
 
-        $viewHtml = new Piwik\View('@CustomAlerts/alertHtmlMail');
+        $viewHtml = new View('@CustomAlerts/alertHtmlMail');
         $viewHtml->assign('triggeredAlerts', $this->formatAlerts($alerts, 'html'));
         $mail->setBodyHtml($viewHtml->render());
 
-        $viewText = new Piwik\View('@CustomAlerts/alertTextMail');
+        $viewText = new View('@CustomAlerts/alertTextMail');
         $viewText->assign('triggeredAlerts', $this->formatAlerts($alerts, 'tsv'));
         $viewText->setContentType('text/plain');
         $mail->setBodyText($viewText->render());
