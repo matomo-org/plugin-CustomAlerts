@@ -63,14 +63,14 @@ class Processor extends \Piwik\Plugin
 
     protected function processAlert($alert)
     {
-        $metricOne = $this->getValueForAlertInPast($alert, 0);
+        $metricOne = $this->getValueForAlertInPast($alert, 1);
 
         // Do we have data? stop otherwise.
         if (is_null($metricOne)) {
             return;
         }
 
-        $metricTwo = $this->getValueForAlertInPast($alert, 1);
+        $metricTwo = $this->getValueForAlertInPast($alert, 2);
 
         if ($this->shouldBeTriggered($alert, $metricOne, $metricTwo)) {
             $this->triggerAlert($alert);
@@ -197,7 +197,8 @@ class Processor extends \Piwik\Plugin
             'format' => 'original',
             'idSite' => $alert['idsite'],
             'period' => $alert['period'],
-            'date'   => Date::today()->subPeriod($subPeriodN, $alert['period'])->toString()
+            'date'   => Date::today()->subPeriod($subPeriodN, $alert['period'])->toString(),
+            'filter_truncate' => 0
         );
 
         // Get the data for the API request
