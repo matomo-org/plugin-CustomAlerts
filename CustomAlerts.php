@@ -66,8 +66,8 @@ class CustomAlerts extends \Piwik\Plugin
 
 	public function getScheduledTasks(&$tasks)
 	{
-        $processor = new \Piwik\Plugins\CustomAlerts\Processor();
-        $notifier  = new \Piwik\Plugins\CustomAlerts\Notifier();
+        $processor = new Processor();
+        $notifier  = new Notifier();
 
 		$tasks[] = new ScheduledTask(
             $processor,
