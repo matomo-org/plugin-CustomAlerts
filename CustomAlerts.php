@@ -31,19 +31,20 @@ class CustomAlerts extends \Piwik\Plugin
 		return array(
 		    'Menu.Top.addItems' => 'addTopMenu',
 		    'TaskScheduler.getScheduledTasks' => 'getScheduledTasks',
-		    'AssetManager.getJavaScriptFiles' => 'getJsFiles',
-		    'AssetManager.getStylesheetFiles' => 'getCssFiles',
+		    'AssetManager.getJavaScriptFiles' => 'getJavaScriptFiles',
+		    'AssetManager.getStylesheetFiles' => 'getStylesheetFiles',
 		);
 	}
 
-	public function getJsFiles(&$jsFiles)
+	public function getJavaScriptFiles(&$jsFiles)
 	{
 		$jsFiles[] = "plugins/CustomAlerts/javascripts/ui.dropdownchecklist.js";
 		$jsFiles[] = "plugins/CustomAlerts/javascripts/alerts.js";
 	}
 
-	public function getCssFiles(&$cssFiles)
+	public function getStylesheetFiles(&$cssFiles)
 	{
+		$cssFiles[] = "plugins/CustomAlerts/stylesheets/alerts.less";
 		$cssFiles[] = "plugins/CustomAlerts/stylesheets/ui.dropdownchecklist.css";
 	}
 

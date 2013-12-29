@@ -63,14 +63,14 @@ class Processor extends \Piwik\Plugin
 
     protected function processAlert($alert)
     {
-        $metricOne = $this->getValueForAlertInPast($alert, 1);
+        $metricOne = $this->getValueForAlertInPast($alert, 0);
 
         // Do we have data? stop otherwise.
         if (is_null($metricOne)) {
             return;
         }
 
-        $metricTwo = $this->getValueForAlertInPast($alert, 2);
+        $metricTwo = $this->getValueForAlertInPast($alert, 1);
 
         if ($this->shouldBeTriggered($alert, $metricOne, $metricTwo)) {
             $this->triggerAlert($alert);
@@ -134,6 +134,7 @@ class Processor extends \Piwik\Plugin
      * @param $dataTable
      * @param $condition
      * @param $value
+     * @throws \Exception
      */
     protected function filterDataTable($dataTable, $condition, $value)
     {
@@ -203,7 +204,6 @@ class Processor extends \Piwik\Plugin
         $request = new Piwik\API\Request($params);
         $table   = $request->process();
 
-        // TODO are we always getting a dataTable?
         return $this->getMetricFromTable($table, $alert['metric'], $alert['report_condition'], $alert['report_matched']);
     }
 
