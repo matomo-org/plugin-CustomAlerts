@@ -125,6 +125,13 @@ function onSubmit(event)
     apiParameters.token_auth   = piwik.token_auth;
     var idSites  = [];
 
+    if (!$.isNumeric(apiParameters.metricValue)) {
+        var UI = require('piwik/UI');
+        var notification = new UI.Notification();
+        notification.show('Metric Value must be numeric', {id: 'CustomAlertsMetricValueError', context: 'error'});
+        return;
+    }
+
     var selectedSites = $('#idSites').find('option:selected');
 
     for (var index = 0; index < selectedSites.length; index++) {

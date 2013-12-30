@@ -106,9 +106,9 @@ function onSubmit(event)
 
     var idReport = $('#report_idreport').val();
     var apiParameters = {};
-    apiParameters.format = 'json';
-    apiParameters.name  = $('#alertName').val();
-    apiParameters.email  = $('#email:checked').val() ? 1 : 0;
+    apiParameters.format  = 'json';
+    apiParameters.name    = $('#alertName').val();
+    apiParameters.email   = $('#email:checked').val() ? 1 : 0;
     apiParameters.metric  = $('#metric').find('option:selected').val();
     apiParameters.metricCondition  = $('#metricCondition').find('option:selected').val();
     apiParameters.metricValue  = $('#metricValue').val();
@@ -116,6 +116,14 @@ function onSubmit(event)
     apiParameters.reportCondition  = $('#reportCondition').find('option:selected').val();
     apiParameters.reportValue  = $('#reportValue').val();
     apiParameters.token_auth   = piwik.token_auth;
+
+    if (!$.isNumeric(apiParameters.metricValue)) {
+        var UI = require('piwik/UI');
+        var notification = new UI.Notification();
+        notification.show('Metric Value must be numeric', {id: 'CustomAlertsMetricValueError', context: 'error'});
+        return;
+    }
+
     var idSites  = [$('#defaultSiteId').val()];
 
     var selectedSites = $('#idSites').find('option:selected');
