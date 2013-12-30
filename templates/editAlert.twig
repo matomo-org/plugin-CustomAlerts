@@ -42,7 +42,7 @@
         <h2>{{ 'CustomAlerts_AlertConditions'|translate }}</h2>
         <table class="tableForm dataTable entityTable">
         <tr>
-            <td>
+            <td class="reportField">
                 {{ 'CustomAlerts_ThisAppliesTo'|translate }} <br />
                 <select class="reports inp" name="report" id="report">
                 {% for report in alerts %}
@@ -63,7 +63,7 @@
             </td>
             <td class='reportValueField'>
                 {{ 'General_Value'|translate }} <span id="reportInfo"></span><br />
-                <input class="reportValue inp" type="text" name="reportValue" id="reportValue" value="{{ alert.report_matched }}"/>
+                <input type="text" role="textbox" autocomplete="off" class="reportValue inp ui-autocomplete-input" name="reportValue" id="reportValue" value="{{ alert.report_matched }}" placeholder="{{ 'General_Search'|translate }}" length="15">
             </td>
         </tr>
         <tr>
@@ -115,7 +115,7 @@ function onSubmit(event)
     apiParameters.format = 'json';
     apiParameters.name  = $('#alertName').val();
     apiParameters.idAlert = {{ alert.idalert }};
-    apiParameters.email  = $('#email').val();
+    apiParameters.email  = $('#email:checked').val() ? 1 : 0;
     apiParameters.metric  = $('#metric').find('option:selected').val();
     apiParameters.metricCondition  = $('#metricCondition').find('option:selected').val();
     apiParameters.metricValue  = $('#metricValue').val();
