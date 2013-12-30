@@ -29,7 +29,6 @@
 
     function getValuesForReportAndMetric(request, response) {
 
-
         var metric = $('#metric').find('option:selected').val();
 
         function sendFeedback(values)
@@ -51,7 +50,16 @@
         reportValuesAutoComplete = [];
 
         var report = $('#report').find('option:selected').val();
+
+        if (!report) {
+            return;
+        }
+
         report = report.split('.');
+
+        if (!metric || !$.isArray(report) || !report[0] || !report[1]) {
+            sendFeedback(reportValuesAutoComplete);
+        }
 
         var idSites = "";
         $("#idSites :selected").each(function(i,selected) {
@@ -118,6 +126,7 @@
                     $('.reportValue').removeAttr('disabled');
                     $('td.reportConditionField').show();
                     $('td.reportValueField').show();
+                    $('td.reportField').attr('colspan', '');
                 }
                 else
                 {
@@ -126,6 +135,7 @@
                     $('.reportValue').attr('disabled', 'disabled');
                     $('td.reportConditionField').hide();
                     $('td.reportValueField').hide();
+                    $('td.reportField').attr('colspan', '3');
                 }
             }
         }
