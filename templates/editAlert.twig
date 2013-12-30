@@ -45,7 +45,7 @@
             <td class="reportField">
                 {{ 'CustomAlerts_ThisAppliesTo'|translate }} <br />
                 <select class="reports inp" name="report" id="report">
-                {% for report in alerts %}
+                {% for report in reportMetadata %}
                     {% set module=report.module %}
                     {% set action=report.action %}
                     {% set reportName=module ~ '.' ~ action %}
@@ -70,7 +70,7 @@
             <td>
                 {{ 'CustomAlerts_AlertMeWhen'|translate }} <br />
                 <select name="metric" id="metric" class="metrics inp">
-			{% for report in alerts %}
+			{% for report in reportMetadata %}
                 {% set module=report.module %}
                 {% set action=report.action %}
                 {% set reportName=module ~ '.' ~ action %}

@@ -19,6 +19,7 @@ use Piwik\Db;
 /**
  *
  * @package Piwik_Alerts
+ * @method static \Piwik\Plugins\CustomAlerts\API getInstance()
  */
 class API extends \Piwik\Plugin\API
 {

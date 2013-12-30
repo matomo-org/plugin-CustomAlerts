@@ -67,10 +67,7 @@ class Controller extends \Piwik\Plugin\Controller
 
 		$view->sitesList = SitesManagerApi::getInstance()->getSitesWithAtLeastViewAccess();
 
-		// ToDo need to collect metrics,processedMetrics,goalMetrics, goalProcessedMetric
-
-        $view->alertGroups = array();
-		$view->alerts                = MetadataApi::getInstance()->getReportMetadata();
+        $view->alertGroups           = array();
 		$view->alertGroupConditions  = Processor::getGroupConditions();
 		$view->alertMetricConditions = Processor::getMetricConditions();
 
@@ -89,7 +86,7 @@ class Controller extends \Piwik\Plugin\Controller
 
 		$view->sitesDefined = $view->alert['idSites'];
 
-		$view->alerts                = MetadataApi::getInstance()->getReportMetadata();
+		$view->reportMetadata        = MetadataApi::getInstance()->getReportMetadata();
 		$view->alertGroupConditions  = Processor::getGroupConditions();
 		$view->alertMetricConditions = Processor::getMetricConditions();
 

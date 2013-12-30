@@ -103,7 +103,7 @@
             if ('MultiSites.getOne' == value) {
                 continue;
             }
-            
+
             if(currentGroup == undefined) {
                 options += '<option selected="selected" value="' + value + '">' + data[i].name + '</option>';
                 currentGroup = value;
