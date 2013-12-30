@@ -193,7 +193,7 @@
             updateMetrics();
         });
 
-        if ($('.alerts #idSites')) {
+        if ($('.alerts #idSites').length) {
             updateMetrics();
         }
 
