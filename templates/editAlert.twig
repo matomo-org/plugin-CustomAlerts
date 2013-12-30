@@ -128,9 +128,12 @@ function onSubmit(event)
     if (!$.isNumeric(apiParameters.metricValue)) {
         var UI = require('piwik/UI');
         var notification = new UI.Notification();
-        notification.show('Metric Value must be numeric', {id: 'CustomAlertsMetricValueError', context: 'error'});
+        notification.show('{{ 'CustomAlerts_InvalidMetricValue'|translate|e('js') }}', {id: 'CustomAlertsMetricValueError', context: 'error'});
+        $('#metricValue').css({backgroundColor: '#f2dede'});
         return;
     }
+
+    $('#metricValue').css({backgroundColor: '#ffffff'});
 
     var selectedSites = $('#idSites').find('option:selected');
 

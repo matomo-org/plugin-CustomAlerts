@@ -9,6 +9,7 @@
         "EditAlert": "Edit Alert",
         "SendEmail": "Email me when this alert is triggered",
         "InvalidPeriod": "Invalid period given!",
+        "InvalidMetricValue": "Value must be numeric",
         "ReportOrMetricIsInvalid": "The report or metric given is invalid!",
         "AlertName": "Alert Name",
         "ApplyTo": "Apply to",
