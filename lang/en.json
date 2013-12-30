@@ -16,6 +16,7 @@
         "Condition": "Condition",
         "AlertMeWhen": "Alert me when",
         "ThisAppliesTo": "This applies to",
+        "MatchesAnyExpression": "matches any",
         "MatchesRegularExpression": "matches regular expression",
         "DoesNotMatchRegularExpression": "does not match regular expression",
         "StartsWith": "starts with",

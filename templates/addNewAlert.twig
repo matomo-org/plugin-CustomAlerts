@@ -5,7 +5,8 @@
 <div class="centerLargeDiv alerts">
 <div class="entityAddContainer">
     <div class="entityCancel">
-        Cancel and <a class="entityCancelLink" href="{{ linkTo({'module': 'CustomAlerts', 'action': 'index'}) }}">return to the list of alerts</a>
+        {% set backlink = linkTo({'module': 'CustomAlerts', 'action': 'index'}) %}
+        {{ 'CustomAlerts_CancelAndReturnToAlerts'|translate('<a class="entityCancelLink" href="' ~ backlink ~ '">', "</a>")|raw }}
     </div>
     <form method="POST" onSubmit="onSubmit(event)">
         <h2>{{ 'CustomAlerts_CreateNewAlert'|translate }}</h2>

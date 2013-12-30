@@ -145,6 +145,8 @@
         }
         $('.reports').html(options);
         $('.reports').val(currentGroup);
+
+        updateReportCondition();
     }
 
     function initSitesDropdown() {
@@ -161,9 +163,21 @@
         }});
     }
 
+    function updateReportCondition()
+    {
+        if ('matches_any' == $('.reportCondition').val()) {
+            $('td.reportConditionField').attr('colspan', '2');
+            $('td.reportValueField').hide();
+        } else {
+            $('td.reportConditionField').attr('colspan', '');
+            $('td.reportValueField').show();
+        }
+    }
+
     $(document).ready(function() {
 
         initSitesDropdown();
+        updateReportCondition();
 
         $('.alerts .period').change(function() {
             updateMetrics();
@@ -172,6 +186,8 @@
         $('.alerts .reports').change(function() {
             updateMetrics();
         })
+
+        $('.alerts .reportCondition').change(updateReportCondition)
 
         $('.alerts #idSites').change(function() {
             updateMetrics();

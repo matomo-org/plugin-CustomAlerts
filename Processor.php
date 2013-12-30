@@ -27,6 +27,7 @@ class Processor extends \Piwik\Plugin
     public static function getGroupConditions()
     {
         return array(
+            'CustomAlerts_MatchesAnyExpression' => 'matches_any',
             'General_OperationIs'      => 'matches_exactly',
             'General_OperationIsNot'   => 'does_not_match_exactly',
             'CustomAlerts_MatchesRegularExpression'      => 'matches_regex',
@@ -142,6 +143,8 @@ class Processor extends \Piwik\Plugin
 
         // Some escaping?
         switch ($condition) {
+            case 'matches_any':
+                return;
             case 'matches_exactly':
                 $pattern = sprintf("^%s$", $value);
                 break;
