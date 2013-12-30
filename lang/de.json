@@ -1,0 +1,13 @@
+{
+    "CustomAlerts": {
+        "AlertConditions": "Bedingungen für die Benachrichtigung",
+        "AlertMeWhen": "Benachrichtige mich sobald",
+        "AlertName": "Titel der Benachrichtigung",
+        "Alerts": "Benachrichtigungen",
+        "Condition": "Bedingung",
+        "DoesNotStartWith": "beginnt nicht mit",
+        "EditAlert": "Benachrichtigung bearbeiten",
+        "EndsWith": "endet auf",
+        "StartsWith": "beginnt mit"
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "CustomAlerts": {
+        "Alerts": "Известия",
+        "Condition": "Състояние",
+        "CreateNewAlert": "Създаване на ново известие",
+        "DoesNotEndWith": "не завършва с",
+        "EditAlert": "Редакция на известие",
+        "EndsWith": "завършва с",
+        "IsLessThan": "е по-малко от",
+        "MailEnd": "Приятно анализиране!",
+        "PercentageDecreasesMoreThan": "% намалява повече, отколкото",
+        "PercentageIncreasesMoreThan": "% се увеличава повече, отколкото",
+        "StartsWith": "започва с",
+        "ThisAppliesTo": "Това се прилага за"
+    }
+}
