@@ -67,6 +67,11 @@ class ProcessorTest extends \PHPUnit_Framework_TestCase
         return $dataTable;
     }
 
+    public function test_filterDataTable_Condition_MatchesAny()
+    {
+        $this->assertFilterResult('matches_any', '3test', array(10, 33, 90, 65, 67, 100));
+    }
+
     public function test_filterDataTable_Condition_MatchesExactly()
     {
         $this->assertFilterResult('matches_exactly', '3test', array(33, 65));
