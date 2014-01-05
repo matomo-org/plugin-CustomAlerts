@@ -17,13 +17,13 @@
             </tr>
             <tr>
                 <td><label for="applyTo">{{ 'CustomAlerts_ApplyTo'|translate }}</label></td>
-                <td><strong>{{ siteName }}</strong>
+                <td><strong>{{ siteName|raw }}</strong>
                     {% if sitesList|length > 1 %}
                         and
                     <select id="idSites" class="multiselect inp" multiple="multiple" name="idSites[]">
                         {% for site in sitesList %}
                             {% if idSite != site.idsite %}
-                                <option value="{{ site.idsite }}">{{ site.name }}</option>
+                                <option value="{{ site.idsite }}">{{ site.name|escape("html_attr") }}</option>
                             {% endif %}
                         {% endfor %}{{ idSite }}
                     </select>
