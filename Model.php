@@ -126,12 +126,9 @@ class Model
 						. "AND deleted = 0"
 		));
 
-        foreach ($alerts as &$alert) {
-            $alert['additional_emails'] = json_decode($alert['additional_emails']);
-            $alert['phone_numbers'] = json_decode($alert['phone_numbers']);
-        }
+        $alerts = $this->completeAlerts($alerts);
 
-		return $alerts;
+        return $alerts;
 	}
 
 	public function getTriggeredAlerts($period, $date, $login)
@@ -188,7 +185,10 @@ class Model
 				. "AND deleted = 0 "
 				. "AND period = ?";
 
-		return Db::fetchAll($sql, array($period));
+		$alerts = Db::fetchAll($sql, array($period));
+        $alerts = $this->completeAlerts($alerts);
+
+        return $alerts;
 	}
 
     /**
@@ -422,6 +422,21 @@ class Model
     {
         $idAlert = Db::fetchOne("SELECT max(idalert) + 1 FROM " . Common::prefixTable('alert'));
         return $idAlert;
+    }
+
+    private function completeAlerts($alerts)
+    {
+        if (empty($alerts)) {
+            return $alerts;
+        }
+
+        foreach ($alerts as &$alert) {
+            $alert['additional_emails'] = json_decode($alert['additional_emails']);
+            $alert['phone_numbers']     = json_decode($alert['phone_numbers']);
+            $alert['idSites']           = $this->fetchSiteIdsTheAlertWasDefinedOn($alert['id']);
+        }
+
+        return $alerts;
     }
 
 }

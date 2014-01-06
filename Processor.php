@@ -64,17 +64,24 @@ class Processor extends \Piwik\Plugin
 
     protected function processAlert($alert)
     {
-        $valueNew = $this->getValueForAlertInPast($alert, 1);
-
-        // Do we have data? stop otherwise.
-        if (is_null($valueNew)) {
+        if (empty($alert['idSites'])) {
             return;
         }
 
-        $valueOld = $this->getValueForAlertInPast($alert, 2);
+        foreach ($alert['idSites'] as $idSite) {
 
-        if ($this->shouldBeTriggered($alert, $valueNew, $valueOld)) {
-            $this->triggerAlert($alert, $valueNew, $valueOld);
+            $valueNew = $this->getValueForAlertInPast($alert, $idSite, 1);
+
+            // Do we have data? stop otherwise.
+            if (is_null($valueNew)) {
+                return;
+            }
+
+            $valueOld = $this->getValueForAlertInPast($alert, $idSite, 2);
+
+            if ($this->shouldBeTriggered($alert, $valueNew, $valueOld)) {
+                $this->triggerAlert($alert, $idSite, $valueNew, $valueOld);
+            }
         }
     }
 
@@ -189,16 +196,17 @@ class Processor extends \Piwik\Plugin
 
     /**
      * @param  array  $alert
+     * @param  int    $idSite
      * @param  int    $subPeriodN
      *
      * @return array
      */
-    protected function getValueForAlertInPast($alert, $subPeriodN)
+    protected function getValueForAlertInPast($alert, $idSite, $subPeriodN)
     {
         $params = array(
             'method' => $alert['report'],
             'format' => 'original',
-            'idSite' => $alert['idsite'],
+            'idSite' => $idSite,
             'period' => $alert['period'],
             'date'   => Date::today()->subPeriod($subPeriodN, $alert['period'])->toString(),
             'filter_truncate' => 0
@@ -211,10 +219,10 @@ class Processor extends \Piwik\Plugin
         return $this->getMetricFromTable($table, $alert['metric'], $alert['report_condition'], $alert['report_matched']);
     }
 
-    protected function triggerAlert($alert, $valueNew, $valueOld)
+    protected function triggerAlert($alert, $idSite, $valueNew, $valueOld)
     {
         $api = API::getInstance();
-        $api->triggerAlert($alert['idalert'], $alert['idsite'], $valueNew, $valueOld);
+        $api->triggerAlert($alert['idalert'], $idSite, $valueNew, $valueOld);
     }
 
     private function getAllAlerts($period)
