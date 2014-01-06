@@ -118,7 +118,8 @@
 <script type="text/javascript">
 
 $(function() {
-    updateReportParametersFunctions.email({emailMe: !!{{ alert.email_me|e('js') }}, additionalEmails: {{ alert.additional_emails|json_encode }} });
+    updateReportParametersFunctions.email({emailMe: !!{{ alert.email_me|e('js') }}, additionalEmails: {{ alert.additional_emails|json_encode|raw }} });
+    updateReportParametersFunctions.mobile({phoneNumbers: {{ alert.phone_numbers|json_encode|raw }} });
 });
 
 function onSubmit(event)
