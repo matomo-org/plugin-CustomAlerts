@@ -205,7 +205,7 @@
             updateMetrics();
         });
 
-        $('.deleteAlert[id]').click(function() {
+        $('.entityListContainer .deleteAlert[id]').click(function() {
             deleteAlert($(this).attr('id'));
         });
 
