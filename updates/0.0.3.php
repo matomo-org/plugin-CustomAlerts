@@ -24,8 +24,8 @@ class Updates_0_0_3 extends Updates
     static function getSql($schema = 'Myisam')
     {
         return array(
-            "ALTER TABLE `" . Common::prefixTable('alert_log') . "` ADD `value_old` VARCHAR(50) DEFAULT NULL AFTER `ts_triggered` " => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert_log') . "` ADD `value_new` VARCHAR(50) DEFAULT NULL AFTER `value_old` " => 1060
+            "ALTER TABLE `" . Common::prefixTable('alert_log') . "` ADD `value_old` BIGINT unsigned DEFAULT NULL AFTER `ts_triggered` " => 1060,
+            "ALTER TABLE `" . Common::prefixTable('alert_log') . "` ADD `value_new` BIGINT unsigned DEFAULT NULL AFTER `value_old` " => 1060
         );
     }
 

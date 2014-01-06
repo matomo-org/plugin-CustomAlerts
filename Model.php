@@ -57,8 +57,8 @@ class Model
 			`idalert` INT( 11 ) NOT NULL ,
 			`idsite` INT( 11 ) NOT NULL ,
 			`ts_triggered` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-			`value_old` VARCHAR(50) DEFAULT NULL,
-			`value_new` VARCHAR(50) DEFAULT NULL,
+			`value_old` BIGINT unsigned DEFAULT NULL,
+			`value_new` BIGINT unsigned DEFAULT NULL,
 			KEY `ts_triggered` (`ts_triggered`)
 		)";
 
