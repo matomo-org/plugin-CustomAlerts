@@ -12,6 +12,7 @@ use Piwik\Access;
 use Piwik\Common;
 use Piwik\Db;
 use Piwik\Plugins\CustomAlerts\Model;
+use Piwik\Plugins\CustomAlerts\API;
 use Piwik\Translate;
 
 /**
@@ -19,12 +20,12 @@ use Piwik\Translate;
  * @group ModelTest
  * @group Database
  */
-class ModelTest extends \DatabaseTestCase
+class ApiTest extends \DatabaseTestCase
 {
     /**
-     * @var \Piwik\Plugins\CustomAlerts\Model
+     * @var \Piwik\Plugins\CustomAlerts\API
      */
-    private $model;
+    private $api;
     private $idSite;
     private $idSite2;
 
@@ -34,14 +35,16 @@ class ModelTest extends \DatabaseTestCase
 
         Model::install();
 
-        $this->setSuperUser();
-        $this->model = new Model();
+        $this->api = API::getInstance();
 
+        $this->setSuperUser();
         $this->idSite  = \Test_Piwik_BaseFixture::createWebsite('2012-08-09 11:22:33');
         $this->idSite2 = \Test_Piwik_BaseFixture::createWebsite('2012-08-10 11:22:33');
         $this->createAlert('Initial1', 'day');
-        $this->createAlert('Initial2', 'week', array($this->idSite, $this->idSite2));
+        $this->createAlert('Initial2', 'week', array($this->idSite,$this->idSite2));
         $this->createAlert('Initial3', 'month', array($this->idSite2));
+        $this->setUser();
+
         Translate::unloadEnglishTranslation();
     }
 
@@ -52,44 +55,87 @@ class ModelTest extends \DatabaseTestCase
         parent::tearDown();
     }
 
-    public function testInstall_ShouldNotFailAndActuallyCreateTheDatabases()
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage checkUserHasViewAccess Fake exception
+     */
+    public function test_addAlert_ShouldFail_IfNotEnoughPermissions()
     {
-        $this->assertContainTables(array('alert', 'alert_site', 'alert_log'));
-
-        $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert'));
-        $this->assertCount(14, $columns);
-
-        $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert_site'));
-        $this->assertCount(2, $columns);
-
-        $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert_log'));
-        $this->assertCount(3, $columns);
+        $this->createAlert('NotEnoughPermissions');
     }
 
-    public function testUninstall_ShouldNotFailAndRemovesAllAlertTables()
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Alerts_ReportOrMetricIsInvalid
+     */
+    public function test_addAlert_ShouldFail_IfInvalidMetricProvided()
     {
-        Model::uninstall();
+        $this->setSuperUser();
+        $this->createAlert('InvalidMetric', 'week', null, $metric = 'nb_notExisting');
+    }
 
-        $this->assertNotContainTables(array('alert', 'alert_site', 'alert_log'));
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Alerts_ReportOrMetricIsInvalid
+     */
+    public function test_addAlert_ShouldFail_IfInvalidReportProvided()
+    {
+        $this->setSuperUser();
+        $this->createAlert('InvalidReport', 'week', null, 'nb_visits', 'IkReport.NotExisTing');
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_InvalidPeriod
+     */
+    public function test_addAlert_ShouldFail_ShouldFailIfPeriodNotValid()
+    {
+        $this->setSuperUser();
+        $this->createAlert('InvalidPeriod', 'unvAlidPerioD');
     }
 
     public function test_addAlert_ShouldCreateANewAlert()
     {
+        $this->setSuperUser();
+
         $id = $this->createAlert('MyCustomAlert', 'week');
         $this->assertGreaterThan(3, $id);
 
         $this->assertCreatedAlert($id, 'MyCustomAlert', 'week');
     }
 
-    public function test_addAlert_ShouldIncreaseId()
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_AccessException
+     */
+    public function test_editAlert_ShouldFail_IfNotPermission()
     {
-        $firstId = $this->createAlert('MyCustomAlert', 'week');
-        $id      = $this->createAlert('MyCustomAlert2', 'week');
-        $this->assertEquals($firstId + 1, $id);
+        $this->editAlert(2, 'MyCustomAlert', 'day');
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_AlertDoesNotExist
+     */
+    public function test_editAlert_ShouldFail_IfNotExists()
+    {
+        $this->editAlert(99999, 'MyCustomAlert', 'day');
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage checkUserHasViewAccess Fake exception
+     */
+    public function test_editAlert_ShouldFail_IfNotPermissionForWebsites()
+    {
+        $id = $this->createAlert('MyAlert');
+        $this->editAlert($id, 'MyCustomAlert', 'day', array(9999));
     }
 
     public function test_editAlert_ShouldUpdateExistingEntry()
     {
+        $this->setSuperUser();
+
         $id = $this->editAlert(2, 'MyCustomAlert', 'day');
         $this->assertEquals(2, $id);
 
@@ -98,6 +144,8 @@ class ModelTest extends \DatabaseTestCase
 
     public function test_getAlert_ShouldLoadAlertAndRelatedWebsiteIds_IfExists()
     {
+        $this->setSuperUser();
+
         $this->assertCreatedAlert(1, 'Initial1', 'day', array(1));
         $this->assertCreatedAlert(2, 'Initial2', 'week', array(1,2));
         $this->assertCreatedAlert(3, 'Initial3', 'month', array(2));
@@ -105,48 +153,122 @@ class ModelTest extends \DatabaseTestCase
 
     public function test_getAlert_ShouldReturnDeletedAlerts()
     {
-        $this->model->deleteAlert(1);
-        $alert = $this->model->getAlert(1);
+        $this->setSuperUser();
+
+        $this->api->deleteAlert(1);
+        $alert = $this->api->getAlert(1);
         $this->assertEquals('Initial1', $alert['name']);
         $this->assertEquals(1, $alert['deleted']);
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_AlertDoesNotExist
+     */
+    public function test_getAlert_ShouldFail_IfInvalidIdProvided()
+    {
+        $this->setSuperUser();
+
+        $this->api->getAlert(9999);
+    }
+
     public function test_getAlerts_shouldReturnAllAlertsThatMatchTheIdSites()
     {
-        $alerts = $this->model->getAlerts(array($this->idSite));
+        $this->setSuperUser();
+
+        $alerts = $this->api->getAlerts(array($this->idSite));
         $this->assertCount(2, $alerts);
         $this->assertEquals('Initial1', $alerts[0]['name']);
         $this->assertEquals('Initial2', $alerts[1]['name']);
 
-        $alerts = $this->model->getAlerts(array($this->idSite2));
+        $alerts = $this->api->getAlerts(array($this->idSite2));
         $this->assertCount(2, $alerts);
         $this->assertEquals('Initial2', $alerts[0]['name']);
         $this->assertEquals('Initial3', $alerts[1]['name']);
 
-        $alerts = $this->model->getAlerts(array($this->idSite2, $this->idSite));
+        $alerts = $this->api->getAlerts(array($this->idSite2, $this->idSite));
         $this->assertCount(3, $alerts);
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage checkUserHasViewAccess Fake exception
+     */
+    public function test_getAlerts_shouldFail_IfUserDoesNotHaveAccessToWebsite()
+    {
+        $this->api->getAlerts(array($this->idSite));
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage checkUserHasViewAccess Fake exception
+     */
+    public function test_getAllAlerts_shouldFail_IfUserIsNotTheSuperUser()
+    {
+        $this->api->getAlerts(array($this->idSite2, $this->idSite));
     }
 
     public function test_getAllAlerts_shouldReturnAllAlerts()
     {
-        $alerts = $this->model->getAlerts(array($this->idSite2, $this->idSite));
+        $this->setSuperUser();
+
+        $alerts = $this->api->getAlerts(array($this->idSite2, $this->idSite));
         $this->assertCount(3, $alerts);
         $this->assertEquals('Initial1', $alerts[0]['name']);
         $this->assertEquals('Initial2', $alerts[1]['name']);
         $this->assertEquals('Initial3', $alerts[2]['name']);
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_AccessException
+     */
+    public function test_getAlert_ShouldFail_IfNotOwnerOfAlertAndIfNotSuperUser()
+    {
+        $this->api->getAlert(2);
+    }
+
     public function test_deleteAlert_ShouldNotRemoveAlertButMarkItAsDeleted()
     {
-        $this->model->deleteAlert(2);
-        $alert = $this->model->getAlert(2);
+        $this->setSuperUser();
+        $this->api->deleteAlert(2);
+        $alert = $this->api->getAlert(2);
         $this->assertEquals(1, $alert['deleted']);
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_AccessException
+     */
+    public function test_deleteAlert_ShouldFail_IfNotOwnerOfAlertAndIfNotSuperUser()
+    {
+        $this->api->deleteAlert(2);
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_AlertDoesNotExist
+     */
+    public function test_triggerAlert_shouldFail_IfAlertDoesNotExist()
+    {
+        $this->api->triggerAlert(99, 1);
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_AccessException
+     */
+    public function test_triggerAlert_shouldFail_IfNotEnoughPermissions()
+    {
+        $this->api->triggerAlert(2, 1);
     }
 
     public function test_triggerAlert_getTriggeredAlerts_ShouldMarkAlertAsTriggeredForGivenWebsite()
     {
-        $this->model->triggerAlert(2, 1);
-        $triggeredAlerts = $this->model->getTriggeredAlerts('week', 'today', 'superUserLogin');
+        $this->setSuperUser();
+
+        $this->api->triggerAlert(2, 1);
+        $triggeredAlerts = $this->api->getTriggeredAlerts('week', 'today', 'superUserLogin');
 
         $this->assertCount(1, $triggeredAlerts);
 
@@ -171,18 +293,45 @@ class ModelTest extends \DatabaseTestCase
         $this->assertEquals(array($expected), $triggeredAlerts);
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage checkUserIsSuperUser Fake exception
+     */
+    public function test_triggerAlert_shouldVerifyWhetherUserIsActuallyTheUser()
+    {
+        $this->api->getTriggeredAlerts('InvaLiDPeriOd', 'today', 'superUserLogin');
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_InvalidPeriod
+     */
+    public function test_triggerAlert_getTriggeredAlerts_ShouldFailIfPeriodIsInvalid()
+    {
+        $this->setSuperUser();
+
+        $this->api->triggerAlert(2, 1);
+        $triggeredAlerts = $this->api->getTriggeredAlerts('InvaLiDPeriOd', 'today', 'superUserLogin');
+
+        $this->assertEquals(array(), $triggeredAlerts);
+    }
+
     public function test_triggerAlert_getTriggeredAlerts_ShouldReturnAnAlertOnlyIfPeriodMatches()
     {
-        $this->model->triggerAlert(2, 1);
-        $triggeredAlerts = $this->model->getTriggeredAlerts('day', 'today', 'superUserLogin');
+        $this->setSuperUser();
+
+        $this->api->triggerAlert(2, 1);
+        $triggeredAlerts = $this->api->getTriggeredAlerts('day', 'today', 'superUserLogin');
 
         $this->assertEquals(array(), $triggeredAlerts);
     }
 
     public function test_triggerAlert_getTriggeredAlerts_ShouldReturnAnAlertOnlyIfDateMatches()
     {
-        $this->model->triggerAlert(1, 1);
-        $triggeredAlerts = $this->model->getTriggeredAlerts('day', 'yesterday', 'superUserLogin');
+        $this->setSuperUser();
+
+        $this->api->triggerAlert(1, 1);
+        $triggeredAlerts = $this->api->getTriggeredAlerts('day', 'yesterday', 'superUserLogin');
 
         $this->assertEquals(array(), $triggeredAlerts);
     }
@@ -191,8 +340,8 @@ class ModelTest extends \DatabaseTestCase
     {
         $this->setSuperUser();
 
-        $this->model->triggerAlert(1, 1);
-        $triggeredAlerts = $this->model->getTriggeredAlerts('day', 'today', false);
+        $this->api->triggerAlert(1, 1);
+        $triggeredAlerts = $this->api->getTriggeredAlerts('day', 'today', false);
 
         $this->assertCount(1, $triggeredAlerts);
     }
@@ -232,14 +381,11 @@ class ModelTest extends \DatabaseTestCase
         if (is_null($idSites)) {
             $idSites = $this->idSite;
         }
-        if (!is_array($idSites)) {
-            $idSites = array($idSites);
-        }
 
         $emails = array('test1@example.com', 'test2@example.com');
-        $phoneNumbers = array('0123456789');
+        $phoneNumbers = array();
 
-        $id = $this->model->addAlert($name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $report, 'matches_exactly', 'Piwik');
+        $id = $this->api->addAlert($name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $report, 'matches_exactly', 'Piwik');
         return $id;
     }
 
@@ -248,14 +394,11 @@ class ModelTest extends \DatabaseTestCase
         if (is_null($idSites)) {
             $idSites = $this->idSite;
         }
-        if (!is_array($idSites)) {
-            $idSites = array($idSites);
-        }
 
         $emails = array('test1@example.com', 'test2@example.com');
-        $phoneNumbers = array('0123456789');
+        $phoneNumbers = array();
 
-        $id = $this->model->editAlert($id, $name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $report, 'matches_exactly', 'Piwik');
+        $id = $this->api->editAlert($id, $name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $report, 'matches_exactly', 'Piwik');
         return $id;
     }
 
@@ -265,7 +408,7 @@ class ModelTest extends \DatabaseTestCase
             $idSites = array($this->idSite);
         }
 
-        $alert = $this->model->getAlert($id);
+        $alert = $this->api->getAlert($id);
 
         $expected = array(
             'idalert' => $id,
@@ -280,7 +423,7 @@ class ModelTest extends \DatabaseTestCase
             'metric_matched' => $metricMatched,
             'email_me' => 0,
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
-            'phone_numbers' => array('0123456789'),
+            'phone_numbers' => array(),
             'idSites' => $idSites,
             'deleted' => 0
         );
@@ -294,6 +437,15 @@ class ModelTest extends \DatabaseTestCase
         \FakeAccess::setIdSitesAdmin(array(1, 2));
         \FakeAccess::$superUser = true;
         \FakeAccess::$identity = 'superUserLogin';
+        Access::setSingletonInstance($pseudoMockAccess);
+    }
+
+    private function setUser()
+    {
+        $pseudoMockAccess = new \FakeAccess;
+        \FakeAccess::setSuperUser(false);
+        \FakeAccess::$idSitesView = array(99);
+        \FakeAccess::$identity = 'aUser';
         Access::setSingletonInstance($pseudoMockAccess);
     }
 

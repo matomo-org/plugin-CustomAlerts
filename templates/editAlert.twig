@@ -32,10 +32,9 @@
                 <option value="month" {% if alert.period == 'month' %}selected="selected"{% endif %}>{{ 'CoreHome_PeriodMonth'|translate }}</option>
             </select></td>
         </tr>
-        <tr>
-            <td></td>
-            <td><input class="inp" type="checkbox" name="email" id="email" value="yes" {% if alert.enable_mail %}checked="checked"{% endif %}/> <label for="email">{{ 'CustomAlerts_SendEmail'|translate }}</label></td>
-        </tr>
+
+        {{ postEvent('Template.reportParametersScheduledReports') }}
+
         </table>
         <br />
 
@@ -105,21 +104,30 @@
 
 <script type="text/javascript">
 
+$(function() {
+    updateReportParametersFunctions.email({emailMe: !!{{ alert.email_me|e('js') }}, additionalEmails: {{ alert.additional_emails|json_encode }} });
+});
+
 function onSubmit(event)
 {
     event.preventDefault();
     event.stopPropagation();
+
+    var mailSettings   = getReportParametersFunctions.email();
+    var mobileSettings = getReportParametersFunctions.mobile();
 
     var idReport = $('#report_idreport').val();
     var apiParameters = {};
     apiParameters.format = 'json';
     apiParameters.name  = $('#alertName').val();
     apiParameters.idAlert = {{ alert.idalert }};
-    apiParameters.email  = $('#email:checked').val() ? 1 : 0;
     apiParameters.metric  = $('#metric').find('option:selected').val();
     apiParameters.metricCondition  = $('#metricCondition').find('option:selected').val();
-    apiParameters.metricValue  = $('#metricValue').val();
-    apiParameters.report  = $('#report').find('option:selected').val();
+    apiParameters.metricValue = $('#metricValue').val();
+    apiParameters.emailMe = mailSettings.emailMe ? 1 : 0;
+    apiParameters.additionalEmails = (mailSettings.additionalEmails && mailSettings.additionalEmails.length) ? mailSettings.additionalEmails : [''];
+    apiParameters.phoneNumbers = mobileSettings.phoneNumbers;
+    apiParameters.report = $('#report').find('option:selected').val();
     apiParameters.reportCondition  = $('#reportCondition').find('option:selected').val();
     apiParameters.reportValue  = $('#reportValue').val();
     apiParameters.token_auth   = piwik.token_auth;

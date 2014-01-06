@@ -38,10 +38,9 @@
                         <option value="month">{{ 'CoreHome_PeriodMonth'|translate }}</option>
                     </select></td>
             </tr>
-            <tr>
-                <td></td>
-                <td><input class="inp" type="checkbox" name="email" id="email" value="yes" /> <label for="email">{{ 'CustomAlerts_SendEmail'|translate }}</label></td>
-            </tr>
+
+            {{ postEvent('Template.reportParametersScheduledReports') }}
+
         </table>
         <br />
 
@@ -105,15 +104,20 @@ function onSubmit(event)
     event.preventDefault();
     event.stopPropagation();
 
+    var mailSettings   = getReportParametersFunctions.email();
+    var mobileSettings = getReportParametersFunctions.mobile();
+
     var idReport = $('#report_idreport').val();
     var apiParameters = {};
     apiParameters.format  = 'json';
     apiParameters.name    = $('#alertName').val();
-    apiParameters.email   = $('#email:checked').val() ? 1 : 0;
     apiParameters.metric  = $('#metric').find('option:selected').val();
     apiParameters.metricCondition  = $('#metricCondition').find('option:selected').val();
-    apiParameters.metricValue  = $('#metricValue').val();
-    apiParameters.report  = $('#report').find('option:selected').val();
+    apiParameters.metricValue = $('#metricValue').val();
+    apiParameters.emailMe = mailSettings.emailMe ? 1 : 0;
+    apiParameters.additionalEmails = mailSettings.additionalEmails;
+    apiParameters.phoneNumbers = mobileSettings.phoneNumbers;
+    apiParameters.report = $('#report').find('option:selected').val();
     apiParameters.reportCondition  = $('#reportCondition').find('option:selected').val();
     apiParameters.reportValue  = $('#reportValue').val();
     apiParameters.token_auth   = piwik.token_auth;
