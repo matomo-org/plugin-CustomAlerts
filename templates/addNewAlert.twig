@@ -9,15 +9,20 @@
         {{ 'CustomAlerts_CancelAndReturnToAlerts'|translate('<a class="entityCancelLink" href="' ~ backlink ~ '">', "</a>")|raw }}
     </div>
     <form method="POST" onSubmit="onSubmit(event)">
-        <h2>{{ 'CustomAlerts_CreateNewAlert'|translate }}</h2>
+        <h2>{{ 'CustomAlerts_ManageAlerts'|translate }}</h2>
         <table class="tableForm dataTable entityTable">
+            <thead>
+                <tr class="first">
+                    <th colspan="2">{{ 'CustomAlerts_CreateNewAlert'|translate }}</th>
+                <tr>
+            </thead>
             <tr>
-                <td><label for="alertName">{{ 'CustomAlerts_AlertName'|translate }}</label></td>
+                <td class="first"><label for="alertName">{{ 'CustomAlerts_AlertName'|translate }}</label></td>
                 <td><input class="inp" type="text" name="alertName" id="alertName" /></td>
             </tr>
             <tr>
-                <td><label for="applyTo">{{ 'CustomAlerts_ApplyTo'|translate }}</label></td>
-                <td><strong>{{ siteName|raw }}</strong>
+                <td class="first"><label for="applyTo">{{ 'CustomAlerts_ApplyTo'|translate }}</label></td>
+                <td>{{ siteName|raw }}
                     {% if sitesList|length > 1 %}
                         and
                     <select id="idSites" class="multiselect inp" multiple="multiple" name="idSites[]">
@@ -31,7 +36,7 @@
                 </td>
             </tr>
             <tr>
-                <td><label for="period">{{ 'General_Period'|translate }}</label></td>
+                <td class="first"><label for="period">{{ 'General_Period'|translate }}</label></td>
                 <td><select class="period inp" name="period" id="period">
                         <option value="day">{{ 'CoreHome_PeriodDay'|translate }}</option>
                         <option value="week">{{ 'CoreHome_PeriodWeek'|translate }}</option>
@@ -44,8 +49,12 @@
         </table>
         <br />
 
-        <h2>{{ 'CustomAlerts_AlertConditions'|translate }}</h2>
         <table class="tableForm dataTable entityTable">
+            <thead>
+                <tr class="first">
+                    <th colspan="2">{{ 'CustomAlerts_AlertConditions'|translate }}</th>
+                <tr>
+            </thead>
             <tr>
                 <td class="reportField">
                     {{ 'CustomAlerts_ThisAppliesTo'|translate}} <br />

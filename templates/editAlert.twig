@@ -9,8 +9,14 @@
         {{ 'CustomAlerts_CancelAndReturnToAlerts'|translate('<a class="entityCancelLink" href="' ~ backlink ~ '">', "</a>")|raw }}
     </div>
     <form method="POST" onSubmit="onSubmit(event)">
-        <h2>{{ 'CustomAlerts_EditAlert'|translate }}</h2>
+        <h2>{{ 'CustomAlerts_ManageAlerts'|translate }}</h2>
         <table class="tableForm dataTable entityTable">
+        <thead>
+            <tr class="first">
+                <th colspan="2">{{ 'CustomAlerts_EditAlert'|translate }}</th>
+            <tr>
+        </thead>
+
         <tr>
             <td><label for="alertName">{{ 'CustomAlerts_AlertName'|translate }}</label></td>
             <td><input class="inp" type="text" name="alertName" id="alertName" value="{{ alert.name }}"/></td>
@@ -18,7 +24,7 @@
         <tr>
             <td><label for="applyTo">{{ 'CustomAlerts_ApplyTo'|translate }}</label></td>
             <td>
-                <strong>{{ siteName|raw }}</strong>
+                {{ siteName|raw }}
                 {% if sitesList|length > 1 %}
                     and
                     <select id="idSites" class="multiselect inp" multiple="multiple" name="idSites[]">
@@ -46,8 +52,12 @@
         </table>
         <br />
 
-        <h2>{{ 'CustomAlerts_AlertConditions'|translate }}</h2>
         <table class="tableForm dataTable entityTable">
+        <thead>
+            <tr class="first">
+                <th colspan="2">{{ 'CustomAlerts_AlertConditions'|translate }}</th>
+            <tr>
+        </thead>
         <tr>
             <td class="reportField">
                 {{ 'CustomAlerts_ThisAppliesTo'|translate }} <br />

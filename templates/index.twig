@@ -1,12 +1,6 @@
 {% extends 'dashboard.twig' %}
-{% set showSitesSelection=true %}
-
 {% block content %}
     {% include "@CoreHome/_siteSelectHeader.twig" %}
-
-    <div class="top_controls_inner">
-        {% include "@CoreHome/_periodSelect.twig" %}
-    </div>
 
     <div class="centerLargeDiv">
         <h2>{{ 'CustomAlerts_ManageAlerts'|translate }}</h2>
