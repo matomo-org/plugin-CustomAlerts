@@ -6,7 +6,7 @@
 
         reportValuesAutoComplete = null;
 
-        var idSites = "";
+        var idSites = "&idSites[]=" + piwik.idSite;
         $("#idSites :selected").each(function(i,selected) {
             idSites = idSites + "&idSites[]=" + $(selected).val();
         });
@@ -15,7 +15,6 @@
             type: "GET",
             url: piwik.piwik_url,
             data: 'module=API&method=API.getReportMetadata'
-                + '&idSite=' + piwik.idSite
                 + '&period=' + $(".period").val()
                 + '&date=' + piwik.currentDateString
                 + '&token_auth=' + piwik.token_auth
@@ -193,7 +192,7 @@
             updateMetrics();
         });
 
-        if ($('.alerts #idSites').length) {
+        if ($('.alerts .period').length) {
             updateMetrics();
         }
 

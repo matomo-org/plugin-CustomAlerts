@@ -87,7 +87,7 @@ FORMATTED;
         $alerts = $this->getTriggeredAlerts();
 
         $expected = <<<FORMATTED
-The following alerts were triggered: MyName1 (website Piwik test), MyName2 (website Piwik test)
+Alert MyName1 for website Piwik test (nb_visits was 228 is 4493). Alert MyName2 for website Piwik test (nb_visits was 228 is 4493).
 FORMATTED;
 
         $rendered = $this->notifier->formatAlerts($alerts, 'sms');
@@ -240,7 +240,9 @@ lEnd';
             'metric_matched' => $metricMatched,
             'additional_emails' => array('test5@example.com'),
             'phone_numbers' => array(),
-            'email_me' => true
+            'email_me' => true,
+            'value_new' => '4493',
+            'value_old' => '228'
         );
     }
 

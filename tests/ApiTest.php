@@ -9,7 +9,6 @@
 namespace Piwik\Plugins\CustomAlerts\tests;
 
 use Piwik\Access;
-use Piwik\Common;
 use Piwik\Db;
 use Piwik\Plugins\CustomAlerts\Model;
 use Piwik\Plugins\CustomAlerts\API;
@@ -101,7 +100,7 @@ class ApiTest extends \DatabaseTestCase
         $id = $this->createAlert('MyCustomAlert', 'week');
         $this->assertGreaterThan(3, $id);
 
-        $this->assertCreatedAlert($id, 'MyCustomAlert', 'week');
+        $this->assertIsAlert($id, 'MyCustomAlert', 'week');
     }
 
     /**
@@ -139,16 +138,16 @@ class ApiTest extends \DatabaseTestCase
         $id = $this->editAlert(2, 'MyCustomAlert', 'day');
         $this->assertEquals(2, $id);
 
-        $this->assertCreatedAlert(2, 'MyCustomAlert', 'day', array(1));
+        $this->assertIsAlert(2, 'MyCustomAlert', 'day', array(1));
     }
 
     public function test_getAlert_ShouldLoadAlertAndRelatedWebsiteIds_IfExists()
     {
         $this->setSuperUser();
 
-        $this->assertCreatedAlert(1, 'Initial1', 'day', array(1));
-        $this->assertCreatedAlert(2, 'Initial2', 'week', array(1,2));
-        $this->assertCreatedAlert(3, 'Initial3', 'month', array(2));
+        $this->assertIsAlert(1, 'Initial1', 'day', array(1));
+        $this->assertIsAlert(2, 'Initial2', 'week', array(1,2));
+        $this->assertIsAlert(3, 'Initial3', 'month', array(2));
     }
 
     public function test_getAlert_ShouldReturnDeletedAlerts()
@@ -374,7 +373,7 @@ class ApiTest extends \DatabaseTestCase
         return $id;
     }
 
-    private function assertCreatedAlert($id, $name, $period = 'week', $idSites = null, $login = 'superUserLogin', $metric = 'nb_visits', $metricCondition = 'less_than', $metricMatched = 5, $report = 'MultiSites.getOne', $reportCondition = 'matches_exactly', $reportMatched = 'Piwik')
+    private function assertIsAlert($id, $name, $period = 'week', $idSites = null, $login = 'superUserLogin', $metric = 'nb_visits', $metricCondition = 'less_than', $metricMatched = 5, $report = 'MultiSites.getOne', $reportCondition = 'matches_exactly', $reportMatched = 'Piwik')
     {
         if (is_null($idSites)) {
             $idSites = array($this->idSite);
