@@ -30,9 +30,9 @@ class Notifier extends \Piwik\Plugin
 {
     protected function getTriggeredAlerts($period)
     {
-        $api = API::getInstance();
+        $model = new Model();
 
-        return $api->getTriggeredAlerts($period, Date::today(), false);
+        return $model->getTriggeredAlerts($period, Date::today(), false);
     }
 
 	/**

@@ -1,14 +1,14 @@
 {
     "CustomAlerts": {
         "Alerts": "Alerts",
-        "PluginDescription": "The Alerts plugin lets you define custom Alerts on almost every metric available in Piwik.",
+        "PluginDescription": "The Alerts plugin lets you define custom alerts on any report and metric available in Piwik.",
         "CreateNewAlert": "Create new Alert",
+        "ManageAlerts": "Manage Custom Alerts",
         "AlertConditions": "Alert Conditions",
         "AlertDoesNotExist": "Alert with ID %d does not exist!",
         "AccessException": "You are not the owner of the Alert with ID %d",
         "EditAlert": "Edit Alert",
         "SendEmail": "Email me when this alert is triggered",
-        "SendSms": "Text me when this alert is triggered",
         "InvalidPeriod": "Invalid period given!",
         "InvalidMetricValue": "Value must be numeric",
         "ReportOrMetricIsInvalid": "The report or metric given is invalid!",
@@ -33,7 +33,7 @@
         "MailGreeting": "Dear Piwik User",
         "MailText": "The custom alerts you requested from Piwik Alerts are listed in the table below. To see more details or to adjust your custom alert settings, please sign in to your Piwik Open Source Analytics account and access the Alerts page.",
         "MailEnd": "Happy analyzing!",
-        "NoAlertsDefined": "You haven't created any Alerts for this site yet, create one now!",
+        "NoAlertsDefined": "You haven't created any Alerts for this website yet, create one now!",
         "CancelAndReturnToAlerts": "Cancel and %sreturn to the list of alerts%s"
     }
 }

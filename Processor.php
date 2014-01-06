@@ -213,13 +213,13 @@ class Processor extends \Piwik\Plugin
 
     protected function triggerAlert($alert)
     {
-        $model = API::getInstance();
+        $model = new Model();
         $model->triggerAlert($alert['idalert'], $alert['idsite']);
     }
 
     private function getAllAlerts($period)
     {
-        $model = API::getInstance();
+        $model = new Model();
         return $model->getAllAlerts($period);
     }
 

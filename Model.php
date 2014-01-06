@@ -21,6 +21,7 @@ use Piwik\Period;
 use Piwik\Db;
 use Piwik\Plugins\SitesManager\API as SitesManagerApi;
 use Piwik\Plugins\API\API as MetadataApi;
+use Piwik\Site;
 
 /**
  *
@@ -42,9 +43,7 @@ class Model
 			`metric` VARCHAR(150) NOT NULL ,
 			`metric_condition` VARCHAR(50) NOT NULL ,
 			`metric_matched` FLOAT NOT NULL ,
-			`email_me` BOOLEAN NOT NULL ,
-			`additional_emails` TEXT DEFAULT '' ,
-			`phone_numbers` TEXT DEFAULT '' ,
+			`enable_mail` BOOLEAN NOT NULL ,
 			`deleted` BOOLEAN NOT NULL
 		) DEFAULT CHARSET=utf8 ;";
 
@@ -102,22 +101,26 @@ class Model
 
 		$alert = array_shift($alert);
 
+        $this->checkUserHasPermissionForAlert($idAlert, $alert);
+
         $alert['idSites'] = $this->fetchSiteIdsTheAlertWasDefinedOn($idAlert);
-        $alert['additional_emails'] = json_decode($alert['additional_emails']);
-        $alert['phone_numbers'] = json_decode($alert['phone_numbers']);
 
 		return $alert;
 	}
 
-    /**
-     * Returns the Alerts that are defined on the idSites given.
-     *
-     * @param array $idSites
-     * @return array
-     */
+	/**
+	 * Returns the Alerts that are defined on the idSites given.
+	 *
+	 * @param array $idSites
+	 */
 	public function getAlerts($idSites)
 	{
-        $idSites = array_map('intval', $idSites);
+        $idSites = Site::getIdSitesFromIdSitesString($idSites);
+        if (empty($idSites)) {
+            return array();
+        }
+
+        Piwik::checkUserHasViewAccess($idSites);
 
 		$alerts = Db::fetchAll(("SELECT * FROM "
 						. Common::prefixTable('alert')
@@ -127,16 +130,14 @@ class Model
 						. "AND deleted = 0"
 		));
 
-        foreach ($alerts as &$alert) {
-            $alert['additional_emails'] = json_decode($alert['additional_emails']);
-            $alert['phone_numbers'] = json_decode($alert['phone_numbers']);
-        }
-
 		return $alerts;
 	}
 
 	public function getTriggeredAlerts($period, $date, $login)
 	{
+		Piwik::checkUserIsSuperUserOrTheUser($login);
+
+		$this->checkPeriod($period);
 		$piwikDate = Date::factory($date);
 		$date      = Period::factory($period, $piwikDate);
 
@@ -145,8 +146,8 @@ class Model
 		$sql = "SELECT pa.idalert AS idalert,
 				pal.idsite AS idsite,
 				pal.ts_triggered AS ts_triggered,
-				pa.name    AS alert_name,
-				ps.name    AS site_name,
+				pa.name AS alert_name,
+				ps.name AS site_name,
 				login,
 				period,
 				report,
@@ -183,14 +184,21 @@ class Model
 
 	public function getAllAlerts($period)
 	{
+		Piwik::checkUserIsSuperUser();
+
 		$sql = "SELECT * FROM "
 				. Common::prefixTable('alert_site') . " alert, "
 				. Common::prefixTable('alert') . " alert_site "
 				. "WHERE alert.idalert = alert_site.idalert "
-				. "AND deleted = 0 "
-				. "AND period = ?";
+				. "AND deleted = 0 ";
 
-		return Db::fetchAll($sql, array($period));
+		if ($this->isValidPeriod($period)) {
+			$sql .= sprintf("AND period = '%s'", $period);
+		} else {
+			throw new Exception("Invalid period given.");
+		}
+
+		return Db::fetchAll($sql);
 	}
 
     /**
@@ -199,9 +207,7 @@ class Model
      * @param string $name
      * @param mixed $idSites
      * @param string $period
-     * @param bool $emailMe
-     * @param array $additionalEmails
-     * @param array $phoneNumbers
+     * @param bool $email
      * @param string $metric (nb_uniq_visits, sum_visit_length, ..)
      * @param string $metricCondition
      * @param float $metricValue
@@ -210,12 +216,16 @@ class Model
      * @param string $reportValue
      *
      * @throws \Exception
-     * @internal param bool $enableEmail
+     *
      * @return int ID of new Alert
      */
-	public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue)
+	public function addAlert($name, $idSites, $period, $email, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue)
 	{
+        $idSites = Site::getIdSitesFromIdSitesString($idSites);
+		Piwik::checkUserHasViewAccess($idSites);
+		
 		$name = $this->checkName($name);
+		$this->checkPeriod($period);
 
         $idAlert = $this->getNextAlertId();
         if (empty($idAlert)) {
@@ -227,9 +237,7 @@ class Model
 			'name'             => $name,
 			'period'           => $period,
 			'login'            => Piwik::getCurrentUserLogin(),
-			'email_me'         => (int) $emailMe,
-			'additional_emails' => json_encode($additionalEmails),
-			'phone_numbers'    => json_encode($phoneNumbers),
+			'enable_mail'      => (int) $email,
 			'metric'           => $metric,
 			'metric_condition' => $metricCondition,
 			'metric_matched'   => (float) $metricValue,
@@ -271,9 +279,7 @@ class Model
      * @param string $name Name of Alert
      * @param mixed $idSites Single int or array of ints of idSites.
      * @param string $period Period the alert is defined on.
-     * @param bool $emailMe
-     * @param array $additionalEmails
-     * @param array $phoneNumbers
+     * @param bool $email
      * @param string $metric (nb_uniq_visits, sum_visit_length, ..)
      * @param string $metricCondition
      * @param float $metricValue
@@ -282,23 +288,29 @@ class Model
      * @param string $reportValue
      *
      * @throws \Exception
-     * @internal param bool $enableEmail
+     *
      * @return boolean
      */
-	public function editAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue)
+	public function editAlert($idAlert, $name, $idSites, $period, $email, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue)
 	{
+        // make sure alert exists and user has permission to read
+        $this->getAlert($idAlert);
+
+        $idSites = Site::getIdSitesFromIdSitesString($idSites);
+		Piwik::checkUserHasViewAccess($idSites);
+
 		$name = $this->checkName($name);
+		$this->checkPeriod($period);
 
 		$alert = array(
 			'name'             => $name,
 			'period'           => $period,
-			'email_me'         => (int) $emailMe,
-            'additional_emails' => json_encode($additionalEmails),
-            'phone_numbers'    => json_encode($phoneNumbers),
+			'enable_mail'      => (boolean) $email,
 			'metric'           => $metric,
 			'metric_condition' => $metricCondition,
 			'metric_matched'   => (float) $metricValue,
-			'report'           => $report
+			'report'           => $report,
+			'deleted'          => 0,
 		);
 
 		if (!empty($reportCondition) && !empty($reportCondition)) {
@@ -342,6 +354,14 @@ class Model
      */
 	public function deleteAlert($idAlert)
 	{
+		$alert = $this->getAlert($idAlert);
+
+		if (empty($alert)) {
+			throw new Exception(Piwik::translate('CustomAlerts_AlertDoesNotExist', $idAlert));
+		}
+
+        $this->checkUserHasPermissionForAlert($idAlert, $alert);
+
         $db = Db::get();
 		$db->update(
 				Common::prefixTable('alert'),
@@ -352,6 +372,14 @@ class Model
 
     public function triggerAlert($idAlert, $idSite)
     {
+        $alert = $this->getAlert($idAlert);
+
+        if (empty($alert)) {
+            throw new Exception(Piwik::translate('CustomAlerts_AlertDoesNotExist', $idAlert));
+        }
+
+        $this->checkUserHasPermissionForAlert($idAlert, $alert);
+
         $db = Db::get();
         $db->insert(
             Common::prefixTable('alert_log'),
@@ -424,13 +452,40 @@ class Model
 
 	private function checkName($name)
 	{
+        if(empty($name)) {
+            throw new Exception(Piwik::translate("General_PleaseSpecifyValue", "name"));
+        }
 		return urldecode($name);
+	}
+
+	private function checkPeriod($period)
+	{
+		if (!$this->isValidPeriod($period)) {
+			throw new Exception(Piwik::translate('CustomAlerts_InvalidPeriod'));
+		}
+	}
+
+	private function isValidPeriod($period)
+	{
+		return in_array($period, array('day', 'week', 'month', 'year'));
 	}
 
     private function getNextAlertId()
     {
         $idAlert = Db::fetchOne("SELECT max(idalert) + 1 FROM " . Common::prefixTable('alert'));
         return $idAlert;
+    }
+
+    /**
+     * @param $idAlert
+     * @param $alert
+     * @throws \Exception
+     */
+    private function checkUserHasPermissionForAlert($idAlert, $alert)
+    {
+        if (!Piwik::isUserIsSuperUserOrTheUser($alert['login'])) {
+            throw new Exception(Piwik::translate('CustomAlerts_AccessException', $idAlert));
+        }
     }
 
 }

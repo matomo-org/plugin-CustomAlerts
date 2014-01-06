@@ -17,13 +17,13 @@
             </tr>
             <tr>
                 <td><label for="applyTo">{{ 'CustomAlerts_ApplyTo'|translate }}</label></td>
-                <td><strong>{{ siteName }}</strong>
+                <td><strong>{{ siteName|raw }}</strong>
                     {% if sitesList|length > 1 %}
                         and
                     <select id="idSites" class="multiselect inp" multiple="multiple" name="idSites[]">
                         {% for site in sitesList %}
                             {% if idSite != site.idsite %}
-                                <option value="{{ site.idsite }}">{{ site.name }}</option>
+                                <option value="{{ site.idsite }}">{{ site.name|escape("html_attr") }}</option>
                             {% endif %}
                         {% endfor %}{{ idSite }}
                     </select>
@@ -38,9 +38,10 @@
                         <option value="month">{{ 'CoreHome_PeriodMonth'|translate }}</option>
                     </select></td>
             </tr>
-
-            {{ postEvent('Template.reportParametersScheduledReports') }}
-
+            <tr>
+                <td></td>
+                <td><input class="inp" type="checkbox" name="email" id="email" value="yes" /> <label for="email">{{ 'CustomAlerts_SendEmail'|translate }}</label></td>
+            </tr>
         </table>
         <br />
 
@@ -104,20 +105,15 @@ function onSubmit(event)
     event.preventDefault();
     event.stopPropagation();
 
-    var mailSettings   = getReportParametersFunctions.email();
-    var mobileSettings = getReportParametersFunctions.mobile();
-
     var idReport = $('#report_idreport').val();
     var apiParameters = {};
     apiParameters.format  = 'json';
     apiParameters.name    = $('#alertName').val();
+    apiParameters.email   = $('#email:checked').val() ? 1 : 0;
     apiParameters.metric  = $('#metric').find('option:selected').val();
     apiParameters.metricCondition  = $('#metricCondition').find('option:selected').val();
-    apiParameters.metricValue = $('#metricValue').val();
-    apiParameters.emailMe = mailSettings.emailMe ? 1 : 0;
-    apiParameters.additionalEmails = mailSettings.additionalEmails;
-    apiParameters.phoneNumbers = mobileSettings.phoneNumbers;
-    apiParameters.report = $('#report').find('option:selected').val();
+    apiParameters.metricValue  = $('#metricValue').val();
+    apiParameters.report  = $('#report').find('option:selected').val();
     apiParameters.reportCondition  = $('#reportCondition').find('option:selected').val();
     apiParameters.reportValue  = $('#reportValue').val();
     apiParameters.token_auth   = piwik.token_auth;
