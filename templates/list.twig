@@ -7,7 +7,7 @@
                 <th>Alert Name</th>
                 <th>{{ 'General_Period'|translate }}</th>
                 <th>{{ 'General_Report'|translate }}</th>
-                <th colspan="2">Send Email?</th>
+                <th>{{ 'General_Action'|translate }}</th>
             </tr>
         </thead>
 
@@ -26,9 +26,7 @@
                     <td>{{ alert.name }}</td>
                     <td>{{ alert.period|capitalize }}</td>
                     <td>{{ alert.reportName }}</td>
-                    <td>{% if alert.enable_mail %}Yes{% else %}No{% endif %}</td>
-                    {% set idalert=alert.idalert %}
-                    <td><a href="{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert}) }}">Edit</a></td>
+                    <td><a href="{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert}) }}">{{ 'General_Edit'|translate }}</a></td>
                 </tr>
             {% endfor %}
         {% endif %}
