@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="alerts centerLargeDiv">
-<div class="entityEditContainer">
+<div class="entityAddContainer">
     <div class="entityCancel">
         {% set backlink = linkTo({'module': 'CustomAlerts', 'action': 'index'}) %}
         {{ 'CustomAlerts_CancelAndReturnToAlerts'|translate('<a class="entityCancelLink" href="' ~ backlink ~ '">', "</a>")|raw }}
@@ -18,11 +18,11 @@
         </thead>
 
         <tr>
-            <td><label for="alertName">{{ 'CustomAlerts_AlertName'|translate }}</label></td>
+            <td class="first"><label for="alertName">{{ 'CustomAlerts_AlertName'|translate }}</label></td>
             <td><input class="inp" type="text" name="alertName" id="alertName" value="{{ alert.name }}"/></td>
         </tr>
         <tr>
-            <td><label for="applyTo">{{ 'CustomAlerts_ApplyTo'|translate }}</label></td>
+            <td class="first"><label for="applyTo">{{ 'CustomAlerts_ApplyTo'|translate }}</label></td>
             <td>
                 <select id="idSites" class="multiselect inp" multiple="multiple" name="idSites[]">
                     {% for site in sitesList %}
@@ -31,11 +31,10 @@
                                 >{{ site.name }}</option>
                     {% endfor %}
                 </select>
-            </select>
             </td>
         </tr>
         <tr>
-            <td><label for="period">{{ 'General_Period'|translate }}</label></td>
+            <td class="first"><label for="period">{{ 'General_Period'|translate }}</label></td>
             <td><select class="period inp" name="period" id="period">
                 <option value="day" {% if alert.period == 'day' %}selected="selected"{% endif %}>{{ 'CoreHome_PeriodDay'|translate }}</option>
                 <option value="week" {% if alert.period == 'week' %}selected="selected"{% endif %}>{{ 'CoreHome_PeriodWeek'|translate }}</option>
