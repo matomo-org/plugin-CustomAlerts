@@ -100,7 +100,6 @@
         </table>
 
         <br />
-        <input type="hidden" value="{{ idSite }}" name="defaultSiteId" id="defaultSiteId" />
 	    {% set url="<a href='module=CustomAlerts'>" %}
         <input type="submit" value="{{ 'CustomAlerts_CreateNewAlert'|translate }}" name="submit" class="submit" />
     </form>
@@ -141,7 +140,7 @@ function onSubmit(event)
 
     $('#metricValue').css({backgroundColor: '#ffffff'});
 
-    var idSites  = [$('#defaultSiteId').val()];
+    var idSites  = [piwik.idSite];
 
     var selectedSites = $('#idSites').find('option:selected');
 

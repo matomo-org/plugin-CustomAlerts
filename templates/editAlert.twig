@@ -24,17 +24,13 @@
         <tr>
             <td><label for="applyTo">{{ 'CustomAlerts_ApplyTo'|translate }}</label></td>
             <td>
-                {{ siteName|raw }}
-                {% if sitesList|length > 1 %}
-                    and
-                    <select id="idSites" class="multiselect inp" multiple="multiple" name="idSites[]">
-                        {% for site in sitesList %}
-                            {% if idSite != site.idsite %}
-                                <option value="{{ site.idsite }}">{{ site.name }}</option>
-                            {% endif %}
-                        {% endfor %}{{ idSite }}
-                    </select>
-                {% endif %}
+                <select id="idSites" class="multiselect inp" multiple="multiple" name="idSites[]">
+                    {% for site in sitesList %}
+                        <option value="{{ site.idsite }}"
+                                {% if site.idsite in sitesDefined %}selected="selected"{% endif %}
+                                >{{ site.name }}</option>
+                    {% endfor %}
+                </select>
             </select>
             </td>
         </tr>
@@ -149,7 +145,6 @@ function onSubmit(event)
     apiParameters.reportCondition  = $('#reportCondition').find('option:selected').val();
     apiParameters.reportValue  = $('#reportValue').val();
     apiParameters.token_auth   = piwik.token_auth;
-    var idSites  = [];
 
     if (!$.isNumeric(apiParameters.metricValue)) {
         var UI = require('piwik/UI');
@@ -163,6 +158,7 @@ function onSubmit(event)
 
     var selectedSites = $('#idSites').find('option:selected');
 
+    var idSites = [];
     for (var index = 0; index < selectedSites.length; index++) {
         idSites.push($(selectedSites[index]).val());
     }
