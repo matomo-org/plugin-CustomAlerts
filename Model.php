@@ -21,6 +21,7 @@ use Piwik\Period;
 use Piwik\Db;
 use Piwik\Plugins\SitesManager\API as SitesManagerApi;
 use Piwik\Plugins\API\API as MetadataApi;
+use Piwik\Site;
 
 /**
  *
@@ -114,13 +115,12 @@ class Model
 	 */
 	public function getAlerts($idSites)
 	{
+        $idSites = Site::getIdSitesFromIdSitesString($idSites);
         if (empty($idSites)) {
             return array();
         }
 
         Piwik::checkUserHasViewAccess($idSites);
-
-        $idSites = array_map('intval', $idSites);
 
 		$alerts = Db::fetchAll(("SELECT * FROM "
 						. Common::prefixTable('alert')
@@ -146,8 +146,8 @@ class Model
 		$sql = "SELECT pa.idalert AS idalert,
 				pal.idsite AS idsite,
 				pal.ts_triggered AS ts_triggered,
-				pa.name    AS alert_name,
-				ps.name    AS site_name,
+				pa.name AS alert_name,
+				ps.name AS site_name,
 				login,
 				period,
 				report,
@@ -218,10 +218,7 @@ class Model
      */
 	public function addAlert($name, $idSites, $period, $email, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue)
 	{
-		if (!is_array($idSites)) {
-			$idSites = array($idSites);
-		}
-
+        $idSites = Site::getIdSitesFromIdSitesString($idSites);
 		Piwik::checkUserHasViewAccess($idSites);
 		
 		$name = $this->checkName($name);
@@ -296,10 +293,7 @@ class Model
         // make sure alert exists and user has permission to read
         $this->getAlert($idAlert);
 
-		if (!is_array($idSites)) {
-			$idSites = array($idSites);
-		}
-
+        $idSites = Site::getIdSitesFromIdSitesString($idSites);
 		Piwik::checkUserHasViewAccess($idSites);
 
 		$name = $this->checkName($name);
@@ -455,6 +449,9 @@ class Model
 
 	private function checkName($name)
 	{
+        if(empty($name)) {
+            throw new Exception(Piwik::translate("General_PleaseSpecifyValue", "name"));
+        }
 		return urldecode($name);
 	}
 

@@ -1,7 +1,7 @@
 {
     "CustomAlerts": {
         "Alerts": "Alerts",
-        "PluginDescription": "The Alerts plugin lets you define custom Alerts on almost every metric available in Piwik.",
+        "PluginDescription": "The Alerts plugin lets you define custom alerts on any report and metric available in Piwik.",
         "CreateNewAlert": "Create new Alert",
         "ManageAlerts": "Manage Custom Alerts",
         "AlertConditions": "Alert Conditions",

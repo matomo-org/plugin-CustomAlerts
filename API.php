@@ -63,7 +63,7 @@ class API extends \Piwik\Plugin\API
 	 * @param string $reportValue
 	 * @return int ID of new Alert
 	 */
-	public function addAlert($name, $idSites, $period, $email, $metric, $metricCondition, $metricValue, $report, $reportCondition = '', $reportValue = '')
+	public function addAlert($name, $idSites, $period, $email, $metric, $metricCondition, $metricValue, $report, $reportCondition = false, $reportValue = false)
 	{
         return $this->getModel()->addAlert($name, $idSites, $period, $email, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue);
 	}
@@ -85,7 +85,7 @@ class API extends \Piwik\Plugin\API
      *
      * @return boolean
      */
-	public function editAlert($idAlert, $name, $idSites, $period, $email, $metric, $metricCondition, $metricValue, $report, $reportCondition = '', $reportValue = '')
+	public function editAlert($idAlert, $name, $idSites, $period, $email, $metric, $metricCondition, $metricValue, $report, $reportCondition = false, $reportValue = false)
 	{
         return $this->getModel()->editAlert($idAlert, $name, $idSites, $period, $email, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue);
 	}
