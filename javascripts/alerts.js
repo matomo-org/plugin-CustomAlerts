@@ -173,6 +173,19 @@
         }
     }
 
+    function deleteAlert(alertId)
+    {
+        var ajaxRequest = new ajaxHelper();
+        ajaxRequest.addParams({
+            module: 'API',
+            method: 'CustomAlerts.deleteAlert',
+            idAlert: alertId,
+            format: 'JSON'
+        }, 'GET');
+        ajaxRequest.redirectOnSuccess();
+        ajaxRequest.send(false);
+    }
+
     $(document).ready(function() {
 
         initSitesDropdown();
@@ -190,6 +203,10 @@
 
         $('.alerts #idSites').change(function() {
             updateMetrics();
+        });
+
+        $('.deleteAlert[id]').click(function() {
+            deleteAlert($(this).attr('id'));
         });
 
         if ($('.alerts .period').length) {

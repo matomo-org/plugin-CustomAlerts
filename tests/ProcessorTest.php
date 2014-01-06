@@ -283,6 +283,28 @@ class ProcessorTest extends \PHPUnit_Framework_TestCase
         $processorMock->processAlert($alert);
     }
 
+
+    public function test_processAlert_shouldNotRun_IfNoWebsitesDefined()
+    {
+        $alert = array(
+            'idalert' => 1,
+            'period'  => 'week',
+            'idSites' => array(),
+            'metric_condition' => 'increase_more_than',
+            'metric_matched'   => '4',
+        );
+
+        $methods = array('getValueForAlertInPast', 'triggerAlert');
+        $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomProcessor', $methods);
+        $processorMock->expects($this->never())
+                      ->method('getValueForAlertInPast');
+
+        $processorMock->expects($this->never())
+                      ->method('triggerAlert');
+
+        $processorMock->processAlert($alert);
+    }
+
     public function test_processAlert_shouldOnlyBeTriggeredIfAlertMatches()
     {
         $alert = array(
