@@ -8,7 +8,6 @@
         "AlertDoesNotExist": "Alert with ID %d does not exist!",
         "AccessException": "You are not the owner of the Alert with ID %d",
         "EditAlert": "Edit Alert",
-        "SendEmail": "Email me when this alert is triggered",
         "InvalidPeriod": "Invalid period given!",
         "InvalidMetricValue": "Value must be numeric",
         "ReportOrMetricIsInvalid": "The report or metric given is invalid!",

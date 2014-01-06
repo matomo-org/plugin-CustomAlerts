@@ -23,7 +23,7 @@
                     <select id="idSites" class="multiselect inp" multiple="multiple" name="idSites[]">
                         {% for site in sitesList %}
                             {% if idSite != site.idsite %}
-                                <option value="{{ site.idsite }}">{{ site.name|escape("html_attr") }}</option>
+                                <option value="{{ site.idsite }}">{{ site.name }}</option>
                             {% endif %}
                         {% endfor %}{{ idSite }}
                     </select>

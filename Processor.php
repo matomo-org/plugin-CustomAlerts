@@ -64,37 +64,37 @@ class Processor extends \Piwik\Plugin
 
     protected function processAlert($alert)
     {
-        $metricOne = $this->getValueForAlertInPast($alert, 1);
+        $valueNew = $this->getValueForAlertInPast($alert, 1);
 
         // Do we have data? stop otherwise.
-        if (is_null($metricOne)) {
+        if (is_null($valueNew)) {
             return;
         }
 
-        $metricTwo = $this->getValueForAlertInPast($alert, 2);
+        $valueOld = $this->getValueForAlertInPast($alert, 2);
 
-        if ($this->shouldBeTriggered($alert, $metricOne, $metricTwo)) {
-            $this->triggerAlert($alert);
+        if ($this->shouldBeTriggered($alert, $valueNew, $valueOld)) {
+            $this->triggerAlert($alert, $valueNew, $valueOld);
         }
     }
 
-    protected function shouldBeTriggered($alert, $metricOne, $metricTwo)
+    protected function shouldBeTriggered($alert, $valueOld, $valueNew)
     {
-        if (!empty($metricTwo)) {
-            $percentage = ((($metricOne / $metricTwo) * 100) - 100);
+        if (!empty($valueNew)) {
+            $percentage = ((($valueOld / $valueNew) * 100) - 100);
         } else {
-            $percentage = $metricOne;
+            $percentage = $valueOld;
         }
 
         switch ($alert['metric_condition']) {
             case 'greater_than':
-                return ($metricOne > floatval($alert['metric_matched']));
+                return ($valueOld > floatval($alert['metric_matched']));
             case 'less_than':
-                return ($metricOne < floatval($alert['metric_matched']));
+                return ($valueOld < floatval($alert['metric_matched']));
             case 'decrease_more_than':
-                return (($metricTwo - $metricOne) > $alert['metric_matched']);
+                return (($valueNew - $valueOld) > $alert['metric_matched']);
             case 'increase_more_than':
-                return (($metricOne - $metricTwo) > $alert['metric_matched']);
+                return (($valueOld - $valueNew) > $alert['metric_matched']);
             case 'percentage_decrease_more_than':
                 return ((-1 * $alert['metric_matched']) > $percentage && $percentage < 0);
             case 'percentage_increase_more_than':
@@ -211,16 +211,16 @@ class Processor extends \Piwik\Plugin
         return $this->getMetricFromTable($table, $alert['metric'], $alert['report_condition'], $alert['report_matched']);
     }
 
-    protected function triggerAlert($alert)
+    protected function triggerAlert($alert, $valueOld, $valueNew)
     {
-        $model = new Model();
-        $model->triggerAlert($alert['idalert'], $alert['idsite']);
+        $api = API::getInstance();
+        $api->triggerAlert($alert['idalert'], $alert['idsite'], $valueOld, $valueNew);
     }
 
     private function getAllAlerts($period)
     {
-        $model = new Model();
-        return $model->getAllAlerts($period);
+        $api = API::getInstance();
+        return $api->getAllAlerts($period);
     }
 
 }
