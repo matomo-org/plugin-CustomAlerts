@@ -78,23 +78,23 @@ class Processor extends \Piwik\Plugin
         }
     }
 
-    protected function shouldBeTriggered($alert, $valueOld, $valueNew)
+    protected function shouldBeTriggered($alert, $valueNew, $valueOld)
     {
-        if (!empty($valueNew)) {
-            $percentage = ((($valueOld / $valueNew) * 100) - 100);
+        if (!empty($valueOld)) {
+            $percentage = ((($valueNew / $valueOld) * 100) - 100);
         } else {
-            $percentage = $valueOld;
+            $percentage = $valueNew;
         }
 
         switch ($alert['metric_condition']) {
             case 'greater_than':
-                return ($valueOld > floatval($alert['metric_matched']));
+                return ($valueNew > floatval($alert['metric_matched']));
             case 'less_than':
-                return ($valueOld < floatval($alert['metric_matched']));
+                return ($valueNew < floatval($alert['metric_matched']));
             case 'decrease_more_than':
-                return (($valueNew - $valueOld) > $alert['metric_matched']);
-            case 'increase_more_than':
                 return (($valueOld - $valueNew) > $alert['metric_matched']);
+            case 'increase_more_than':
+                return (($valueNew - $valueOld) > $alert['metric_matched']);
             case 'percentage_decrease_more_than':
                 return ((-1 * $alert['metric_matched']) > $percentage && $percentage < 0);
             case 'percentage_increase_more_than':
