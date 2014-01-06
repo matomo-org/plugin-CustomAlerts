@@ -153,7 +153,9 @@ class Model
 				report_matched,
 				metric,
 				metric_condition,
-				metric_matched
+				metric_matched,
+				value_new,
+				value_old
 			FROM   ". Common::prefixTable('alert_log') ." pal
 				JOIN ". Common::prefixTable('alert') ." pa
 				ON pal.idalert = pa.idalert
@@ -342,7 +344,7 @@ class Model
 		);
 	}
 
-    public function triggerAlert($idAlert, $idSite)
+    public function triggerAlert($idAlert, $idSite, $valueNew, $valueOld)
     {
         $db = Db::get();
         $db->insert(
@@ -350,7 +352,9 @@ class Model
             array(
                 'idalert' => intval($idAlert),
                 'idsite'  => intval($idSite),
-                'ts_triggered' => Date::now()->getDatetime()
+                'ts_triggered' => Date::now()->getDatetime(),
+                'value_new' => $valueNew,
+                'value_old' => $valueOld,
             )
         );
     }

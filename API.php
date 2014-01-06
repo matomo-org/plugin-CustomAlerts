@@ -179,8 +179,11 @@ class API extends \Piwik\Plugin\API
      *
      * @param int $idAlert
      * @param int $idSite
+     * @param string|int $valueNew
+     * @param string|int $valueOld
+     * @throws \Exception
      */
-    public function triggerAlert($idAlert, $idSite)
+    public function triggerAlert($idAlert, $idSite, $valueNew, $valueOld)
     {
         $alert = $this->getAlert($idAlert);
 
@@ -190,7 +193,7 @@ class API extends \Piwik\Plugin\API
 
         $this->checkUserHasPermissionForAlert($idAlert, $alert);
 
-        $this->getModel()->triggerAlert($idAlert, $idSite);
+        $this->getModel()->triggerAlert($idAlert, $idSite, $valueNew, $valueOld);
     }
 
     /**

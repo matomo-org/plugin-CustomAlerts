@@ -211,10 +211,10 @@ class Processor extends \Piwik\Plugin
         return $this->getMetricFromTable($table, $alert['metric'], $alert['report_condition'], $alert['report_matched']);
     }
 
-    protected function triggerAlert($alert, $valueOld, $valueNew)
+    protected function triggerAlert($alert, $valueNew, $valueOld)
     {
         $api = API::getInstance();
-        $api->triggerAlert($alert['idalert'], $alert['idsite'], $valueOld, $valueNew);
+        $api->triggerAlert($alert['idalert'], $alert['idsite'], $valueNew, $valueOld);
     }
 
     private function getAllAlerts($period)

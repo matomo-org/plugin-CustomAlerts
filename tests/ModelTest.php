@@ -78,7 +78,7 @@ class ModelTest extends \DatabaseTestCase
         $id = $this->createAlert('MyCustomAlert', 'week');
         $this->assertGreaterThan(3, $id);
 
-        $this->assertCreatedAlert($id, 'MyCustomAlert', 'week');
+        $this->assertIsAlert($id, 'MyCustomAlert', 'week');
     }
 
     public function test_addAlert_ShouldIncreaseId()
@@ -93,14 +93,14 @@ class ModelTest extends \DatabaseTestCase
         $id = $this->editAlert(2, 'MyCustomAlert', 'day');
         $this->assertEquals(2, $id);
 
-        $this->assertCreatedAlert(2, 'MyCustomAlert', 'day', array(1));
+        $this->assertIsAlert(2, 'MyCustomAlert', 'day', array(1));
     }
 
     public function test_getAlert_ShouldLoadAlertAndRelatedWebsiteIds_IfExists()
     {
-        $this->assertCreatedAlert(1, 'Initial1', 'day', array(1));
-        $this->assertCreatedAlert(2, 'Initial2', 'week', array(1,2));
-        $this->assertCreatedAlert(3, 'Initial3', 'month', array(2));
+        $this->assertIsAlert(1, 'Initial1', 'day', array(1));
+        $this->assertIsAlert(2, 'Initial2', 'week', array(1,2));
+        $this->assertIsAlert(3, 'Initial3', 'month', array(2));
     }
 
     public function test_getAlert_ShouldReturnDeletedAlerts()
@@ -145,7 +145,7 @@ class ModelTest extends \DatabaseTestCase
 
     public function test_triggerAlert_getTriggeredAlerts_ShouldMarkAlertAsTriggeredForGivenWebsite()
     {
-        $this->model->triggerAlert(2, 1);
+        $this->model->triggerAlert(2, 1, 99, 48);
         $triggeredAlerts = $this->model->getTriggeredAlerts('week', 'today', 'superUserLogin');
 
         $this->assertCount(1, $triggeredAlerts);
@@ -165,35 +165,33 @@ class ModelTest extends \DatabaseTestCase
             'report_matched' => 'Piwik',
             'metric' => 'nb_visits',
             'metric_condition' => 'less_than',
-            'metric_matched' => '5'
+            'metric_matched' => '5',
+            'value_new' => 99,
+            'value_old' => 48
         );
 
         $this->assertEquals(array($expected), $triggeredAlerts);
     }
 
-    public function test_triggerAlert_getTriggeredAlerts_ShouldReturnAnAlertOnlyIfPeriodMatches()
+    public function test_getTriggeredAlerts_ShouldReturnAnAlertOnlyIfPeriodMatches()
     {
-        $this->model->triggerAlert(2, 1);
+        $this->model->triggerAlert(2, 1, 99, 48);
         $triggeredAlerts = $this->model->getTriggeredAlerts('day', 'today', 'superUserLogin');
 
         $this->assertEquals(array(), $triggeredAlerts);
     }
 
-    public function test_triggerAlert_getTriggeredAlerts_ShouldReturnAnAlertOnlyIfDateMatches()
+    public function test_getTriggeredAlerts_ShouldReturnAnAlertOnlyIfDateMatches()
     {
-        $this->setSuperUser();
-
-        $this->model->triggerAlert(1, 1);
+        $this->model->triggerAlert(1, 1, 99, 48);
         $triggeredAlerts = $this->model->getTriggeredAlerts('day', 'yesterday', 'superUserLogin');
 
         $this->assertEquals(array(), $triggeredAlerts);
     }
 
-    public function test_getTriggeredAlerts_ShouldReturnAlertsForSuperUserByDefault()
+    public function test_getTriggeredAlerts_ShouldReturnAllAlerts_IfLoginIsFalse()
     {
-        $this->setSuperUser();
-
-        $this->model->triggerAlert(1, 1);
+        $this->model->triggerAlert(1, 1, 99, 48);
         $triggeredAlerts = $this->model->getTriggeredAlerts('day', 'today', false);
 
         $this->assertCount(1, $triggeredAlerts);
@@ -261,7 +259,7 @@ class ModelTest extends \DatabaseTestCase
         return $id;
     }
 
-    private function assertCreatedAlert($id, $name, $period = 'week', $idSites = null, $login = 'superUserLogin', $metric = 'nb_visits', $metricCondition = 'less_than', $metricMatched = 5, $report = 'MultiSites.getOne', $reportCondition = 'matches_exactly', $reportMatched = 'Piwik')
+    private function assertIsAlert($id, $name, $period = 'week', $idSites = null, $login = 'superUserLogin', $metric = 'nb_visits', $metricCondition = 'less_than', $metricMatched = 5, $report = 'MultiSites.getOne', $reportCondition = 'matches_exactly', $reportMatched = 'Piwik')
     {
         if (is_null($idSites)) {
             $idSites = array($this->idSite);

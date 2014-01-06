@@ -251,7 +251,7 @@ class ApiTest extends \DatabaseTestCase
      */
     public function test_triggerAlert_shouldFail_IfAlertDoesNotExist()
     {
-        $this->api->triggerAlert(99, 1);
+        $this->api->triggerAlert(99, 1, 94, 48);
     }
 
     /**
@@ -260,14 +260,14 @@ class ApiTest extends \DatabaseTestCase
      */
     public function test_triggerAlert_shouldFail_IfNotEnoughPermissions()
     {
-        $this->api->triggerAlert(2, 1);
+        $this->api->triggerAlert(2, 1, 94, 48);
     }
 
     public function test_triggerAlert_getTriggeredAlerts_ShouldMarkAlertAsTriggeredForGivenWebsite()
     {
         $this->setSuperUser();
 
-        $this->api->triggerAlert(2, 1);
+        $this->api->triggerAlert(2, 1, 94, 48);
         $triggeredAlerts = $this->api->getTriggeredAlerts('week', 'today', 'superUserLogin');
 
         $this->assertCount(1, $triggeredAlerts);
@@ -287,7 +287,9 @@ class ApiTest extends \DatabaseTestCase
             'report_matched' => 'Piwik',
             'metric' => 'nb_visits',
             'metric_condition' => 'less_than',
-            'metric_matched' => '5'
+            'metric_matched' => '5',
+            'value_new' => 94,
+            'value_old' => 48
         );
 
         $this->assertEquals(array($expected), $triggeredAlerts);
@@ -310,7 +312,7 @@ class ApiTest extends \DatabaseTestCase
     {
         $this->setSuperUser();
 
-        $this->api->triggerAlert(2, 1);
+        $this->api->triggerAlert(2, 1, 99, 48);
         $triggeredAlerts = $this->api->getTriggeredAlerts('InvaLiDPeriOd', 'today', 'superUserLogin');
 
         $this->assertEquals(array(), $triggeredAlerts);
@@ -320,7 +322,7 @@ class ApiTest extends \DatabaseTestCase
     {
         $this->setSuperUser();
 
-        $this->api->triggerAlert(2, 1);
+        $this->api->triggerAlert(2, 1, 99, 48);
         $triggeredAlerts = $this->api->getTriggeredAlerts('day', 'today', 'superUserLogin');
 
         $this->assertEquals(array(), $triggeredAlerts);
@@ -330,7 +332,7 @@ class ApiTest extends \DatabaseTestCase
     {
         $this->setSuperUser();
 
-        $this->api->triggerAlert(1, 1);
+        $this->api->triggerAlert(1, 1, 99, 48);
         $triggeredAlerts = $this->api->getTriggeredAlerts('day', 'yesterday', 'superUserLogin');
 
         $this->assertEquals(array(), $triggeredAlerts);
@@ -340,40 +342,10 @@ class ApiTest extends \DatabaseTestCase
     {
         $this->setSuperUser();
 
-        $this->api->triggerAlert(1, 1);
+        $this->api->triggerAlert(1, 1, 99, 48);
         $triggeredAlerts = $this->api->getTriggeredAlerts('day', 'today', false);
 
         $this->assertCount(1, $triggeredAlerts);
-    }
-
-    private function assertContainTables($expectedTables)
-    {
-        $tableNames = $this->getCurrentAvailableTableNames();
-
-        foreach ($expectedTables as $expectedTable) {
-            $this->assertContains(Common::prefixTable($expectedTable), $tableNames);
-        }
-    }
-
-    private function assertNotContainTables($expectedTables)
-    {
-        $tableNames = $this->getCurrentAvailableTableNames();
-
-        foreach ($expectedTables as $expectedTable) {
-            $this->assertNotContains(Common::prefixTable($expectedTable), $tableNames);
-        }
-    }
-
-    private function getCurrentAvailableTableNames()
-    {
-        $tables = Db::fetchAll('show tables');
-
-        $tableNames = array();
-        foreach ($tables as $table) {
-            $tableNames[] = array_shift($table);
-        }
-
-        return $tableNames;
     }
 
     private function createAlert($name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites.getOne')
