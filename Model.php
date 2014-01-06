@@ -433,7 +433,7 @@ class Model
         foreach ($alerts as &$alert) {
             $alert['additional_emails'] = json_decode($alert['additional_emails']);
             $alert['phone_numbers']     = json_decode($alert['phone_numbers']);
-            $alert['idSites']           = $this->fetchSiteIdsTheAlertWasDefinedOn($alert['id']);
+            $alert['idSites']           = $this->fetchSiteIdsTheAlertWasDefinedOn($alert['idalert']);
         }
 
         return $alerts;
