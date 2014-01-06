@@ -3,7 +3,6 @@
 	<table class="dataTable entityTable">
         <thead>
             <tr>
-                <th class="first">{{ 'General_Id'|translate }}</th>
                 <th>{{ 'General_Name'|translate }}</th>
                 <th>{{ 'General_Period'|translate }}</th>
                 <th>{{ 'General_Report'|translate }}</th>
@@ -14,7 +13,7 @@
 
         {% if not alerts %}
         <tr>
-            <td colspan="6">
+            <td colspan="5">
                 <br/>
                 {{ 'CustomAlerts_NoAlertsDefined'|translate }}
                 <br/><br/>
@@ -23,7 +22,6 @@
         {% else %}
             {% for alert in alerts %}
                 <tr>
-                    <td>{{ alert.idalert }}</td>
                     <td>{{ alert.name }}</td>
                     <td>{{ alert.period|capitalize }}</td>
                     <td>{{ alert.reportName }}</td>
