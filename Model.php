@@ -154,7 +154,10 @@ class Model
 				report_matched,
 				metric,
 				metric_condition,
-				metric_matched
+				metric_matched,
+				additional_emails,
+				phone_numbers,
+				email_me
 			FROM   ". Common::prefixTable('alert_log') ." pal
 				JOIN ". Common::prefixTable('alert') ." pa
 				ON pal.idalert = pa.idalert

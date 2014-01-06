@@ -1,22 +1,24 @@
 <table>
-{% for alert in triggeredAlerts %}
-    {% if loop.first %}
-        <thead>
-        <tr bgcolor='#c0c0c0'>
-            {% for key,value in alert %}
-            <td>{{ key }}</td>
-            {% endfor %}
-        </tr>
-        </thead>
-        <tbody>
-    {% endif %}
-    <tr>
-        {% for key,row in alert %}
-        <td>{{ row }}</td>
-        {% endfor %}
+    <thead>
+    <tr bgcolor='#c0c0c0'>
+        <td>Name</td>
+        <td>Website</td>
+        <td>Period</td>
+        <td>Report</td>
+        <td>Condition</td>
     </tr>
-    {% if loop.first %}
-        </tbody>
-    {% endif %}
+    </thead>
+    <tbody>
+{% for alert in triggeredAlerts %}
+
+    <tr>
+        <td>{{ alert.alert_name }}</td>
+        <td>{{ alert.site_name }}</td>
+        <td>{{ alert.period }}</td>
+        <td>{{ alert.report }}</td>
+        <td>{{ alert.metric }} {{ alert.metric_condition }} {{ alert.metric_matched }}</td>
+    </tr>
+
 {% endfor %}
+    </tbody>
 </table>

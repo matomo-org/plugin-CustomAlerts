@@ -1,0 +1,7 @@
+{%- block content -%}
+    The following alerts were triggered:
+
+    {%- for alert in triggeredAlerts %} {{ alert.alert_name }} (website {{ alert.site_name }})
+    {%- if not loop.last %},{% endif %}
+    {%- endfor -%}
+{%- endblock -%}

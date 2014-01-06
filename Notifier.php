@@ -17,6 +17,7 @@ use Piwik\Mail;
 use Piwik\Piwik;
 use Piwik\DataTable;
 use Piwik\Date;
+use Piwik\Plugins\MobileMessaging\API as APIMobileMessaging;
 use Piwik\View;
 use Piwik\Db;
 use Piwik\Plugins\UsersManager\API as UsersManagerApi;
@@ -44,20 +45,36 @@ class Notifier extends \Piwik\Plugin
 	{
 		$triggeredAlerts = $this->getTriggeredAlerts($period);
 
-        $alertsPerLogin = array();
+        $alertsPerEmail = array();
+        $alertsPerSms   = array();
 		foreach($triggeredAlerts as $triggeredAlert) {
-            $login = $triggeredAlert['login'];
+            $emails = $this->getEmailRecipientsForAlert($triggeredAlert);
 
-            if (!array_key_exists($login, $alertsPerLogin)) {
-                $alertsPerLogin[$login] = array();
+            foreach ($emails as $mail) {
+                if (!array_key_exists($mail, $alertsPerEmail)) {
+                    $alertsPerEmail[$mail] = array();
+                }
+
+                $alertsPerEmail[$mail][] = $triggeredAlert;
             }
 
-            $alertsPerLogin[$login][] = $triggeredAlert;
+            $phoneNumbers = $triggeredAlert['phone_numbers'];
+            foreach ($phoneNumbers as $phoneNumber) {
+                if (!array_key_exists($phoneNumber, $alertsPerSms)) {
+                    $alertsPerSms[$phoneNumber] = array();
+                }
+
+                $alertsPerSms[$phoneNumber][] = $triggeredAlert;
+            }
+
 		}
 
-        foreach ($alertsPerLogin as $login => $alerts) {
-            $recipient = $this->getEmailAddressFromLogin($login);
-            $this->sendAlertsPerEmailToRecipient($alerts, new Mail(), $recipient);
+        foreach ($alertsPerEmail as $email => $alerts) {
+            $this->sendAlertsPerEmailToRecipient($alerts, new Mail(), $email);
+        }
+
+        foreach ($alertsPerSms as $phoneNumber => $alerts) {
+            $this->sendAlertsPerSmsToRecipient($alerts, APIMobileMessaging::getInstance(), $phoneNumber);
         }
 	}
 
@@ -97,18 +114,19 @@ class Notifier extends \Piwik\Plugin
 
 				return $view->render();
 
-			case 'tsv':
-				$tsv = '';
-				$showedTitle = false;
-				foreach ($triggeredAlerts as $alert) {
-					if (!$showedTitle) {
-						$showedTitle = true;
-						$tsv .= implode("\t", array_keys($alert)) . "\n";
-					}
-					$tsv .= implode("\t", array_values($alert)) . "\n";
-				}
+            case 'sms':
 
-				return $tsv;
+                $view = new View('@CustomAlerts/smsTriggeredAlerts');
+                $view->triggeredAlerts = $triggeredAlerts;
+
+                return $view->render();
+
+			case 'text':
+
+                $view = new View('@CustomAlerts/textTriggeredAlerts');
+                $view->triggeredAlerts = $triggeredAlerts;
+
+                return $view->render();
 		}
 
         throw new \Exception('Unsupported format');
@@ -116,16 +134,37 @@ class Notifier extends \Piwik\Plugin
 
     /**
      * @param array  $alerts
-     * @param Mail $mail
-     * @param string $recipient Email address
+     * @param APIMobileMessaging $mobileMessagingAPI
+     * @param string $phoneNumber
      */
-    protected function sendAlertsPerEmailToRecipient($alerts, Mail $mail, $recipient)
+    protected function sendAlertsPerSmsToRecipient($alerts, $mobileMessagingAPI, $phoneNumber)
     {
-        if (empty($recipient) || empty($alerts)) {
+        if (empty($phoneNumber) || empty($alerts)) {
             return;
         }
 
-        $mail->addTo($recipient);
+        $content = $this->formatAlerts($alerts, 'sms');
+        $subject = 'Alert';
+
+        $mobileMessagingAPI->sendSMS(
+            $content,
+            $phoneNumber,
+            $subject
+        );
+    }
+
+    /**
+     * @param array  $alerts
+     * @param Mail $mail
+     * @param string[] $recipients Email addresses
+     */
+    protected function sendAlertsPerEmailToRecipient($alerts, Mail $mail, $recipients)
+    {
+        if (empty($recipients) || empty($alerts)) {
+            return;
+        }
+
+        $mail->addTo($recipients);
         $mail->setSubject('Piwik alert [' . Date::today() . ']');
 
         $viewHtml = new View('@CustomAlerts/alertHtmlMail');
@@ -133,11 +172,25 @@ class Notifier extends \Piwik\Plugin
         $mail->setBodyHtml($viewHtml->render());
 
         $viewText = new View('@CustomAlerts/alertTextMail');
-        $viewText->assign('triggeredAlerts', $this->formatAlerts($alerts, 'tsv'));
+        $viewText->assign('triggeredAlerts', $this->formatAlerts($alerts, 'text'));
         $viewText->setContentType('text/plain');
         $mail->setBodyText($viewText->render());
 
         $mail->send();
+    }
+
+    /**
+     * @param $triggeredAlert
+     * @return array
+     */
+    private function getEmailRecipientsForAlert($triggeredAlert)
+    {
+        $recipients = $triggeredAlert['additional_emails'];
+        if ($triggeredAlert['email_me']) {
+            $recipients[] = $this->getEmailAddressFromLogin($triggeredAlert['login']);
+            return $recipients;
+        }
+        return $recipients;
     }
 
 }

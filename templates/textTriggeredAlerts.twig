@@ -1,0 +1,4 @@
+Name    Website    Period    Report    Condition
+{% for alert in triggeredAlerts %}
+{{ alert.alert_name }}    {{ alert.site_name }}    {{ alert.period }}    {{ alert.report }}    {{ alert.metric }} {{ alert.metric_condition }} {{ alert.metric_matched }}
+{% endfor %}

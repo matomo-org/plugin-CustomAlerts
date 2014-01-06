@@ -66,18 +66,31 @@ class NotifierTest extends \DatabaseTestCase
         $this->notifier = new CustomNotifier();
     }
 
-    public function test_formatAlerts_asTsv()
+    public function test_formatAlerts_asText()
     {
         $alerts = $this->getTriggeredAlerts();
 
         $expected = <<<FORMATTED
-idalert	idsite	alert_name	period	site_name	login	report	report_condition	report_matched	metric	metric_condition	metric_matched
-1	1	MyName1	week	Piwik test	superUserLogin	MultiSites.getOne	matches_exactly	Piwik	nb_visits	less_than	5
-2	1	MyName2	week	Piwik test	superUserLogin	MultiSites.getOne	matches_exactly	Piwik	nb_visits	less_than	5
+Name    Website    Period    Report    Condition
+MyName1    Piwik test    week    MultiSites.getOne    nb_visits less_than 5
+MyName2    Piwik test    week    MultiSites.getOne    nb_visits less_than 5
 
 FORMATTED;
 
-        $rendered = $this->notifier->formatAlerts($alerts, 'tsv');
+        $rendered = $this->notifier->formatAlerts($alerts, 'text');
+
+        $this->assertEquals($expected, $rendered);
+    }
+
+    public function test_formatAlerts_asSms()
+    {
+        $alerts = $this->getTriggeredAlerts();
+
+        $expected = <<<FORMATTED
+The following alerts were triggered: MyName1 (website Piwik test), MyName2 (website Piwik test)
+FORMATTED;
+
+        $rendered = $this->notifier->formatAlerts($alerts, 'sms');
 
         $this->assertEquals($expected, $rendered);
     }
@@ -100,53 +113,36 @@ FORMATTED;
 
         $expected = <<<FORMATTED
 <table>
-            <thead>
-        <tr bgcolor='#c0c0c0'>
-                        <td>idalert</td>
-                        <td>idsite</td>
-                        <td>alert_name</td>
-                        <td>period</td>
-                        <td>site_name</td>
-                        <td>login</td>
-                        <td>report</td>
-                        <td>report_condition</td>
-                        <td>report_matched</td>
-                        <td>metric</td>
-                        <td>metric_condition</td>
-                        <td>metric_matched</td>
-                    </tr>
-        </thead>
-        <tbody>
-        <tr>
-                <td>1</td>
-                <td>1</td>
-                <td>MyName1</td>
-                <td>week</td>
-                <td>Piwik test</td>
-                <td>superUserLogin</td>
-                <td>MultiSites.getOne</td>
-                <td>matches_exactly</td>
-                <td>Piwik</td>
-                <td>nb_visits</td>
-                <td>less_than</td>
-                <td>5</td>
-            </tr>
-            </tbody>
-            <tr>
-                <td>2</td>
-                <td>1</td>
-                <td>MyName2</td>
-                <td>week</td>
-                <td>Piwik test</td>
-                <td>superUserLogin</td>
-                <td>MultiSites.getOne</td>
-                <td>matches_exactly</td>
-                <td>Piwik</td>
-                <td>nb_visits</td>
-                <td>less_than</td>
-                <td>5</td>
-            </tr>
-    </table>
+    <thead>
+    <tr bgcolor='#c0c0c0'>
+        <td>Name</td>
+        <td>Website</td>
+        <td>Period</td>
+        <td>Report</td>
+        <td>Condition</td>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr>
+        <td>MyName1</td>
+        <td>Piwik test</td>
+        <td>week</td>
+        <td>MultiSites.getOne</td>
+        <td>nb_visits less_than 5</td>
+    </tr>
+
+
+    <tr>
+        <td>MyName2</td>
+        <td>Piwik test</td>
+        <td>week</td>
+        <td>MultiSites.getOne</td>
+        <td>nb_visits less_than 5</td>
+    </tr>
+
+    </tbody>
+</table>
 FORMATTED;
 
         $this->assertEquals($expected, $rendered);
@@ -162,47 +158,26 @@ FORMATTED;
 
         $expectedHtml = <<<HTML
 CustomAlerts_MailGreeting,<br /><br />=0A=0ACustomAlerts_MailText<br /><=
-br />=0A=0A<table>=0A            <thead>=0A        <tr bg=
-color=3D&#039;#c0c0c0&#039;>=0A                        <td>idal=
-ert</td>=0A                        <td>idsite</td>=0A=
-                        <td>alert_name</td>=0A             =
-           <td>period</td>=0A                        <td&=
-gt;site_name</td>=0A                        <td>login</td=
->=0A                        <td>report</td>=0A          =
-              <td>report_condition</td>=0A                 =
-       <td>report_matched</td>=0A                        &lt=
-;td>metric</td>=0A                        <td>metric_cond=
-ition</td>=0A                        <td>metric_matched</=
-td>=0A                    </tr>=0A        </thead>=0A   =
-     <tbody>=0A        <tr>=0A                <td>1&lt=
-;/td>=0A                <td>1</td>=0A                <=
-td>MyName1</td>=0A                <td>week</td>=0A=
-                <td>Piwik test</td>=0A                <td=
->superUserLogin</td>=0A                <td>MultiSites.get=
-One</td>=0A                <td>matches_exactly</td>=0A=
-                <td>Piwik</td>=0A                <td>n=
-b_visits</td>=0A                <td>less_than</td>=0A=
-                <td>5</td>=0A            </tr>=0A    =
-        </tbody>=0A            <tr>=0A                <td=
->2</td>=0A                <td>1</td>=0A           =
-     <td>MyName2</td>=0A                <td>week</t=
-d>=0A                <td>Piwik test</td>=0A             =
-   <td>superUserLogin</td>=0A                <td>Multi=
-Sites.getOne</td>=0A                <td>matches_exactly</=
-td>=0A                <td>Piwik</td>=0A                &l=
-t;td>nb_visits</td>=0A                <td>less_than</t=
-d>=0A                <td>5</td>=0A            </tr>=
-=0A    </table>=0A<br />=0ACustomAlerts_MailEnd
+br />=0A=0A<table>=0A    <thead>=0A    <tr bgcolor=3D&#03=
+9;#c0c0c0&#039;>=0A        <td>Name</td>=0A        <td=
+>Website</td>=0A        <td>Period</td>=0A        &=
+lt;td>Report</td>=0A        <td>Condition</td>=0A =
+   </tr>=0A    </thead>=0A    <tbody>=0A=0A    <tr&=
+gt;=0A        <td>MyName1</td>=0A        <td>Piwik tes=
+t</td>=0A        <td>week</td>=0A        <td>Mul=
+tiSites.getOne</td>=0A        <td>nb_visits less_than 5</=
+td>=0A    </tr>=0A=0A=0A    <tr>=0A        <td>MyNa=
+me2</td>=0A        <td>Piwik test</td>=0A        <t=
+d>week</td>=0A        <td>MultiSites.getOne</td>=0A=
+        <td>nb_visits less_than 5</td>=0A    </tr>=0A=
+=0A    </tbody>=0A</table>=0A<br />=0ACustomAlerts_MailEnd
 HTML;
 
-        $expectedText = 'CustomAlerts_MailGreeting,=0A=0ACustomAlerts_MailText=0A=0Aidalert=09ids=
-ite=09alert_name=09period=09site_name=09login=09report=09report_conditio=
-n=09report_matched=09metric=09metric_condition=09metric_matched=0A1=091=
-=09MyName1=09week=09Piwik test=09superUserLogin=09MultiSites.getOne=09ma=
-tches_exactly=09Piwik=09nb_visits=09less_than=095=0A2=091=09MyName2=09we=
-ek=09Piwik test=09superUserLogin=09MultiSites.getOne=09matches_exactly=
-=09Piwik=09nb_visits=09less_than=095=0A=0A=0ACustomAlerts_MailEnd';
-
+        $expectedText = 'CustomAlerts_MailGreeting,=0A=0ACustomAlerts_MailText=0A=0AName    Websi=
+te    Period    Report    Condition=0AMyName1    Piwik test    week    M=
+ultiSites.getOne    nb_visits less_than 5=0AMyName2    Piwik test    wee=
+k    MultiSites.getOne    nb_visits less_than 5=0A=0A=0ACustomAlerts_Mai=
+lEnd';
 
         $this->assertEquals($expectedHtml, html_entity_decode($mail->getBodyHtml(true)));
         $this->assertEquals($expectedText, $mail->getBodyText(true));
@@ -211,7 +186,7 @@ ek=09Piwik test=09superUserLogin=09MultiSites.getOne=09matches_exactly=
 
     public function test_sendNewAlerts()
     {
-        $mock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomNotifier', array('sendAlertsPerEmailToRecipient'));
+        $mock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomNotifier', array('sendAlertsPerEmailToRecipient', 'sendAlertsPerSmsToRecipient'));
         $alerts = array(
             $this->buildAlert(1, 'Alert1', 'week', 4, 'Test', 'login1'),
             $this->buildAlert(2, 'Alert2', 'week', 4, 'Test', 'login2'),
@@ -222,18 +197,24 @@ ek=09Piwik test=09superUserLogin=09MultiSites.getOne=09matches_exactly=
         $mock->setTriggeredAlerts($alerts);
 
         $mock->expects($this->at(0))
+            ->method('sendAlertsPerEmailToRecipient')
+            ->with($this->equalTo($alerts),
+                $this->isInstanceOf('\Piwik\Mail'),
+                $this->equalTo('test5@example.com'));
+
+        $mock->expects($this->at(1))
              ->method('sendAlertsPerEmailToRecipient')
              ->with($this->equalTo(array($alerts[0], $alerts[2])),
                     $this->isInstanceOf('\Piwik\Mail'),
                     $this->equalTo('test1@example.com'));
 
-        $mock->expects($this->at(1))
+        $mock->expects($this->at(2))
              ->method('sendAlertsPerEmailToRecipient')
             ->with($this->equalTo(array($alerts[1])),
                    $this->isInstanceOf('\Piwik\Mail'),
                    $this->equalTo('test2@example.com'));
 
-        $mock->expects($this->at(2))
+        $mock->expects($this->at(3))
              ->method('sendAlertsPerEmailToRecipient')
              ->with($this->equalTo(array($alerts[3])),
                     $this->isInstanceOf('\Piwik\Mail'),
@@ -256,7 +237,10 @@ ek=09Piwik test=09superUserLogin=09MultiSites.getOne=09matches_exactly=
             'report_matched' => $reportMatched,
             'metric' => $metric,
             'metric_condition' => $metricCondition,
-            'metric_matched' => $metricMatched
+            'metric_matched' => $metricMatched,
+            'additional_emails' => array('test5@example.com'),
+            'phone_numbers' => array(),
+            'email_me' => true
         );
     }
 
