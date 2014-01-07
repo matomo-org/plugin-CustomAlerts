@@ -128,7 +128,6 @@ function onSubmit(event)
     apiParameters.report = $('#report').find('option:selected').val();
     apiParameters.reportCondition  = $('#reportCondition').find('option:selected').val();
     apiParameters.reportValue  = $('#reportValue').val();
-    apiParameters.token_auth   = piwik.token_auth;
 
     if (!$.isNumeric(apiParameters.metricValue)) {
         var UI = require('piwik/UI');
