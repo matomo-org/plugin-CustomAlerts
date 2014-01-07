@@ -248,4 +248,3 @@ class Processor extends \Piwik\Plugin
     }
 
 }
-?>

@@ -19,7 +19,7 @@
 
         <tr>
             <td class="first"><label for="alertName">{{ 'CustomAlerts_AlertName'|translate }}</label></td>
-            <td><input class="inp" type="text" name="alertName" id="alertName" value="{{ alert.name }}"/></td>
+            <td><input class="inp" type="text" maxlength="100" name="alertName" id="alertName" value="{{ alert.name }}"/></td>
         </tr>
         <tr>
             <td class="first"><label for="applyTo">{{ 'CustomAlerts_ApplyTo'|translate }}</label></td>
@@ -75,7 +75,7 @@
             </td>
             <td class='reportValueField'>
                 {{ 'General_Value'|translate }} <span id="reportInfo"></span><br />
-                <input type="text" role="textbox" autocomplete="off" class="reportValue inp ui-autocomplete-input" name="reportValue" id="reportValue" value="{{ alert.report_matched }}" placeholder="{{ 'General_Search'|translate }}" length="15">
+                <input type="text" role="textbox" autocomplete="off" class="reportValue inp ui-autocomplete-input" maxlength="255" name="reportValue" id="reportValue" value="{{ alert.report_matched }}" placeholder="{{ 'General_Search'|translate }}" length="15">
             </td>
         </tr>
         <tr>
@@ -133,7 +133,7 @@ function onSubmit(event)
     var idReport = $('#report_idreport').val();
     var apiParameters = {};
     apiParameters.format = 'json';
-    apiParameters.name  = $('#alertName').val();
+    apiParameters.name  = encodeURIComponent($('#alertName').val());
     apiParameters.idAlert = {{ alert.idalert }};
     apiParameters.metric  = $('#metric').find('option:selected').val();
     apiParameters.metricCondition  = $('#metricCondition').find('option:selected').val();
@@ -148,7 +148,7 @@ function onSubmit(event)
     if (!$.isNumeric(apiParameters.metricValue)) {
         var UI = require('piwik/UI');
         var notification = new UI.Notification();
-        notification.show('{{ 'CustomAlerts_InvalidMetricValue'|translate|e('js') }}', {id: 'CustomAlertsMetricValueError', context: 'error'});
+        notification.show('{{ 'CustomAlerts_InvalidMetricValue'|translate|e('js') }}', {id: 'CustomAlertsMetricValueError', context: 'error', type: 'toast'});
         $('#metricValue').css({backgroundColor: '#f2dede'});
         return;
     }

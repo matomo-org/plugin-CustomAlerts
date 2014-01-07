@@ -136,15 +136,8 @@ class ModelTest extends \DatabaseTestCase
 
         $this->model->deleteAlert(2);
 
-        try {
-            // verify
-            $this->model->getAlert(2);
-        } catch (\Exception $e) {
-            $this->assertEquals('CustomAlerts_AlertDoesNotExist', $e->getMessage());
-            return;
-        }
-
-        $this->fail('An expected exception has not been thrown');
+        $alert = $this->model->getAlert(2);
+        $this->assertEmpty($alert);
     }
 
     public function test_triggerAlert_getTriggeredAlerts_ShouldMarkAlertAsTriggeredForGivenWebsite()

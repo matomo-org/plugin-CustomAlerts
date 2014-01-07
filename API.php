@@ -32,11 +32,16 @@ class API extends \Piwik\Plugin\API
      *
      * @param int $idAlert
      *
+     * @throws \Exception
      * @return array
      */
 	public function getAlert($idAlert)
 	{
         $alert = $this->getModel()->getAlert($idAlert);
+
+        if (empty($alert)) {
+            throw new Exception(Piwik::translate('CustomAlerts_AlertDoesNotExist', $idAlert));
+        }
 
         $this->checkUserHasPermissionForAlert($idAlert, $alert);
 
@@ -149,13 +154,8 @@ class API extends \Piwik\Plugin\API
      */
 	public function deleteAlert($idAlert)
 	{
-        $alert = $this->getAlert($idAlert);
-
-        if (empty($alert)) {
-            throw new Exception(Piwik::translate('CustomAlerts_AlertDoesNotExist', $idAlert));
-        }
-
-        $this->checkUserHasPermissionForAlert($idAlert, $alert);
+        // make sure alert exists and user has permission to read
+        $this->getAlert($idAlert);
 
         $this->getModel()->deleteAlert($idAlert);
 	}
@@ -189,13 +189,8 @@ class API extends \Piwik\Plugin\API
      */
     public function triggerAlert($idAlert, $idSite, $valueNew, $valueOld)
     {
-        $alert = $this->getAlert($idAlert);
-
-        if (empty($alert)) {
-            throw new Exception(Piwik::translate('CustomAlerts_AlertDoesNotExist', $idAlert));
-        }
-
-        $this->checkUserHasPermissionForAlert($idAlert, $alert);
+        // make sure alert exists and user has permission to read
+        $this->getAlert($idAlert);
 
         $this->getModel()->triggerAlert($idAlert, $idSite, $valueNew, $valueOld);
     }
@@ -307,4 +302,3 @@ class API extends \Piwik\Plugin\API
         }
     }
 }
-?>

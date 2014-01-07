@@ -229,4 +229,3 @@ class Notifier extends \Piwik\Plugin
     }
 
 }
-?>

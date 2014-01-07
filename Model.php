@@ -20,6 +20,7 @@ use Piwik\Date;
 use Piwik\Period;
 use Piwik\Db;
 use Piwik\Plugins\API\API as MetadataApi;
+use Piwik\Translate;
 
 /**
  *
@@ -89,22 +90,19 @@ class Model
      *
      * @param int $idAlert
      *
-     * @return array
+     * @return array|null
      */
 	public function getAlert($idAlert)
 	{
-        $query = sprintf('SELECT * FROM %s WHERE idalert = ?', Common::prefixTable('alert'));
-		$alert = Db::fetchAll($query, array(intval($idAlert)));
+        $query  = sprintf('SELECT * FROM %s WHERE idalert = ?', Common::prefixTable('alert'));
+		$alerts = Db::fetchAll($query, array(intval($idAlert)));
 
-		if (empty($alert)) {
-			throw new Exception(Piwik::translate('CustomAlerts_AlertDoesNotExist', $idAlert));
-		}
+        if (empty($alerts)) {
+            return;
+        }
 
-		$alert = array_shift($alert);
-
-        $alert['idSites'] = $this->fetchSiteIdsTheAlertWasDefinedOn($idAlert);
-        $alert['additional_emails'] = json_decode($alert['additional_emails']);
-        $alert['phone_numbers'] = json_decode($alert['phone_numbers']);
+        $alerts = $this->completeAlerts($alerts);
+		$alert = array_shift($alerts);
 
 		return $alert;
 	}
@@ -245,7 +243,7 @@ class Model
 		// Do we have a valid alert for all given idSites?
 		foreach ($idSites as $idSite) {
 			if (!$this->isValidAlert($newAlert, $idSite)) {
-				throw new Exception(Piwik::translate('Alerts_ReportOrMetricIsInvalid'));
+				throw new Exception(Piwik::translate('CustomAlerts_ReportOrMetricIsInvalid'));
 			}
 		}
 
@@ -382,7 +380,8 @@ class Model
 	{
 		list($module, $action) = explode(".", $alert['report']);
 
-		$report = MetadataApi::getInstance()->getMetadata($idSite, $module, $action);
+        $lang   = Translate::getLanguageLoaded();
+		$report = MetadataApi::getInstance()->getMetadata($idSite, $module, $action, array(), $lang);
 
 		// If there is no report matching module + action for idSite it's not valid.
 		if (empty($report)) {
@@ -438,4 +437,3 @@ class Model
     }
 
 }
-?>

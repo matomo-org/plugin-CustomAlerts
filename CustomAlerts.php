@@ -113,4 +113,3 @@ class CustomAlerts extends \Piwik\Plugin
         );
 	}
 }
-?>

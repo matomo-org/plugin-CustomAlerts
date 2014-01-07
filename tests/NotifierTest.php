@@ -40,6 +40,11 @@ class CustomNotifier extends Notifier
     {
         parent::sendAlertsPerEmailToRecipient($alerts, $mail, $recipient);
     }
+
+    public function sendAlertsPerSmsToRecipient($alerts, $mobileMessagingAPI, $phoneNumber)
+    {
+        parent::sendAlertsPerSmsToRecipient($alerts, $mobileMessagingAPI, $phoneNumber);
+    }
 }
 
 /**
@@ -185,6 +190,8 @@ ign in and access the Alerts page.=0A=0A';
             $this->buildAlert(4, 'Alert4', 'week', 4, 'Test', 'login3'),
         );
 
+        $alerts[2]['phone_numbers'] = array('232');
+
         $mock->setTriggeredAlerts($alerts);
 
         $mock->expects($this->at(0))
@@ -210,6 +217,18 @@ ign in and access the Alerts page.=0A=0A';
              ->with($this->equalTo(array($alerts[3])),
                     $this->isInstanceOf('\Piwik\Mail'),
                     $this->equalTo('test3@example.com'));
+
+        $mock->expects($this->at(4))
+             ->method('sendAlertsPerSmsToRecipient')
+             ->with($this->equalTo(array($alerts[0], $alerts[1], $alerts[3])),
+                    $this->isInstanceOf('\Piwik\Plugins\MobileMessaging\API'),
+                    $this->equalTo('+1234567890'));
+
+        $mock->expects($this->at(5))
+             ->method('sendAlertsPerSmsToRecipient')
+             ->with($this->equalTo($alerts),
+                    $this->isInstanceOf('\Piwik\Plugins\MobileMessaging\API'),
+                    $this->equalTo('232'));
 
         $mock->sendNewAlerts('week');
     }
@@ -248,7 +267,7 @@ ign in and access the Alerts page.=0A=0A';
             'metric_condition' => $metricCondition,
             'metric_matched' => $metricMatched,
             'additional_emails' => array('test5@example.com'),
-            'phone_numbers' => array(),
+            'phone_numbers' => array('+1234567890', '232'),
             'email_me' => true,
             'value_new' => '4493',
             'value_old' => '228'

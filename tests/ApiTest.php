@@ -65,6 +65,16 @@ class ApiTest extends \DatabaseTestCase
 
     /**
      * @expectedException \Exception
+     * @expectedExceptionMessage General_PleaseSpecifyValue
+     */
+    public function test_addAlert_ShouldFail_IfEmptyName()
+    {
+        $this->setSuperUser();
+        $this->createAlert('');
+    }
+
+    /**
+     * @expectedException \Exception
      * @expectedExceptionMessage Alerts_ReportOrMetricIsInvalid
      */
     public function test_addAlert_ShouldFail_IfInvalidMetricProvided()
@@ -75,7 +85,7 @@ class ApiTest extends \DatabaseTestCase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Alerts_ReportOrMetricIsInvalid
+     * @expectedExceptionMessage CustomAlerts_ReportOrMetricIsInvalid
      */
     public function test_addAlert_ShouldFail_IfInvalidReportProvided()
     {
@@ -91,6 +101,46 @@ class ApiTest extends \DatabaseTestCase
     {
         $this->setSuperUser();
         $this->createAlert('InvalidPeriod', 'unvAlidPerioD');
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_InvalidMetricCondition
+     */
+    public function test_addAlert_ShouldFail_IfInvalidMetricCondition()
+    {
+        $this->setSuperUser();
+        $this->createAlert('InvalidMetricCondition', 'week', null, 'nb_visits', 'MultiSites.getOne', 'InvaLiD');
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_InvalidMetricCondition
+     */
+    public function test_addAlert_ShouldFail_IfEmptyMetricCondition()
+    {
+        $this->setSuperUser();
+        $this->createAlert('EmptyMetricCondition', 'week', null, 'nb_visits', 'MultiSites.getOne', '');
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_InvalidReportCondition
+     */
+    public function test_addAlert_ShouldFail_IfInvalidReportCondition()
+    {
+        $this->setSuperUser();
+        $this->createAlert('InvalidReportCondition', 'week', null, 'nb_visits', 'MultiSites.getOne', 'less_than', 'InvaLiD');
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage UsersManager_ExceptionInvalidEmail (inv+34i32s?y)
+     */
+    public function test_addAlert_ShouldFail_IfInvalidEmail()
+    {
+        $this->setSuperUser();
+        $this->createAlert('InvalidEmail', 'week', null, 'nb_visits', 'MultiSites.getOne', 'less_than', 'matches_any', array('test@example.com', 'inv+34i32s?y', 'test2@example.com'));
     }
 
     public function test_addAlert_ShouldCreateANewAlert()
@@ -129,6 +179,54 @@ class ApiTest extends \DatabaseTestCase
     {
         $id = $this->createAlert('MyAlert');
         $this->editAlert($id, 'MyCustomAlert', 'day', array(9999));
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_InvalidMetricCondition
+     */
+    public function test_editAlert_ShouldFail_IfInvalidMetricCondition()
+    {
+        $this->setSuperUser();
+
+        $id = $this->createAlert('MyAlert');
+        $this->editAlert($id, 'InvalidMetricCondition', 'week', null, 'nb_visits', 'MultiSites.getOne', 'InvaLiD');
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_InvalidMetricCondition
+     */
+    public function test_editAlert_ShouldFail_IfEmptyMetricCondition()
+    {
+        $this->setSuperUser();
+
+        $id = $this->createAlert('MyAlert');
+        $this->editAlert($id, 'EmptyMetricCondition', 'week', null, 'nb_visits', 'MultiSites.getOne', '');
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_InvalidReportCondition
+     */
+    public function test_editAlert_ShouldFail_IfInvalidReportCondition()
+    {
+        $this->setSuperUser();
+
+        $id = $this->createAlert('MyAlert');
+        $this->editAlert($id, 'InvalidReportCondition', 'week', null, 'nb_visits', 'MultiSites.getOne', 'less_than', 'InvaLiD');
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage (inv+34i32s?y)
+     */
+    public function test_editAlert_ShouldFail_IfInvalidEmail()
+    {
+        $this->setSuperUser();
+
+        $id = $this->createAlert('MyAlert');
+        $this->editAlert($id, 'InvalidEmail', 'week', null, 'nb_visits', 'MultiSites.getOne', 'less_than', 'matches_any', array('test@example.com', 'inv+34i32s?y', 'test2@example.com'));
     }
 
     public function test_editAlert_ShouldUpdateExistingEntry()
@@ -347,29 +445,29 @@ class ApiTest extends \DatabaseTestCase
         $this->assertCount(1, $triggeredAlerts);
     }
 
-    private function createAlert($name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites.getOne')
+    private function createAlert($name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites.getOne', $metricCondition = 'less_than', $reportCondition = 'matches_exactly', $emails = array('test1@example.com', 'test2@example.com'))
     {
         if (is_null($idSites)) {
             $idSites = $this->idSite;
         }
 
-        $emails = array('test1@example.com', 'test2@example.com');
-        $phoneNumbers = array();
+        // those should be dropped by the api as they do not exist in Piwik
+        $phoneNumbers = array('+1234567890', '1234567890');
 
-        $id = $this->api->addAlert($name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $report, 'matches_exactly', 'Piwik');
+        $id = $this->api->addAlert($name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, $metricCondition, 5, $report, $reportCondition, 'Piwik');
         return $id;
     }
 
-    private function editAlert($id, $name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites.getOne')
+    private function editAlert($id, $name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites.getOne', $metricCondition = 'less_than', $reportCondition = 'matches_exactly', $emails = array('test1@example.com', 'test2@example.com'))
     {
         if (is_null($idSites)) {
             $idSites = $this->idSite;
         }
 
-        $emails = array('test1@example.com', 'test2@example.com');
-        $phoneNumbers = array();
+        // those should be dropped by the api as they do not exist in Piwik
+        $phoneNumbers = array('+1234567890', '1234567890');
 
-        $id = $this->api->editAlert($id, $name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $report, 'matches_exactly', 'Piwik');
+        $id = $this->api->editAlert($id, $name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, $metricCondition, 5, $report, $reportCondition, 'Piwik');
         return $id;
     }
 
