@@ -219,6 +219,10 @@ class Processor extends \Piwik\Plugin
      */
     protected function getValueForAlertInPast($alert, $idSite, $subPeriodN)
     {
+        if (empty($alert['report'])) {
+            return;
+        }
+
         $params = array(
             'method' => $alert['report'],
             'format' => 'original',
@@ -244,7 +248,7 @@ class Processor extends \Piwik\Plugin
     private function getAllAlerts($period)
     {
         $api = API::getInstance();
-        return $api->getAllAlerts($period);
+        return $api->getAllAlertsForPeriod($period);
     }
 
 }

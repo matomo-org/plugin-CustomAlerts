@@ -93,7 +93,7 @@ class Model
      */
 	public function getAlert($idAlert)
 	{
-        $query  = sprintf('SELECT * FROM %s WHERE idalert = ?', Common::prefixTable('alert'));
+        $query  = sprintf('SELECT * FROM %s WHERE idalert = ? LIMIT 1', Common::prefixTable('alert'));
 		$alerts = Db::fetchAll($query, array(intval($idAlert)));
 
         if (empty($alerts)) {
@@ -101,7 +101,7 @@ class Model
         }
 
         $alerts = $this->completeAlerts($alerts);
-		$alert = array_shift($alerts);
+		$alert  = array_shift($alerts);
 
 		return $alert;
 	}
@@ -176,7 +176,17 @@ class Model
         return $alerts;
 	}
 
-	public function getAllAlerts($period)
+    public function getAllAlerts()
+    {
+        $sql = "SELECT * FROM ". Common::prefixTable('alert');
+
+        $alerts = Db::fetchAll($sql);
+        $alerts = $this->completeAlerts($alerts);
+
+        return $alerts;
+    }
+
+	public function getAllAlertsForPeriod($period)
 	{
 		$sql = "SELECT * FROM "
 				. Common::prefixTable('alert_site') . " alert, "
@@ -210,7 +220,7 @@ class Model
      * @internal param bool $enableEmail
      * @return int ID of new Alert
      */
-	public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue)
+	public function createAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue)
 	{
         $idAlert = $this->getNextAlertId();
         if (empty($idAlert)) {
@@ -248,6 +258,7 @@ class Model
 				'idsite'  => intval($idSite)
 			));
 		}
+
 		return $idAlert;
 	}
 
@@ -272,7 +283,7 @@ class Model
      * @internal param bool $enableEmail
      * @return boolean
      */
-	public function editAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue)
+	public function updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue)
 	{
 		$alert = array(
 			'name'             => $name,
@@ -288,7 +299,7 @@ class Model
 
 		if (!empty($reportCondition) && !empty($reportCondition)) {
 			$alert['report_condition'] = $reportCondition;
-			$alert['report_matched']  = $reportValue;
+			$alert['report_matched']   = $reportValue;
 		} else {
 			$alert['report_condition'] = null;
 			$alert['report_matched']   = null;
@@ -322,6 +333,12 @@ class Model
 	{
         $db = Db::get();
         $db->query("DELETE FROM " . Common::prefixTable("alert") . " WHERE idalert = ?", array($idAlert));
+
+        $db = Db::get();
+        $db->query("DELETE FROM " . Common::prefixTable("alert_site") . " WHERE idalert = ?", array($idAlert));
+
+        $db = Db::get();
+        $db->query("DELETE FROM " . Common::prefixTable("alert_log") . " WHERE idalert = ?", array($idAlert));
 	}
 
     public function triggerAlert($idAlert, $idSite, $valueNew, $valueOld)
@@ -341,8 +358,8 @@ class Model
 
     private function fetchSiteIdsTheAlertWasDefinedOn($idAlert)
     {
-        $sql     = "SELECT idsite FROM ".Common::prefixTable('alert_site')." WHERE idalert = ?";
-        $sites   = Db::fetchAll($sql, $idAlert, \PDO::FETCH_COLUMN);
+        $sql   = "SELECT idsite FROM ".Common::prefixTable('alert_site')." WHERE idalert = ?";
+        $sites = Db::fetchAll($sql, $idAlert, \PDO::FETCH_COLUMN);
 
         $idSites = array();
         foreach ($sites as $site) {
@@ -354,8 +371,7 @@ class Model
 
     private function getNextAlertId()
     {
-        $idAlert = Db::fetchOne("SELECT max(idalert) + 1 FROM " . Common::prefixTable('alert'));
-        return $idAlert;
+        return Db::fetchOne("SELECT max(idalert) + 1 FROM " . Common::prefixTable('alert'));
     }
 
     private function completeAlerts($alerts)

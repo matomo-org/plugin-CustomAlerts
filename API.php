@@ -108,7 +108,7 @@ class API extends \Piwik\Plugin\API
 
         $emailMe = $emailMe ? 1 : 0;
 
-        return $this->getModel()->addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue);
+        return $this->getModel()->createAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue);
 	}
 
     /**
@@ -150,10 +150,9 @@ class API extends \Piwik\Plugin\API
 
         $additionalEmails = $this->checkAdditionalEmails($additionalEmails);
         $phoneNumbers     = $this->checkPhoneNumbers($phoneNumbers);
-
         $emailMe = $emailMe ? 1 : 0;
 
-        return $this->getModel()->editAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue);
+        return $this->getModel()->updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue);
 	}
 
     /**
@@ -177,7 +176,7 @@ class API extends \Piwik\Plugin\API
      * @return array
      * @throws \Exception
      */
-	public function getAllAlerts($period)
+	public function getAllAlertsForPeriod($period)
 	{
         Piwik::checkUserIsSuperUser();
 
@@ -185,7 +184,7 @@ class API extends \Piwik\Plugin\API
             throw new Exception("Invalid period given.");
         }
 
-        return $this->getModel()->getAllAlerts($period);
+        return $this->getModel()->getAllAlertsForPeriod($period);
 	}
 
     /**

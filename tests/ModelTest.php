@@ -52,7 +52,7 @@ class ModelTest extends \DatabaseTestCase
         parent::tearDown();
     }
 
-    public function testInstall_ShouldNotFailAndActuallyCreateTheDatabases()
+    public function test_install_ShouldNotFailAndActuallyCreateTheDatabases()
     {
         $this->assertContainTables(array('alert', 'alert_site', 'alert_log'));
 
@@ -66,7 +66,7 @@ class ModelTest extends \DatabaseTestCase
         $this->assertCount(5, $columns);
     }
 
-    public function testUninstall_ShouldNotFailAndRemovesAllAlertTables()
+    public function test_uninstall_ShouldNotFailAndRemovesAllAlertTables()
     {
         Model::uninstall();
 
@@ -240,7 +240,7 @@ class ModelTest extends \DatabaseTestCase
         $emails = array('test1@example.com', 'test2@example.com');
         $phoneNumbers = array('0123456789');
 
-        $id = $this->model->addAlert($name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $report, 'matches_exactly', 'Piwik');
+        $id = $this->model->createAlert($name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $report, 'matches_exactly', 'Piwik');
         return $id;
     }
 
@@ -256,7 +256,7 @@ class ModelTest extends \DatabaseTestCase
         $emails = array('test1@example.com', 'test2@example.com');
         $phoneNumbers = array('0123456789');
 
-        $id = $this->model->editAlert($id, $name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $report, 'matches_exactly', 'Piwik');
+        $id = $this->model->updateAlert($id, $name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $report, 'matches_exactly', 'Piwik');
         return $id;
     }
 

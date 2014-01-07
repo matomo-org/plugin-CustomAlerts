@@ -31,6 +31,7 @@ class CustomAlerts extends \Piwik\Plugin
 		return array(
 		    'Menu.Top.addItems' => 'addTopMenu',
 		    'TaskScheduler.getScheduledTasks' => 'getScheduledTasks',
+		    'MobileMessaging.deletePhoneNumber' => 'removePhoneNumberFromAllAlerts',
 		    'AssetManager.getJavaScriptFiles' => 'getJavaScriptFiles',
 		    'AssetManager.getStylesheetFiles' => 'getStylesheetFiles',
 		);
@@ -47,6 +48,39 @@ class CustomAlerts extends \Piwik\Plugin
 		$cssFiles[] = "plugins/CustomAlerts/stylesheets/alerts.less";
 		$cssFiles[] = "plugins/CustomAlerts/stylesheets/ui.dropdownchecklist.css";
 	}
+
+    public function removePhoneNumberFromAllAlerts($phoneNumber)
+    {
+        $model  = new Model();
+        $alerts = $model->getAllAlerts();
+
+        foreach ($alerts as $alert) {
+            if (empty($alert['phone_numbers']) || !is_array($alert['phone_numbers'])) {
+                continue;
+            }
+
+            $key = array_search($phoneNumber, $alert['phone_numbers'], true);
+
+            if (false !== $key) {
+                unset($alert['phone_numbers'][$key]);
+                $model->updateAlert(
+                    $alert['idalert'],
+                    $alert['name'],
+                    $alert['idSites'],
+                    $alert['period'],
+                    $alert['email_me'],
+                    $alert['additional_emails'],
+                    array_values($alert['phone_numbers']),
+                    $alert['metric'],
+                    $alert['metric_condition'],
+                    $alert['metric_matched'],
+                    $alert['report'],
+                    $alert['report_condition'],
+                    $alert['report_matched']
+                );
+            }
+        }
+    }
 
 	public function install()
 	{
