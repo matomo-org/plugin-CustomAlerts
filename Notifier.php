@@ -195,7 +195,7 @@ class Notifier extends \Piwik\Plugin
         }
 
         $mail->addTo($recipients);
-        $mail->setSubject('Piwik alert [' . Date::today() . ']');
+        $mail->setSubject(Piwik::translate('CustomAlerts_MailAlertSubject', Date::today()));
 
         $viewHtml = new View('@CustomAlerts/alertHtmlMail');
         $viewHtml->assign('triggeredAlerts', $this->formatAlerts($alerts, 'html'));

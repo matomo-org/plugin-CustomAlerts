@@ -123,25 +123,25 @@ FORMATTED;
         $rendered = $this->notifier->formatAlerts($alerts, 'html');
 
         $expected = <<<FORMATTED
-<table>
-    <thead>
-    <tr bgcolor='#c0c0c0'>
-        <td>Alert</td>
-        <td>Edit</td>
+<table style="border-collapse: collapse;margin-left: 5px;">
+    <thead style="background-color:rgb(228,226,215);color:rgb(37,87,146);font-size:11pt">
+    <tr>
+        <th style="padding:6px 6px;text-align: left;">Alert</th>
+        <th style="padding:6px 6px;text-align: left;width: 80px;" width="80">Edit</th>
     </tr>
     </thead>
     <tbody>
 
     <tr>
-        <td>&#039;MyName1&#039; has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.</td>
-        <td><a href="http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday"
+        <td style="font-size:11pt;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">&#039;MyName1&#039; has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.</td>
+        <td style="font-size:11pt;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday"
                 >Edit Alert</a></td>
     </tr>
 
 
     <tr>
-        <td>&#039;MyName2&#039; has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.</td>
-        <td><a href="http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday"
+        <td style="font-size:11pt;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">&#039;MyName2&#039; has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.</td>
+        <td style="font-size:11pt;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday"
                 >Edit Alert</a></td>
     </tr>
 
@@ -161,41 +161,17 @@ FORMATTED;
         $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com');
 
         $expectedHtml = <<<HTML
-Dear Piwik User,<br /><br />=0A=0AThe custom alerts you requested from P=
-iwik Alerts are listed in the table below. To see more details or to adj=
-ust your custom alert settings, please sign in to your Piwik Open Source=
- Analytics account and access the Alerts page.<br /><br />=0A=0A<table>=
-=0A    <thead>=0A    <tr bgcolor=3D'#c0c0c0'>=0A        <td>Alert</td>=
-=0A        <td>Edit</td>=0A    </tr>=0A    </thead>=0A    <tbody>=0A=0A=
-    <tr>=0A        <td>&#039;MyName1&#039; has been triggered for websit=
-e Piwik test as the metric Visits in report Single Website dashboard is=
- 4493 which is less than 5000.</td>=0A        <td><a href=3D"http://apac=
-he.piwik/index.php?module=3DCustomAlerts&action=3DeditAlert&idAlert=3D1&=
-idSite=3D1&period=3Dweek&date=3Dyesterday"=0A                >Edit Alert=
-</a></td>=0A    </tr>=0A=0A=0A    <tr>=0A        <td>&#039;MyName2&#039;=
- has been triggered for website Piwik test as the metric Visits in repor=
-t Single Website dashboard is 4493 which is less than 5000.</td>=0A    =
-    <td><a href=3D"http://apache.piwik/index.php?module=3DCustomAlerts&a=
-ction=3DeditAlert&idAlert=3D2&idSite=3D1&period=3Dweek&date=3Dyesterday"=
-=0A                >Edit Alert</a></td>=0A    </tr>=0A=0A    </tbody>=0A=
-</table>=0A<br />=0AHappy analyzing!
+Hello,<br /><br />=0A=0AThe custom alerts you requested are listed in th=
+e table below. To see more details or to adjust your custom alert settin=
+gs, please sign in and access the Alerts page.<br /><br />=0A=0A<table
 HTML;
 
-        $expectedText = 'Dear Piwik User,=0A=0AThe custom alerts you requested from Piwik Alerts=
- are listed in the table below. To see more details or to adjust your cu=
-stom alert settings, please sign in to your Piwik Open Source Analytics=
- account and access the Alerts page.=0A=0AMyName1 has been triggered for=
- website Piwik test as the metric Visits in report Single Website dashbo=
-ard is 4493 which is less than 5000.=0A>> Edit Alert http://apache.piwik=
-/index.php?module=3DCustomAlerts&action=3DeditAlert&idAlert=3D1&idSite=
-=3D1&period=3Dweek&date=3Dyesterday=0A=0AMyName2 has been triggered for=
- website Piwik test as the metric Visits in report Single Website dashbo=
-ard is 4493 which is less than 5000.=0A>> Edit Alert http://apache.piwik=
-/index.php?module=3DCustomAlerts&action=3DeditAlert&idAlert=3D2&idSite=
-=3D1&period=3Dweek&date=3Dyesterday=0A=0A=0A=0AHappy analyzing!';
+        $expectedText = 'Hello,=0A=0AThe custom alerts you requested are listed in the table belo=
+w. To see more details or to adjust your custom alert settings, please s=
+ign in and access the Alerts page.=0A=0A';
 
-        $this->assertEquals($expectedHtml, html_entity_decode($mail->getBodyHtml(true)));
-        $this->assertEquals($expectedText, $mail->getBodyText(true));
+        $this->assertStringStartsWith($expectedHtml, html_entity_decode($mail->getBodyHtml(true)));
+        $this->assertStringStartsWith($expectedText, $mail->getBodyText(true));
         $this->assertEquals(array('test@example.com'), $mail->getRecipients());
     }
 

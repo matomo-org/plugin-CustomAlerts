@@ -1,17 +1,17 @@
 {% import '@CustomAlerts/macros.twig' as alertsMacro %}
-<table>
-    <thead>
-    <tr bgcolor='#c0c0c0'>
-        <td>{{ 'CustomAlerts_Alert'|translate }}</td>
-        <td>{{ 'General_Edit'|translate }}</td>
+<table style="border-collapse: collapse;margin-left: 5px;">
+    <thead style="background-color:rgb(228,226,215);color:rgb(37,87,146);font-size:11pt">
+    <tr>
+        <th style="padding:6px 6px;text-align: left;">{{ 'CustomAlerts_Alert'|translate }}</th>
+        <th style="padding:6px 6px;text-align: left;width: 80px;" width="80">{{ 'General_Edit'|translate }}</th>
     </tr>
     </thead>
     <tbody>
 {% for alert in triggeredAlerts %}
 
     <tr>
-        <td>{{ 'CustomAlerts_MailAlertContent'|translate(alert.alert_name, alert.reportMetric|default(alert.metric), alert.reportName|default(alert.report), alert.site_name, alertsMacro.metricChangeDescription(alert)) }}</td>
-        <td><a href="{{ piwikUrl }}{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert, 'idSite': alert.idsite, 'period': alert.period, 'date': 'yesterday'})|raw }}"
+        <td style="font-size:11pt;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">{{ 'CustomAlerts_MailAlertContent'|translate(alert.alert_name, alert.reportMetric|default(alert.metric), alert.reportName|default(alert.report), alert.site_name, alertsMacro.metricChangeDescription(alert)) }}</td>
+        <td style="font-size:11pt;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="{{ piwikUrl }}{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert, 'idSite': alert.idsite, 'period': alert.period, 'date': 'yesterday'})|raw }}"
                 >{{ 'CustomAlerts_EditAlert'|translate }}</a></td>
     </tr>
 
