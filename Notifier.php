@@ -61,6 +61,10 @@ class Notifier extends \Piwik\Plugin
             }
 
             $phoneNumbers = $triggeredAlert['phone_numbers'];
+
+            if (empty($phoneNumbers)) {
+                $phoneNumbers = array();
+            }
             foreach ($phoneNumbers as $phoneNumber) {
                 if (!array_key_exists($phoneNumber, $alertsPerSms)) {
                     $alertsPerSms[$phoneNumber] = array();
@@ -212,10 +216,15 @@ class Notifier extends \Piwik\Plugin
     private function getEmailRecipientsForAlert($triggeredAlert)
     {
         $recipients = $triggeredAlert['additional_emails'];
+
+        if (empty($recipients)) {
+            $recipients = array();
+        }
+
         if ($triggeredAlert['email_me']) {
             $recipients[] = $this->getEmailAddressFromLogin($triggeredAlert['login']);
-            return $recipients;
         }
+
         return $recipients;
     }
 

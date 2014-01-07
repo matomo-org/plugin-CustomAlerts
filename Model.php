@@ -141,8 +141,11 @@ class Model
 		$sql = "SELECT pa.idalert AS idalert,
 				pal.idsite AS idsite,
 				pal.ts_triggered AS ts_triggered,
-				pa.name    AS alert_name,
-				ps.name    AS site_name,
+				pa.name AS alert_name,
+				pa.additional_emails AS additional_emails,
+				pa.phone_numbers AS phone_numbers,
+				pa.email_me AS email_me,
+				ps.name AS site_name,
 				login,
 				period,
 				report,
@@ -172,8 +175,10 @@ class Model
             $values[] = $login;
 		}
 
-		return $db->fetchAll($sql, $values);
-
+		$alerts = $db->fetchAll($sql, $values);
+        $alerts = $this->completeAlerts($alerts);
+      
+        return $alerts;
 	}
 
 	public function getAllAlerts($period)
