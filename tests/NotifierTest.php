@@ -9,10 +9,12 @@
 namespace Piwik\Plugins\CustomAlerts\tests;
 
 use Piwik\Access;
+use Piwik\Common;
 use Piwik\Mail;
 use Piwik\Plugin;
 use Piwik\Plugins\CustomAlerts\Notifier;
 use Piwik\Translate;
+use Piwik\Url;
 
 class CustomNotifier extends Notifier
 {
@@ -83,12 +85,14 @@ class NotifierTest extends \DatabaseTestCase
     {
         $alerts = $this->getTriggeredAlerts();
 
+        $host = Common::sanitizeInputValue(Url::getCurrentUrlWithoutFileName());
+
         $expected = <<<FORMATTED
 MyName1 has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.
->> Edit Alert http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday
+>> Edit Alert ${host}index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday
 
 MyName2 has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.
->> Edit Alert http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday
+>> Edit Alert ${host}index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday
 
 
 FORMATTED;
@@ -125,6 +129,8 @@ FORMATTED;
     {
         $alerts = $this->getTriggeredAlerts();
 
+        $host = Common::sanitizeInputValue(Url::getCurrentUrlWithoutFileName());
+
         $rendered = $this->notifier->formatAlerts($alerts, 'html');
 
         $expected = <<<FORMATTED
@@ -139,14 +145,14 @@ FORMATTED;
 
     <tr>
         <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">&#039;MyName1&#039; has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.</td>
-        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday"
+        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday"
                 >Edit Alert</a></td>
     </tr>
 
 
     <tr>
         <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">&#039;MyName2&#039; has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.</td>
-        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday"
+        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday"
                 >Edit Alert</a></td>
     </tr>
 
