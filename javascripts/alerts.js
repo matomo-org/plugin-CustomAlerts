@@ -6,24 +6,25 @@
 
         reportValuesAutoComplete = null;
 
-        var idSites = "&idSites[]=" + piwik.idSite;
+        var idSites = [piwik.idSite];
         $("#idSites :selected").each(function(i,selected) {
-            idSites = idSites + "&idSites[]=" + $(selected).val();
+            idSites.push($(selected).val());
         });
 
-        $.ajax({
-            type: "GET",
-            url: piwik.piwik_url,
-            data: 'module=API&method=API.getReportMetadata'
-                + '&period=' + $(".period").val()
-                + '&date=' + piwik.currentDateString
-                + '&token_auth=' + piwik.token_auth
-                + '&format=JSON' + idSites,
-            dataType: "json",
-            success: function(data) {
-                updateForm(data);
-            }
+        var ajaxRequest = new ajaxHelper();
+        ajaxRequest.addParams({
+            module: 'API',
+            method: 'API.getReportMetadata',
+            date: piwik.currentDateString,
+            period: $(".period").val(),
+            idSites: idSites,
+            format: 'JSON'
+        }, 'GET');
+        ajaxRequest.setCallback(function(data) {
+            updateForm(data);
         });
+        ajaxRequest.setErrorCallback(function () {});
+        ajaxRequest.send(false);
     }
 
     function getValuesForReportAndMetric(request, response) {
@@ -65,31 +66,30 @@
             idSites = idSites + "&idSites[]=" + $(selected).val();
         });
 
-        $.ajax({
-            type: "GET",
-            url: piwik.piwik_url,
-            data: 'module=API&method=API.getProcessedReport'
-                + '&idSite=' + piwik.idSite
-                + '&apiModule=' + report[0]
-                + '&apiAction=' + report[1]
-                + '&showColumns=' + metric
-                + '&period=month'
-                + '&date=yesterday'
-                + '&token_auth=' + piwik.token_auth
-                + '&format=JSON' + idSites,
-            dataType: "json",
-            success: function(data) {
-                if (data && data.reportData) {
-                    reportValuesAutoComplete = data.reportData;
-                    sendFeedback(data.reportData);
-                } else {
-                    sendFeedback([]);
-                }
-            },
-            error: function () {
+        var ajaxRequest = new ajaxHelper();
+        ajaxRequest.addParams({
+            module: 'API',
+            method: 'API.getProcessedReport',
+            date: 'yesterday',
+            period: 'month',
+            showColumns: metric,
+            apiModule: report[0],
+            apiAction: report[1],
+            idSite: piwik.idSite,
+            format: 'JSON'
+        }, 'GET');
+        ajaxRequest.setCallback(function(data) {
+            if (data && data.reportData) {
+                reportValuesAutoComplete = data.reportData;
+                sendFeedback(data.reportData);
+            } else {
                 sendFeedback([]);
             }
         });
+        ajaxRequest.setErrorCallback(function () {
+            sendFeedback([]);
+        });
+        ajaxRequest.send(false);
     }
 
     function updateForm(data) {
