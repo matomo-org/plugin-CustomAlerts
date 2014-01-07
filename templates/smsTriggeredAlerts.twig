@@ -1,3 +1,4 @@
+{% import '@CustomAlerts/macros.twig' as alertsMacro %}
 {%- for alert in triggeredAlerts %}
-{{ 'CustomAlerts_SmsAlertContent'|translate(alert.alert_name, alert.reportMetric|default(alert.metric), alert.reportName|default(alert.report), alert.site_name, alert.value_old, alert.value_new) }}{% if not loop.last %} {% endif -%}
+{{ 'CustomAlerts_SmsAlertContent'|translate(alert.alert_name, alert.reportMetric|default(alert.metric), alert.reportName|default(alert.report), alert.site_name, alertsMacro.metricChangeDescription(alert)) }}{% if not loop.last %} {% endif -%}
 {%- endfor -%}

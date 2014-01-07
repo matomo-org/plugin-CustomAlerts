@@ -1,0 +1,17 @@
+{% macro metricChangeDescription(alert) %}
+{% spaceless %}
+    {%- if alert.metric_condition == 'less_than' %}
+        is {{ alert.value_new }} which is less than {{ alert.metric_matched }}
+    {% elseif alert.metric_condition == 'greater_than' %}
+        is {{ alert.value_new }} which is greater than {{ alert.metric_matched }}
+    {% elseif alert.metric_condition == 'decrease_more_than' %}
+        decreased more than {{ alert.metric_matched }} from {{ alert.value_old }} to  {{ alert.value_new }}
+    {% elseif alert.metric_condition == 'increase_more_than' %}
+        increased more than {{ alert.metric_matched }} from {{ alert.value_old }} to  {{ alert.value_new }}
+    {% elseif alert.metric_condition == 'percentage_decrease_more_than' %}
+        percentage decreased more than {{ alert.metric_matched }}% from {{ alert.value_old }} to {{ alert.value_new }}
+    {% elseif alert.metric_condition == 'percentage_increase_more_than' %}
+        percentage increased more than {{ alert.metric_matched }}% from {{ alert.value_old }} to {{ alert.value_new }}
+    {% endif -%}
+{% endspaceless %}
+{% endmacro %}

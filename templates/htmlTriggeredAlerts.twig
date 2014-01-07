@@ -1,3 +1,4 @@
+{% import '@CustomAlerts/macros.twig' as alertsMacro %}
 <table>
     <thead>
     <tr bgcolor='#c0c0c0'>
@@ -9,7 +10,7 @@
 {% for alert in triggeredAlerts %}
 
     <tr>
-        <td>{{ 'CustomAlerts_MailAlertContent'|translate(alert.alert_name, alert.reportMetric|default(alert.metric), alert.reportName|default(alert.report), alert.site_name, alert.value_old, alert.value_new) }}</td>
+        <td>{{ 'CustomAlerts_MailAlertContent'|translate(alert.alert_name, alert.reportMetric|default(alert.metric), alert.reportName|default(alert.report), alert.site_name, alertsMacro.metricChangeDescription(alert)) }}</td>
         <td><a href="{{ piwikUrl }}{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert, 'idSite': alert.idsite, 'period': alert.period, 'date': 'yesterday'})|raw }}"
                 >{{ 'CustomAlerts_EditAlert'|translate }}</a></td>
     </tr>

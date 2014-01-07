@@ -1,5 +1,6 @@
+{% import '@CustomAlerts/macros.twig' as alertsMacro %}
 {% for alert in triggeredAlerts %}
-{{ 'CustomAlerts_MailAlertContent'|translate(alert.alert_name, alert.reportMetric|default(alert.metric), alert.reportName|default(alert.report), alert.site_name, alert.value_old, alert.value_new) }}
+{{ 'CustomAlerts_SmsAlertContent'|translate(alert.alert_name, alert.reportMetric|default(alert.metric), alert.reportName|default(alert.report), alert.site_name, alertsMacro.metricChangeDescription(alert)) }}
 >> {{ 'CustomAlerts_EditAlert'|translate }} {{ piwikUrl }}{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert, 'idSite': alert.idsite, 'period': alert.period, 'date': 'yesterday'})|raw }}
 
 {% endfor %}

@@ -79,10 +79,10 @@ class NotifierTest extends \DatabaseTestCase
         $alerts = $this->getTriggeredAlerts();
 
         $expected = <<<FORMATTED
-MyName1 has been triggered as the metric Visits in report Single Website dashboard has changed for website Piwik test from 228 to 4493.
+MyName1 has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.
 >> Edit Alert http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday
 
-MyName2 has been triggered as the metric Visits in report Single Website dashboard has changed for website Piwik test from 228 to 4493.
+MyName2 has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.
 >> Edit Alert http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday
 
 
@@ -98,7 +98,7 @@ FORMATTED;
         $alerts = $this->getTriggeredAlerts();
 
         $expected = <<<FORMATTED
-MyName1 has been triggered as the metric Visits in report Single Website dashboard has changed for website Piwik test from 228 to 4493. MyName2 has been triggered as the metric Visits in report Single Website dashboard has changed for website Piwik test from 228 to 4493.
+MyName1 has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000. MyName2 has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.
 FORMATTED;
 
         $rendered = $this->notifier->formatAlerts($alerts, 'sms');
@@ -133,14 +133,14 @@ FORMATTED;
     <tbody>
 
     <tr>
-        <td>MyName1 has been triggered as the metric Visits in report Single Website dashboard has changed for website Piwik test from 228 to 4493.</td>
+        <td>&#039;MyName1&#039; has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.</td>
         <td><a href="http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday"
                 >Edit Alert</a></td>
     </tr>
 
 
     <tr>
-        <td>MyName2 has been triggered as the metric Visits in report Single Website dashboard has changed for website Piwik test from 228 to 4493.</td>
+        <td>&#039;MyName2&#039; has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.</td>
         <td><a href="http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday"
                 >Edit Alert</a></td>
     </tr>
@@ -167,32 +167,32 @@ ust your custom alert settings, please sign in to your Piwik Open Source=
  Analytics account and access the Alerts page.<br /><br />=0A=0A<table>=
 =0A    <thead>=0A    <tr bgcolor=3D'#c0c0c0'>=0A        <td>Alert</td>=
 =0A        <td>Edit</td>=0A    </tr>=0A    </thead>=0A    <tbody>=0A=0A=
-    <tr>=0A        <td>MyName1 has been triggered as the metric Visits i=
-n report Single Website dashboard has changed for website Piwik test fro=
-m 228 to 4493.</td>=0A        <td><a href=3D"http://apache.piwik/index.p=
-hp?module=3DCustomAlerts&action=3DeditAlert&idAlert=3D1&idSite=3D1&perio=
-d=3Dweek&date=3Dyesterday"=0A                >Edit Alert</a></td>=0A   =
- </tr>=0A=0A=0A    <tr>=0A        <td>MyName2 has been triggered as the=
- metric Visits in report Single Website dashboard has changed for websit=
-e Piwik test from 228 to 4493.</td>=0A        <td><a href=3D"http://apac=
-he.piwik/index.php?module=3DCustomAlerts&action=3DeditAlert&idAlert=3D2&=
+    <tr>=0A        <td>&#039;MyName1&#039; has been triggered for websit=
+e Piwik test as the metric Visits in report Single Website dashboard is=
+ 4493 which is less than 5000.</td>=0A        <td><a href=3D"http://apac=
+he.piwik/index.php?module=3DCustomAlerts&action=3DeditAlert&idAlert=3D1&=
 idSite=3D1&period=3Dweek&date=3Dyesterday"=0A                >Edit Alert=
-</a></td>=0A    </tr>=0A=0A    </tbody>=0A</table>=0A<br />=0AHappy anal=
-yzing!
+</a></td>=0A    </tr>=0A=0A=0A    <tr>=0A        <td>&#039;MyName2&#039;=
+ has been triggered for website Piwik test as the metric Visits in repor=
+t Single Website dashboard is 4493 which is less than 5000.</td>=0A    =
+    <td><a href=3D"http://apache.piwik/index.php?module=3DCustomAlerts&a=
+ction=3DeditAlert&idAlert=3D2&idSite=3D1&period=3Dweek&date=3Dyesterday"=
+=0A                >Edit Alert</a></td>=0A    </tr>=0A=0A    </tbody>=0A=
+</table>=0A<br />=0AHappy analyzing!
 HTML;
 
         $expectedText = 'Dear Piwik User,=0A=0AThe custom alerts you requested from Piwik Alerts=
  are listed in the table below. To see more details or to adjust your cu=
 stom alert settings, please sign in to your Piwik Open Source Analytics=
- account and access the Alerts page.=0A=0AMyName1 has been triggered as=
- the metric Visits in report Single Website dashboard has changed for we=
-bsite Piwik test from 228 to 4493.=0A>> Edit Alert http://apache.piwik/i=
-ndex.php?module=3DCustomAlerts&action=3DeditAlert&idAlert=3D1&idSite=3D1=
-&period=3Dweek&date=3Dyesterday=0A=0AMyName2 has been triggered as the m=
-etric Visits in report Single Website dashboard has changed for website=
- Piwik test from 228 to 4493.=0A>> Edit Alert http://apache.piwik/index.=
-php?module=3DCustomAlerts&action=3DeditAlert&idAlert=3D2&idSite=3D1&peri=
-od=3Dweek&date=3Dyesterday=0A=0A=0A=0AHappy analyzing!';
+ account and access the Alerts page.=0A=0AMyName1 has been triggered for=
+ website Piwik test as the metric Visits in report Single Website dashbo=
+ard is 4493 which is less than 5000.=0A>> Edit Alert http://apache.piwik=
+/index.php?module=3DCustomAlerts&action=3DeditAlert&idAlert=3D1&idSite=
+=3D1&period=3Dweek&date=3Dyesterday=0A=0AMyName2 has been triggered for=
+ website Piwik test as the metric Visits in report Single Website dashbo=
+ard is 4493 which is less than 5000.=0A>> Edit Alert http://apache.piwik=
+/index.php?module=3DCustomAlerts&action=3DeditAlert&idAlert=3D2&idSite=
+=3D1&period=3Dweek&date=3Dyesterday=0A=0A=0A=0AHappy analyzing!';
 
         $this->assertEquals($expectedHtml, html_entity_decode($mail->getBodyHtml(true)));
         $this->assertEquals($expectedText, $mail->getBodyText(true));
@@ -256,7 +256,7 @@ od=3Dweek&date=3Dyesterday=0A=0A=0A=0AHappy analyzing!';
         $this->assertEquals($alerts, $enriched);
     }
 
-    private function buildAlert($id, $name, $period = 'week', $idSite = 1, $siteName = 'Piwik test', $login = 'superUserLogin', $metric = 'nb_visits', $metricCondition = 'less_than', $metricMatched = 5, $report = 'MultiSites.getOne', $reportCondition = 'matches_exactly', $reportMatched = 'Piwik')
+    private function buildAlert($id, $name, $period = 'week', $idSite = 1, $siteName = 'Piwik test', $login = 'superUserLogin', $metric = 'nb_visits', $metricCondition = 'less_than', $metricMatched = 5000, $report = 'MultiSites.getOne', $reportCondition = 'matches_exactly', $reportMatched = 'Piwik')
     {
         return array(
             'idalert' => $id,
