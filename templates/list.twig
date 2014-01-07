@@ -41,3 +41,9 @@
 	<a href="{{ linkTo({'module': 'CustomAlerts', 'action': 'addNewAlert'}) }}" id='linkAddReport'>&rsaquo; {{ 'CustomAlerts_CreateNewAlert'|translate }}</a>
 		
 </div>
+
+<div class="ui-confirm" id="confirm">
+    <h2>{{ 'CustomAlerts_AreYouSureDeleteAlert'|translate }}</h2>
+    <input role="yes" type="button" value="{{ 'General_Yes'|translate }}"/>
+    <input role="no" type="button" value="{{ 'General_No'|translate }}"/>
+</div>

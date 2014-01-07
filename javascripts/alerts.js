@@ -175,15 +175,20 @@
 
     function deleteAlert(alertId)
     {
-        var ajaxRequest = new ajaxHelper();
-        ajaxRequest.addParams({
-            module: 'API',
-            method: 'CustomAlerts.deleteAlert',
-            idAlert: alertId,
-            format: 'JSON'
-        }, 'GET');
-        ajaxRequest.redirectOnSuccess();
-        ajaxRequest.send(false);
+        function onDelete()
+        {
+            var ajaxRequest = new ajaxHelper();
+            ajaxRequest.addParams({
+                module: 'API',
+                method: 'CustomAlerts.deleteAlert',
+                idAlert: alertId,
+                format: 'JSON'
+            }, 'GET');
+            ajaxRequest.redirectOnSuccess();
+            ajaxRequest.send(false);
+        }
+
+        piwikHelper.modalConfirm('#confirm', {yes: onDelete});
     }
 
     $(document).ready(function() {
