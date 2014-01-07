@@ -1,4 +1,5 @@
 {%- for alert in triggeredAlerts %}
-Alert {{ alert.alert_name }} for website {{ alert.site_name }} ({{ alert.metric }} was {{ alert.value_old }} is {{ alert.value_new }}).
-{%- if not loop.last %} {% endif %}
+{{ 'CustomAlerts_SmsAlertContent'|translate(alert.alert_name, alert.reportMetric|default(alert.metric), alert.reportName|default(alert.report), alert.site_name, alert.value_old, alert.value_new) }}
+{% if not loop.last %}
+{% endif -%}
 {%- endfor -%}

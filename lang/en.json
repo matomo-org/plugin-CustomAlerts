@@ -1,8 +1,12 @@
 {
     "CustomAlerts": {
+        "Alert": "Alert",
         "Alerts": "Alerts",
         "PluginDescription": "The Alerts plugin lets you define custom alerts on any report and metric available in Piwik.",
         "CreateNewAlert": "Create new Alert",
+        "SmsAlertFromName": "New Alert",
+        "SmsAlertContent": "%1$s has been triggered as the metric %2$s in report %3$s has changed for website %4$s from %5$s to %6$s.",
+        "MailAlertContent": "%1$s has been triggered as the metric %2$s in report %3$s has changed for website %4$s from %5$s to %6$s.",
         "ManageAlerts": "Manage Custom Alerts",
         "AlertConditions": "Alert Conditions",
         "AlertDoesNotExist": "Alert with ID %d does not exist!",
@@ -33,6 +37,8 @@
         "MailText": "The custom alerts you requested from Piwik Alerts are listed in the table below. To see more details or to adjust your custom alert settings, please sign in to your Piwik Open Source Analytics account and access the Alerts page.",
         "MailEnd": "Happy analyzing!",
         "NoAlertsDefined": "You haven't created any Alerts for this website yet, create one now!",
-        "CancelAndReturnToAlerts": "Cancel and %sreturn to the list of alerts%s"
+        "CancelAndReturnToAlerts": "Cancel and %sreturn to the list of alerts%s",
+        "InvalidReportCondition": "Report condition is not a valid value",
+        "InvalidMetricCondition": "Metric condition is not a valid value"
     }
 }

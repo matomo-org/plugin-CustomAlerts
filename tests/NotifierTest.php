@@ -12,6 +12,7 @@ use Piwik\Access;
 use Piwik\Mail;
 use Piwik\Plugin;
 use Piwik\Plugins\CustomAlerts\Notifier;
+use Piwik\Translate;
 
 class CustomNotifier extends Notifier
 {
@@ -29,6 +30,10 @@ class CustomNotifier extends Notifier
 
     public function formatAlerts($triggeredAlerts, $format) {
         return parent::formatAlerts($triggeredAlerts, $format);
+    }
+
+    public function enrichTriggeredAlerts($triggeredAlerts) {
+        return parent::enrichTriggeredAlerts($triggeredAlerts);
     }
 
     public function sendAlertsPerEmailToRecipient($alerts, \Piwik\Mail $mail, $recipient)
@@ -59,6 +64,9 @@ class NotifierTest extends \DatabaseTestCase
         Plugin\Manager::getInstance()->loadPlugin('CustomAlerts');
         Plugin\Manager::getInstance()->loadPlugin('Zeitgeist');
 
+        Translate::reloadLanguage('en');
+
+        \Test_Piwik_BaseFixture::createWebsite('2012-08-09 11:22:33');
         \Piwik\Plugins\UsersManager\API::getInstance()->addUser('login1', 'p2kK2msAw1', 'test1@example.com');
         \Piwik\Plugins\UsersManager\API::getInstance()->addUser('login2', 'p2kK2msAw1', 'test2@example.com');
         \Piwik\Plugins\UsersManager\API::getInstance()->addUser('login3', 'p2kK2msAw1', 'test3@example.com');
@@ -71,9 +79,12 @@ class NotifierTest extends \DatabaseTestCase
         $alerts = $this->getTriggeredAlerts();
 
         $expected = <<<FORMATTED
-Name    Website    Period    Report    Condition
-MyName1    Piwik test    week    MultiSites.getOne    nb_visits less_than 5
-MyName2    Piwik test    week    MultiSites.getOne    nb_visits less_than 5
+MyName1 has been triggered as the metric Visits in report Single Website dashboard has changed for website Piwik test from 228 to 4493.
+>> Edit Alert http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday
+
+MyName2 has been triggered as the metric Visits in report Single Website dashboard has changed for website Piwik test from 228 to 4493.
+>> Edit Alert http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday
+
 
 FORMATTED;
 
@@ -87,7 +98,9 @@ FORMATTED;
         $alerts = $this->getTriggeredAlerts();
 
         $expected = <<<FORMATTED
-Alert MyName1 for website Piwik test (nb_visits was 228 is 4493). Alert MyName2 for website Piwik test (nb_visits was 228 is 4493).
+MyName1 has been triggered as the metric Visits in report Single Website dashboard has changed for website Piwik test from 228 to 4493.
+MyName2 has been triggered as the metric Visits in report Single Website dashboard has changed for website Piwik test from 228 to 4493.
+
 FORMATTED;
 
         $rendered = $this->notifier->formatAlerts($alerts, 'sms');
@@ -115,30 +128,23 @@ FORMATTED;
 <table>
     <thead>
     <tr bgcolor='#c0c0c0'>
-        <td>Name</td>
-        <td>Website</td>
-        <td>Period</td>
-        <td>Report</td>
-        <td>Condition</td>
+        <td>Alert</td>
+        <td>Edit</td>
     </tr>
     </thead>
     <tbody>
 
     <tr>
-        <td>MyName1</td>
-        <td>Piwik test</td>
-        <td>week</td>
-        <td>MultiSites.getOne</td>
-        <td>nb_visits less_than 5</td>
+        <td>MyName1 has been triggered as the metric Visits in report Single Website dashboard has changed for website Piwik test from 228 to 4493.</td>
+        <td><a href="http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday"
+                >Edit Alert</a></td>
     </tr>
 
 
     <tr>
-        <td>MyName2</td>
-        <td>Piwik test</td>
-        <td>week</td>
-        <td>MultiSites.getOne</td>
-        <td>nb_visits less_than 5</td>
+        <td>MyName2 has been triggered as the metric Visits in report Single Website dashboard has changed for website Piwik test from 228 to 4493.</td>
+        <td><a href="http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday"
+                >Edit Alert</a></td>
     </tr>
 
     </tbody>
@@ -157,27 +163,42 @@ FORMATTED;
         $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com');
 
         $expectedHtml = <<<HTML
-CustomAlerts_MailGreeting,<br /><br />=0A=0ACustomAlerts_MailText<br /><=
-br />=0A=0A<table>=0A    <thead>=0A    <tr bgcolor=3D&#03=
-9;#c0c0c0&#039;>=0A        <td>Name</td>=0A        <td=
->Website</td>=0A        <td>Period</td>=0A        &=
-lt;td>Report</td>=0A        <td>Condition</td>=0A =
-   </tr>=0A    </thead>=0A    <tbody>=0A=0A    <tr&=
-gt;=0A        <td>MyName1</td>=0A        <td>Piwik tes=
-t</td>=0A        <td>week</td>=0A        <td>Mul=
-tiSites.getOne</td>=0A        <td>nb_visits less_than 5</=
-td>=0A    </tr>=0A=0A=0A    <tr>=0A        <td>MyNa=
-me2</td>=0A        <td>Piwik test</td>=0A        <t=
-d>week</td>=0A        <td>MultiSites.getOne</td>=0A=
-        <td>nb_visits less_than 5</td>=0A    </tr>=0A=
-=0A    </tbody>=0A</table>=0A<br />=0ACustomAlerts_MailEnd
+Dear Piwik User,<br /><br />=0A=0AThe custom alerts you requested from P=
+iwik Alerts are listed in the table below. To see more details or to adj=
+ust your custom alert settings, please sign in to your Piwik Open Source=
+ Analytics account and access the Alerts page.<br /><br />=0A=0A<tabl=
+e>=0A    <thead>=0A    <tr bgcolor=3D&#039;#c0c0c0&#039;>=
+=0A        <td>Alert</td>=0A        <td>Edit</td&gt=
+;=0A    </tr>=0A    </thead>=0A    <tbody>=0A=0A    &l=
+t;tr>=0A        <td>MyName1 has been triggered as the metric Vi=
+sits in report Single Website dashboard has changed for website Piwik te=
+st from 228 to 4493.</td>=0A        <td><a href=3D"h=
+ttp://apache.piwik/index.php?module=3DCustomAlerts&action=3DeditAler=
+t&idAlert=3D1&idSite=3D1&period=3Dweek&date=3Dyesterday&=
+quot;=0A                >Edit Alert</a></td>=0A    </t=
+r>=0A=0A=0A    <tr>=0A        <td>MyName2 has been trigge=
+red as the metric Visits in report Single Website dashboard has changed=
+ for website Piwik test from 228 to 4493.</td>=0A        <td&gt=
+;<a href=3D"http://apache.piwik/index.php?module=3DCustomAlerts&=
+amp;action=3DeditAlert&idAlert=3D2&idSite=3D1&period=3Dweek&=
+amp;date=3Dyesterday"=0A                >Edit Alert</a>&lt=
+;/td>=0A    </tr>=0A=0A    </tbody>=0A</table>=0A<b=
+r />=0AHappy analyzing!
 HTML;
 
-        $expectedText = 'CustomAlerts_MailGreeting,=0A=0ACustomAlerts_MailText=0A=0AName    Websi=
-te    Period    Report    Condition=0AMyName1    Piwik test    week    M=
-ultiSites.getOne    nb_visits less_than 5=0AMyName2    Piwik test    wee=
-k    MultiSites.getOne    nb_visits less_than 5=0A=0A=0ACustomAlerts_Mai=
-lEnd';
+        $expectedText = 'Dear Piwik User,=0A=0AThe custom alerts you requested from Piwik Alerts=
+ are listed in the table below. To see more details or to adjust your cu=
+stom alert settings, please sign in to your Piwik Open Source Analytics=
+ account and access the Alerts page.=0A=0AMyName1 has been triggered as=
+ the metric Visits in report Single Website dashboard has changed for we=
+bsite Piwik test from 228 to 4493.=0A&gt;&gt; Edit Alert http://apache.p=
+iwik/index.php?module=3DCustomAlerts&amp;action=3DeditAlert&amp;idAlert=
+=3D1&amp;idSite=3D1&amp;period=3Dweek&amp;date=3Dyesterday=0A=0AMyName2=
+ has been triggered as the metric Visits in report Single Website dashbo=
+ard has changed for website Piwik test from 228 to 4493.=0A&gt;&gt; Edit=
+ Alert http://apache.piwik/index.php?module=3DCustomAlerts&amp;action=3D=
+editAlert&amp;idAlert=3D2&amp;idSite=3D1&amp;period=3Dweek&amp;date=3Dye=
+sterday=0A=0A=0A=0AHappy analyzing!';
 
         $this->assertEquals($expectedHtml, html_entity_decode($mail->getBodyHtml(true)));
         $this->assertEquals($expectedText, $mail->getBodyText(true));
@@ -221,6 +242,24 @@ lEnd';
                     $this->equalTo('test3@example.com'));
 
         $mock->sendNewAlerts('week');
+    }
+
+    public function test_enrichTriggeredAlerts_shouldEnrichAlerts_IfReportExists()
+    {
+        $alerts = array(
+            array('idsite' => 1, 'metric' => 'nb_visits', 'report' => 'MultiSites.getAll'),
+            array('idsite' => 1, 'metric' => 'nb_visits', 'report' => 'NotExistingModule.Action'),
+            array('idsite' => 1, 'metric' => 'bounce_rate', 'report' => 'Actions.getPageUrls')
+        );
+
+        $enriched = $this->notifier->enrichTriggeredAlerts($alerts);
+
+        $alerts[0]['reportName']   = 'All Websites dashboard';
+        $alerts[0]['reportMetric'] = 'Visits';
+        $alerts[2]['reportName']   = 'Page URLs';
+        $alerts[2]['reportMetric'] = 'Bounce Rate';
+
+        $this->assertEquals($alerts, $enriched);
     }
 
     private function buildAlert($id, $name, $period = 'week', $idSite = 1, $siteName = 'Piwik test', $login = 'superUserLogin', $metric = 'nb_visits', $metricCondition = 'less_than', $metricMatched = 5, $report = 'MultiSites.getOne', $reportCondition = 'matches_exactly', $reportMatched = 'Piwik')

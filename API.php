@@ -76,8 +76,8 @@ class API extends \Piwik\Plugin\API
      * @param string $metricCondition
      * @param float $metricValue
      * @param string $report
-     * @param string $reportCondition
-     * @param string $reportValue
+     * @param bool|string $reportCondition
+     * @param bool|string $reportValue
      * @internal param bool $enableEmail
      * @return int ID of new Alert
      */
@@ -89,6 +89,8 @@ class API extends \Piwik\Plugin\API
 
         $name = $this->checkName($name);
         $this->checkPeriod($period);
+        $this->checkMetricCondition($metricCondition);
+        $this->checkReportCondition($reportCondition);
 
         $additionalEmails = $this->checkAdditionalEmails($additionalEmails);
         $phoneNumbers     = $this->checkPhoneNumbers($phoneNumbers);
@@ -112,8 +114,8 @@ class API extends \Piwik\Plugin\API
      * @param string $metricCondition
      * @param float $metricValue
      * @param string $report
-     * @param string $reportCondition
-     * @param string $reportValue
+     * @param bool|string $reportCondition
+     * @param bool|string $reportValue
      *
      * @internal param bool $enableEmail
      * @return boolean
@@ -128,6 +130,8 @@ class API extends \Piwik\Plugin\API
 
         $name = $this->checkName($name);
         $this->checkPeriod($period);
+        $this->checkMetricCondition($metricCondition);
+        $this->checkReportCondition($reportCondition);
 
         $additionalEmails = $this->checkAdditionalEmails($additionalEmails);
         $phoneNumbers     = $this->checkPhoneNumbers($phoneNumbers);
@@ -271,6 +275,24 @@ class API extends \Piwik\Plugin\API
         }
 
         return urldecode($name);
+    }
+
+    private function checkMetricCondition($condition)
+    {
+        if (empty($condition)) {
+            throw new Exception(Piwik::translate('CustomAlerts_InvalidMetricCondition'));
+        }
+
+        if (!Processor::isValidMetricCondition($condition)) {
+            throw new Exception(Piwik::translate('CustomAlerts_InvalidMetricCondition'));
+        }
+    }
+
+    private function checkReportCondition($condition)
+    {
+        if (!empty($condition) && !Processor::isValidGroupCondition($condition)) {
+            throw new Exception(Piwik::translate('CustomAlerts_InvalidReportCondition'));
+        }
     }
 
     /**

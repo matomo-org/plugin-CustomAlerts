@@ -60,7 +60,7 @@
                     {{ 'CustomAlerts_ThisAppliesTo'|translate}} <br />
                     <select class="reports inp" name="report" id="report">
                         {% for groupName, groupValue in alertGroups %}
-                            <option value="{{ groupValue}}">{{ groupName|translate }}</option>
+                            <option value="{{ groupValue|e('html_attr') }}">{{ groupName|translate }}</option>
                         {% endfor %}
                     </select>
                 </td>
@@ -68,7 +68,7 @@
                     {{ 'CustomAlerts_Condition'|translate}} <br />
                     <select class="reportCondition inp" name="reportCondition" id="reportCondition">
                         {% for condName, condValue in alertGroupConditions %}
-                            <option value="{{ condValue }}">{{ condName|translate }}</option>
+                            <option value="{{ condValue|e('html_attr') }}">{{ condName|translate }}</option>
                         {% endfor %}
                     </select>
                 </td>
@@ -88,7 +88,7 @@
                     {{ 'CustomAlerts_Condition'|translate }} <br />
                     <select name="metricCondition" id="metricCondition" class="inp">
                         {% for condName, condValue in alertMetricConditions %}
-                            <option value="{{ condValue }}">{{ condName|translate }}</option>
+                            <option value="{{ condValue|e('html_attr') }}">{{ condName|translate }}</option>
                         {% endfor %}
                     </select>
                 </td>

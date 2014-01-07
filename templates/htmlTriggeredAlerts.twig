@@ -1,22 +1,17 @@
 <table>
     <thead>
     <tr bgcolor='#c0c0c0'>
-        <td>Name</td>
-        <td>Website</td>
-        <td>Period</td>
-        <td>Report</td>
-        <td>Condition</td>
+        <td>{{ 'CustomAlerts_Alert'|translate }}</td>
+        <td>{{ 'General_Edit'|translate }}</td>
     </tr>
     </thead>
     <tbody>
 {% for alert in triggeredAlerts %}
 
     <tr>
-        <td>{{ alert.alert_name }}</td>
-        <td>{{ alert.site_name }}</td>
-        <td>{{ alert.period }}</td>
-        <td>{{ alert.report }}</td>
-        <td>{{ alert.metric }} {{ alert.metric_condition }} {{ alert.metric_matched }}</td>
+        <td>{{ 'CustomAlerts_MailAlertContent'|translate(alert.alert_name, alert.reportMetric|default(alert.metric), alert.reportName|default(alert.report), alert.site_name, alert.value_old, alert.value_new) }}</td>
+        <td><a href="{{ piwikUrl }}{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert, 'idSite': alert.idsite, 'period': alert.period, 'date': 'yesterday'})|raw }}"
+                >{{ 'CustomAlerts_EditAlert'|translate }}</a></td>
     </tr>
 
 {% endfor %}

@@ -67,6 +67,26 @@ class ProcessorTest extends \PHPUnit_Framework_TestCase
         return $dataTable;
     }
 
+    public function test_isValidGroupCondition()
+    {
+        $this->assertFalse(Processor::isValidGroupCondition(null));
+        $this->assertFalse(Processor::isValidGroupCondition(''));
+        $this->assertFalse(Processor::isValidGroupCondition('matchesany'));
+
+        $this->assertTrue(Processor::isValidGroupCondition('matches_any'));
+        $this->assertTrue(Processor::isValidGroupCondition('matches_exactly'));
+    }
+
+    public function test_isValidMetricCondition()
+    {
+        $this->assertFalse(Processor::isValidMetricCondition(null));
+        $this->assertFalse(Processor::isValidMetricCondition(''));
+        $this->assertFalse(Processor::isValidMetricCondition('lessthan'));
+
+        $this->assertTrue(Processor::isValidMetricCondition('less_than'));
+        $this->assertTrue(Processor::isValidMetricCondition('greater_than'));
+    }
+
     public function test_filterDataTable_Condition_MatchesAny()
     {
         $this->assertFilterResult('matches_any', '3test', array(10, 33, 90, 65, 67, 100));

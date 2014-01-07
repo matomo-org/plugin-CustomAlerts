@@ -53,6 +53,22 @@ class Processor extends \Piwik\Plugin
         );
     }
 
+    public static function isValidGroupCondition($condition)
+    {
+        $conditions = self::getGroupConditions();
+        $conditions = array_values($conditions);
+
+        return in_array($condition, $conditions);
+    }
+
+    public static function isValidMetricCondition($condition)
+    {
+        $conditions = self::getMetricConditions();
+        $conditions = array_values($conditions);
+
+        return in_array($condition, $conditions);
+    }
+
 	public function processAlerts($period)
 	{
         $alerts = $this->getAllAlerts($period);

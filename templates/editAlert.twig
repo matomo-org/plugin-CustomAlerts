@@ -26,7 +26,7 @@
             <td>
                 <select id="idSites" class="multiselect inp" multiple="multiple" name="idSites[]">
                     {% for site in sitesList %}
-                        <option value="{{ site.idsite }}"
+                        <option value="{{ site.idsite|e('html_attr') }}"
                                 {% if site.idsite in sitesDefined %}selected="selected"{% endif %}
                                 >{{ site.name }}</option>
                     {% endfor %}
@@ -61,7 +61,7 @@
                     {% set module=report.module %}
                     {% set action=report.action %}
                     {% set reportName=module ~ '.' ~ action %}
-                    <option value="{{ reportName}}" {% if reportName == alert.report %}selected="selected"{% endif %}>{{ report.name }}</option>
+                    <option value="{{ reportName|e('html_attr') }}" {% if reportName == alert.report %}selected="selected"{% endif %}>{{ report.name }}</option>
                 {% endfor %}
                 </select>
             </td>
@@ -69,7 +69,7 @@
                 {{ 'CustomAlerts_Condition'|translate }} <br />
                 <select class="reportCondition inp" name="reportCondition" id="reportCondition">
                 {% for condName, condValue in alertGroupConditions %}
-                    <option value="{{ condValue }}" {% if condValue == alert.report_condition %}selected="selected"{% endif %}>{{ condName|translate }}</option>
+                    <option value="{{ condValue|e('html_attr') }}" {% if condValue == alert.report_condition %}selected="selected"{% endif %}>{{ condName|translate }}</option>
                 {% endfor %}
                 </select>
             </td>
@@ -88,7 +88,7 @@
                 {% set reportName=module ~ '.' ~ action %}
 				{% if reportName == alert.report %}
 				{% for metricName, metricValue in report.metrics %}
-					<option value="{{ metricName }}" {%  if metricName == alert.metric %}selected="selected"{% endif %}>{{ metricValue }}</option>
+					<option value="{{ metricName|e('html_attr') }}" {%  if metricName == alert.metric %}selected="selected"{% endif %}>{{ metricValue }}</option>
 				{% endfor %}
 				{% endif %}
 			{% endfor %}
@@ -98,13 +98,13 @@
                 {{ 'CustomAlerts_Condition'|translate }} <br />
                 <select name="metricCondition" id="metricCondition" class="inp">
                 {% for condName, condValue in alertMetricConditions %}
-                    <option value="{{ condValue }}" {% if condValue == alert.metric_condition %}selected="selected"{% endif %}>{{ condName|translate }}</option>
+                    <option value="{{ condValue|e('html_attr') }}" {% if condValue == alert.metric_condition %}selected="selected"{% endif %}>{{ condName|translate }}</option>
                 {% endfor %}
                 </select>
             </td>
             <td>
                 {{ 'General_Value'|translate }}<br />
-                <input type="text" class="inp" name="metricValue" id="metricValue" value="{{ alert.metric_matched }}" />
+                <input type="text" class="inp" name="metricValue" id="metricValue" value="{{ alert.metric_matched|e('html_attr') }}" />
             </td>
         </tr>
         </table>        
