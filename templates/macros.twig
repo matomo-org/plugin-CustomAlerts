@@ -5,13 +5,13 @@
     {% elseif alert.metric_condition == 'greater_than' %}
         {{ 'CustomAlerts_ValueIsGreaterThan'|translate(alert.metric_matched, alert.value_new) }}
     {% elseif alert.metric_condition == 'decrease_more_than' %}
-        {{ 'CustomAlerts_ValueDecreasedMoreThan'|translate(alert.metric_matched, alert.value_old, alert.value_new) }}
+        {{ 'CustomAlerts_ValueDecreasedMoreThan'|translate(alert.metric_matched, alert.value_old|default('-'), alert.value_new) }}
     {% elseif alert.metric_condition == 'increase_more_than' %}
-        {{ 'CustomAlerts_ValueIncreasedMoreThan'|translate(alert.metric_matched, alert.value_old, alert.value_new) }}
+        {{ 'CustomAlerts_ValueIncreasedMoreThan'|translate(alert.metric_matched, alert.value_old|default('-'), alert.value_new) }}
     {% elseif alert.metric_condition == 'percentage_decrease_more_than' %}
-        {{ 'CustomAlerts_ValuePercentageDecreasedMoreThan'|translate(alert.metric_matched, alert.value_old, alert.value_new) }}
+        {{ 'CustomAlerts_ValuePercentageDecreasedMoreThan'|translate(alert.metric_matched, alert.value_old|default('-'), alert.value_new) }}
     {% elseif alert.metric_condition == 'percentage_increase_more_than' %}
-        {{ 'CustomAlerts_ValuePercentageIncreasedMoreThan'|translate(alert.metric_matched, alert.value_old, alert.value_new) }}
+        {{ 'CustomAlerts_ValuePercentageIncreasedMoreThan'|translate(alert.metric_matched, alert.value_old|default('-'), alert.value_new) }}
     {% endif -%}
 {% endspaceless %}
 {% endmacro %}
