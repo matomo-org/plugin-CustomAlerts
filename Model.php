@@ -19,7 +19,6 @@ use Piwik\Common;
 use Piwik\Date;
 use Piwik\Period;
 use Piwik\Db;
-use Piwik\Plugins\API\API as MetadataApi;
 use Piwik\Translate;
 
 /**
@@ -240,13 +239,6 @@ class Model
             $alert['report_matched']   = null;
         }
 
-		// Do we have a valid alert for all given idSites?
-		foreach ($idSites as $idSite) {
-			if (!$this->isValidAlert($newAlert, $idSite)) {
-				throw new Exception(Piwik::translate('CustomAlerts_ReportOrMetricIsInvalid'));
-			}
-		}
-
         // save in db
         $db = Db::get();
 		$db->insert(Common::prefixTable('alert'), $newAlert);
@@ -300,13 +292,6 @@ class Model
 		} else {
 			$alert['report_condition'] = null;
 			$alert['report_matched']   = null;
-		}
-
-		// Do we have a valid alert for all given idSites?
-		foreach ($idSites as $idSite) {
-			if (!$this->isValidAlert($alert, $idSite)) {
-				throw new Exception(Piwik::translate('CustomAlerts_ReportOrMetricIsInvalid'));
-			}
 		}
 
         // Save in DB
@@ -366,53 +351,6 @@ class Model
 
         return $idSites;
     }
-
-	/**
-	 * Checks whether a report + metric exists for
-	 * the given idSites and if the a dimension is
-	 * given (requires report_condition, report_matched)
-	 *
-	 * @param array $alert
-	 * @param int $idSite
-	 * @return boolean
-	 */
-	private function isValidAlert($alert, $idSite)
-	{
-		list($module, $action) = explode(".", $alert['report']);
-
-        $lang   = Translate::getLanguageLoaded();
-		$report = MetadataApi::getInstance()->getMetadata($idSite, $module, $action, array(), $lang);
-
-		// If there is no report matching module + action for idSite it's not valid.
-		if (empty($report)) {
-			return false;
-		}
-
-		// Merge all available metrics
-		$allMetrics = $report[0]['metrics'];
-		if (isset($report[0]['processedMetrics'])) {
-			$allMetrics = array_merge($allMetrics, $report[0]['processedMetrics']);
-		}
-		if (isset($report[0]['metricsGoal'])) {
-			$allMetrics = array_merge($allMetrics, $report[0]['metricsGoal']);
-		}
-		if (isset($report[0]['processedMetricsGoal'])) {
-			$allMetrics = array_merge($allMetrics, $report[0]['processedMetricsGoal']);
-		}
-
-		if (empty($allMetrics) || !in_array($alert['metric'], array_keys($allMetrics))) {
-			return false;
-		}
-
-		// If we have a dimension, we need to check if
-		// report_condition and report_matched is given.
-		if (isset($report[0]['dimension'])
-				&& (!isset($alert['report_condition']) || !isset($alert['report_matched']))) {
-			return false;
-		}
-
-        return true;
-	}
 
     private function getNextAlertId()
     {

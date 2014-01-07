@@ -75,7 +75,7 @@ class ApiTest extends \DatabaseTestCase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Alerts_ReportOrMetricIsInvalid
+     * @expectedExceptionMessage CustomAlerts_InvalidMetric
      */
     public function test_addAlert_ShouldFail_IfInvalidMetricProvided()
     {
@@ -85,7 +85,7 @@ class ApiTest extends \DatabaseTestCase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_ReportOrMetricIsInvalid
+     * @expectedExceptionMessage CustomAlerts_InvalidReport
      */
     public function test_addAlert_ShouldFail_IfInvalidReportProvided()
     {
@@ -135,7 +135,7 @@ class ApiTest extends \DatabaseTestCase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage UsersManager_ExceptionInvalidEmail (inv+34i32s?y)
+     * @expectedExceptionMessage (inv+34i32s?y)
      */
     public function test_addAlert_ShouldFail_IfInvalidEmail()
     {
