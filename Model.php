@@ -43,8 +43,7 @@ class Model
 			`metric_matched` FLOAT NOT NULL ,
 			`email_me` BOOLEAN NOT NULL ,
 			`additional_emails` TEXT DEFAULT '' ,
-			`phone_numbers` TEXT DEFAULT '' ,
-			`deleted` BOOLEAN NOT NULL
+			`phone_numbers` TEXT DEFAULT ''
 		) DEFAULT CHARSET=utf8 ;";
 
         $tableAlertSite = "CREATE TABLE " . Common::prefixTable('alert_site') . "(
@@ -123,7 +122,6 @@ class Model
 						. " WHERE idalert IN (
 					 SELECT pas.idalert FROM " . Common::prefixTable('alert_site')
 						. "  pas WHERE idsite IN (" . implode(",", $idSites) . ")) "
-						. "AND deleted = 0"
 		));
 
         $alerts = $this->completeAlerts($alerts);
@@ -187,7 +185,6 @@ class Model
 				. Common::prefixTable('alert_site') . " alert, "
 				. Common::prefixTable('alert') . " alert_site "
 				. "WHERE alert.idalert = alert_site.idalert "
-				. "AND deleted = 0 "
 				. "AND period = ?";
 
 		$alerts = Db::fetchAll($sql, array($period));
@@ -234,8 +231,7 @@ class Model
 			'metric'           => $metric,
 			'metric_condition' => $metricCondition,
 			'metric_matched'   => (float) $metricValue,
-			'report'           => $report,
-			'deleted'          => 0,
+			'report'           => $report
 		);
 
 		if (!empty($reportCondition) && !empty($reportCondition)) {
@@ -342,11 +338,7 @@ class Model
 	public function deleteAlert($idAlert)
 	{
         $db = Db::get();
-		$db->update(
-				Common::prefixTable('alert'),
-				array("deleted" => 1),
-				"idalert = " . intval($idAlert)
-		);
+        $db->query("DELETE FROM " . Common::prefixTable("alert") . " WHERE idalert = ?", array($idAlert));
 	}
 
     public function triggerAlert($idAlert, $idSite, $valueNew, $valueOld)

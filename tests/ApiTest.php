@@ -150,16 +150,6 @@ class ApiTest extends \DatabaseTestCase
         $this->assertIsAlert(3, 'Initial3', 'month', array(2));
     }
 
-    public function test_getAlert_ShouldReturnDeletedAlerts()
-    {
-        $this->setSuperUser();
-
-        $this->api->deleteAlert(1);
-        $alert = $this->api->getAlert(1);
-        $this->assertEquals('Initial1', $alert['name']);
-        $this->assertEquals(1, $alert['deleted']);
-    }
-
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage CustomAlerts_AlertDoesNotExist
@@ -230,9 +220,15 @@ class ApiTest extends \DatabaseTestCase
     public function test_deleteAlert_ShouldNotRemoveAlertButMarkItAsDeleted()
     {
         $this->setSuperUser();
+        $alerts = $this->api->getAlerts(array($this->idSite, $this->idSite2));
+        $numAlerts = count($alerts);
+
         $this->api->deleteAlert(2);
-        $alert = $this->api->getAlert(2);
-        $this->assertEquals(1, $alert['deleted']);
+
+        $alerts = $this->api->getAlerts(array($this->idSite, $this->idSite2));
+        $numAlertsAfter = count($alerts);
+
+        $this->assertEquals($numAlerts - 1, $numAlertsAfter);
     }
 
     /**
@@ -399,8 +395,7 @@ class ApiTest extends \DatabaseTestCase
             'email_me' => 0,
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers' => array(),
-            'idSites' => $idSites,
-            'deleted' => 0
+            'idSites' => $idSites
         );
 
         $this->assertEquals($expected, $alert);

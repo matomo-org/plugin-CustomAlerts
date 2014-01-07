@@ -57,7 +57,7 @@ class ModelTest extends \DatabaseTestCase
         $this->assertContainTables(array('alert', 'alert_site', 'alert_log'));
 
         $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert'));
-        $this->assertCount(14, $columns);
+        $this->assertCount(13, $columns);
 
         $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert_site'));
         $this->assertCount(2, $columns);
@@ -103,14 +103,6 @@ class ModelTest extends \DatabaseTestCase
         $this->assertIsAlert(3, 'Initial3', 'month', array(2));
     }
 
-    public function test_getAlert_ShouldReturnDeletedAlerts()
-    {
-        $this->model->deleteAlert(1);
-        $alert = $this->model->getAlert(1);
-        $this->assertEquals('Initial1', $alert['name']);
-        $this->assertEquals(1, $alert['deleted']);
-    }
-
     public function test_getAlerts_shouldReturnAllAlertsThatMatchTheIdSites()
     {
         $alerts = $this->model->getAlerts(array($this->idSite));
@@ -136,11 +128,23 @@ class ModelTest extends \DatabaseTestCase
         $this->assertEquals('Initial3', $alerts[2]['name']);
     }
 
-    public function test_deleteAlert_ShouldNotRemoveAlertButMarkItAsDeleted()
+    public function test_deleteAlert_ShouldNotReallyRemoveTheAlert()
     {
-        $this->model->deleteAlert(2);
+        // make sure there is an entry that we delete
         $alert = $this->model->getAlert(2);
-        $this->assertEquals(1, $alert['deleted']);
+        $this->assertNotEmpty($alert);
+
+        $this->model->deleteAlert(2);
+
+        try {
+            // verify
+            $this->model->getAlert(2);
+        } catch (\Exception $e) {
+            $this->assertEquals('CustomAlerts_AlertDoesNotExist', $e->getMessage());
+            return;
+        }
+
+        $this->fail('An expected exception has not been thrown');
     }
 
     public function test_triggerAlert_getTriggeredAlerts_ShouldMarkAlertAsTriggeredForGivenWebsite()
@@ -285,8 +289,7 @@ class ModelTest extends \DatabaseTestCase
             'email_me' => 0,
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers' => array('0123456789'),
-            'idSites' => $idSites,
-            'deleted' => 0
+            'idSites' => $idSites
         );
 
         $this->assertEquals($expected, $alert);

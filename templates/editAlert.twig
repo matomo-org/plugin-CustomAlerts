@@ -142,7 +142,7 @@ function onSubmit(event)
     apiParameters.additionalEmails = (mailSettings.additionalEmails && mailSettings.additionalEmails.length) ? mailSettings.additionalEmails : [''];
     apiParameters.phoneNumbers = mobileSettings.phoneNumbers;
     apiParameters.report = $('#report').find('option:selected').val();
-    apiParameters.reportCondition  = $('#reportCondition').find('option:selected').val();
+    apiParameters.reportCondition = $('#reportCondition').find('option:selected').val();
     apiParameters.reportValue  = $('#reportValue').val();
 
     if (!$.isNumeric(apiParameters.metricValue)) {
