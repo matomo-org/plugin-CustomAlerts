@@ -21,15 +21,12 @@
         "IsGreaterThan": "è maggiore di",
         "IsLessThan": "è minore di",
         "MailEnd": "Analisi felice!",
-        "MailGreeting": "Caro Utente di Piwik",
-        "MailText": "Gli avvisi personalizzati che hai richiesto a Piwik sono elencati nella tabella sottostante. Per vedere altri dettagli o per variare le tue impostazioni personalizzate, accedi al tuo account e va' alla pagina Avvisi.",
         "MatchesRegularExpression": "corrisponde all'espressione regolare",
         "NoAlertsDefined": "Non hai ancora creato alcun Avviso per questo sito, creane uno adesso!",
         "PercentageDecreasesMoreThan": "% diminuisce di più di",
         "PercentageIncreasesMoreThan": "% aumenta di più di",
         "PluginDescription": "Il plugin Avvisi ti consente di definire degli Avvisi personalizzati su quasi tutte le metriche disponibili in Piwik.",
         "ReportOrMetricIsInvalid": "Il report o la metrica dati non sono validi!",
-        "SendEmail": "Inviami un'e-mail quando si attiva questo avviso",
         "StartsWith": "comincia con",
         "ThisAppliesTo": "Si applica a"
     }

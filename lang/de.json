@@ -1,13 +1,36 @@
 {
     "CustomAlerts": {
+        "AccessException": "Sie sind nicht der Eigentümer der Benachrichtigung mit der ID %d",
+        "Alert": "Benachrichtigung",
         "AlertConditions": "Bedingungen für die Benachrichtigung",
+        "AlertDoesNotExist": "Die Benachrichtigung mit der ID %d existiert nicht!",
         "AlertMeWhen": "Benachrichtige mich sobald",
         "AlertName": "Titel der Benachrichtigung",
         "Alerts": "Benachrichtigungen",
+        "ApplyTo": "Anwenden auf",
+        "AreYouSureDeleteAlert": "Sind Sie sicher dass Sie diese Benachrichtigung löschen wollen?",
+        "CancelAndReturnToAlerts": "Abbrechen und %szur Liste der Benachrichtigungen zurückkehren%s",
         "Condition": "Bedingung",
+        "CreateNewAlert": "Neue Benachrichtigung erstellen",
+        "DecreasesMoreThan": "verringert sich um mehr als",
+        "DoesNotEndWith": "endet nicht auf",
+        "DoesNotMatchRegularExpression": "entspricht nicht einem regulären Ausdruck",
         "DoesNotStartWith": "beginnt nicht mit",
         "EditAlert": "Benachrichtigung bearbeiten",
         "EndsWith": "endet auf",
-        "StartsWith": "beginnt mit"
+        "IncreasesMoreThan": "erhöht sich um mehr als",
+        "InvalidMetricValue": "Numerischer Wert erwartet",
+        "InvalidPeriod": "Ungültiger Zeitbereich",
+        "IsGreaterThan": "ist größer als",
+        "IsLessThan": "ist kleiner als",
+        "MailEnd": "Viel Spaß beim Analysieren!",
+        "MatchesRegularExpression": "entspricht einem regulären Ausdruck",
+        "NoAlertsDefined": "Sie haben noch keine Benachrichtigungen für diese Seite erstellt, erstellen Sie jetzt eine!",
+        "PercentageDecreasesMoreThan": "% verringert sich um mehr als",
+        "PercentageIncreasesMoreThan": "% erhöht sich um mehr als",
+        "PluginDescription": "Das Alerts-Plugin bietet Ihnen die Möglichkeit benutzerdefinierte Benachrichtigungen für nahezu alle in Piwik verfügbare Metriken erstellen.",
+        "ReportOrMetricIsInvalid": "Übergebener Bericht oder Metrik ist ungültig!",
+        "StartsWith": "beginnt mit",
+        "ThisAppliesTo": "Wird angewendet auf"
     }
 }
