@@ -124,7 +124,7 @@ FORMATTED;
 
         $expected = <<<FORMATTED
 <table style="border-collapse: collapse;margin-left: 5px;">
-    <thead style="background-color:rgb(228,226,215);color:rgb(37,87,146);font-size:11pt">
+    <thead style="background-color:rgb(228,226,215);color:rgb(37,87,146);">
     <tr>
         <th style="padding:6px 6px;text-align: left;">Alert</th>
         <th style="padding:6px 6px;text-align: left;width: 80px;" width="80">Edit</th>
@@ -133,15 +133,15 @@ FORMATTED;
     <tbody>
 
     <tr>
-        <td style="font-size:11pt;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">&#039;MyName1&#039; has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.</td>
-        <td style="font-size:11pt;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday"
+        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">&#039;MyName1&#039; has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.</td>
+        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday"
                 >Edit Alert</a></td>
     </tr>
 
 
     <tr>
-        <td style="font-size:11pt;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">&#039;MyName2&#039; has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.</td>
-        <td style="font-size:11pt;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday"
+        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">&#039;MyName2&#039; has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.</td>
+        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="http://apache.piwik/index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday"
                 >Edit Alert</a></td>
     </tr>
 
