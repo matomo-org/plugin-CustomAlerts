@@ -170,7 +170,7 @@ class ModelTest extends \DatabaseTestCase
             'value_old' => 48,
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers' => array('0123456789'),
-            'email_me' => true,
+            'email_me' => false,
             'idSites' => array(1, 2)
         );
 
