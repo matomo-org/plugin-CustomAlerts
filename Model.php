@@ -177,7 +177,7 @@ class Model
 
 		$alerts = $db->fetchAll($sql, $values);
         $alerts = $this->completeAlerts($alerts);
-      
+
         return $alerts;
 	}
 
@@ -438,6 +438,7 @@ class Model
         foreach ($alerts as &$alert) {
             $alert['additional_emails'] = json_decode($alert['additional_emails']);
             $alert['phone_numbers']     = json_decode($alert['phone_numbers']);
+            $alert['email_me']          = (bool) $alert['phone_numbers'];
             $alert['idSites']           = $this->fetchSiteIdsTheAlertWasDefinedOn($alert['idalert']);
         }
 

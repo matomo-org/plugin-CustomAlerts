@@ -288,7 +288,11 @@ class ApiTest extends \DatabaseTestCase
             'metric_condition' => 'less_than',
             'metric_matched' => '5',
             'value_new' => 94,
-            'value_old' => 48
+            'value_old' => 48,
+            'additional_emails' => array('test1@example.com', 'test2@example.com'),
+            'phone_numbers' => array(),
+            'email_me' => false,
+            'idSites' => array(1, 2)
         );
 
         $this->assertEquals(array($expected), $triggeredAlerts);
