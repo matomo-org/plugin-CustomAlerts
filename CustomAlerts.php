@@ -108,25 +108,25 @@ class CustomAlerts extends \Piwik\Plugin
 
     public function runAlertsDaily($idSite)
     {
-        $this->runAlerts('day', (int) $idSite);
+        $this->runAlerts('day', $idSite);
     }
 
     public function runAlertsWeekly($idSite)
     {
-        $this->runAlerts('week', (int) $idSite);
+        $this->runAlerts('week', $idSite);
     }
 
     public function runAlertsMonthly($idSite)
     {
-        $this->runAlerts('month', (int) $idSite);
+        $this->runAlerts('month', $idSite);
     }
 
     private function runAlerts($period, $idSite)
     {
         $processor = new Processor();
-        $processor->processAlerts($period, $idSite);
+        $processor->processAlerts($period, (int) $idSite);
         $notifier  = new Notifier();
-        $notifier->sendNewAlerts($period, $idSite);
+        $notifier->sendNewAlerts($period, (int) $idSite);
     }
 
     private function scheduleTask(&$tasks, $methodName, $period)

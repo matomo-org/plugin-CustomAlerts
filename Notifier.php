@@ -41,8 +41,7 @@ class Notifier extends \Piwik\Plugin
     }
 
     /**
-     * Sends a list of the triggered alerts to
-     * $recipient.
+     * Sends a list of the triggered alerts to all recipients.
      *
      * @param string $period
      * @param int    $idSite

@@ -14,7 +14,6 @@
 namespace Piwik\Plugins\CustomAlerts;
 
 use Exception;
-use Piwik\Piwik;
 use Piwik\Common;
 use Piwik\Date;
 use Piwik\Period;
@@ -227,9 +226,6 @@ class Model
 	public function createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $report, $reportCondition, $reportValue)
 	{
         $idAlert = $this->getNextAlertId();
-        if (empty($idAlert)) {
-			$idAlert = 1;
-		}
 
 		$newAlert = array(
 			'idalert'          => $idAlert,
@@ -243,28 +239,22 @@ class Model
 			'metric_condition' => $metricCondition,
 			'metric_matched'   => (float) $metricValue,
 			'report'           => $report,
-            'compared_to'      => (int) $comparedTo
+            'compared_to'      => (int) $comparedTo,
+            'report_condition' => null,
+            'report_matched'   => null
 		);
 
 		if (!empty($reportCondition) && !empty($reportCondition)) {
 			$newAlert['report_condition'] = $reportCondition;
 			$newAlert['report_matched']   = $reportValue;
-		} else {
-            $alert['report_condition'] = null;
-            $alert['report_matched']   = null;
-        }
-
-        // save in db
-        $db = Db::get();
-		$db->insert(Common::prefixTable('alert'), $newAlert);
-		foreach ($idSites as $idSite) {
-			$db->insert(Common::prefixTable('alert_site'), array(
-				'idalert' => intval($idAlert),
-				'idsite'  => intval($idSite)
-			));
 		}
 
-		return $idAlert;
+        $db = Db::get();
+		$db->insert(Common::prefixTable('alert'), $newAlert);
+
+        $this->setSiteIds($idAlert, $idSites);
+
+        return $idAlert;
 	}
 
     /**
@@ -301,30 +291,20 @@ class Model
 			'metric_condition' => $metricCondition,
 			'metric_matched'   => (float) $metricValue,
 			'report'           => $report,
-            'compared_to'      => (int) $comparedTo
+            'compared_to'      => (int) $comparedTo,
+            'report_condition' => null,
+            'report_matched'   => null
 		);
 
 		if (!empty($reportCondition) && !empty($reportCondition)) {
 			$alert['report_condition'] = $reportCondition;
 			$alert['report_matched']   = $reportValue;
-		} else {
-			$alert['report_condition'] = null;
-			$alert['report_matched']   = null;
 		}
 
-        // Save in DB
         $db = Db::get();
 		$db->update(Common::prefixTable('alert'), $alert, "idalert = " . intval($idAlert));
 
-		$db->query("DELETE FROM " . Common::prefixTable("alert_site") . "
-					WHERE idalert = ?", $idAlert);
-
-		foreach ($idSites as $idSite) {
-			$db->insert(Common::prefixTable('alert_site'), array(
-				'idalert' => intval($idAlert),
-				'idsite'  => intval($idSite)
-			));
-		}
+        $this->setSiteIds($idAlert, $idSites);
 
 		return $idAlert;
 	}
@@ -340,13 +320,9 @@ class Model
 	{
         $db = Db::get();
         $db->query("DELETE FROM " . Common::prefixTable("alert") . " WHERE idalert = ?", array($idAlert));
-
-        $db = Db::get();
-        $db->query("DELETE FROM " . Common::prefixTable("alert_site") . " WHERE idalert = ?", array($idAlert));
-
-        $db = Db::get();
         $db->query("DELETE FROM " . Common::prefixTable("alert_log") . " WHERE idalert = ?", array($idAlert));
-	}
+        $this->removeAllSites($idAlert);
+    }
 
     public function triggerAlert($idAlert, $idSite, $valueNew, $valueOld)
     {
@@ -354,18 +330,18 @@ class Model
         $db->insert(
             Common::prefixTable('alert_log'),
             array(
-                'idalert' => intval($idAlert),
-                'idsite'  => intval($idSite),
+                'idalert'      => intval($idAlert),
+                'idsite'       => intval($idSite),
                 'ts_triggered' => Date::now()->getDatetime(),
-                'value_new' => $valueNew,
-                'value_old' => $valueOld,
+                'value_new'    => $valueNew,
+                'value_old'    => $valueOld,
             )
         );
     }
 
-    private function fetchSiteIdsTheAlertWasDefinedOn($idAlert)
+    private function getDefinedSiteIds($idAlert)
     {
-        $sql   = "SELECT idsite FROM ".Common::prefixTable('alert_site')." WHERE idalert = ?";
+        $sql   = "SELECT idsite FROM " . Common::prefixTable('alert_site') . " WHERE idalert = ?";
         $sites = Db::fetchAll($sql, $idAlert, \PDO::FETCH_COLUMN);
 
         $idSites = array();
@@ -378,7 +354,13 @@ class Model
 
     private function getNextAlertId()
     {
-        return Db::fetchOne("SELECT max(idalert) + 1 FROM " . Common::prefixTable('alert'));
+        $idAlert = Db::fetchOne("SELECT max(idalert) + 1 FROM " . Common::prefixTable('alert'));
+
+        if (empty($idAlert)) {
+            $idAlert = 1;
+        }
+
+        return $idAlert;
     }
 
     private function completeAlerts($alerts)
@@ -392,10 +374,28 @@ class Model
             $alert['phone_numbers']     = json_decode($alert['phone_numbers']);
             $alert['email_me']          = (bool) $alert['email_me'];
             $alert['compared_to']       = (int) $alert['compared_to'];
-            $alert['idSites']           = $this->fetchSiteIdsTheAlertWasDefinedOn($alert['idalert']);
+            $alert['idSites']           = $this->getDefinedSiteIds($alert['idalert']);
         }
 
         return $alerts;
+    }
+
+    private function setSiteIds($idAlert, $idSites)
+    {
+        $this->removeAllSites($idAlert);
+
+        $db = Db::get();
+        foreach ($idSites as $idSite) {
+            $db->insert(Common::prefixTable('alert_site'), array(
+                'idalert' => intval($idAlert),
+                'idsite' => intval($idSite)
+            ));
+        }
+    }
+
+    private function removeAllSites($idAlert)
+    {
+        Db::get()->query("DELETE FROM " . Common::prefixTable("alert_site") . " WHERE idalert = ?", $idAlert);
     }
 
 }

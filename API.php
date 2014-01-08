@@ -197,7 +197,7 @@ class API extends \Piwik\Plugin\API
         Piwik::checkUserIsSuperUser();
 
         if (!$this->isValidPeriod($period)) {
-            throw new Exception("Invalid period given.");
+            throw new Exception(Piwik::translate('CustomAlerts_InvalidPeriod'));
         }
 
         return $this->getModel()->getAllAlertsForPeriod($period);
@@ -255,9 +255,7 @@ class API extends \Piwik\Plugin\API
 
         }
 
-        $additionalEmails = array_filter($additionalEmails);
-
-        return $additionalEmails;
+        return array_filter($additionalEmails);
     }
 
     private function checkPhoneNumbers($phoneNumbers)
