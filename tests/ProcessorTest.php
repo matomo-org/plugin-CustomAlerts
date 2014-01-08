@@ -435,7 +435,7 @@ class ProcessorTest extends BaseTest
         return array(
             'idalert' => 1,
             'period' => $period,
-            'idSites' => $idSites,
+            'id_sites' => $idSites,
             'metric_condition' => 'increase_more_than',
             'metric_matched' => $metricMatched,
             'report' => $report,

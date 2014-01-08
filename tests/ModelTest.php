@@ -152,7 +152,7 @@ class ModelTest extends BaseTEst
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers' => array('0123456789'),
             'email_me' => false,
-            'idSites' => array(1, 2)
+            'id_sites' => array(1, 2)
         );
 
         $this->assertEquals(array($expected), $triggeredAlerts);
@@ -268,7 +268,7 @@ class ModelTest extends BaseTEst
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers' => array('0123456789'),
             'compared_to' => 1,
-            'idSites' => $idSites
+            'id_sites' => $idSites
         );
 
         $this->assertEquals($expected, $alert);

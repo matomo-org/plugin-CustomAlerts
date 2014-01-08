@@ -385,7 +385,7 @@ class ApiTest extends BaseTest
             'phone_numbers' => array(),
             'email_me' => false,
             'compared_to' => 1,
-            'idSites' => array(1, 2)
+            'id_sites' => array(1, 2)
         );
 
         $this->assertEquals(array($expected), $triggeredAlerts);
@@ -495,7 +495,7 @@ class ApiTest extends BaseTest
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers' => array(),
             'compared_to' => 1,
-            'idSites' => $idSites
+            'id_sites' => $idSites
         );
 
         $this->assertEquals($expected, $alert);

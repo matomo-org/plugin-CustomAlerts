@@ -51,11 +51,11 @@ class Controller extends \Piwik\Plugin\Controller
 
     private function findReportName($alert)
     {
-        if (empty($alert['report']) || empty($alert['idSites'])) {
+        if (empty($alert['report']) || empty($alert['id_sites'])) {
             return;
         }
 
-        list($idSite) = $alert['idSites'];
+        list($idSite) = $alert['id_sites'];
 
         list($module, $action) = explode('.', $alert['report']);
 
@@ -70,11 +70,11 @@ class Controller extends \Piwik\Plugin\Controller
 
     private function findSiteName($alert, $sites)
     {
-        if (empty($alert['idSites'])) {
+        if (empty($alert['id_sites'])) {
             return;
         }
 
-        list($idSite) = $alert['idSites'];
+        list($idSite) = $alert['id_sites'];
 
         foreach ($sites as $site) {
             if ($site['idsite'] == $idSite) {

@@ -374,7 +374,7 @@ class Model
             $alert['phone_numbers']     = json_decode($alert['phone_numbers']);
             $alert['email_me']          = (bool) $alert['email_me'];
             $alert['compared_to']       = (int) $alert['compared_to'];
-            $alert['idSites']           = $this->getDefinedSiteIds($alert['idalert']);
+            $alert['id_sites']          = $this->getDefinedSiteIds($alert['idalert']);
         }
 
         return $alerts;

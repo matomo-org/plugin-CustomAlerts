@@ -109,7 +109,7 @@ class Processor extends \Piwik\Plugin
 
     protected function processAlert($alert, $idSite)
     {
-        if (empty($alert['idSites']) || !in_array($idSite, $alert['idSites'])) {
+        if (empty($alert['id_sites']) || !in_array($idSite, $alert['id_sites'])) {
             return;
         }
 

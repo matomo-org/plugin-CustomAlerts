@@ -89,7 +89,7 @@ class CustomAlerts extends \Piwik\Plugin
                 $model->updateAlert(
                     $alert['idalert'],
                     $alert['name'],
-                    $alert['idSites'],
+                    $alert['id_sites'],
                     $alert['period'],
                     $alert['email_me'],
                     $alert['additional_emails'],

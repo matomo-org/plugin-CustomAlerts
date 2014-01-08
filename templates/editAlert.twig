@@ -25,7 +25,7 @@
             <td class="first"><label for="applyTo">{{ 'CustomAlerts_ApplyTo'|translate }}</label></td>
             <td>
                 {% set currentSiteName = '' %}
-                {% set currentSiteId = alert.idSites|first %}
+                {% set currentSiteId = alert.id_sites|first %}
                 {% for site in sitesList %}
                     {% if currentSiteId == site.idsite %}
                         {% set currentSiteName = site.name %}
