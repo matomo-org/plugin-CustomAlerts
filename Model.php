@@ -232,14 +232,14 @@ class Model
 			'name'             => $name,
 			'period'           => $period,
 			'login'            => $login,
-			'email_me'         => (int) $emailMe,
+			'email_me'         => $emailMe ? 1 : 0,
 			'additional_emails' => json_encode($additionalEmails),
 			'phone_numbers'    => json_encode($phoneNumbers),
 			'metric'           => $metric,
 			'metric_condition' => $metricCondition,
 			'metric_matched'   => (float) $metricValue,
 			'report'           => $report,
-            'compared_to'      => (int) $comparedTo,
+            'compared_to'      => $comparedTo,
             'report_condition' => null,
             'report_matched'   => null
 		);
@@ -284,14 +284,14 @@ class Model
 		$alert = array(
 			'name'             => $name,
 			'period'           => $period,
-			'email_me'         => (int) $emailMe,
+			'email_me'         => $emailMe ? 1 : 0,
             'additional_emails' => json_encode($additionalEmails),
             'phone_numbers'    => json_encode($phoneNumbers),
 			'metric'           => $metric,
 			'metric_condition' => $metricCondition,
 			'metric_matched'   => (float) $metricValue,
 			'report'           => $report,
-            'compared_to'      => (int) $comparedTo,
+            'compared_to'      => $comparedTo,
             'report_condition' => null,
             'report_matched'   => null
 		);
