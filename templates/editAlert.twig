@@ -24,13 +24,22 @@
         <tr>
             <td class="first"><label for="applyTo">{{ 'CustomAlerts_ApplyTo'|translate }}</label></td>
             <td>
-                <select id="idSites" class="multiselect inp" multiple="multiple" name="idSites[]">
-                    {% for site in sitesList %}
-                        <option value="{{ site.idsite|e('html_attr') }}"
-                                {% if site.idsite in sitesDefined %}selected="selected"{% endif %}
-                                >{{ site.name }}</option>
-                    {% endfor %}
-                </select>
+                {% set currentSiteName = '' %}
+                {% set currentSiteId = alert.idSites|first %}
+                {% for site in sitesList %}
+                    {% if currentSiteId == site.idsite %}
+                        {% set currentSiteName = site.name %}
+                    {% endif %}
+                {% endfor %}
+                {% include "@CoreHome/_siteSelect.twig" with {
+                    'siteName':currentSiteName,
+                    'idSite':currentSiteId,
+                    'switchSiteOnSelect':false,
+                    'showAllSitesItem':false,
+                    'showSelectedSite':true,
+                    'siteSelectorId': 'alertReportSiteSelector',
+                    'inputName': 'idSite'
+                } %}
             </td>
         </tr>
         <tr>
@@ -144,6 +153,7 @@ function onSubmit(event)
     apiParameters.report = $('#report').find('option:selected').val();
     apiParameters.reportCondition = $('#reportCondition').find('option:selected').val();
     apiParameters.reportValue  = $('#reportValue').val();
+    apiParameters.idSites = [$('[name=idSite]').val()];
 
     if (!$.isNumeric(apiParameters.metricValue)) {
         var UI = require('piwik/UI');
@@ -154,15 +164,6 @@ function onSubmit(event)
     }
 
     $('#metricValue').css({backgroundColor: '#ffffff'});
-
-    var selectedSites = $('#idSites').find('option:selected');
-
-    var idSites = [];
-    for (var index = 0; index < selectedSites.length; index++) {
-        idSites.push($(selectedSites[index]).val());
-    }
-
-    apiParameters.idSites = idSites;
 
     var ajaxHandler = new ajaxHelper();
     ajaxHandler.addParams(apiParameters, 'POST');

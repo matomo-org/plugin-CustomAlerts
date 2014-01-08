@@ -32,15 +32,16 @@ class Controller extends \Piwik\Plugin\Controller
 	 */
 	public function index()
 	{
-        $idSite = Common::getRequestVar('idSite', null, 'int');
-
         $view = new View('@CustomAlerts/index');
         $this->setGeneralVariablesView($view);
 
-        $alerts = API::getInstance()->getAlerts(array($idSite));
+        $siteIds = SitesManagerApi::getInstance()->getSitesIdWithAtLeastViewAccess();
+        $sites   = $this->getSitesWithAtLeastViewAccess();
+        $alerts  = API::getInstance()->getAlerts($siteIds);
 
         foreach ($alerts as &$alert) {
-            $alert['reportName'] = $this->findReportName($idSite, $alert);
+            $alert['reportName'] = $this->findReportName($alert);
+            $alert['siteName']   = $this->findSiteName($alert, $sites);
         }
 
         $view->alerts = $alerts;
@@ -48,11 +49,13 @@ class Controller extends \Piwik\Plugin\Controller
 		return $view->render();
 	}
 
-    private function findReportName($idSite, $alert)
+    private function findReportName($alert)
     {
-        if (empty($alert['report'])) {
+        if (empty($alert['report']) || empty($alert['idSites'])) {
             return;
         }
+
+        list($idSite) = $alert['idSites'];
 
         list($module, $action) = explode('.', $alert['report']);
 
@@ -65,12 +68,27 @@ class Controller extends \Piwik\Plugin\Controller
         }
     }
 
+    private function findSiteName($alert, $sites)
+    {
+        if (empty($alert['idSites'])) {
+            return;
+        }
+
+        list($idSite) = $alert['idSites'];
+
+        foreach ($sites as $site) {
+            if ($site['idsite'] == $idSite) {
+                return $site['name'];
+            }
+        }
+    }
+
 	public function addNewAlert()
 	{
         $view = new View('@CustomAlerts/addNewAlert');
 		$this->setGeneralVariablesView($view);
 
-		$view->sitesList = SitesManagerApi::getInstance()->getSitesWithAtLeastViewAccess();
+		$view->sitesList = $this->getSitesWithAtLeastViewAccess();
 
         $view->alertGroups           = array();
 		$view->alertGroupConditions  = Processor::getGroupConditions();
@@ -78,6 +96,11 @@ class Controller extends \Piwik\Plugin\Controller
 
 		return $view->render();
 	}
+
+    private function getSitesWithAtLeastViewAccess()
+    {
+        return SitesManagerApi::getInstance()->getSitesWithAtLeastViewAccess();
+    }
 
 	public function editAlert()
 	{
@@ -87,10 +110,7 @@ class Controller extends \Piwik\Plugin\Controller
 		$this->setGeneralVariablesView($view);
 
 		$view->alert     = API::getInstance()->getAlert($idAlert);
-		$view->sitesList = SitesManagerApi::getInstance()->getSitesWithAtLeastViewAccess();
-
-		$view->sitesDefined = $view->alert['idSites'];
-
+		$view->sitesList = $this->getSitesWithAtLeastViewAccess();
 		$view->reportMetadata        = MetadataApi::getInstance()->getReportMetadata();
 		$view->alertGroupConditions  = Processor::getGroupConditions();
 		$view->alertMetricConditions = Processor::getMetricConditions();

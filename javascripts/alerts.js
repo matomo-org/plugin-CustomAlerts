@@ -2,14 +2,12 @@
 
     var reportValuesAutoComplete = null;
 
-    function updateMetrics() {
+    function updateMetrics(siteId) {
+        if (!siteId) {
+            siteId = $('[name=idSite]').val();
+        }
 
         reportValuesAutoComplete = null;
-
-        var idSites = [piwik.idSite];
-        $("#idSites :selected").each(function(i,selected) {
-            idSites.push($(selected).val());
-        });
 
         var ajaxRequest = new ajaxHelper();
         ajaxRequest.addParams({
@@ -17,7 +15,7 @@
             method: 'API.getReportMetadata',
             date: piwik.currentDateString,
             period: $(".period").val(),
-            idSites: idSites,
+            idSites: [siteId],
             format: 'JSON'
         }, 'GET');
         ajaxRequest.setCallback(function(data) {
@@ -61,11 +59,6 @@
             sendFeedback(reportValuesAutoComplete);
         }
 
-        var idSites = "";
-        $("#idSites :selected").each(function(i,selected) {
-            idSites = idSites + "&idSites[]=" + $(selected).val();
-        });
-
         var ajaxRequest = new ajaxHelper();
         ajaxRequest.addParams({
             module: 'API',
@@ -75,7 +68,7 @@
             showColumns: metric,
             apiModule: report[0],
             apiAction: report[1],
-            idSite: piwik.idSite,
+            idSite: $('[name=idSite]').val(),
             format: 'JSON'
         }, 'GET');
         ajaxRequest.setCallback(function(data) {
@@ -148,20 +141,6 @@
         updateReportCondition();
     }
 
-    function initSitesDropdown() {
-        $(".alerts #idSites").dropdownchecklist({ width: 150, maxDropHeight: 200, textFormatFunction: function(options) {
-            var selectedOptions = options.filter(":selected");
-            var countOfSelected = selectedOptions.size();
-            var size = options.size();
-            switch(countOfSelected) {
-                case 0: return "0 other Websites";
-                case 1: return selectedOptions.text();
-                case size: return "all other Websites";
-                default: return countOfSelected + " Websites";
-            }
-        }});
-    }
-
     function updateReportCondition()
     {
         if ('matches_any' == $('.reportCondition').val()) {
@@ -193,7 +172,6 @@
 
     $(document).ready(function() {
 
-        initSitesDropdown();
         updateReportCondition();
 
         $('.alerts .period').change(function() {
@@ -206,8 +184,12 @@
 
         $('.alerts .reportCondition').change(updateReportCondition)
 
-        $('.alerts #idSites').change(function() {
-            updateMetrics();
+        var currentSiteId = $('[name=idSite]').val();
+        $('.sites_autocomplete').bind('piwik:siteSelected', function (e, site) {
+            if (site.id != currentSiteId) {
+                currentSiteId = site.id;
+                updateMetrics(site.id);
+            }
         });
 
         $('.entityListContainer .deleteAlert[id]').click(function() {

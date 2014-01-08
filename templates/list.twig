@@ -4,6 +4,7 @@
         <thead>
             <tr>
                 <th>{{ 'General_Name'|translate }}</th>
+                <th>{{ 'General_Website'|translate }}</th>
                 <th>{{ 'General_Period'|translate }}</th>
                 <th>{{ 'General_Report'|translate }}</th>
                 <th>{{ 'General_Edit'|translate }}</th>
@@ -13,7 +14,7 @@
 
         {% if not alerts %}
         <tr>
-            <td colspan="5">
+            <td colspan="6">
                 <br/>
                 {{ 'CustomAlerts_NoAlertsDefined'|translate }}
                 <br/><br/>
@@ -23,6 +24,7 @@
             {% for alert in alerts %}
                 <tr>
                     <td class="name">{{ alert.name }}</td>
+                    <td class="site">{{ alert.siteName }}</td>
                     <td class="period">{{ alert.period|capitalize }}</td>
                     <td class="reportName">{{ alert.reportName|default('-') }}</td>
                     <td class="edit"><a href="{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert}) }}"

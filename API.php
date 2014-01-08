@@ -108,8 +108,9 @@ class API extends \Piwik\Plugin\API
         $phoneNumbers     = $this->checkPhoneNumbers($phoneNumbers);
 
         $emailMe = $emailMe ? 1 : 0;
+        $login = Piwik::getCurrentUserLogin();
 
-        return $this->getModel()->createAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue);
+        return $this->getModel()->createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue);
 	}
 
     /**

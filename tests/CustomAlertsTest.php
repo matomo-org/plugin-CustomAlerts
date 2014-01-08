@@ -10,6 +10,7 @@ namespace Piwik\Plugins\CustomAlerts\tests;
 
 use Piwik\Access;
 use Piwik\Db;
+use Piwik\Piwik;
 use Piwik\Plugins\CustomAlerts\CustomAlerts;
 use Piwik\Plugins\CustomAlerts\Model;
 use Piwik\Translate;
@@ -68,8 +69,9 @@ class CustomAlertsTest extends \DatabaseTestCase
         $idSites = array(1);
         $report  = 'MultiSites.getOne';
         $emails  = array('test1@example.com', 'test2@example.com');
+        $login   = Piwik::getCurrentUserLogin();
 
-        $id = $this->model->createAlert($name, $idSites, 'week', 0, $emails, $phoneNumbers, 'nb_visits', 'less_than', 5, $report, 'matches_exactly', 'Piwik');
+        $id = $this->model->createAlert($name, $idSites, $login, 'week', 0, $emails, $phoneNumbers, 'nb_visits', 'less_than', 5, $report, 'matches_exactly', 'Piwik');
 
         return $this->model->getAlert($id);
     }

@@ -220,7 +220,7 @@ class Model
      * @internal param bool $enableEmail
      * @return int ID of new Alert
      */
-	public function createAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue)
+	public function createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue)
 	{
         $idAlert = $this->getNextAlertId();
         if (empty($idAlert)) {
@@ -231,7 +231,7 @@ class Model
 			'idalert'          => $idAlert,
 			'name'             => $name,
 			'period'           => $period,
-			'login'            => Piwik::getCurrentUserLogin(),
+			'login'            => $login,
 			'email_me'         => (int) $emailMe,
 			'additional_emails' => json_encode($additionalEmails),
 			'phone_numbers'    => json_encode($phoneNumbers),
