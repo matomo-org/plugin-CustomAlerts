@@ -284,12 +284,13 @@ class ProcessorTest extends \DatabaseTestCase
     {
         $alert = array(
             'idalert' => 1,
-            'period'  => 'week',
+            'period'  => 'month',
             'idSites' => array(1, 2),
             'metric_condition' => 'increase_more_than',
             'metric_matched'   => '4',
             'report' => 'MultiSites.getAll',
-            'metric' => 'nb_visits'
+            'metric' => 'nb_visits',
+            'compared_to' => 12
         );
 
         $methods = array('getValueForAlertInPast', 'triggerAlert');
@@ -301,7 +302,7 @@ class ProcessorTest extends \DatabaseTestCase
 
         $processorMock->expects($this->at(1))
                       ->method('getValueForAlertInPast')
-                      ->with($this->equalTo($alert), $this->equalTo(1), $this->equalTo(2))
+                      ->with($this->equalTo($alert), $this->equalTo(1), $this->equalTo(13))
                       ->will($this->returnValue(10));
 
         $processorMock->expects($this->at(2))
@@ -311,7 +312,7 @@ class ProcessorTest extends \DatabaseTestCase
 
         $processorMock->expects($this->at(3))
                       ->method('getValueForAlertInPast')
-                      ->with($this->equalTo($alert), $this->equalTo(2), $this->equalTo(2))
+                      ->with($this->equalTo($alert), $this->equalTo(2), $this->equalTo(13))
                       ->will($this->returnValue(10));
 
         $processorMock->expects($this->once())
@@ -330,7 +331,8 @@ class ProcessorTest extends \DatabaseTestCase
             'metric_condition' => 'increase_more_than',
             'metric_matched'   => '4',
             'report' => 'NotExistingReport.Action',
-            'metric' => 'nb_visits'
+            'metric' => 'nb_visits',
+            'compared_to' => '1'
         );
 
         $methods = array('getValueForAlertInPast', 'triggerAlert');
@@ -353,7 +355,8 @@ class ProcessorTest extends \DatabaseTestCase
             'metric_condition' => 'increase_more_than',
             'metric_matched'   => '4',
             'report' => 'MultiSites.getAll',
-            'metric' => 'not_existing_metric'
+            'metric' => 'not_existing_metric',
+            'compared_to' => 1
         );
 
         $methods = array('getValueForAlertInPast', 'triggerAlert');
@@ -374,7 +377,8 @@ class ProcessorTest extends \DatabaseTestCase
             'period'  => 'week',
             'idSites' => array(),
             'metric_condition' => 'increase_more_than',
-            'metric_matched'   => '4'
+            'metric_matched'   => '4',
+            'compared_to' => 1
         );
 
         $methods = array('getValueForAlertInPast', 'triggerAlert');
@@ -392,12 +396,13 @@ class ProcessorTest extends \DatabaseTestCase
     {
         $alert = array(
             'idalert' => 1,
-            'period'  => 'week',
+            'period'  => 'day',
             'idSites'  => array(1),
             'metric_condition' => 'increase_more_than',
             'metric_matched'   => '5',
             'report' => 'MultiSites.getAll',
-            'metric' => 'nb_visits'
+            'metric' => 'nb_visits',
+            'compared_to' => 7
         );
 
         $methods = array('getValueForAlertInPast', 'triggerAlert');
@@ -409,7 +414,7 @@ class ProcessorTest extends \DatabaseTestCase
 
         $processorMock->expects($this->at(1))
                       ->method('getValueForAlertInPast')
-                      ->with($this->equalTo($alert), $this->equalTo(1), $this->equalTo(2))
+                      ->with($this->equalTo($alert), $this->equalTo(1), $this->equalTo(8))
                       ->will($this->returnValue(10));
 
         $processorMock->expects($this->never())

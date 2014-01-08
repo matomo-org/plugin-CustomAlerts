@@ -127,7 +127,7 @@ class Processor extends \Piwik\Plugin
                 continue;
             }
 
-            $valueOld = $this->getValueForAlertInPast($alert, $idSite, 2);
+            $valueOld = $this->getValueForAlertInPast($alert, $idSite, 1 + $alert['compared_to']);
 
             if ($this->shouldBeTriggered($alert, $valueNew, $valueOld)) {
                 $this->triggerAlert($alert, $idSite, $valueNew, $valueOld);
