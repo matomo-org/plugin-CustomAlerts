@@ -46,15 +46,15 @@ class API extends \Piwik\Plugin\API
             throw new Exception(Piwik::translate('CustomAlerts_AlertDoesNotExist', $idAlert));
         }
 
-        $this->checkUserHasPermissionForAlert($idAlert, $alert);
+        $this->checkUserHasPermissionForAlert($alert);
 
         return $alert;
     }
 
     /**
      * Returns the Alerts that are defined on the idSites given.
-     * If no value is given, all Alerts for the current user will
-     * be returned.
+     * Each alert will be only returned if the current user is the superUser or if the alert belongs to
+     * the current user.
      *
      * @param array $idSites
      * @return array
@@ -68,7 +68,17 @@ class API extends \Piwik\Plugin\API
         $idSites = Site::getIdSitesFromIdSitesString($idSites);
         Piwik::checkUserHasViewAccess($idSites);
 
-        return $this->getModel()->getAlerts($idSites);
+        $alerts = $this->getModel()->getAlerts($idSites);
+
+        foreach ($alerts as $index => $alert) {
+            try {
+                $this->checkUserHasPermissionForAlert($alert);
+            } catch (Exception $e) {
+                unset($alerts[$index]);
+            }
+        }
+
+        return array_values($alerts);
 	}
 
     /**
@@ -332,14 +342,13 @@ class API extends \Piwik\Plugin\API
     }
 
     /**
-     * @param $idAlert
      * @param $alert
      * @throws \Exception
      */
-    private function checkUserHasPermissionForAlert($idAlert, $alert)
+    private function checkUserHasPermissionForAlert($alert)
     {
         if (!Piwik::isUserIsSuperUserOrTheUser($alert['login'])) {
-            throw new Exception(Piwik::translate('CustomAlerts_AccessException', $idAlert));
+            throw new Exception(Piwik::translate('CustomAlerts_AccessException', $alert['idalert']));
         }
     }
 }

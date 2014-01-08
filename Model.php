@@ -204,7 +204,8 @@ class Model
      * Creates an Alert for given website(s).
      *
      * @param string $name
-     * @param mixed $idSites
+     * @param int[] $idSites
+     * @param string $login
      * @param string $period
      * @param bool $emailMe
      * @param array $additionalEmails
@@ -267,7 +268,7 @@ class Model
      *
      * @param $idAlert
      * @param string $name Name of Alert
-     * @param mixed $idSites Single int or array of ints of idSites.
+     * @param int[] $idSites array of ints of idSites.
      * @param string $period Period the alert is defined on.
      * @param bool $emailMe
      * @param array $additionalEmails
