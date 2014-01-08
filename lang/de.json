@@ -29,7 +29,6 @@
         "PercentageDecreasesMoreThan": "% verringert sich um mehr als",
         "PercentageIncreasesMoreThan": "% erhöht sich um mehr als",
         "PluginDescription": "Das Alerts-Plugin bietet Ihnen die Möglichkeit benutzerdefinierte Benachrichtigungen für nahezu alle in Piwik verfügbare Metriken erstellen.",
-        "ReportOrMetricIsInvalid": "Übergebener Bericht oder Metrik ist ungültig!",
         "StartsWith": "beginnt mit",
         "ThisAppliesTo": "Wird angewendet auf"
     }
