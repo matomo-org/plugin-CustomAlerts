@@ -161,6 +161,17 @@
         }
     }
 
+    function updateMetricCondition()
+    {
+        var condition = $('#metricCondition').val();
+
+        if (condition && 0 === condition.indexOf('percentage_')) {
+            $('.metricValueDescription').show();
+        } else {
+            $('.metricValueDescription').hide();
+        }
+    }
+
     function deleteAlert(alertId)
     {
         function onDelete()
@@ -182,6 +193,7 @@
     $(document).ready(function() {
 
         updateReportCondition();
+        updateMetricCondition();
 
         $('.alerts .period').change(function() {
             updateMetrics();
@@ -191,7 +203,8 @@
             updateMetrics();
         })
 
-        $('.alerts .reportCondition').change(updateReportCondition)
+        $('.alerts #reportCondition').change(updateReportCondition)
+        $('.alerts #metricCondition').change(updateMetricCondition)
 
         var currentSiteId = $('[name=idSite]').val();
         $('.sites_autocomplete').bind('piwik:siteSelected', function (e, site) {

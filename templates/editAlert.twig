@@ -59,7 +59,7 @@
                 <br />
                     <span class="reportField">
                         {{ 'CustomAlerts_ThisAppliesTo'|translate}}
-                        <select class="reports inp" name="report" id="report">
+                        <select class="reports inp inlineSelect" name="report" id="report">
                             {% for report in reportMetadata %}
                                 {% set module=report.module %}
                                 {% set action=report.action %}
@@ -70,7 +70,7 @@
                     </span>
                     <span class="reportConditionField">
                         <br /> when <span id="reportInfo"></span>
-                        <select class="reportCondition inp" name="reportCondition" id="reportCondition">
+                        <select class="reportCondition inp inlineSelect" name="reportCondition" id="reportCondition">
                             {% for condName, condValue in alertGroupConditions %}
                                 <option value="{{ condValue|e('html_attr') }}" {% if condValue == alert.report_condition %}selected="selected"{% endif %}>{{ condName|translate }}</option>
                             {% endfor %}
@@ -82,7 +82,7 @@
                 <br/><br />
                     <span>
                         {{ 'CustomAlerts_AlertMeWhen'|translate }}
-                        <select name="metric" id="metric" class="metrics inp">
+                        <select name="metric" id="metric" class="metrics inp inlineSelect">
                             {% for report in reportMetadata %}
                                 {% set module=report.module %}
                                 {% set action=report.action %}
@@ -96,9 +96,7 @@
                         </select>
                     </span>
                     <span>
-                        <br />
-                        are
-                        <select name="metricCondition" id="metricCondition" class="inp">
+                        <select name="metricCondition" id="metricCondition" class="inp inlineSelect">
                             {% for condName, condValue in alertMetricConditions %}
                                 <option value="{{ condValue|e('html_attr') }}" {% if condValue == alert.metric_condition %}selected="selected"{% endif %}>{{ condName|translate }}</option>
                             {% endfor %}
@@ -106,6 +104,7 @@
                     </span>
                     <span>
                         <input type="text" class="inp" name="metricValue" id="metricValue" value="{{ alert.metric_matched|e('html_attr') }}" />
+                        <span class="metricValueDescription">%</span>
                     </span>
 
                     <span class="comparedToField">
@@ -113,6 +112,7 @@
                         compared to the
                         {% for period, comparablesDatesPeriod in comparablesDates %}
                             <select name="compared_to"
+                                    class="inlineSelect"
                                     data-period="{{ period|e('html_attr') }}"
                                     id="compared_to"
                                     {% if comparablesDatesPeriod|length <= 1 %}

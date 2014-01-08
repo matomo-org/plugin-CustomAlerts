@@ -10,6 +10,7 @@ namespace Piwik\Plugins\CustomAlerts\tests;
 
 use Piwik\DataTable;
 use Piwik\DataTable\Row;
+use Piwik\Date;
 use Piwik\Plugins\CustomAlerts\Processor;
 use Piwik\Translate;
 use Piwik\Access;

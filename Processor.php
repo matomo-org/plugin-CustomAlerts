@@ -63,8 +63,8 @@ class Processor extends \Piwik\Plugin
     public static function getMetricConditions()
     {
         return array(
-            'General_OperationLessThan'     => 'less_than',
-            'General_OperationGreaterThan'  => 'greater_than',
+            'CustomAlerts_IsLessThan'     => 'less_than',
+            'CustomAlerts_IsGreaterThan'  => 'greater_than',
             'CustomAlerts_DecreasesMoreThan' => 'decrease_more_than',
             'CustomAlerts_IncreasesMoreThan' => 'increase_more_than',
             'CustomAlerts_PercentageDecreasesMoreThan' => 'percentage_decrease_more_than',
@@ -125,6 +125,10 @@ class Processor extends \Piwik\Plugin
             // Do we have data? stop otherwise.
             if (is_null($valueNew)) {
                 continue;
+            }
+
+            if (365 == $alert['compared_to'] && Date::today()->isLeapYear()) {
+                $alert['compared_to'] = 366;
             }
 
             $valueOld = $this->getValueForAlertInPast($alert, $idSite, 1 + $alert['compared_to']);
