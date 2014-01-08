@@ -11,6 +11,8 @@ namespace Piwik\Plugins\CustomAlerts\tests;
 use Piwik\DataTable;
 use Piwik\DataTable\Row;
 use Piwik\Plugins\CustomAlerts\Processor;
+use Piwik\Translate;
+use Piwik\Access;
 
 class CustomProcessor extends Processor {
     public function filterDataTable($dataTable, $condition, $value) {
@@ -38,7 +40,7 @@ class CustomProcessor extends Processor {
  * @group ProcessorTest
  * @group Unit
  */
-class ProcessorTest extends \PHPUnit_Framework_TestCase
+class ProcessorTest extends \DatabaseTestCase
 {
     /**
      * @var CustomProcessor
@@ -50,6 +52,10 @@ class ProcessorTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
 
         $this->processor = new CustomProcessor();
+
+        $this->setSuperUser();
+        \Test_Piwik_BaseFixture::createWebsite('2012-08-09 11:22:33');
+        \Test_Piwik_BaseFixture::createWebsite('2012-08-07 11:22:33');
     }
 
     private function getDataTable()
@@ -269,9 +275,11 @@ class ProcessorTest extends \PHPUnit_Framework_TestCase
         $alert = array(
             'idalert' => 1,
             'period'  => 'week',
-            'idSites' => array(1, 3),
+            'idSites' => array(1, 2),
             'metric_condition' => 'increase_more_than',
             'metric_matched'   => '4',
+            'report' => 'MultiSites.getAll',
+            'metric' => 'nb_visits'
         );
 
         $methods = array('getValueForAlertInPast', 'triggerAlert');
@@ -288,21 +296,66 @@ class ProcessorTest extends \PHPUnit_Framework_TestCase
 
         $processorMock->expects($this->at(2))
                       ->method('getValueForAlertInPast')
-                      ->with($this->equalTo($alert), $this->equalTo(3), $this->equalTo(1))
+                      ->with($this->equalTo($alert), $this->equalTo(2), $this->equalTo(1))
                       ->will($this->returnValue(15));
 
         $processorMock->expects($this->at(3))
                       ->method('getValueForAlertInPast')
-                      ->with($this->equalTo($alert), $this->equalTo(3), $this->equalTo(2))
+                      ->with($this->equalTo($alert), $this->equalTo(2), $this->equalTo(2))
                       ->will($this->returnValue(10));
 
         $processorMock->expects($this->once())
                       ->method('triggerAlert')
-                      ->with($this->equalTo($alert), $this->equalTo(3), $this->equalTo(15), $this->equalTo(10));
+                      ->with($this->equalTo($alert), $this->equalTo(2), $this->equalTo(15), $this->equalTo(10));
 
         $processorMock->processAlert($alert);
     }
 
+    public function test_processAlert_shouldNotFail_IfReportDoesNotExist()
+    {
+        $alert = array(
+            'idalert' => 1,
+            'period'  => 'week',
+            'idSites' => array(1, 2),
+            'metric_condition' => 'increase_more_than',
+            'metric_matched'   => '4',
+            'report' => 'NotExistingReport.Action',
+            'metric' => 'nb_visits'
+        );
+
+        $methods = array('getValueForAlertInPast', 'triggerAlert');
+        $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomProcessor', $methods);
+        $processorMock->expects($this->never())
+                      ->method('getValueForAlertInPast');
+
+        $processorMock->expects($this->never())
+                      ->method('triggerAlert');
+
+        $processorMock->processAlert($alert);
+    }
+
+    public function test_processAlert_shouldNotFail_IfMetricDoesNotBelongToTheReport()
+    {
+        $alert = array(
+            'idalert' => 1,
+            'period'  => 'week',
+            'idSites' => array(1, 2),
+            'metric_condition' => 'increase_more_than',
+            'metric_matched'   => '4',
+            'report' => 'MultiSites.getAll',
+            'metric' => 'not_existing_metric'
+        );
+
+        $methods = array('getValueForAlertInPast', 'triggerAlert');
+        $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomProcessor', $methods);
+        $processorMock->expects($this->never())
+                      ->method('getValueForAlertInPast');
+
+        $processorMock->expects($this->never())
+                      ->method('triggerAlert');
+
+        $processorMock->processAlert($alert);
+    }
 
     public function test_processAlert_shouldNotRun_IfNoWebsitesDefined()
     {
@@ -311,7 +364,7 @@ class ProcessorTest extends \PHPUnit_Framework_TestCase
             'period'  => 'week',
             'idSites' => array(),
             'metric_condition' => 'increase_more_than',
-            'metric_matched'   => '4',
+            'metric_matched'   => '4'
         );
 
         $methods = array('getValueForAlertInPast', 'triggerAlert');
@@ -333,6 +386,8 @@ class ProcessorTest extends \PHPUnit_Framework_TestCase
             'idSites'  => array(1),
             'metric_condition' => 'increase_more_than',
             'metric_matched'   => '5',
+            'report' => 'MultiSites.getAll',
+            'metric' => 'nb_visits'
         );
 
         $methods = array('getValueForAlertInPast', 'triggerAlert');
@@ -407,6 +462,13 @@ class ProcessorTest extends \PHPUnit_Framework_TestCase
         );
 
         return $this->processor->shouldBeTriggered($alert, $metricPast1, $metricPast2);
+    }
+
+    private function setSuperUser()
+    {
+        $pseudoMockAccess = new \FakeAccess();
+        \FakeAccess::$superUser = true;
+        Access::setSingletonInstance($pseudoMockAccess);
     }
 
 }

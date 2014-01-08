@@ -12,7 +12,7 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
-use Piwik\Piwik;
+use Piwik\Plugins\API\ProcessedReport;
 use Piwik\View;
 use Piwik\Common;
 use Piwik\Plugins\SitesManager\API as SitesManagerApi;
@@ -50,15 +50,19 @@ class Controller extends \Piwik\Plugin\Controller
 
     private function findReportName($idSite, $alert)
     {
+        if (empty($alert['report'])) {
+            return;
+        }
+
         list($module, $action) = explode('.', $alert['report']);
-        $metadata = MetadataApi::getInstance()->getMetadata($idSite, $module, $action);
+
+        $processedReport = new ProcessedReport();
+        $metadata        = $processedReport->getMetadata($idSite, $module, $action);
 
         if (!empty($metadata)) {
             $report = array_shift($metadata);
             return $report['name'];
         }
-
-        return $alert['report'];
     }
 
 	public function addNewAlert()

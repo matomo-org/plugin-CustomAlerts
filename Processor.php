@@ -17,6 +17,7 @@ use Piwik;
 use Piwik\DataTable;
 use Piwik\Date;
 use Piwik\Db;
+use Piwik\Plugins\API\ProcessedReport;
 
 /**
  *
@@ -86,11 +87,16 @@ class Processor extends \Piwik\Plugin
 
         foreach ($alert['idSites'] as $idSite) {
 
+            if (!$this->reportExists($idSite, $alert['report'], $alert['metric'])) {
+                // actually it would be nice to log or send a notification or whatever that we have skipped an alert
+                continue;
+            }
+
             $valueNew = $this->getValueForAlertInPast($alert, $idSite, 1);
 
             // Do we have data? stop otherwise.
             if (is_null($valueNew)) {
-                return;
+                continue;
             }
 
             $valueOld = $this->getValueForAlertInPast($alert, $idSite, 2);
@@ -99,6 +105,15 @@ class Processor extends \Piwik\Plugin
                 $this->triggerAlert($alert, $idSite, $valueNew, $valueOld);
             }
         }
+    }
+
+    private function reportExists($idSite, $report, $metric)
+    {
+        $processedReport = new ProcessedReport();
+
+        list($module, $action) = explode('.' , $report);
+
+        return $processedReport->isValidMetricForReport($metric, $idSite, $module, $action);
     }
 
     protected function shouldBeTriggered($alert, $valueNew, $valueOld)
@@ -219,10 +234,6 @@ class Processor extends \Piwik\Plugin
      */
     protected function getValueForAlertInPast($alert, $idSite, $subPeriodN)
     {
-        if (empty($alert['report'])) {
-            return;
-        }
-
         $params = array(
             'method' => $alert['report'],
             'format' => 'original',

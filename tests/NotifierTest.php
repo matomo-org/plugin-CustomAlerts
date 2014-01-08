@@ -239,20 +239,25 @@ ign in and access the Alerts page.=0A=0A';
         $mock->sendNewAlerts('week');
     }
 
-    public function test_enrichTriggeredAlerts_shouldEnrichAlerts_IfReportExists()
+    public function test_enrichTriggeredAlerts_shouldEnrichAlerts_IfReportExistsAndMetricIsValid()
     {
         $alerts = array(
             array('idsite' => 1, 'metric' => 'nb_visits', 'report' => 'MultiSites.getAll'),
             array('idsite' => 1, 'metric' => 'nb_visits', 'report' => 'NotExistingModule.Action'),
-            array('idsite' => 1, 'metric' => 'bounce_rate', 'report' => 'Actions.getPageUrls')
+            array('idsite' => 1, 'metric' => 'bounce_rate', 'report' => 'Actions.getPageUrls'),
+            array('idsite' => 1, 'metric' => 'not_valid', 'report' => 'Actions.getPageUrls')
         );
 
         $enriched = $this->notifier->enrichTriggeredAlerts($alerts);
 
         $alerts[0]['reportName']   = 'All Websites dashboard';
         $alerts[0]['reportMetric'] = 'Visits';
+        $alerts[1]['reportName']   = null;
+        $alerts[1]['reportMetric'] = null;
         $alerts[2]['reportName']   = 'Page URLs';
         $alerts[2]['reportMetric'] = 'Bounce Rate';
+        $alerts[3]['reportName']   = 'Page URLs';
+        $alerts[3]['reportMetric'] = null;
 
         $this->assertEquals($alerts, $enriched);
     }

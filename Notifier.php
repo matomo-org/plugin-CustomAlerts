@@ -17,12 +17,12 @@ use Piwik\Mail;
 use Piwik\Piwik;
 use Piwik\DataTable;
 use Piwik\Date;
+use Piwik\Plugins\API\ProcessedReport;
 use Piwik\Plugins\MobileMessaging\API as APIMobileMessaging;
 use Piwik\Translate;
 use Piwik\View;
 use Piwik\Db;
 use Piwik\Plugins\UsersManager\API as UsersManagerApi;
-use Piwik\Plugins\API\API as MetadataApi;
 
 /**
  *
@@ -140,22 +140,20 @@ class Notifier extends \Piwik\Plugin
 
     protected function enrichTriggeredAlerts($triggeredAlerts)
     {
-        $lang = Translate::getLanguageLoaded();
-
         foreach ($triggeredAlerts as &$alert) {
             list($module, $action) = explode('.', $alert['report']);
+            $idSite = $alert['idsite'];
+            $metric = $alert['metric'];
 
-            $metadata = MetadataApi::getInstance()->getMetadata($alert['idsite'], $module, $action, array(), $lang);
+            $processedReport = new ProcessedReport();
 
+            $alert['reportName']   = null;
+            $alert['reportMetric'] = $processedReport->translateMetric($metric, $idSite, $module, $action);
+
+            $metadata = $processedReport->getMetadata($idSite, $module, $action);
             if (!empty($metadata)) {
                 $report = array_shift($metadata);
-
-                $apiMethod = $report['module'] . '.' . $report['action'];
-
-                if ($apiMethod == $alert['report']) {
-                    $alert['reportName']   = $report['name'];
-                    $alert['reportMetric'] = $report['metrics'][$alert['metric']];
-                }
+                $alert['reportName'] = $report['name'];
             }
         }
 
@@ -229,3 +227,4 @@ class Notifier extends \Piwik\Plugin
     }
 
 }
+?>

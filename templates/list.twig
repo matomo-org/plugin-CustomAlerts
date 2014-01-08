@@ -24,7 +24,7 @@
                 <tr>
                     <td class="name">{{ alert.name }}</td>
                     <td class="period">{{ alert.period|capitalize }}</td>
-                    <td class="reportName">{{ alert.reportName }}</td>
+                    <td class="reportName">{{ alert.reportName|default('-') }}</td>
                     <td class="edit"><a href="{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert}) }}"
                            class="link_but"
                             ><img src="plugins/Morpheus/images/ico_edit.png" border="0"> {{ 'General_Edit'|translate }}</a></td>

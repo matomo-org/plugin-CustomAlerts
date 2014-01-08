@@ -16,6 +16,7 @@ namespace Piwik\Plugins\CustomAlerts;
 use Piwik\Period;
 use Piwik\Db;
 use Piwik\Piwik;
+use Piwik\Plugins\API\ProcessedReport;
 use Piwik\Site;
 use Piwik\Translate;
 use Piwik\Plugins\MobileMessaging\API as APIMobileMessaging;
@@ -100,7 +101,7 @@ class API extends \Piwik\Plugin\API
         $this->checkReportCondition($reportCondition);
 
         foreach ($idSites as $idSite) {
-            $this->checkApiMethodAndMetric($idSite, $report, $metric, $reportCondition, $reportValue);
+            $this->checkApiMethodAndMetric($idSite, $report, $metric);
         }
 
         $additionalEmails = $this->checkAdditionalEmails($additionalEmails);
@@ -145,7 +146,7 @@ class API extends \Piwik\Plugin\API
         $this->checkReportCondition($reportCondition);
 
         foreach ($idSites as $idSite) {
-            $this->checkApiMethodAndMetric($idSite, $report, $metric, $reportCondition, $reportValue);
+            $this->checkApiMethodAndMetric($idSite, $report, $metric);
         }
 
         $additionalEmails = $this->checkAdditionalEmails($additionalEmails);
@@ -305,36 +306,26 @@ class API extends \Piwik\Plugin\API
      * given (requires report_condition, report_matched)
      *
      * @param int $idSite
-     * @param $method
-     * @param $metric
+     * @param string $apiMethod for example MultiSites.getAll
+     * @param string $metric
      * @throws \Exception
      * @return boolean
      */
-    private function checkApiMethodAndMetric($idSite, $method, $metric)
+    private function checkApiMethodAndMetric($idSite, $apiMethod, $metric)
     {
-        list($module, $action) = explode(".", $method);
-
-        $lang     = Translate::getLanguageLoaded();
-        $metadata = MetadataAPI::getInstance()->getMetadata($idSite, $module, $action, array(), $lang);
-
-        if (empty($metadata)) {
+        if (empty($apiMethod) || false === strpos($apiMethod, '.')) {
             throw new Exception(Piwik::translate('CustomAlerts_InvalidReport'));
         }
 
-        $report = array_shift($metadata);
+        list($module, $action) = explode(".", $apiMethod);
 
-        $allMetrics = $report['metrics'];
-        if (isset($report['processedMetrics'])) {
-            $allMetrics = array_merge($allMetrics, $report['processedMetrics']);
-        }
-        if (isset($report['metricsGoal'])) {
-            $allMetrics = array_merge($allMetrics, $report['metricsGoal']);
-        }
-        if (isset($report['processedMetricsGoal'])) {
-            $allMetrics = array_merge($allMetrics, $report['processedMetricsGoal']);
+        $processedReport = new ProcessedReport();
+
+        if (!$processedReport->isValidReportForSite($idSite, $module, $action)) {
+            throw new Exception(Piwik::translate('CustomAlerts_InvalidReport'));
         }
 
-        if (empty($allMetrics) || !in_array($metric, array_keys($allMetrics))) {
+        if (!$processedReport->isValidMetricForReport($metric, $idSite, $module, $action)) {
             throw new Exception(Piwik::translate('CustomAlerts_InvalidMetric'));
         }
     }
