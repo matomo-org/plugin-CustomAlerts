@@ -72,6 +72,7 @@ class CustomAlerts extends \Piwik\Plugin
                     $alert['metric'],
                     $alert['metric_condition'],
                     $alert['metric_matched'],
+                    $alert['compared_to'],
                     $alert['report'],
                     $alert['report_condition'],
                     $alert['report_matched']
@@ -106,7 +107,7 @@ class CustomAlerts extends \Piwik\Plugin
             $processor,
 		    'processAlerts',
             'day',
-		    ScheduledTime::factory('daily')
+		    ScheduledTime::factory('daily', 1)
 		);
 
         $tasks[] = new ScheduledTask(

@@ -93,6 +93,16 @@ class ProcessorTest extends \DatabaseTestCase
         $this->assertTrue(Processor::isValidMetricCondition('greater_than'));
     }
 
+    public function test_isValidComparableDate()
+    {
+        $this->assertFalse(Processor::isValidComparableDate('invalid', 1));
+        $this->assertFalse(Processor::isValidComparableDate('', 12));
+        $this->assertFalse(Processor::isValidComparableDate('day', 88));
+
+        $this->assertTrue(Processor::isValidComparableDate('day', 1));
+        $this->assertTrue(Processor::isValidComparableDate('month', 12));
+    }
+
     public function test_filterDataTable_Condition_MatchesAny()
     {
         $this->assertFilterResult('matches_any', '3test', array(10, 33, 90, 65, 67, 100));

@@ -25,6 +25,24 @@ use Piwik\Plugins\API\ProcessedReport;
  */
 class Processor extends \Piwik\Plugin
 {
+    public static function getComparablesDates()
+    {
+        return array(
+            'day' => array(
+                'CustomAlerts_ComparedToPreviousDay'  => 1,
+                'CustomAlerts_ComparedToPreviousWeek' => 7,
+                'CustomAlerts_ComparedToPreviousYear' => 365,
+            ),
+            'week' => array(
+                'CustomAlerts_ComparedToPreviousWeek' => 1,
+            ),
+            'month' => array(
+                'CustomAlerts_ComparedToPreviousMonth' => 1,
+                'CustomAlerts_ComparedToPreviousYear'  => 12,
+            )
+        );
+    }
+
     public static function getGroupConditions()
     {
         return array(
@@ -52,6 +70,16 @@ class Processor extends \Piwik\Plugin
             'CustomAlerts_PercentageDecreasesMoreThan' => 'percentage_decrease_more_than',
             'CustomAlerts_PercentageIncreasesMoreThan' => 'percentage_increase_more_than',
         );
+    }
+
+    public static function isValidComparableDate($period, $comparedToDate)
+    {
+        $dates = self::getComparablesDates();
+        if (!array_key_exists($period, $dates)) {
+            return false;
+        }
+
+        return in_array($comparedToDate, array_values($dates[$period]));
     }
 
     public static function isValidGroupCondition($condition)

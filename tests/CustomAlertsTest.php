@@ -71,7 +71,7 @@ class CustomAlertsTest extends \DatabaseTestCase
         $emails  = array('test1@example.com', 'test2@example.com');
         $login   = Piwik::getCurrentUserLogin();
 
-        $id = $this->model->createAlert($name, $idSites, $login, 'week', 0, $emails, $phoneNumbers, 'nb_visits', 'less_than', 5, $report, 'matches_exactly', 'Piwik');
+        $id = $this->model->createAlert($name, $idSites, $login, 'week', 0, $emails, $phoneNumbers, 'nb_visits', 'less_than', 5, $comparedTo = 7, $report, 'matches_exactly', 'Piwik');
 
         return $this->model->getAlert($id);
     }

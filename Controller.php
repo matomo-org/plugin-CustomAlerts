@@ -93,6 +93,7 @@ class Controller extends \Piwik\Plugin\Controller
         $view->alertGroups           = array();
 		$view->alertGroupConditions  = Processor::getGroupConditions();
 		$view->alertMetricConditions = Processor::getMetricConditions();
+		$view->comparablesDates = Processor::getComparablesDates();
 
 		return $view->render();
 	}
@@ -114,6 +115,7 @@ class Controller extends \Piwik\Plugin\Controller
 		$view->reportMetadata        = MetadataApi::getInstance()->getReportMetadata();
 		$view->alertGroupConditions  = Processor::getGroupConditions();
 		$view->alertMetricConditions = Processor::getMetricConditions();
+        $view->comparablesDates = Processor::getComparablesDates();
 
 		return $view->render();
 	}

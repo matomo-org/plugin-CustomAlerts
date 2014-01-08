@@ -58,7 +58,7 @@ class ModelTest extends \DatabaseTestCase
         $this->assertContainTables(array('alert', 'alert_site', 'alert_log'));
 
         $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert'));
-        $this->assertCount(13, $columns);
+        $this->assertCount(14, $columns);
 
         $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert_site'));
         $this->assertCount(2, $columns);
@@ -164,6 +164,7 @@ class ModelTest extends \DatabaseTestCase
             'metric' => 'nb_visits',
             'metric_condition' => 'less_than',
             'metric_matched' => '5',
+            'compared_to' => 1,
             'value_new' => 99,
             'value_old' => 48,
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
@@ -242,7 +243,7 @@ class ModelTest extends \DatabaseTestCase
         $phoneNumbers = array('0123456789');
         $login = 'superUserLogin';
 
-        $id = $this->model->createAlert($name, $idSites, $login, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $report, 'matches_exactly', 'Piwik');
+        $id = $this->model->createAlert($name, $idSites, $login, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $comparedTo = 1, $report, 'matches_exactly', 'Piwik');
         return $id;
     }
 
@@ -258,7 +259,7 @@ class ModelTest extends \DatabaseTestCase
         $emails = array('test1@example.com', 'test2@example.com');
         $phoneNumbers = array('0123456789');
 
-        $id = $this->model->updateAlert($id, $name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $report, 'matches_exactly', 'Piwik');
+        $id = $this->model->updateAlert($id, $name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $comparedTo = 1, $report, 'matches_exactly', 'Piwik');
         return $id;
     }
 
@@ -284,6 +285,7 @@ class ModelTest extends \DatabaseTestCase
             'email_me' => 0,
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers' => array('0123456789'),
+            'compared_to' => 1,
             'idSites' => $idSites
         );
 

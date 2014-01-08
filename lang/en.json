@@ -17,7 +17,7 @@
         "ValuePercentageDecreasedMoreThan": "decreased more than %1$s% from %2$s to %3$s",
         "ValuePercentageIncreasedMoreThan": "increased more than %1$s% from %2$s to %3$s",
         "ManageAlerts": "Manage Custom Alerts",
-        "AlertConditions": "Alert Conditions",
+        "AlertCondition": "Alert Condition",
         "AlertDoesNotExist": "Alert with ID %d does not exist!",
         "AccessException": "You are not the owner of the Alert with ID %d",
         "EditAlert": "Edit Alert",
@@ -25,6 +25,7 @@
         "InvalidPeriod": "Invalid period given!",
         "InvalidMetricValue": "Value must be numeric",
         "InvalidReport": "Invalid report given!",
+        "InvalidComparableDate": "Invalid comparable date!",
         "InvalidMetric": "Given metric is not available for given report!",
         "AlertName": "Alert Name",
         "ApplyTo": "Apply to",
@@ -47,6 +48,10 @@
         "NoAlertsDefined": "You haven't created any Alerts yet, create one now!",
         "CancelAndReturnToAlerts": "Cancel and %sreturn to the list of alerts%s",
         "InvalidReportCondition": "Report condition is not a valid value",
-        "InvalidMetricCondition": "Metric condition is not a valid value"
+        "InvalidMetricCondition": "Metric condition is not a valid value",
+        "ComparedToPreviousDay": "previous day",
+        "ComparedToPreviousWeek": "previous week",
+        "ComparedToPreviousMonth": "previous month",
+        "ComparedToPreviousYear": "previous year"
     }
 }

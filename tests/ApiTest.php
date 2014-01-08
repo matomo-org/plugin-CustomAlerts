@@ -135,6 +135,16 @@ class ApiTest extends \DatabaseTestCase
 
     /**
      * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_InvalidComparableDate
+     */
+    public function test_addAlert_ShouldFail_IfInvalidComparableDate()
+    {
+        $this->setSuperUser();
+        $this->createAlert('InvalidComparableDate', 'week', null, 'nb_visits', 'MultiSites.getOne', 'less_than', 'matches_exactly', array(), 99);
+    }
+
+    /**
+     * @expectedException \Exception
      * @expectedExceptionMessage (inv+34i32s?y)
      */
     public function test_addAlert_ShouldFail_IfInvalidEmail()
@@ -283,7 +293,7 @@ class ApiTest extends \DatabaseTestCase
 
         \FakeAccess::$idSitesView = $siteIds;
         $alerts = $this->api->getAlerts($siteIds);
-        
+
         $this->assertCount(0, $alerts);
     }
 
@@ -396,6 +406,7 @@ class ApiTest extends \DatabaseTestCase
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers' => array(),
             'email_me' => false,
+            'compared_to' => 1,
             'idSites' => array(1, 2)
         );
 
@@ -455,7 +466,7 @@ class ApiTest extends \DatabaseTestCase
         $this->assertCount(1, $triggeredAlerts);
     }
 
-    private function createAlert($name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites.getOne', $metricCondition = 'less_than', $reportCondition = 'matches_exactly', $emails = array('test1@example.com', 'test2@example.com'))
+    private function createAlert($name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites.getOne', $metricCondition = 'less_than', $reportCondition = 'matches_exactly', $emails = array('test1@example.com', 'test2@example.com'), $comparedTo = 1)
     {
         if (is_null($idSites)) {
             $idSites = $this->idSite;
@@ -464,7 +475,7 @@ class ApiTest extends \DatabaseTestCase
         // those should be dropped by the api as they do not exist in Piwik
         $phoneNumbers = array('+1234567890', '1234567890');
 
-        $id = $this->api->addAlert($name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, $metricCondition, 5, $report, $reportCondition, 'Piwik');
+        $id = $this->api->addAlert($name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, $metricCondition, $metricMatched = 5, $comparedTo, $report, $reportCondition, 'Piwik');
         return $id;
     }
 
@@ -476,8 +487,9 @@ class ApiTest extends \DatabaseTestCase
 
         // those should be dropped by the api as they do not exist in Piwik
         $phoneNumbers = array('+1234567890', '1234567890');
+        $comparedTo   = 1;
 
-        $id = $this->api->editAlert($id, $name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, $metricCondition, 5, $report, $reportCondition, 'Piwik');
+        $id = $this->api->editAlert($id, $name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, $metricCondition, $metricMatched = 5, $comparedTo, $report, $reportCondition, 'Piwik');
         return $id;
     }
 
@@ -503,6 +515,7 @@ class ApiTest extends \DatabaseTestCase
             'email_me' => 0,
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers' => array(),
+            'compared_to' => 1,
             'idSites' => $idSites
         );
 

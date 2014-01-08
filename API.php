@@ -94,12 +94,13 @@ class API extends \Piwik\Plugin\API
      * @param string $metricCondition
      * @param float $metricValue
      * @param string $report
+     * @param int $comparedTo
      * @param bool|string $reportCondition
      * @param bool|string $reportValue
      * @internal param bool $enableEmail
      * @return int ID of new Alert
      */
-	public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition = false, $reportValue = false)
+	public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $report, $reportCondition = false, $reportValue = false)
 	{
         $idSites = Site::getIdSitesFromIdSitesString($idSites);
 
@@ -107,6 +108,7 @@ class API extends \Piwik\Plugin\API
 
         $name = $this->checkName($name);
         $this->checkPeriod($period);
+        $this->checkComparedTo($period, $comparedTo);
         $this->checkMetricCondition($metricCondition);
         $this->checkReportCondition($reportCondition);
 
@@ -120,7 +122,7 @@ class API extends \Piwik\Plugin\API
         $emailMe = $emailMe ? 1 : 0;
         $login = Piwik::getCurrentUserLogin();
 
-        return $this->getModel()->createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue);
+        return $this->getModel()->createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $report, $reportCondition, $reportValue);
 	}
 
     /**
@@ -137,13 +139,14 @@ class API extends \Piwik\Plugin\API
      * @param string $metricCondition
      * @param float $metricValue
      * @param string $report
+     * @param int $comparedTo
      * @param bool|string $reportCondition
      * @param bool|string $reportValue
      *
      * @internal param bool $enableEmail
      * @return boolean
      */
-	public function editAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition = false, $reportValue = false)
+	public function editAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $report, $reportCondition = false, $reportValue = false)
 	{
         // make sure alert exists and user has permission to read
         $this->getAlert($idAlert);
@@ -153,6 +156,7 @@ class API extends \Piwik\Plugin\API
 
         $name = $this->checkName($name);
         $this->checkPeriod($period);
+        $this->checkComparedTo($period, $comparedTo);
         $this->checkMetricCondition($metricCondition);
         $this->checkReportCondition($reportCondition);
 
@@ -164,7 +168,7 @@ class API extends \Piwik\Plugin\API
         $phoneNumbers     = $this->checkPhoneNumbers($phoneNumbers);
         $emailMe = $emailMe ? 1 : 0;
 
-        return $this->getModel()->updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue);
+        return $this->getModel()->updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $report, $reportCondition, $reportValue);
 	}
 
     /**
@@ -308,6 +312,13 @@ class API extends \Piwik\Plugin\API
     {
         if (!empty($condition) && !Processor::isValidGroupCondition($condition)) {
             throw new Exception(Piwik::translate('CustomAlerts_InvalidReportCondition'));
+        }
+    }
+
+    private function checkComparedTo($period, $comparedTo)
+    {
+        if (!Processor::isValidComparableDate($period, $comparedTo)) {
+            throw new Exception(Piwik::translate('CustomAlerts_InvalidComparableDate'));
         }
     }
 

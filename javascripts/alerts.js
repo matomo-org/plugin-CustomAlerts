@@ -87,6 +87,13 @@
 
     function updateForm(data) {
 
+        var period = $('.period').val();
+
+        $('.comparedToField select').hide();
+        $('.comparedToField select').attr('data-inactive', 'data-inactive');
+        $('.comparedToField select[data-period='+ period + ']').show();
+        $('.comparedToField select[data-period='+ period + ']').removeAttr('data-inactive');
+
         currentGroup = $('.reports').val();
         options = "";
         for(var i = 0; i < data.length; i++)
@@ -117,21 +124,23 @@
 
                 if(data[i].dimension != undefined)
                 {
-                    $('#reportInfo').text("("+ data[i].dimension + ")");
+                    $('#reportInfo').text(data[i].dimension);
                     $('.reportCondition').removeAttr('disabled');
+                    $('.reportCondition').show();
                     $('.reportValue').removeAttr('disabled');
-                    $('td.reportConditionField').show();
-                    $('td.reportValueField').show();
-                    $('td.reportField').attr('colspan', '');
+                    $('.reportValue').show();
+                    $('.reportConditionField').show();
+                    $('.reportValueField').show();
                 }
                 else
                 {
                     $('#reportInfo').text("");
                     $('.reportCondition').attr('disabled', 'disabled');
+                    $('.reportCondition').hide();
                     $('.reportValue').attr('disabled', 'disabled');
-                    $('td.reportConditionField').hide();
-                    $('td.reportValueField').hide();
-                    $('td.reportField').attr('colspan', '3');
+                    $('.reportValue').hide();
+                    $('.reportConditionField').hide();
+                    $('.reportValueField').hide();
                 }
             }
         }
@@ -144,11 +153,11 @@
     function updateReportCondition()
     {
         if ('matches_any' == $('.reportCondition').val()) {
-            $('td.reportConditionField').attr('colspan', '2');
-            $('td.reportValueField').hide();
+            $('span.reportConditionField').attr('colspan', '2');
+            $('span.reportValueField').hide();
         } else {
-            $('td.reportConditionField').attr('colspan', '');
-            $('td.reportValueField').show();
+            $('span.reportConditionField').attr('colspan', '');
+            $('span.reportValueField').show();
         }
     }
 

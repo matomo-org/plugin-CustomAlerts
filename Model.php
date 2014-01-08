@@ -41,6 +41,7 @@ class Model
 			`metric` VARCHAR(150) NOT NULL ,
 			`metric_condition` VARCHAR(50) NOT NULL ,
 			`metric_matched` FLOAT NOT NULL ,
+			`compared_to` TINYINT NOT NULL DEFAULT 1 ,
 			`email_me` BOOLEAN NOT NULL ,
 			`additional_emails` TEXT DEFAULT '' ,
 			`phone_numbers` TEXT DEFAULT ''
@@ -140,6 +141,7 @@ class Model
 				pa.additional_emails AS additional_emails,
 				pa.phone_numbers AS phone_numbers,
 				pa.email_me AS email_me,
+				pa.compared_to AS compared_to,
 				ps.name AS site_name,
 				login,
 				period,
@@ -213,6 +215,7 @@ class Model
      * @param string $metric (nb_uniq_visits, sum_visit_length, ..)
      * @param string $metricCondition
      * @param float $metricValue
+     * @param int $comparedTo
      * @param string $report
      * @param string $reportCondition
      * @param string $reportValue
@@ -221,7 +224,7 @@ class Model
      * @internal param bool $enableEmail
      * @return int ID of new Alert
      */
-	public function createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue)
+	public function createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $report, $reportCondition, $reportValue)
 	{
         $idAlert = $this->getNextAlertId();
         if (empty($idAlert)) {
@@ -239,7 +242,8 @@ class Model
 			'metric'           => $metric,
 			'metric_condition' => $metricCondition,
 			'metric_matched'   => (float) $metricValue,
-			'report'           => $report
+			'report'           => $report,
+            'compared_to'      => (int) $comparedTo
 		);
 
 		if (!empty($reportCondition) && !empty($reportCondition)) {
@@ -276,6 +280,7 @@ class Model
      * @param string $metric (nb_uniq_visits, sum_visit_length, ..)
      * @param string $metricCondition
      * @param float $metricValue
+     * @param int $comparedTo
      * @param string $report
      * @param string $reportCondition
      * @param string $reportValue
@@ -284,7 +289,7 @@ class Model
      * @internal param bool $enableEmail
      * @return boolean
      */
-	public function updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue)
+	public function updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $report, $reportCondition, $reportValue)
 	{
 		$alert = array(
 			'name'             => $name,
@@ -295,7 +300,8 @@ class Model
 			'metric'           => $metric,
 			'metric_condition' => $metricCondition,
 			'metric_matched'   => (float) $metricValue,
-			'report'           => $report
+			'report'           => $report,
+            'compared_to'      => (int) $comparedTo
 		);
 
 		if (!empty($reportCondition) && !empty($reportCondition)) {
@@ -385,6 +391,7 @@ class Model
             $alert['additional_emails'] = json_decode($alert['additional_emails']);
             $alert['phone_numbers']     = json_decode($alert['phone_numbers']);
             $alert['email_me']          = (bool) $alert['email_me'];
+            $alert['compared_to']       = (int) $alert['compared_to'];
             $alert['idSites']           = $this->fetchSiteIdsTheAlertWasDefinedOn($alert['idalert']);
         }
 

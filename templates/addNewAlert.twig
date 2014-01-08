@@ -44,57 +44,71 @@
 
             {{ postEvent('Template.reportParametersScheduledReports') }}
 
-        </table>
-        <br />
-
-        <table class="tableForm dataTable entityTable">
-            <thead>
-                <tr class="first">
-                    <th colspan="2">{{ 'CustomAlerts_AlertConditions'|translate }}</th>
-                <tr>
-            </thead>
             <tr>
-                <td class="reportField">
-                    {{ 'CustomAlerts_ThisAppliesTo'|translate}} <br />
-                    <select class="reports inp" name="report" id="report">
-                        {% for groupName, groupValue in alertGroups %}
-                            <option value="{{ groupValue|e('html_attr') }}">{{ groupName|translate }}</option>
+                <td class="first"><label for="compared_to">{{ 'CustomAlerts_AlertCondition'|translate }}</label></td>
+                <td>
+                    <br />
+                    <span class="reportField">
+                        {{ 'CustomAlerts_ThisAppliesTo'|translate}}
+                        <select class="reports inp" name="report" id="report">
+                            {% for groupName, groupValue in alertGroups %}
+                                <option value="{{ groupValue|e('html_attr') }}">{{ groupName|translate }}</option>
+                            {% endfor %}
+                        </select>
+                    </span>
+                    <span class="reportConditionField">
+                        <br /> when <span id="reportInfo"></span>
+                        <select class="reportCondition inp" name="reportCondition" id="reportCondition">
+                            {% for condName, condValue in alertGroupConditions %}
+                                <option value="{{ condValue|e('html_attr') }}">{{ condName|translate }}</option>
+                            {% endfor %}
+                        </select>
+                    </span>
+                    <span class="reportValueField">
+                        <input type="text" role="textbox" autocomplete="off" maxlength="255" class="reportValue inp ui-autocomplete-input" name="reportValue" id="reportValue" placeholder="{{ 'General_Search'|translate }}" length="15">
+                    </span>
+                    <br/><br />
+                    <span>
+                        {{ 'CustomAlerts_AlertMeWhen'|translate }}
+                        <select name="metric" id="metric" class="metrics inp" >
+
+                        </select>
+                    </span>
+                    <span>
+                        <br />
+                        are
+                        <select name="metricCondition" id="metricCondition" class="inp">
+                            {% for condName, condValue in alertMetricConditions %}
+                                <option value="{{ condValue|e('html_attr') }}">{{ condName|translate }}</option>
+                            {% endfor %}
+                        </select>
+                    </span>
+                    <span>
+                        <input type="text" placeholder="{{ 'General_Value'|translate|e('html_attr') }}" class="inp" name="metricValue" id="metricValue" />
+                    </span>
+
+                    <span class="comparedToField">
+                        <br />
+                        compared to the
+                        {% for period, comparablesDatesPeriod in comparablesDates %}
+                            <select name="compared_to"
+                                    data-period="{{ period|e('html_attr') }}"
+                                    id="compared_to"
+                                    {% if comparablesDatesPeriod|length <= 1 %}
+                                        disabled="disabled"
+                                    {% endif %}
+                                    >
+                                {% for compDateTranslation, value in comparablesDatesPeriod %}
+                                    <option value="{{ value|e('html_attr') }}">{{ compDateTranslation|translate }}</option>
+                                {% endfor %}
+                            </select>
                         {% endfor %}
-                    </select>
-                </td>
-                <td class="reportConditionField">
-                    {{ 'CustomAlerts_Condition'|translate}} <br />
-                    <select class="reportCondition inp" name="reportCondition" id="reportCondition">
-                        {% for condName, condValue in alertGroupConditions %}
-                            <option value="{{ condValue|e('html_attr') }}">{{ condName|translate }}</option>
-                        {% endfor %}
-                    </select>
-                </td>
-                <td class="reportValueField">
-                    {{ 'General_Value'|translate }} <span id="reportInfo"></span><br />
-                    <input type="text" role="textbox" autocomplete="off" maxlength="255" class="reportValue inp ui-autocomplete-input" name="reportValue" id="reportValue" placeholder="{{ 'General_Search'|translate }}" length="15">
+                    </span>
+                    <br />
+                    <br />
                 </td>
             </tr>
-            <tr>
-                <td>
-                    {{ 'CustomAlerts_AlertMeWhen'|translate }} <br />
-                    <select name="metric" id="metric" class="metrics inp" >
 
-                    </select>
-                </td>
-                <td>
-                    {{ 'CustomAlerts_Condition'|translate }} <br />
-                    <select name="metricCondition" id="metricCondition" class="inp">
-                        {% for condName, condValue in alertMetricConditions %}
-                            <option value="{{ condValue|e('html_attr') }}">{{ condName|translate }}</option>
-                        {% endfor %}
-                    </select>
-                </td>
-                <td>
-                    {{ 'General_Value'|translate }}<br />
-                    <input type="text" class="inp" name="metricValue" id="metricValue" />
-                </td>
-            </tr>
         </table>
 
         <br />
@@ -127,6 +141,7 @@ function onSubmit(event)
     apiParameters.reportCondition  = $('#reportCondition').find('option:selected').val();
     apiParameters.reportValue = $('#reportValue').val();
     apiParameters.idSites = [$('[name=idSite]').val()];
+    apiParameters.comparedTo = $('[name=compared_to]:not([data-inactive])').val();
 
     if (!$.isNumeric(apiParameters.metricValue)) {
         var UI = require('piwik/UI');
