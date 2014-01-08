@@ -13,11 +13,14 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
+use Piwik\Date;
 use Piwik\Piwik;
 use Piwik\Db;
 use Piwik\Menu\MenuTop;
 use Piwik\ScheduledTask;
 use Piwik\ScheduledTime;
+use Piwik\Site;
+use Piwik\Plugins\SitesManager\API as SitesManagerApi;
 
 /**
  *
@@ -29,13 +32,23 @@ class CustomAlerts extends \Piwik\Plugin
 	public function getListHooksRegistered()
 	{
 		return array(
-		    'Menu.Top.addItems' => 'addTopMenu',
-		    'TaskScheduler.getScheduledTasks' => 'getScheduledTasks',
+		    'Menu.Top.addItems'                 => 'addTopMenu',
+		    'TaskScheduler.getScheduledTasks'   => 'getScheduledTasks',
 		    'MobileMessaging.deletePhoneNumber' => 'removePhoneNumberFromAllAlerts',
-		    'AssetManager.getJavaScriptFiles' => 'getJavaScriptFiles',
-		    'AssetManager.getStylesheetFiles' => 'getStylesheetFiles',
+		    'AssetManager.getJavaScriptFiles'   => 'getJavaScriptFiles',
+		    'AssetManager.getStylesheetFiles'   => 'getStylesheetFiles',
 		);
 	}
+
+    public function install()
+    {
+        Model::install();
+    }
+
+    public function uninstall()
+    {
+        Model::uninstall();
+    }
 
 	public function getJavaScriptFiles(&$jsFiles)
 	{
@@ -46,6 +59,20 @@ class CustomAlerts extends \Piwik\Plugin
 	{
 		$cssFiles[] = "plugins/CustomAlerts/stylesheets/alerts.less";
 	}
+
+    public function addTopMenu()
+    {
+        $title = Piwik::translate('CustomAlerts_Alerts');
+
+        MenuTop::addEntry($title, array('module' => 'CustomAlerts', 'action' => 'index'), true, 9);
+    }
+
+    public function getScheduledTasks(&$tasks)
+    {
+        $this->scheduleTask($tasks, 'runAlertsDaily', 'day');
+        $this->scheduleTask($tasks, 'runAlertsWeekly', 'week');
+        $this->scheduleTask($tasks, 'runAlertsMonthly', 'month');
+    }
 
     public function removePhoneNumberFromAllAlerts($phoneNumber)
     {
@@ -81,68 +108,40 @@ class CustomAlerts extends \Piwik\Plugin
         }
     }
 
-	public function install()
-	{
-		Model::install();
-	}
+    public function runAlertsDaily($idSite)
+    {
+        $this->runAlerts('day', (int) $idSite);
+    }
 
-	public function uninstall()
-	{
-		Model::uninstall();
-	}
+    public function runAlertsWeekly($idSite)
+    {
+        $this->runAlerts('week', (int) $idSite);
+    }
 
-	public function addTopMenu()
-	{
-        $title = Piwik::translate('CustomAlerts_Alerts');
+    public function runAlertsMonthly($idSite)
+    {
+        $this->runAlerts('month', (int) $idSite);
+    }
 
-        MenuTop::addEntry($title, array("module" => "CustomAlerts", "action" => "index"), true, 9);
-	}
-
-	public function getScheduledTasks(&$tasks)
-	{
+    private function runAlerts($period, $idSite)
+    {
         $processor = new Processor();
+        $processor->processAlerts($period, $idSite);
         $notifier  = new Notifier();
+        $notifier->sendNewAlerts($period, $idSite);
+    }
 
-		$tasks[] = new ScheduledTask(
-            $processor,
-		    'processAlerts',
-            'day',
-		    ScheduledTime::factory('daily', 1)
-		);
+    private function scheduleTask(&$tasks, $methodName, $period)
+    {
+        $siteIds = SitesManagerApi::getInstance()->getAllSitesId();
 
-        $tasks[] = new ScheduledTask(
-            $notifier,
-            'sendNewAlerts',
-            'day',
-            ScheduledTime::factory('daily')
-        );
-
-		$tasks[] = new ScheduledTask(
-            $processor,
-		    'processAlerts',
-            'week',
-            ScheduledTime::factory('weekly')
-		);
-
-        $tasks[] = new ScheduledTask(
-            $notifier,
-            'sendNewAlerts',
-            'week',
-            ScheduledTime::factory('weekly')
-        );
-
-		$tasks[] = new ScheduledTask(
-            $processor,
-		    'processAlerts',
-            'month',
-            ScheduledTime::factory('monthly')
-		);
-
-        $tasks[] = new ScheduledTask(
-            $notifier,
-            'sendNewAlerts',
-            'month',
-            ScheduledTime::factory('monthly')
-        );
-	}
+        foreach ($siteIds as $siteId) {
+            $tasks[] = new ScheduledTask (
+                $this,
+                $methodName,
+                $siteId,
+                ScheduledTime::getScheduledTimeForSite($siteId, $period)
+            );
+        }
+    }
 }

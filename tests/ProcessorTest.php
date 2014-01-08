@@ -25,9 +25,9 @@ class CustomProcessor extends Processor {
         return parent::getMetricFromTable($dataTable, $metric, $filterCond, $filterValue);
     }
 
-    public function processAlert($alert)
+    public function processAlert($alert, $idSite)
     {
-        parent::processAlert($alert);
+        parent::processAlert($alert, $idSite);
     }
 
     public function shouldBeTriggered($alert, $metricOne, $metricTwo)
@@ -41,7 +41,7 @@ class CustomProcessor extends Processor {
  * @group ProcessorTest
  * @group Unit
  */
-class ProcessorTest extends \DatabaseTestCase
+class ProcessorTest extends BaseTest
 {
     /**
      * @var CustomProcessor
@@ -53,10 +53,6 @@ class ProcessorTest extends \DatabaseTestCase
         parent::setUp();
 
         $this->processor = new CustomProcessor();
-
-        $this->setSuperUser();
-        \Test_Piwik_BaseFixture::createWebsite('2012-08-09 11:22:33');
-        \Test_Piwik_BaseFixture::createWebsite('2012-08-07 11:22:33');
     }
 
     private function getDataTable()
@@ -281,130 +277,84 @@ class ProcessorTest extends \DatabaseTestCase
         $this->assertShouldNotBeTriggered('percentage_increase_more_than', 43, null, null);
     }
 
-    public function test_processAlert_shouldTriggerAlertAndRunForEachDefinedWebsite()
+    public function test_processAlert_shouldTriggerAlertIfMatchAndRunOnlyForGivenWebsite()
     {
-        $alert = array(
-            'idalert' => 1,
-            'period'  => 'month',
-            'idSites' => array(1, 2),
-            'metric_condition' => 'increase_more_than',
-            'metric_matched'   => '4',
-            'report' => 'MultiSites.getAll',
-            'metric' => 'nb_visits',
-            'compared_to' => 12
-        );
+        $alert = $this->buildAlert();
 
         $methods = array('getValueForAlertInPast', 'triggerAlert');
         $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomProcessor', $methods);
+
+        $idSite = 1;
         $processorMock->expects($this->at(0))
                       ->method('getValueForAlertInPast')
-                      ->with($this->equalTo($alert), $this->equalTo(1), $this->equalTo(1))
+                      ->with($this->equalTo($alert), $this->equalTo($idSite), $this->equalTo(1))
                       ->will($this->returnValue(13));
 
         $processorMock->expects($this->at(1))
                       ->method('getValueForAlertInPast')
-                      ->with($this->equalTo($alert), $this->equalTo(1), $this->equalTo(13))
+                      ->with($this->equalTo($alert), $this->equalTo($idSite), $this->equalTo(13))
                       ->will($this->returnValue(10));
 
-        $processorMock->expects($this->at(2))
+        $processorMock->expects($this->never())->method('triggerAlert');
+
+        $processorMock->expects($this->exactly(2))
+                      ->method('getValueForAlertInPast');
+
+        $processorMock->processAlert($alert, $idSite);
+
+        $idSite = 2;
+        $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomProcessor', $methods);
+        $processorMock->expects($this->at(0))
                       ->method('getValueForAlertInPast')
-                      ->with($this->equalTo($alert), $this->equalTo(2), $this->equalTo(1))
+                      ->with($this->equalTo($alert), $this->equalTo($idSite), $this->equalTo(1))
                       ->will($this->returnValue(15));
 
-        $processorMock->expects($this->at(3))
+        $processorMock->expects($this->at(1))
                       ->method('getValueForAlertInPast')
-                      ->with($this->equalTo($alert), $this->equalTo(2), $this->equalTo(13))
+                      ->with($this->equalTo($alert), $this->equalTo($idSite), $this->equalTo(13))
                       ->will($this->returnValue(10));
+
+        $processorMock->expects($this->exactly(2))
+                      ->method('getValueForAlertInPast');
 
         $processorMock->expects($this->once())
                       ->method('triggerAlert')
-                      ->with($this->equalTo($alert), $this->equalTo(2), $this->equalTo(15), $this->equalTo(10));
+                      ->with($this->equalTo($alert), $this->equalTo($idSite), $this->equalTo(15), $this->equalTo(10));
 
-        $processorMock->processAlert($alert);
+        $processorMock->processAlert($alert, $idSite);
     }
 
     public function test_processAlert_shouldNotFail_IfReportDoesNotExist()
     {
-        $alert = array(
-            'idalert' => 1,
-            'period'  => 'week',
-            'idSites' => array(1, 2),
-            'metric_condition' => 'increase_more_than',
-            'metric_matched'   => '4',
-            'report' => 'NotExistingReport.Action',
-            'metric' => 'nb_visits',
-            'compared_to' => '1'
-        );
+        $alert = $this->buildAlert(array(1,2), 'NotExistingReport.Action');
 
-        $methods = array('getValueForAlertInPast', 'triggerAlert');
-        $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomProcessor', $methods);
-        $processorMock->expects($this->never())
-                      ->method('getValueForAlertInPast');
-
-        $processorMock->expects($this->never())
-                      ->method('triggerAlert');
-
-        $processorMock->processAlert($alert);
+        $this->assertProcessNotRun($alert, array(1,2,3));
     }
 
     public function test_processAlert_shouldNotFail_IfMetricDoesNotBelongToTheReport()
     {
-        $alert = array(
-            'idalert' => 1,
-            'period'  => 'week',
-            'idSites' => array(1, 2),
-            'metric_condition' => 'increase_more_than',
-            'metric_matched'   => '4',
-            'report' => 'MultiSites.getAll',
-            'metric' => 'not_existing_metric',
-            'compared_to' => 1
-        );
+        $alert = $this->buildAlert(array(1,2), 'MultiSites.getAll', 'not_existing_metric');
 
-        $methods = array('getValueForAlertInPast', 'triggerAlert');
-        $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomProcessor', $methods);
-        $processorMock->expects($this->never())
-                      ->method('getValueForAlertInPast');
-
-        $processorMock->expects($this->never())
-                      ->method('triggerAlert');
-
-        $processorMock->processAlert($alert);
+        $this->assertProcessNotRun($alert, array(1,2,3));
     }
 
     public function test_processAlert_shouldNotRun_IfNoWebsitesDefined()
     {
-        $alert = array(
-            'idalert' => 1,
-            'period'  => 'week',
-            'idSites' => array(),
-            'metric_condition' => 'increase_more_than',
-            'metric_matched'   => '4',
-            'compared_to' => 1
-        );
+        $alert = $this->buildAlert(array());
 
-        $methods = array('getValueForAlertInPast', 'triggerAlert');
-        $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomProcessor', $methods);
-        $processorMock->expects($this->never())
-                      ->method('getValueForAlertInPast');
+        $this->assertProcessNotRun($alert, array(1,2));
+    }
 
-        $processorMock->expects($this->never())
-                      ->method('triggerAlert');
+    public function test_processAlert_shouldNotRun_IfWebsiteDoesNotMatch()
+    {
+        $alert = $this->buildAlert();
 
-        $processorMock->processAlert($alert);
+        $this->assertProcessNotRun($alert, array(99, 85));
     }
 
     public function test_processAlert_shouldOnlyBeTriggeredIfAlertMatches()
     {
-        $alert = array(
-            'idalert' => 1,
-            'period'  => 'day',
-            'idSites'  => array(1),
-            'metric_condition' => 'increase_more_than',
-            'metric_matched'   => '5',
-            'report' => 'MultiSites.getAll',
-            'metric' => 'nb_visits',
-            'compared_to' => 7
-        );
+        $alert = $this->buildAlert(array(1), 'MultiSites.getAll', 'nb_visits', '5', 'day', $comparedTo = 7);
 
         $methods = array('getValueForAlertInPast', 'triggerAlert');
         $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomProcessor', $methods);
@@ -421,7 +371,7 @@ class ProcessorTest extends \DatabaseTestCase
         $processorMock->expects($this->never())
                       ->method('triggerAlert');
 
-        $processorMock->processAlert($alert);
+        $processorMock->processAlert($alert, 1);
     }
 
     /**
@@ -480,11 +430,34 @@ class ProcessorTest extends \DatabaseTestCase
         return $this->processor->shouldBeTriggered($alert, $metricPast1, $metricPast2);
     }
 
-    private function setSuperUser()
+    private function buildAlert($idSites = array(1,2), $report = 'MultiSites.getAll', $metric = 'nb_visits', $metricMatched = '4', $period = 'month', $comparedTo = 12)
     {
-        $pseudoMockAccess = new \FakeAccess();
-        \FakeAccess::$superUser = true;
-        Access::setSingletonInstance($pseudoMockAccess);
+        return array(
+            'idalert' => 1,
+            'period' => $period,
+            'idSites' => $idSites,
+            'metric_condition' => 'increase_more_than',
+            'metric_matched' => $metricMatched,
+            'report' => $report,
+            'metric' => $metric,
+            'compared_to' => $comparedTo
+        );
+    }
+
+    private function assertProcessNotRun($alert, $idSites)
+    {
+        $methods = array('getValueForAlertInPast', 'triggerAlert');
+        $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomProcessor', $methods);
+
+        $processorMock->expects($this->never())
+                      ->method('getValueForAlertInPast');
+
+        $processorMock->expects($this->never())
+                      ->method('triggerAlert');
+
+        foreach ($idSites as $idSite) {
+            $processorMock->processAlert($alert, $idSite);
+        }
     }
 
 }

@@ -30,26 +30,31 @@ use Piwik\Plugins\UsersManager\API as UsersManagerApi;
  */
 class Notifier extends \Piwik\Plugin
 {
-    protected function getTriggeredAlerts($period)
+    protected function getTriggeredAlerts($period, $idSite)
     {
-        $api = API::getInstance();
+        $api    = API::getInstance();
+        $alerts = $api->getTriggeredAlerts($period, Date::today(), false);
 
-        return $api->getTriggeredAlerts($period, Date::today(), false);
+        return array_filter($alerts, function ($alert) use ($idSite) {
+            return $alert['idsite'] == $idSite;
+        });
     }
 
-	/**
-	 * Sends a list of the triggered alerts to
-	 * $recipient.
-	 *
-	 * @param string $period
-	 */
-	public function sendNewAlerts($period)
+    /**
+     * Sends a list of the triggered alerts to
+     * $recipient.
+     *
+     * @param string $period
+     * @param int    $idSite
+     */
+	public function sendNewAlerts($period, $idSite)
 	{
-		$triggeredAlerts = $this->getTriggeredAlerts($period);
+		$triggeredAlerts = $this->getTriggeredAlerts($period, $idSite);
 
         $alertsPerEmail = array();
         $alertsPerSms   = array();
 		foreach($triggeredAlerts as $triggeredAlert) {
+
             $emails = $this->getEmailRecipientsForAlert($triggeredAlert);
 
             foreach ($emails as $mail) {

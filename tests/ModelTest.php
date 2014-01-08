@@ -20,37 +20,19 @@ use Piwik\Translate;
  * @group ModelTest
  * @group Database
  */
-class ModelTest extends \DatabaseTestCase
+class ModelTest extends BaseTEst
 {
-    /**
-     * @var \Piwik\Plugins\CustomAlerts\Model
-     */
-    private $model;
-    private $idSite;
-    private $idSite2;
 
     public function setUp()
     {
         parent::setUp();
 
-        Model::install();
-
-        $this->setSuperUser();
-        $this->model = new Model();
-
-        $this->idSite  = \Test_Piwik_BaseFixture::createWebsite('2012-08-09 11:22:33');
-        $this->idSite2 = \Test_Piwik_BaseFixture::createWebsite('2012-08-10 11:22:33');
         $this->createAlert('Initial1', 'day');
-        $this->createAlert('Initial2', 'week', array($this->idSite, $this->idSite2));
+        $this->createAlert('Initial2', 'week', array($this->idSite,$this->idSite2));
         $this->createAlert('Initial3', 'month', array($this->idSite2));
+        $this->setUser();
+
         Translate::unloadEnglishTranslation();
-    }
-
-    public function tearDown()
-    {
-        Model::uninstall();
-
-        parent::tearDown();
     }
 
     public function test_install_ShouldNotFailAndActuallyCreateTheDatabases()
@@ -290,15 +272,6 @@ class ModelTest extends \DatabaseTestCase
         );
 
         $this->assertEquals($expected, $alert);
-    }
-
-    private function setSuperUser()
-    {
-        $pseudoMockAccess = new \FakeAccess();
-        \FakeAccess::setIdSitesAdmin(array(1, 2));
-        \FakeAccess::$superUser = true;
-        \FakeAccess::$identity = 'superUserLogin';
-        Access::setSingletonInstance($pseudoMockAccess);
     }
 
 }

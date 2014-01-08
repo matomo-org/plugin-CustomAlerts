@@ -8,7 +8,6 @@
 
 namespace Piwik\Plugins\CustomAlerts\tests;
 
-use Piwik\Access;
 use Piwik\Common;
 use Piwik\Mail;
 use Piwik\Plugin;
@@ -20,7 +19,7 @@ class CustomNotifier extends Notifier
 {
     private $alerts = array();
 
-    protected function getTriggeredAlerts($period)
+    protected function getTriggeredAlerts($period, $idSite)
     {
         return $this->alerts;
     }
@@ -54,7 +53,7 @@ class CustomNotifier extends Notifier
  * @group NotifierTest
  * @group Database
  */
-class NotifierTest extends \DatabaseTestCase
+class NotifierTest extends BaseTest
 {
     /**
      * @var CustomNotifier
@@ -65,15 +64,12 @@ class NotifierTest extends \DatabaseTestCase
     {
         parent::setUp();
 
-        $this->setSuperUser();
-
         // make sure templates will be found
         Plugin\Manager::getInstance()->loadPlugin('CustomAlerts');
         Plugin\Manager::getInstance()->loadPlugin('Zeitgeist');
 
         Translate::reloadLanguage('en');
 
-        \Test_Piwik_BaseFixture::createWebsite('2012-08-09 11:22:33');
         \Piwik\Plugins\UsersManager\API::getInstance()->addUser('login1', 'p2kK2msAw1', 'test1@example.com');
         \Piwik\Plugins\UsersManager\API::getInstance()->addUser('login2', 'p2kK2msAw1', 'test2@example.com');
         \Piwik\Plugins\UsersManager\API::getInstance()->addUser('login3', 'p2kK2msAw1', 'test3@example.com');
@@ -236,7 +232,7 @@ ign in and access the Alerts page.=0A=0A';
                     $this->isInstanceOf('\Piwik\Plugins\MobileMessaging\API'),
                     $this->equalTo('232'));
 
-        $mock->sendNewAlerts('week');
+        $mock->sendNewAlerts('week', 1);
     }
 
     public function test_enrichTriggeredAlerts_shouldEnrichAlerts_IfReportExistsAndMetricIsValid()
@@ -295,13 +291,6 @@ ign in and access the Alerts page.=0A=0A';
             $this->buildAlert(2, 'MyName2'),
         );
         return $alerts;
-    }
-
-    private function setSuperUser()
-    {
-        $pseudoMockAccess = new \FakeAccess();
-        \FakeAccess::$superUser = true;
-        Access::setSingletonInstance($pseudoMockAccess);
     }
 
 }

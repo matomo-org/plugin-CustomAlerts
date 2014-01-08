@@ -98,44 +98,46 @@ class Processor extends \Piwik\Plugin
         return in_array($condition, $conditions);
     }
 
-	public function processAlerts($period)
+	public function processAlerts($period, $idSite)
 	{
         $alerts = $this->getAllAlerts($period);
 
 		foreach ($alerts as $alert) {
-			$this->processAlert($alert);
+			$this->processAlert($alert, $idSite);
 		}
 	}
 
-    protected function processAlert($alert)
+    protected function processAlert($alert, $idSite)
     {
-        if (empty($alert['idSites'])) {
+        if (empty($alert['idSites']) || !in_array($idSite, $alert['idSites'])) {
             return;
         }
 
-        foreach ($alert['idSites'] as $idSite) {
+        if (!self::isValidComparableDate($alert['period'], $alert['compared_to'])) {
+            // actually it would be nice to log or send a notification or whatever that we have skipped an alert
+            return;
+        }
 
-            if (!$this->reportExists($idSite, $alert['report'], $alert['metric'])) {
-                // actually it would be nice to log or send a notification or whatever that we have skipped an alert
-                continue;
-            }
+        if (!$this->reportExists($idSite, $alert['report'], $alert['metric'])) {
+            // actually it would be nice to log or send a notification or whatever that we have skipped an alert
+            return;
+        }
 
-            $valueNew = $this->getValueForAlertInPast($alert, $idSite, 1);
+        $valueNew = $this->getValueForAlertInPast($alert, $idSite, 1);
 
-            // Do we have data? stop otherwise.
-            if (is_null($valueNew)) {
-                continue;
-            }
+        // Do we have data? stop otherwise.
+        if (is_null($valueNew)) {
+            return;
+        }
 
-            if (365 == $alert['compared_to'] && Date::today()->isLeapYear()) {
-                $alert['compared_to'] = 366;
-            }
+        if (365 == $alert['compared_to'] && Date::today()->isLeapYear()) {
+            $alert['compared_to'] = 366;
+        }
 
-            $valueOld = $this->getValueForAlertInPast($alert, $idSite, 1 + $alert['compared_to']);
+        $valueOld = $this->getValueForAlertInPast($alert, $idSite, 1 + $alert['compared_to']);
 
-            if ($this->shouldBeTriggered($alert, $valueNew, $valueOld)) {
-                $this->triggerAlert($alert, $idSite, $valueNew, $valueOld);
-            }
+        if ($this->shouldBeTriggered($alert, $valueNew, $valueOld)) {
+            $this->triggerAlert($alert, $idSite, $valueNew, $valueOld);
         }
     }
 

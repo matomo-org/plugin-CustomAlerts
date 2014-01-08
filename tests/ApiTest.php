@@ -8,10 +8,8 @@
 
 namespace Piwik\Plugins\CustomAlerts\tests;
 
-use Piwik\Access;
 use Piwik\Db;
 use Piwik\Plugins\CustomAlerts\Model;
-use Piwik\Plugins\CustomAlerts\API;
 use Piwik\Translate;
 
 /**
@@ -19,39 +17,19 @@ use Piwik\Translate;
  * @group ModelTest
  * @group Database
  */
-class ApiTest extends \DatabaseTestCase
+class ApiTest extends BaseTest
 {
-    /**
-     * @var \Piwik\Plugins\CustomAlerts\API
-     */
-    private $api;
-    private $idSite;
-    private $idSite2;
 
     public function setUp()
     {
         parent::setUp();
 
-        Model::install();
-
-        $this->api = API::getInstance();
-
-        $this->setSuperUser();
-        $this->idSite  = \Test_Piwik_BaseFixture::createWebsite('2012-08-09 11:22:33');
-        $this->idSite2 = \Test_Piwik_BaseFixture::createWebsite('2012-08-10 11:22:33');
         $this->createAlert('Initial1', 'day');
         $this->createAlert('Initial2', 'week', array($this->idSite,$this->idSite2));
         $this->createAlert('Initial3', 'month', array($this->idSite2));
         $this->setUser();
 
         Translate::unloadEnglishTranslation();
-    }
-
-    public function tearDown()
-    {
-        Model::uninstall();
-
-        parent::tearDown();
     }
 
     /**
@@ -466,7 +444,8 @@ class ApiTest extends \DatabaseTestCase
         $this->assertCount(1, $triggeredAlerts);
     }
 
-    private function createAlert($name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites.getOne', $metricCondition = 'less_than', $reportCondition = 'matches_exactly', $emails = array('test1@example.com', 'test2@example.com'), $comparedTo = 1)
+
+    protected function createAlert($name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites.getOne', $metricCondition = 'less_than', $reportCondition = 'matches_exactly', $emails = array('test1@example.com', 'test2@example.com'), $comparedTo = 1)
     {
         if (is_null($idSites)) {
             $idSites = $this->idSite;
@@ -479,7 +458,7 @@ class ApiTest extends \DatabaseTestCase
         return $id;
     }
 
-    private function editAlert($id, $name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites.getOne', $metricCondition = 'less_than', $reportCondition = 'matches_exactly', $emails = array('test1@example.com', 'test2@example.com'))
+    protected function editAlert($id, $name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites.getOne', $metricCondition = 'less_than', $reportCondition = 'matches_exactly', $emails = array('test1@example.com', 'test2@example.com'))
     {
         if (is_null($idSites)) {
             $idSites = $this->idSite;
@@ -493,7 +472,7 @@ class ApiTest extends \DatabaseTestCase
         return $id;
     }
 
-    private function assertIsAlert($id, $name, $period = 'week', $idSites = null, $login = 'superUserLogin', $metric = 'nb_visits', $metricCondition = 'less_than', $metricMatched = 5, $report = 'MultiSites.getOne', $reportCondition = 'matches_exactly', $reportMatched = 'Piwik')
+    protected function assertIsAlert($id, $name, $period = 'week', $idSites = null, $login = 'superUserLogin', $metric = 'nb_visits', $metricCondition = 'less_than', $metricMatched = 5, $report = 'MultiSites.getOne', $reportCondition = 'matches_exactly', $reportMatched = 'Piwik')
     {
         if (is_null($idSites)) {
             $idSites = array($this->idSite);
@@ -522,22 +501,5 @@ class ApiTest extends \DatabaseTestCase
         $this->assertEquals($expected, $alert);
     }
 
-    private function setSuperUser()
-    {
-        $pseudoMockAccess = new \FakeAccess();
-        \FakeAccess::setIdSitesAdmin(array(1, 2));
-        \FakeAccess::$superUser = true;
-        \FakeAccess::$identity = 'superUserLogin';
-        Access::setSingletonInstance($pseudoMockAccess);
-    }
-
-    private function setUser()
-    {
-        $pseudoMockAccess = new \FakeAccess;
-        \FakeAccess::setSuperUser(false);
-        \FakeAccess::$idSitesView = array(99);
-        \FakeAccess::$identity = 'aUser';
-        Access::setSingletonInstance($pseudoMockAccess);
-    }
 
 }

@@ -20,29 +20,8 @@ use Piwik\Translate;
  * @group CustomAlertsTest
  * @group Database
  */
-class CustomAlertsTest extends \DatabaseTestCase
+class CustomAlertsTest extends BaseTest
 {
-    /**
-     * @var \Piwik\Plugins\CustomAlerts\Model
-     */
-    private $model;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        Model::install();
-
-        $this->setUser();
-        $this->model = new Model();
-    }
-
-    public function tearDown()
-    {
-        Model::uninstall();
-
-        parent::tearDown();
-    }
 
     public function test_removePhoneNumberFromAllAlerts()
     {
@@ -85,13 +64,6 @@ class CustomAlertsTest extends \DatabaseTestCase
         $alertBefore['phone_numbers'] = $phoneNumbers;
 
         $this->assertSame($alertBefore, $alert);
-    }
-
-    private function setUser()
-    {
-        $pseudoMockAccess = new \FakeAccess();
-        \FakeAccess::$identity  = 'testUser';
-        Access::setSingletonInstance($pseudoMockAccess);
     }
 
 }
