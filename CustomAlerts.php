@@ -39,14 +39,12 @@ class CustomAlerts extends \Piwik\Plugin
 
 	public function getJavaScriptFiles(&$jsFiles)
 	{
-		$jsFiles[] = "plugins/CustomAlerts/javascripts/ui.dropdownchecklist.js";
 		$jsFiles[] = "plugins/CustomAlerts/javascripts/alerts.js";
 	}
 
 	public function getStylesheetFiles(&$cssFiles)
 	{
 		$cssFiles[] = "plugins/CustomAlerts/stylesheets/alerts.less";
-		$cssFiles[] = "plugins/CustomAlerts/stylesheets/ui.dropdownchecklist.css";
 	}
 
     public function removePhoneNumberFromAllAlerts($phoneNumber)

@@ -277,6 +277,16 @@ class ApiTest extends \DatabaseTestCase
         $this->assertCount(3, $alerts);
     }
 
+    public function test_getAlerts_shouldReturnOnlyAlertsThatMatchTheLoginIfNotSuperUser()
+    {
+        $siteIds = array($this->idSite2, $this->idSite);
+
+        \FakeAccess::$idSitesView = $siteIds;
+        $alerts = $this->api->getAlerts($siteIds);
+        
+        $this->assertCount(0, $alerts);
+    }
+
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage checkUserHasViewAccess Fake exception

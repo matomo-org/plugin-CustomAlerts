@@ -11,6 +11,7 @@ namespace Piwik\Plugins\CustomAlerts\tests;
 use Piwik\Access;
 use Piwik\Common;
 use Piwik\Db;
+use Piwik\Piwik;
 use Piwik\Plugins\CustomAlerts\Model;
 use Piwik\Translate;
 
@@ -239,8 +240,9 @@ class ModelTest extends \DatabaseTestCase
 
         $emails = array('test1@example.com', 'test2@example.com');
         $phoneNumbers = array('0123456789');
+        $login = 'superUserLogin';
 
-        $id = $this->model->createAlert($name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $report, 'matches_exactly', 'Piwik');
+        $id = $this->model->createAlert($name, $idSites, $login, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $report, 'matches_exactly', 'Piwik');
         return $id;
     }
 

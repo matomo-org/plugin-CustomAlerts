@@ -204,7 +204,8 @@ class Model
      * Creates an Alert for given website(s).
      *
      * @param string $name
-     * @param mixed $idSites
+     * @param int[] $idSites
+     * @param string $login
      * @param string $period
      * @param bool $emailMe
      * @param array $additionalEmails
@@ -220,7 +221,7 @@ class Model
      * @internal param bool $enableEmail
      * @return int ID of new Alert
      */
-	public function createAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue)
+	public function createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $report, $reportCondition, $reportValue)
 	{
         $idAlert = $this->getNextAlertId();
         if (empty($idAlert)) {
@@ -231,7 +232,7 @@ class Model
 			'idalert'          => $idAlert,
 			'name'             => $name,
 			'period'           => $period,
-			'login'            => Piwik::getCurrentUserLogin(),
+			'login'            => $login,
 			'email_me'         => (int) $emailMe,
 			'additional_emails' => json_encode($additionalEmails),
 			'phone_numbers'    => json_encode($phoneNumbers),
@@ -267,7 +268,7 @@ class Model
      *
      * @param $idAlert
      * @param string $name Name of Alert
-     * @param mixed $idSites Single int or array of ints of idSites.
+     * @param int[] $idSites array of ints of idSites.
      * @param string $period Period the alert is defined on.
      * @param bool $emailMe
      * @param array $additionalEmails
