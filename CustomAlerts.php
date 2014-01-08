@@ -13,13 +13,11 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
-use Piwik\Date;
 use Piwik\Piwik;
 use Piwik\Db;
 use Piwik\Menu\MenuTop;
 use Piwik\ScheduledTask;
 use Piwik\ScheduledTime;
-use Piwik\Site;
 use Piwik\Plugins\SitesManager\API as SitesManagerApi;
 
 /**
@@ -28,7 +26,7 @@ use Piwik\Plugins\SitesManager\API as SitesManagerApi;
  */
 class CustomAlerts extends \Piwik\Plugin
 {
-    
+
 	public function getListHooksRegistered()
 	{
 		return array(
