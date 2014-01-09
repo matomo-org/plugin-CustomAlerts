@@ -23,6 +23,6 @@
     {% endset %}
 
     <div id="CustomAlerts_MissingPlugins">
-        {{ noPluginsError|notification({'placeAt': '#CustomAlerts_MissingPlugins', 'noclear': true, 'context': 'warning', 'raw': true}) }}
+        {{ noPluginsError|notification({'placeAt': '#CustomAlerts_MissingPlugins', 'noclear': true, 'context': 'error', 'raw': true}) }}
     </div>
 {% endmacro %}
