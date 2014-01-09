@@ -16,6 +16,7 @@ use Piwik\Plugins\API\ProcessedReport;
 use Piwik\Site;
 use Piwik\View;
 use Piwik\Common;
+use Piwik\Plugin\Manager as PluginManager;
 use Piwik\Plugins\SitesManager\API as SitesManagerApi;
 use Piwik\Plugins\API\API as MetadataApi;
 use Piwik\Period;
@@ -45,9 +46,61 @@ class Controller extends \Piwik\Plugin\Controller
         }
 
         $view->alerts = $alerts;
+        $view->requirementsAreMet = $this->areRequirementsMet();
 
 		return $view->render();
 	}
+
+	public function addNewAlert()
+	{
+        $view = new View('@CustomAlerts/addNewAlert');
+		$this->setGeneralVariablesView($view);
+
+		$view->sitesList = $this->getSitesWithAtLeastViewAccess();
+
+        $view->alertGroups           = array();
+		$view->alertGroupConditions  = Processor::getGroupConditions();
+		$view->alertMetricConditions = Processor::getMetricConditions();
+		$view->comparablesDates   = Processor::getComparablesDates();
+        $view->requirementsAreMet = $this->areRequirementsMet();
+        $view->supportsSMS        = $this->supportsSms();
+
+		return $view->render();
+	}
+
+	public function editAlert()
+	{
+		$idAlert = Common::getRequestVar('idAlert', null, 'int');
+
+        $view = new View('@CustomAlerts/editAlert');
+		$this->setGeneralVariablesView($view);
+
+		$view->alert     = API::getInstance()->getAlert($idAlert);
+		$view->sitesList = $this->getSitesWithAtLeastViewAccess();
+		$view->reportMetadata        = MetadataApi::getInstance()->getReportMetadata();
+		$view->alertGroupConditions  = Processor::getGroupConditions();
+		$view->alertMetricConditions = Processor::getMetricConditions();
+        $view->comparablesDates   = Processor::getComparablesDates();
+        $view->requirementsAreMet = $this->areRequirementsMet();
+        $view->supportsSMS        = $this->supportsSms();
+
+		return $view->render();
+	}
+
+    private function getSitesWithAtLeastViewAccess()
+    {
+        return SitesManagerApi::getInstance()->getSitesWithAtLeastViewAccess();
+    }
+
+    private function areRequirementsMet()
+    {
+        return PluginManager::getInstance()->isPluginActivated('ScheduledReports');
+    }
+
+    private function supportsSms()
+    {
+        return PluginManager::getInstance()->isPluginActivated('MobileMessaging');
+    }
 
     private function findReportName($alert)
     {
@@ -78,41 +131,4 @@ class Controller extends \Piwik\Plugin\Controller
 
         return Site::getNameFor($idSite);
     }
-
-	public function addNewAlert()
-	{
-        $view = new View('@CustomAlerts/addNewAlert');
-		$this->setGeneralVariablesView($view);
-
-		$view->sitesList = $this->getSitesWithAtLeastViewAccess();
-
-        $view->alertGroups           = array();
-		$view->alertGroupConditions  = Processor::getGroupConditions();
-		$view->alertMetricConditions = Processor::getMetricConditions();
-		$view->comparablesDates = Processor::getComparablesDates();
-
-		return $view->render();
-	}
-
-    private function getSitesWithAtLeastViewAccess()
-    {
-        return SitesManagerApi::getInstance()->getSitesWithAtLeastViewAccess();
-    }
-
-	public function editAlert()
-	{
-		$idAlert = Common::getRequestVar('idAlert', null, 'int');
-
-        $view = new View('@CustomAlerts/editAlert');
-		$this->setGeneralVariablesView($view);
-
-		$view->alert     = API::getInstance()->getAlert($idAlert);
-		$view->sitesList = $this->getSitesWithAtLeastViewAccess();
-		$view->reportMetadata        = MetadataApi::getInstance()->getReportMetadata();
-		$view->alertGroupConditions  = Processor::getGroupConditions();
-		$view->alertMetricConditions = Processor::getMetricConditions();
-        $view->comparablesDates = Processor::getComparablesDates();
-
-		return $view->render();
-	}
 }

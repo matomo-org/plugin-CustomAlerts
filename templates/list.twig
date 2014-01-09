@@ -1,5 +1,6 @@
-<div class='entityListContainer'>
+{% import '@CustomAlerts/macros.twig' as alertsMacro %}
 
+<div class='entityListContainer'>
 	<table class="dataTable entityTable">
         <thead>
             <tr>
@@ -11,7 +12,6 @@
                 <th>{{ 'General_Delete'|translate }}</th>
             </tr>
         </thead>
-
         {% if not alerts %}
         <tr>
             <td colspan="6">
@@ -27,9 +27,15 @@
                     <td class="site">{{ alert.siteName }}</td>
                     <td class="period">{{ alert.period|capitalize }}</td>
                     <td class="reportName">{{ alert.reportName|default('-') }}</td>
-                    <td class="edit"><a href="{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert}) }}"
-                           class="link_but"
-                            ><img src="plugins/Morpheus/images/ico_edit.png" border="0"> {{ 'General_Edit'|translate }}</a></td>
+                    <td class="edit">
+                        {% if requirementsAreMet %}
+                            <a href="{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert}) }}"
+                               class="link_but"
+                                ><img src="plugins/Morpheus/images/ico_edit.png" border="0"> {{ 'General_Edit'|translate }}</a>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
                     <td class="delete"><a href="javascript:void(0);"
                            id="{{ alert.idalert|e('html_attr') }}"
                            class="link_but deleteAlert"
@@ -37,11 +43,15 @@
                 </tr>
             {% endfor %}
         {% endif %}
-
     </table>
 	<br/>
-	<a href="{{ linkTo({'module': 'CustomAlerts', 'action': 'addNewAlert'}) }}" id='linkAddReport'>&rsaquo; {{ 'CustomAlerts_CreateNewAlert'|translate }}</a>
-		
+
+    {% if requirementsAreMet %}
+	    <a href="{{ linkTo({'module': 'CustomAlerts', 'action': 'addNewAlert'}) }}" id='linkAddReport'>&rsaquo; {{ 'CustomAlerts_CreateNewAlert'|translate }}</a>
+	{% else %}
+        {{ alertsMacro.requirementsNotMet() }}
+    {% endif %}
+
 </div>
 
 <div class="ui-confirm" id="confirm">

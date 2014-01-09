@@ -15,3 +15,14 @@
     {% endif -%}
 {% endspaceless %}
 {% endmacro %}
+
+{% macro requirementsNotMet() %}
+
+    {% set noPluginsError %}
+        <p>{{ 'CustomAlerts_ScheduledReportsPluginNotActivated'|translate('<a href="' ~ linkTo({'module':"CorePluginsAdmin", 'action': 'plugins', 'updated':null}) ~ '#ScheduledReports">', '</a>')|raw }}</p>
+    {% endset %}
+
+    <div id="CustomAlerts_MissingPlugins">
+        {{ noPluginsError|notification({'placeAt': '#CustomAlerts_MissingPlugins', 'noclear': true, 'context': 'warning', 'raw': true}) }}
+    </div>
+{% endmacro %}

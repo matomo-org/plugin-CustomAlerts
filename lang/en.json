@@ -52,6 +52,7 @@
         "ComparedToPreviousDay": "previous day",
         "ComparedToPreviousWeek": "previous week",
         "ComparedToPreviousMonth": "previous month",
-        "ComparedToPreviousYear": "previous year"
+        "ComparedToPreviousYear": "previous year",
+        "ScheduledReportsPluginNotActivated": "The ScheduledReports plugin is required in order to create or edit alerts. You can activate it by accessing the %splugin settings page%s."
     }
 }

@@ -4,6 +4,10 @@
 
 <div class="centerLargeDiv alerts">
 <div class="entityAddContainer">
+{% if not requirementsAreMet %}
+    {% import '@CustomAlerts/macros.twig' as alertsMacro %}
+    {{ alertsMacro.requirementsNotMet() }}
+{% else %}
     <div class="entityCancel">
         {% set backlink = linkTo({'module': 'CustomAlerts', 'action': 'index'}) %}
         {{ 'CustomAlerts_CancelAndReturnToAlerts'|translate('<a class="entityCancelLink" href="' ~ backlink ~ '">', "</a>")|raw }}
@@ -112,11 +116,15 @@
         </table>
 
         <br />
-	    {% set url="<a href='module=CustomAlerts'>" %}
+        {% set url="<a href='module=CustomAlerts'>" %}
         <input type="submit" value="{{ 'CustomAlerts_CreateNewAlert'|translate }}" name="submit" class="submit" />
+
     </form>
+
+{% endif %}
 </div>
 </div>
+
 <script type="text/javascript">
 
 function onSubmit(event)
@@ -124,8 +132,8 @@ function onSubmit(event)
     event.preventDefault();
     event.stopPropagation();
 
-    var mailSettings   = getReportParametersFunctions.email();
-    var mobileSettings = getReportParametersFunctions.mobile();
+    var mailSettings   = getReportParametersFunctions.email ? getReportParametersFunctions.email() : {additionalEmails: [], emailMe: false};
+    var mobileSettings = getReportParametersFunctions.mobile ? getReportParametersFunctions.mobile() : {phoneNumbers: ['']};
 
     var idReport = $('#report_idreport').val();
     var apiParameters = {};

@@ -18,6 +18,7 @@ use Piwik\Period;
 use Piwik\Piwik;
 use Piwik\DataTable;
 use Piwik\Date;
+use Piwik\Plugin\Manager as PluginManager;
 use Piwik\Plugins\API\ProcessedReport;
 use Piwik\Plugins\MobileMessaging\API as APIMobileMessaging;
 use Piwik\Site;
@@ -183,6 +184,10 @@ class Notifier extends \Piwik\Plugin
     protected function sendAlertsPerSmsToRecipient($alerts, $mobileMessagingAPI, $phoneNumber)
     {
         if (empty($phoneNumber) || empty($alerts)) {
+            return;
+        }
+
+        if (!PluginManager::getInstance()->isPluginActivated('MobileMessaging')) {
             return;
         }
 

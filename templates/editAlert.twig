@@ -4,6 +4,10 @@
 
 <div class="alerts centerLargeDiv">
 <div class="entityAddContainer">
+{% if not requirementsAreMet %}
+    {% import '@CustomAlerts/macros.twig' as alertsMacro %}
+    {{ alertsMacro.requirementsNotMet() }}
+{% else %}
     <div class="entityCancel">
         {% set backlink = linkTo({'module': 'CustomAlerts', 'action': 'index'}) %}
         {{ 'CustomAlerts_CancelAndReturnToAlerts'|translate('<a class="entityCancelLink" href="' ~ backlink ~ '">', "</a>")|raw }}
@@ -136,14 +140,19 @@
         <br />
         <input type="submit" value="{{ 'General_Save'|translate }}" name="submit" class="submit" />
     </form>
+{% endif %}
 </div>
 </div>
 
 <script type="text/javascript">
 
 $(function() {
-    updateReportParametersFunctions.email({emailMe: {{ alert.email_me ? 'true':'false' }}, additionalEmails: {{ alert.additional_emails|json_encode|raw }} });
-    updateReportParametersFunctions.mobile({phoneNumbers: {{ alert.phone_numbers|json_encode|raw }} });
+    if (updateReportParametersFunctions.email) {
+        updateReportParametersFunctions.email({emailMe: {{ alert.email_me ? 'true':'false' }}, additionalEmails: {{ alert.additional_emails|json_encode|raw }} });
+    }
+    if (updateReportParametersFunctions.mobile) {
+        updateReportParametersFunctions.mobile({phoneNumbers: {{ alert.phone_numbers|json_encode|raw }} });
+    }
 });
 
 function onSubmit(event)
@@ -151,8 +160,8 @@ function onSubmit(event)
     event.preventDefault();
     event.stopPropagation();
 
-    var mailSettings   = getReportParametersFunctions.email();
-    var mobileSettings = getReportParametersFunctions.mobile();
+    var mailSettings   = getReportParametersFunctions.email ? getReportParametersFunctions.email() : {additionalEmails: [], emailMe: false};
+    var mobileSettings = getReportParametersFunctions.mobile ? getReportParametersFunctions.mobile() : {phoneNumbers: ['']};
 
     var idReport = $('#report_idreport').val();
     var apiParameters = {};
