@@ -1,7 +1,6 @@
 {
     "CustomAlerts": {
         "AccessException": "Δεν είστε ο ιδιοκτήτης του Συναγερμού με αναγνωριστικό %d",
-        "AlertConditions": "Συνθήκες Συναγερμού",
         "AlertDoesNotExist": "Ο Συναγερμός με το αναγνωριστικό %d δεν υπάρχει!",
         "AlertMeWhen": "Ειδοποίησέ με όταν",
         "AlertName": "Όνομα Συναγερμού",

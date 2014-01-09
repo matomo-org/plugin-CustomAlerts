@@ -2,7 +2,6 @@
     "CustomAlerts": {
         "AccessException": "Sie sind nicht der Eigentümer der Benachrichtigung mit der ID %d",
         "Alert": "Benachrichtigung",
-        "AlertConditions": "Bedingungen für die Benachrichtigung",
         "AlertDoesNotExist": "Die Benachrichtigung mit der ID %d existiert nicht!",
         "AlertMeWhen": "Benachrichtige mich sobald",
         "AlertName": "Titel der Benachrichtigung",
