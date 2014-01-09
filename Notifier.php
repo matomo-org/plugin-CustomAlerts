@@ -14,11 +14,13 @@
 namespace Piwik\Plugins\CustomAlerts;
 
 use Piwik\Mail;
+use Piwik\Period;
 use Piwik\Piwik;
 use Piwik\DataTable;
 use Piwik\Date;
 use Piwik\Plugins\API\ProcessedReport;
 use Piwik\Plugins\MobileMessaging\API as APIMobileMessaging;
+use Piwik\Site;
 use Piwik\Translate;
 use Piwik\View;
 use Piwik\Db;
@@ -80,7 +82,7 @@ class Notifier extends \Piwik\Plugin
 		}
 
         foreach ($alertsPerEmail as $email => $alerts) {
-            $this->sendAlertsPerEmailToRecipient($alerts, new Mail(), $email);
+            $this->sendAlertsPerEmailToRecipient($alerts, new Mail(), $email, $period, $idSite);
         }
 
         foreach ($alertsPerSms as $phoneNumber => $alerts) {
@@ -186,18 +188,23 @@ class Notifier extends \Piwik\Plugin
     }
 
     /**
-     * @param array  $alerts
+     * @param array $alerts
      * @param Mail $mail
      * @param string[] $recipients Email addresses
+     * @param $period
+     * @param $idSite
      */
-    protected function sendAlertsPerEmailToRecipient($alerts, Mail $mail, $recipients)
+    protected function sendAlertsPerEmailToRecipient($alerts, Mail $mail, $recipients, $period, $idSite)
     {
         if (empty($recipients) || empty($alerts)) {
             return;
         }
 
+        $prettyDate  = $this->getPrettyDateForSite($period, $idSite);
+        $websiteName = Site::getNameFor($idSite);
+
         $mail->addTo($recipients);
-        $mail->setSubject(Piwik::translate('CustomAlerts_MailAlertSubject', Date::today()));
+        $mail->setSubject(Piwik::translate('CustomAlerts_MailAlertSubject', array($websiteName, $prettyDate)));
 
         $viewHtml = new View('@CustomAlerts/alertHtmlMail');
         $viewHtml->assign('triggeredAlerts', $this->formatAlerts($alerts, 'html'));
@@ -228,6 +235,27 @@ class Notifier extends \Piwik\Plugin
         }
 
         return $recipients;
+    }
+
+    protected function getToday()
+    {
+        return Date::today();
+    }
+
+    protected function getPrettyDateForSite($period, $idSite)
+    {
+        $timezone = Site::getTimezoneFor($idSite);
+
+        $date = $this->getToday();
+        $date = $date->setTimezone($timezone);
+        // we ran the alerts for the period before...
+        $date = $date->subPeriod(1, $period);
+
+        // also make sure if period is month to display "2014-01" and not "2014-01-31"
+        $period     = Period::factory($period, $date);
+        $prettyDate = $period->getLocalizedLongString();
+
+        return $prettyDate;
     }
 
 }

@@ -9,6 +9,7 @@
 namespace Piwik\Plugins\CustomAlerts\tests;
 
 use Piwik\Common;
+use Piwik\Date;
 use Piwik\Mail;
 use Piwik\Plugin;
 use Piwik\Plugins\CustomAlerts\Notifier;
@@ -18,6 +19,11 @@ use Piwik\Url;
 class CustomNotifier extends Notifier
 {
     private $alerts = array();
+
+    protected function getToday()
+    {
+        return Date::factory('2010-01-01');
+    }
 
     protected function getTriggeredAlerts($period, $idSite)
     {
@@ -37,9 +43,9 @@ class CustomNotifier extends Notifier
         return parent::enrichTriggeredAlerts($triggeredAlerts);
     }
 
-    public function sendAlertsPerEmailToRecipient($alerts, \Piwik\Mail $mail, $recipient)
+    public function sendAlertsPerEmailToRecipient($alerts, \Piwik\Mail $mail, $recipient, $period, $idSite)
     {
-        parent::sendAlertsPerEmailToRecipient($alerts, $mail, $recipient);
+        parent::sendAlertsPerEmailToRecipient($alerts, $mail, $recipient, $period, $idSite);
     }
 
     public function sendAlertsPerSmsToRecipient($alerts, $mobileMessagingAPI, $phoneNumber)
@@ -165,7 +171,7 @@ FORMATTED;
         $mail   = new Mail();
         Mail::setDefaultTransport(new \Zend_Mail_Transport_File());
 
-        $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com');
+        $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com', 'day', 1);
 
         $expectedHtml = <<<HTML
 Hello,<br /><br />=0A=0AThe custom alerts you requested are listed in th=
@@ -182,6 +188,23 @@ ign in and access the Alerts page.=0A=0A';
         $this->assertEquals(array('test@example.com'), $mail->getRecipients());
     }
 
+    public function test_sendAlertsPerEmailToRecipient_shouldUseDifferentSubjectDependingOnPeriod()
+    {
+        $this->assertDateInSubject('day', 'Thursday 31 December 2009');
+        $this->assertDateInSubject('week', 'Week 21 December - 27 December 2009');
+        $this->assertDateInSubject('month', '2009, December');
+    }
+
+    private function assertDateInSubject($period, $expectedDate)
+    {
+        $alerts = $this->getTriggeredAlerts();
+        Mail::setDefaultTransport(new \Zend_Mail_Transport_File());
+
+        $mail = new Mail();
+        $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com', $period, 1);
+        $this->assertEquals('New alert for website Piwik test [' . $expectedDate . ']', $mail->getSubject());
+    }
+
     public function test_sendNewAlerts()
     {
         $mock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomNotifier', array('sendAlertsPerEmailToRecipient', 'sendAlertsPerSmsToRecipient'));
@@ -194,31 +217,42 @@ ign in and access the Alerts page.=0A=0A';
 
         $alerts[2]['phone_numbers'] = array('232');
 
+        $idSite = 1;
+        $period = 'week';
+
         $mock->setTriggeredAlerts($alerts);
 
         $mock->expects($this->at(0))
-            ->method('sendAlertsPerEmailToRecipient')
-            ->with($this->equalTo($alerts),
-                $this->isInstanceOf('\Piwik\Mail'),
-                $this->equalTo('test5@example.com'));
+             ->method('sendAlertsPerEmailToRecipient')
+             ->with($this->equalTo($alerts),
+                    $this->isInstanceOf('\Piwik\Mail'),
+                    $this->equalTo('test5@example.com'),
+                    $this->equalTo($period),
+                    $this->equalTo($idSite));
 
         $mock->expects($this->at(1))
              ->method('sendAlertsPerEmailToRecipient')
              ->with($this->equalTo(array($alerts[0], $alerts[2])),
                     $this->isInstanceOf('\Piwik\Mail'),
-                    $this->equalTo('test1@example.com'));
+                    $this->equalTo('test1@example.com'),
+                    $this->equalTo($period),
+                    $this->equalTo($idSite));
 
         $mock->expects($this->at(2))
              ->method('sendAlertsPerEmailToRecipient')
-            ->with($this->equalTo(array($alerts[1])),
-                   $this->isInstanceOf('\Piwik\Mail'),
-                   $this->equalTo('test2@example.com'));
+             ->with($this->equalTo(array($alerts[1])),
+                    $this->isInstanceOf('\Piwik\Mail'),
+                    $this->equalTo('test2@example.com'),
+                    $this->equalTo($period),
+                    $this->equalTo($idSite));
 
         $mock->expects($this->at(3))
              ->method('sendAlertsPerEmailToRecipient')
              ->with($this->equalTo(array($alerts[3])),
                     $this->isInstanceOf('\Piwik\Mail'),
-                    $this->equalTo('test3@example.com'));
+                    $this->equalTo('test3@example.com'),
+                    $this->equalTo($period),
+                    $this->equalTo($idSite));
 
         $mock->expects($this->at(4))
              ->method('sendAlertsPerSmsToRecipient')
@@ -232,7 +266,7 @@ ign in and access the Alerts page.=0A=0A';
                     $this->isInstanceOf('\Piwik\Plugins\MobileMessaging\API'),
                     $this->equalTo('232'));
 
-        $mock->sendNewAlerts('week', 1);
+        $mock->sendNewAlerts($period, $idSite);
     }
 
     public function test_enrichTriggeredAlerts_shouldEnrichAlerts_IfReportExistsAndMetricIsValid()

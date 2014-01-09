@@ -13,6 +13,7 @@
 namespace Piwik\Plugins\CustomAlerts;
 
 use Piwik\Plugins\API\ProcessedReport;
+use Piwik\Site;
 use Piwik\View;
 use Piwik\Common;
 use Piwik\Plugins\SitesManager\API as SitesManagerApi;
@@ -41,7 +42,7 @@ class Controller extends \Piwik\Plugin\Controller
 
         foreach ($alerts as &$alert) {
             $alert['reportName'] = $this->findReportName($alert);
-            $alert['siteName']   = $this->findSiteName($alert, $sites);
+            $alert['siteName']   = $this->findSiteName($alert);
         }
 
         $view->alerts = $alerts;
@@ -68,19 +69,15 @@ class Controller extends \Piwik\Plugin\Controller
         }
     }
 
-    private function findSiteName($alert, $sites)
+    private function findSiteName($alert)
     {
         if (empty($alert['id_sites'])) {
-            return;
+            return '';
         }
 
         list($idSite) = $alert['id_sites'];
 
-        foreach ($sites as $site) {
-            if ($site['idsite'] == $idSite) {
-                return $site['name'];
-            }
-        }
+        return Site::getNameFor($idSite);
     }
 
 	public function addNewAlert()
