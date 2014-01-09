@@ -53,6 +53,7 @@
         "ComparedToPreviousWeek": "previous week",
         "ComparedToPreviousMonth": "previous month",
         "ComparedToPreviousYear": "previous year",
-        "ScheduledReportsPluginNotActivated": "The ScheduledReports plugin is required in order to create or edit alerts. You can activate it by accessing the %splugin settings page%s."
+        "ScheduledReportsPluginNotActivated": "The ScheduledReports plugin is required in order to create or edit alerts. You can activate it by accessing the %splugin settings page%s.",
+        "MobileMessagingPluginNotActivated": "The MobileMessaging plugin is required to send SMS alerts. You can activate it by accessing the %splugin settings page%s."
     }
 }

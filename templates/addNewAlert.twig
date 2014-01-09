@@ -48,6 +48,15 @@
 
             {{ postEvent('Template.reportParametersScheduledReports') }}
 
+            {% if not supportsSMS %}
+                <tr>
+                    <td class="first"><label for="period">{{ 'MobileMessaging_PhoneNumbers'|translate }}</label></td>
+                    <td>
+                        {{ 'CustomAlerts_MobileMessagingPluginNotActivated'|translate('<a href="' ~ linkTo({'module':"CorePluginsAdmin", 'action': 'plugins', 'updated':null}) ~ '#MobileMessaging">', '</a>')|raw }}
+                    </td>
+                </tr>
+            {% endif %}
+
             <tr>
                 <td class="first"><label for="compared_to">{{ 'CustomAlerts_AlertCondition'|translate }}</label></td>
                 <td>
