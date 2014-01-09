@@ -38,7 +38,7 @@ class Notifier extends \Piwik\Plugin
         $alerts = $api->getTriggeredAlerts($period, Date::today(), false);
 
         return array_filter($alerts, function ($alert) use ($idSite) {
-            return $alert['idsite'] == $idSite;
+            return $alert['idsite'] == $idSite && empty($alert['ts_last_sent']);
         });
     }
 
@@ -79,6 +79,7 @@ class Notifier extends \Piwik\Plugin
                 $alertsPerSms[$phoneNumber][] = $triggeredAlert;
             }
 
+            $this->markAlertAsSent($triggeredAlert);
 		}
 
         foreach ($alertsPerEmail as $email => $alerts) {
@@ -89,6 +90,14 @@ class Notifier extends \Piwik\Plugin
             $this->sendAlertsPerSmsToRecipient($alerts, APIMobileMessaging::getInstance(), $phoneNumber);
         }
 	}
+
+    protected function markAlertAsSent($triggeredAlert)
+    {
+        $timestamp = Date::now()->getTimestamp();
+
+        $model = new Model();
+        $model->markTriggeredAlertAsSent($triggeredAlert, $timestamp);
+    }
 
     protected function getEmailAddressFromLogin($login)
     {

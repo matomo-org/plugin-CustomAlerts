@@ -46,7 +46,7 @@ class ModelTest extends BaseTEst
         $this->assertCount(2, $columns);
 
         $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert_log'));
-        $this->assertCount(5, $columns);
+        $this->assertCount(6, $columns);
     }
 
     public function test_uninstall_ShouldNotFailAndRemovesAllAlertTables()
@@ -136,6 +136,7 @@ class ModelTest extends BaseTEst
         $expected = array(
             'idalert' => 2,
             'idsite' => 1,
+            'ts_last_sent' => null,
             'alert_name' => 'Initial2',
             'period' => 'week',
             'site_name' => 'Piwik test',
@@ -180,6 +181,30 @@ class ModelTest extends BaseTEst
         $triggeredAlerts = $this->model->getTriggeredAlerts('day', 'today', false);
 
         $this->assertCount(1, $triggeredAlerts);
+    }
+
+    public function test_markTriggeredAlertAsSent_shouldSetTsLastSent()
+    {
+        $this->model->triggerAlert(1, 1, 99, 48);
+        $triggeredAlerts = $this->model->getTriggeredAlerts('day', 'today', false);
+
+        $this->model->markTriggeredAlertAsSent($triggeredAlerts[0], 1389301798);
+
+        // verify
+        $triggeredAlerts = $this->model->getTriggeredAlerts('day', 'today', false);
+        $this->assertEquals('2014-01-09 21:09:58', $triggeredAlerts[0]['ts_last_sent']);
+    }
+
+    public function test_markTriggeredAlertAsSent_shouldNotSetTsLastSent_IfSiteIdDoesNotMatch()
+    {
+        $this->model->triggerAlert(1, 1, 99, 48);
+        $triggeredAlerts = $this->model->getTriggeredAlerts('day', 'today', false);
+        $triggeredAlerts[0]['idsite'] = 2;
+        $this->model->markTriggeredAlertAsSent($triggeredAlerts[0], 1389301798);
+
+        // verify
+        $triggeredAlerts = $this->model->getTriggeredAlerts('day', 'today', false);
+        $this->assertNull($triggeredAlerts[0]['ts_last_sent']);
     }
 
     private function assertContainTables($expectedTables)
@@ -268,7 +293,7 @@ class ModelTest extends BaseTEst
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers' => array('0123456789'),
             'compared_to' => 1,
-            'id_sites' => $idSites
+            'id_sites' => $idSites,
         );
 
         $this->assertEquals($expected, $alert);

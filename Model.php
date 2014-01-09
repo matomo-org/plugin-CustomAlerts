@@ -56,6 +56,7 @@ class Model
 			`idalert` INT( 11 ) NOT NULL ,
 			`idsite` INT( 11 ) NOT NULL ,
 			`ts_triggered` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+			`ts_last_sent` timestamp NULL DEFAULT NULL,
 			`value_old` BIGINT unsigned DEFAULT NULL,
 			`value_new` BIGINT unsigned DEFAULT NULL,
 			KEY `ts_triggered` (`ts_triggered`)
@@ -136,6 +137,7 @@ class Model
 		$sql = "SELECT pa.idalert AS idalert,
 				pal.idsite AS idsite,
 				pal.ts_triggered AS ts_triggered,
+				pal.ts_last_sent AS ts_last_sent,
 				pa.name AS alert_name,
 				pa.additional_emails AS additional_emails,
 				pa.phone_numbers AS phone_numbers,
@@ -337,6 +339,22 @@ class Model
                 'value_old'    => $valueOld,
             )
         );
+    }
+
+    public function markTriggeredAlertAsSent($triggeredAlert, $timestamp)
+    {
+        $idAlert     = $triggeredAlert['idalert'];
+        $idSite      = $triggeredAlert['idsite'];
+        $tsTriggered = Date::factory($triggeredAlert['ts_triggered'])->getDatetime();
+
+        $log = array(
+            'ts_last_sent' => Date::factory($timestamp)->getDatetime()
+        );
+
+        $where = sprintf("idalert = %d AND idsite = %d AND ts_triggered = '%s'", $idAlert, $idSite, $tsTriggered);
+
+        $db = Db::get();
+        $db->update(Common::prefixTable('alert_log'), $log, $where);
     }
 
     private function getDefinedSiteIds($idAlert)

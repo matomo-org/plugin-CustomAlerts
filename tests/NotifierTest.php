@@ -207,7 +207,9 @@ ign in and access the Alerts page.=0A=0A';
 
     public function test_sendNewAlerts()
     {
-        $mock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomNotifier', array('sendAlertsPerEmailToRecipient', 'sendAlertsPerSmsToRecipient'));
+        $methods = array('sendAlertsPerEmailToRecipient', 'sendAlertsPerSmsToRecipient', 'markAlertAsSent');
+        $mock    = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomNotifier', $methods);
+
         $alerts = array(
             $this->buildAlert(1, 'Alert1', 'week', 4, 'Test', 'login1'),
             $this->buildAlert(2, 'Alert2', 'week', 4, 'Test', 'login2'),
@@ -222,7 +224,11 @@ ign in and access the Alerts page.=0A=0A';
 
         $mock->setTriggeredAlerts($alerts);
 
-        $mock->expects($this->at(0))
+        foreach ($alerts as $index => $alert) {
+            $mock->expects($this->at($index))->method('markAlertAsSent')->with($this->equalTo($alert));
+        }
+
+        $mock->expects($this->at(4))
              ->method('sendAlertsPerEmailToRecipient')
              ->with($this->equalTo($alerts),
                     $this->isInstanceOf('\Piwik\Mail'),
@@ -230,7 +236,7 @@ ign in and access the Alerts page.=0A=0A';
                     $this->equalTo($period),
                     $this->equalTo($idSite));
 
-        $mock->expects($this->at(1))
+        $mock->expects($this->at(5))
              ->method('sendAlertsPerEmailToRecipient')
              ->with($this->equalTo(array($alerts[0], $alerts[2])),
                     $this->isInstanceOf('\Piwik\Mail'),
@@ -238,7 +244,7 @@ ign in and access the Alerts page.=0A=0A';
                     $this->equalTo($period),
                     $this->equalTo($idSite));
 
-        $mock->expects($this->at(2))
+        $mock->expects($this->at(6))
              ->method('sendAlertsPerEmailToRecipient')
              ->with($this->equalTo(array($alerts[1])),
                     $this->isInstanceOf('\Piwik\Mail'),
@@ -246,7 +252,7 @@ ign in and access the Alerts page.=0A=0A';
                     $this->equalTo($period),
                     $this->equalTo($idSite));
 
-        $mock->expects($this->at(3))
+        $mock->expects($this->at(7))
              ->method('sendAlertsPerEmailToRecipient')
              ->with($this->equalTo(array($alerts[3])),
                     $this->isInstanceOf('\Piwik\Mail'),
@@ -254,13 +260,13 @@ ign in and access the Alerts page.=0A=0A';
                     $this->equalTo($period),
                     $this->equalTo($idSite));
 
-        $mock->expects($this->at(4))
+        $mock->expects($this->at(8))
              ->method('sendAlertsPerSmsToRecipient')
              ->with($this->equalTo(array($alerts[0], $alerts[1], $alerts[3])),
                     $this->isInstanceOf('\Piwik\Plugins\MobileMessaging\API'),
                     $this->equalTo('+1234567890'));
 
-        $mock->expects($this->at(5))
+        $mock->expects($this->at(9))
              ->method('sendAlertsPerSmsToRecipient')
              ->with($this->equalTo($alerts),
                     $this->isInstanceOf('\Piwik\Plugins\MobileMessaging\API'),

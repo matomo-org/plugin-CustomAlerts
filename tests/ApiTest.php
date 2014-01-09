@@ -9,7 +9,6 @@
 namespace Piwik\Plugins\CustomAlerts\tests;
 
 use Piwik\Db;
-use Piwik\Plugins\CustomAlerts\Model;
 use Piwik\Translate;
 
 /**
@@ -369,6 +368,7 @@ class ApiTest extends BaseTest
         $expected = array(
             'idalert' => 2,
             'idsite' => 1,
+            'ts_last_sent' => null,
             'alert_name' => 'Initial2',
             'period' => 'week',
             'site_name' => 'Piwik test',

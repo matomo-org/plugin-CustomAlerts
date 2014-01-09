@@ -37,7 +37,6 @@ class Controller extends \Piwik\Plugin\Controller
         $this->setGeneralVariablesView($view);
 
         $siteIds = SitesManagerApi::getInstance()->getSitesIdWithAtLeastViewAccess();
-        $sites   = $this->getSitesWithAtLeastViewAccess();
         $alerts  = API::getInstance()->getAlerts($siteIds);
 
         foreach ($alerts as &$alert) {
