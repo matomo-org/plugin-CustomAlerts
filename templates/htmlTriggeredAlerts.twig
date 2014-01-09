@@ -11,7 +11,7 @@
 
     <tr>
         <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">{{ 'CustomAlerts_MailAlertContent'|translate("'" ~ alert.alert_name ~ "'", "'" ~ alert.reportMetric|default(alert.metric) ~ "'", "'" ~ alert.reportName|default(alert.report) ~ "'", alertsMacro.metricChangeDescription(alert)) }}</td>
-        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="{{ piwikUrl }}{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert, 'idSite': alert.idsite, 'period': alert.period, 'date': 'yesterday'})|raw }}"
+        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="{{ piwikUrl }}{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert, 'idSite': alert.idsite, 'period': alert.period, 'date': 'yesterday', 'token_auth': ''})|raw }}"
                 >{{ 'CustomAlerts_EditAlert'|translate }}</a></td>
     </tr>
 
