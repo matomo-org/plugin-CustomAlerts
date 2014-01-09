@@ -1,7 +1,6 @@
 {
     "CustomAlerts": {
         "AccessException": "Non sei il titolare dell'Avviso con ID %d",
-        "AlertConditions": "Condizioni d'Avviso",
         "AlertDoesNotExist": "L'Avviso con ID %d non esiste!",
         "AlertMeWhen": "Avvisami quando",
         "AlertName": "Nome Avviso",
