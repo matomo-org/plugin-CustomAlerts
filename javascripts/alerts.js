@@ -99,7 +99,7 @@
         for(var i = 0; i < data.length; i++)
         {
             value = data[i].module + '.' + data[i].action;
-            if ('MultiSites.getOne' == value) {
+            if ('MultiSites.getOne' == value || 'MultiSites.getAll' == value) {
                 continue;
             }
 
