@@ -90,10 +90,10 @@ class NotifierTest extends BaseTest
         $host = Common::sanitizeInputValue(Url::getCurrentUrlWithoutFileName());
 
         $expected = <<<FORMATTED
-MyName1 has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.
+MyName1 has been triggered as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.
 >> Edit Alert ${host}index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday
 
-MyName2 has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.
+MyName2 has been triggered as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.
 >> Edit Alert ${host}index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday
 
 
@@ -146,14 +146,14 @@ FORMATTED;
     <tbody>
 
     <tr>
-        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">&#039;MyName1&#039; has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.</td>
+        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">MyName1 has been triggered as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.</td>
         <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday"
                 >Edit Alert</a></td>
     </tr>
 
 
     <tr>
-        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">&#039;MyName2&#039; has been triggered for website Piwik test as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.</td>
+        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">MyName2 has been triggered as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.</td>
         <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday"
                 >Edit Alert</a></td>
     </tr>
