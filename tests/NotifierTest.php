@@ -136,7 +136,7 @@ FORMATTED;
         $rendered = $this->notifier->formatAlerts($alerts, 'html');
 
         $expected = <<<FORMATTED
-<table style="border-collapse: collapse;margin-left: 5px;">
+<table style="border-collapse: collapse;">
     <thead style="background-color:rgb(228,226,215);color:rgb(37,87,146);">
     <tr>
         <th style="padding:6px 6px;text-align: left;">Alert</th>
@@ -146,14 +146,14 @@ FORMATTED;
     <tbody>
 
     <tr>
-        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">MyName1 has been triggered as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.</td>
+        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">&#039;MyName1&#039; has been triggered as the metric &#039;Visits&#039; in report &#039;Single Website dashboard&#039; is 4493 which is less than 5000.</td>
         <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday"
                 >Edit Alert</a></td>
     </tr>
 
 
     <tr>
-        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">MyName2 has been triggered as the metric Visits in report Single Website dashboard is 4493 which is less than 5000.</td>
+        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">&#039;MyName2&#039; has been triggered as the metric &#039;Visits&#039; in report &#039;Single Website dashboard&#039; is 4493 which is less than 5000.</td>
         <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday"
                 >Edit Alert</a></td>
     </tr>
@@ -174,14 +174,14 @@ FORMATTED;
         $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com', 'day', 1);
 
         $expectedHtml = <<<HTML
-Hello,<br /><br />=0A=0AThe custom alerts you requested are listed in th=
-e table below. To see more details or to adjust your custom alert settin=
-gs, please sign in and access the Alerts page.<br /><br />=0A=0A<table
+Hello,<br /><br />=0A=0AThe triggered alerts are listed in the table bel=
+ow. To adjust your custom alert settings, please sign in and access the=
+ Alerts page.<br /><br />=0A=0A<table
 HTML;
 
-        $expectedText = 'Hello,=0A=0AThe custom alerts you requested are listed in the table belo=
-w. To see more details or to adjust your custom alert settings, please s=
-ign in and access the Alerts page.=0A=0A';
+        $expectedText = 'Hello,=0A=0AThe triggered alerts are listed in the table below. To adjus=
+t your custom alert settings, please sign in and access the Alerts page.=
+=0A=0A';
 
         $this->assertStringStartsWith($expectedHtml, html_entity_decode($mail->getBodyHtml(true)));
         $this->assertStringStartsWith($expectedText, $mail->getBodyText(true));

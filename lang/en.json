@@ -8,7 +8,7 @@
         "SmsAlertContent": "%1$s has been triggered for website %4$s as the metric %2$s in report %3$s %5$s.",
         "MailAlertSubject": "New alert for website %1$s [%2$s]",
         "MailAlertContent": "%1$s has been triggered as the metric %2$s in report %3$s %4$s.",
-        "MailText": "The custom alerts you requested are listed in the table below. To see more details or to adjust your custom alert settings, please sign in and access the Alerts page.",
+        "MailText": "The triggered alerts are listed in the table below. To adjust your custom alert settings, please sign in and access the Alerts page.",
         "MailEnd": "Happy analyzing!",
         "ValueIsLessThan": "is %2$s which is less than %1$s",
         "ValueIsGreaterThan": "is %2$s which is greater than %1$s",
