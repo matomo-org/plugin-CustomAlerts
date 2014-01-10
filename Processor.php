@@ -29,16 +29,16 @@ class Processor extends \Piwik\Plugin
     {
         return array(
             'day' => array(
-                'CustomAlerts_ComparedToPreviousDay'  => 1,
-                'CustomAlerts_ComparedToPreviousWeek' => 7,
-                'CustomAlerts_ComparedToPreviousYear' => 365,
+                'CustomAlerts_DayComparedToPreviousWeek' => 7,
+                'CustomAlerts_DayComparedToPreviousDay'  => 1,
+                'CustomAlerts_DayComparedToPreviousYear' => 365,
             ),
             'week' => array(
-                'CustomAlerts_ComparedToPreviousWeek' => 1,
+                'CustomAlerts_WeekComparedToPreviousWeek' => 1,
             ),
             'month' => array(
-                'CustomAlerts_ComparedToPreviousMonth' => 1,
-                'CustomAlerts_ComparedToPreviousYear'  => 12,
+                'CustomAlerts_MonthComparedToPreviousMonth' => 1,
+                'CustomAlerts_MonthComparedToPreviousYear'  => 12,
             )
         );
     }
