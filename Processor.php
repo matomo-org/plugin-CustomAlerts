@@ -274,6 +274,7 @@ class Processor extends \Piwik\Plugin
             'idSite' => $idSite,
             'period' => $alert['period'],
             'date'   => Date::today()->subPeriod($subPeriodN, $alert['period'])->toString(),
+            'flat'   => 1,
             'filter_truncate' => 0
         );
 
