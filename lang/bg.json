@@ -1,11 +1,13 @@
 {
     "CustomAlerts": {
         "AccessException": "Не сте собственик на известието с идентификационен номер %d",
+        "Alert": "Известие",
         "AlertDoesNotExist": "Известие с индентификационен номер %d не съществува!",
         "AlertMeWhen": "Известяване когато",
         "AlertName": "Име на известието",
         "Alerts": "Известия",
         "ApplyTo": "Прилагане за",
+        "AreYouSureDeleteAlert": "Сигурни ли сте, че желаете да изтриете това известие?",
         "CancelAndReturnToAlerts": "Отказване и %sвръщане към списъка с известия%s",
         "Condition": "Състояние",
         "CreateNewAlert": "Създаване на ново известие",
@@ -16,13 +18,19 @@
         "EditAlert": "Редакция на известие",
         "EndsWith": "завършва с",
         "IncreasesMoreThan": "се увеличава повече, отколкото",
+        "InvalidMetricValue": "Стойността трябва да е цифра",
         "InvalidPeriod": "Зададен е невалиден период от време!",
         "IsGreaterThan": "е по-голямо от",
         "IsLessThan": "е по-малко от",
         "MailEnd": "Приятно анализиране!",
+        "ManageAlerts": "Управление на персонализирани известия",
+        "MatchesAnyExpression": "съвпада с всеки",
         "PercentageDecreasesMoreThan": "% намалява повече, отколкото",
         "PercentageIncreasesMoreThan": "% се увеличава повече, отколкото",
+        "SmsAlertFromName": "Ново известие",
         "StartsWith": "започва с",
-        "ThisAppliesTo": "Това се прилага за"
+        "ThisAppliesTo": "Това се прилага за",
+        "ValueIsGreaterThan": "е %2$s, което е повече от %1$s",
+        "ValueIsLessThan": "е %2$s, което е по-малко от %1$s"
     }
 }

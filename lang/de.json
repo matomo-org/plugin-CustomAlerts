@@ -23,11 +23,13 @@
         "IsGreaterThan": "ist größer als",
         "IsLessThan": "ist kleiner als",
         "MailEnd": "Viel Spaß beim Analysieren!",
+        "MailText": "Die von Ihnen angefragten Benachrichtigungen sind in der Tabelle unterhalb aufgelistet. Um mehr Details zu sehen oder um die Einstellungen einer benutzerdefinierten Benachrichtigung zu ändern, loggen Sie sich ein und wechseln Sie auf die Benachrichtigungen.",
         "MatchesRegularExpression": "entspricht einem regulären Ausdruck",
         "NoAlertsDefined": "Sie haben noch keine Benachrichtigungen für diese Seite erstellt, erstellen Sie jetzt eine!",
         "PercentageDecreasesMoreThan": "% verringert sich um mehr als",
         "PercentageIncreasesMoreThan": "% erhöht sich um mehr als",
         "PluginDescription": "Das Alerts-Plugin bietet Ihnen die Möglichkeit benutzerdefinierte Benachrichtigungen für nahezu alle in Piwik verfügbare Metriken erstellen.",
+        "SmsAlertFromName": "Neue Benachrichtigung",
         "StartsWith": "beginnt mit",
         "ThisAppliesTo": "Wird angewendet auf"
     }
