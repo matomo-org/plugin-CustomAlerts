@@ -186,6 +186,7 @@ class Processor extends \Piwik\Plugin
      */
 	protected function getMetricFromTable($dataTable, $metric, $filterCond = '', $filterValue = '')
 	{
+
 		if (!empty($filterValue)) {
             $this->filterDataTable($dataTable, $filterCond, $filterValue);
 		}
@@ -199,8 +200,14 @@ class Processor extends \Piwik\Plugin
 		$dataRow = $dataTable->getFirstRow();
 
 		if ($dataRow) {
-			return $dataRow->getColumn($metric);
-		}
+			$value = $dataRow->getColumn($metric);
+
+            if ($value) {
+                $value = str_replace(array('%', 's'), '', $value);
+            }
+
+            return $value;
+        }
 
         return null;
 	}
@@ -279,7 +286,6 @@ class Processor extends \Piwik\Plugin
             'format' => 'original',
             'idSite' => $idSite,
             'period' => $alert['period'],
-            'showColumns' => $alert['metric'],
             'date'   => Date::today()->subPeriod($subPeriodN, $alert['period'])->toString(),
             'flat'   => 1,
             'disable_queued_filters' => 1
