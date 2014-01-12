@@ -158,19 +158,21 @@ class Processor extends \Piwik\Plugin
             $percentage = $valueNew;
         }
 
+        $metricMatched = floatval($alert['metric_matched']);
+
         switch ($alert['metric_condition']) {
             case 'greater_than':
-                return ($valueNew > floatval($alert['metric_matched']));
+                return ($valueNew > $metricMatched);
             case 'less_than':
-                return ($valueNew < floatval($alert['metric_matched']));
+                return ($valueNew < $metricMatched);
             case 'decrease_more_than':
-                return (($valueOld - $valueNew) > $alert['metric_matched']);
+                return (($valueOld - $valueNew) > $metricMatched);
             case 'increase_more_than':
-                return (($valueNew - $valueOld) > $alert['metric_matched']);
+                return (($valueNew - $valueOld) > $metricMatched);
             case 'percentage_decrease_more_than':
-                return ((-1 * $alert['metric_matched']) > $percentage && $percentage < 0);
+                return ((-1 * $metricMatched) > $percentage && $percentage < 0);
             case 'percentage_increase_more_than':
-                return ($alert['metric_matched'] < $percentage && $percentage >= 0);
+                return ($metricMatched < $percentage && $percentage >= 0);
         }
 
         throw new \Exception('Metric condition is not supported');
