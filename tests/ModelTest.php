@@ -104,11 +104,24 @@ class ModelTest extends BaseTEst
 
     public function test_getAllAlerts_shouldReturnAllAlerts()
     {
-        $alerts = $this->model->getAlerts(array($this->idSite2, $this->idSite));
+        $alerts = $this->model->getAllAlerts();
         $this->assertCount(3, $alerts);
         $this->assertEquals('Initial1', $alerts[0]['name']);
         $this->assertEquals('Initial2', $alerts[1]['name']);
         $this->assertEquals('Initial3', $alerts[2]['name']);
+    }
+
+    public function test_getAllAlerts_shouldReturnAllAlertsHavingSamePeriod()
+    {
+        $this->createAlert('Custom', 'week', array());
+        $alerts = $this->model->getAllAlertsForPeriod('week');
+        $this->assertCount(2, $alerts);
+        $this->assertEquals('Initial2', $alerts[0]['name']);
+        $this->assertEquals('Custom', $alerts[1]['name']);
+
+        $alerts = $this->model->getAllAlertsForPeriod('day');
+        $this->assertCount(1, $alerts);
+        $this->assertEquals('Initial1', $alerts[0]['name']);
     }
 
     public function test_deleteAlert_ShouldNotReallyRemoveTheAlert()

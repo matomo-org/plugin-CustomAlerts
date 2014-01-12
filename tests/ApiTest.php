@@ -285,11 +285,36 @@ class ApiTest extends BaseTest
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage checkUserHasViewAccess Fake exception
+     * @expectedExceptionMessage checkUserIsSuperUser Fake exception
      */
-    public function test_getAllAlerts_shouldFail_IfUserIsNotTheSuperUser()
+    public function test_getAllAlertsForPeriod_shouldFail_IfUserIsNotTheSuperUser()
     {
-        $this->api->getAlerts(array($this->idSite2, $this->idSite));
+        $this->api->getAllAlertsForPeriod('day');
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_InvalidPeriod
+     */
+    public function test_getAllAlertsForPeriod_shouldFail_IfPeriodIsNotValid()
+    {
+        $this->setSuperUser();
+        $this->api->getAllAlertsForPeriod('invAliDPeriOd');
+    }
+
+    public function test_getAllAlertsForPeriod_shouldReturnAllAlertsHavingSamePeriod()
+    {
+        $this->setSuperUser();
+
+        $this->createAlert('Custom', 'week', array());
+        $alerts = $this->api->getAllAlertsForPeriod('week');
+        $this->assertCount(2, $alerts);
+        $this->assertEquals('Initial2', $alerts[0]['name']);
+        $this->assertEquals('Custom', $alerts[1]['name']);
+
+        $alerts = $this->api->getAllAlertsForPeriod('day');
+        $this->assertCount(1, $alerts);
+        $this->assertEquals('Initial1', $alerts[0]['name']);
     }
 
     public function test_getAllAlerts_shouldReturnAllAlerts()

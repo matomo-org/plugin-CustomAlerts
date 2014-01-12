@@ -191,13 +191,9 @@ class Model
 
 	public function getAllAlertsForPeriod($period)
 	{
-		$sql = "SELECT * FROM "
-				. Common::prefixTable('alert_site') . " alert, "
-				. Common::prefixTable('alert') . " alert_site "
-				. "WHERE alert.idalert = alert_site.idalert "
-				. "AND period = ?";
+        $sql = "SELECT * FROM ". Common::prefixTable('alert') . " WHERE period = ?";
 
-		$alerts = Db::fetchAll($sql, array($period));
+        $alerts = Db::fetchAll($sql, array($period));
         $alerts = $this->completeAlerts($alerts);
 
         return $alerts;
