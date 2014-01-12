@@ -164,8 +164,12 @@
     function updateMetricCondition()
     {
         var condition = $('#metricCondition').val();
+        var metric = $('#metric').find('option:selected').val();
 
-        if (condition && 0 === condition.indexOf('percentage_')) {
+        var isPercentageCondition = condition && 0 === condition.indexOf('percentage_');
+        var isPercentageMetric    = metric && -1 !== metric.indexOf('_rate');
+
+        if (isPercentageCondition || isPercentageMetric) {
             $('.metricValueDescription').show();
         } else {
             $('.metricValueDescription').hide();
@@ -205,6 +209,7 @@
 
         $('.alerts #reportCondition').change(updateReportCondition)
         $('.alerts #metricCondition').change(updateMetricCondition)
+        $('.alerts #metric').change(updateMetricCondition)
 
         var currentSiteId = $('[name=idSite]').val();
         $('.sites_autocomplete').bind('piwik:siteSelected', function (e, site) {
