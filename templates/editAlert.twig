@@ -12,7 +12,7 @@
         {% set backlink = linkTo({'module': 'CustomAlerts', 'action': 'index'}) %}
         {{ 'CustomAlerts_CancelAndReturnToAlerts'|translate('<a class="entityCancelLink" href="' ~ backlink ~ '">', "</a>")|raw }}
     </div>
-    <form method="POST" onSubmit="onSubmit(event)">
+    <form method="POST" onSubmit="return onSubmit(event);">
         <h2>{{ 'CustomAlerts_ManageAlerts'|translate }}</h2>
         <table class="tableForm dataTable entityTable">
         <thead>
@@ -166,8 +166,12 @@ $(function() {
 
 function onSubmit(event)
 {
-    event.preventDefault();
-    event.stopPropagation();
+    try {
+        event.preventDefault();
+        event.stopPropagation();
+    } catch (e) {
+        event.returnValue = false; // IE8
+    }
 
     var mailSettings   = getReportParametersFunctions.email ? getReportParametersFunctions.email() : {additionalEmails: [], emailMe: false};
     var mobileSettings = getReportParametersFunctions.mobile ? getReportParametersFunctions.mobile() : {phoneNumbers: ['']};
@@ -194,7 +198,7 @@ function onSubmit(event)
         var notification = new UI.Notification();
         notification.show('{{ 'CustomAlerts_InvalidMetricValue'|translate|e('js') }}', {id: 'CustomAlertsMetricValueError', context: 'error', type: 'toast'});
         $('#metricValue').css({backgroundColor: '#f2dede'});
-        return;
+        return false;
     }
 
     $('#metricValue').css({backgroundColor: '#ffffff'});
