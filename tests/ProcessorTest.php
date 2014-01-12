@@ -8,12 +8,13 @@
 
 namespace Piwik\Plugins\CustomAlerts\tests;
 
+use Piwik\Common;
 use Piwik\DataTable;
 use Piwik\DataTable\Row;
 use Piwik\Date;
+use Piwik\Plugins\Actions;
 use Piwik\Plugins\CustomAlerts\Processor;
 use Piwik\Translate;
-use Piwik\Access;
 
 class CustomProcessor extends Processor {
     public function filterDataTable($dataTable, $condition, $value) {
@@ -33,6 +34,11 @@ class CustomProcessor extends Processor {
     public function shouldBeTriggered($alert, $metricOne, $metricTwo)
     {
         return parent::shouldBeTriggered($alert, $metricOne, $metricTwo);
+    }
+
+    public function getValueForAlertInPast($alert, $idSite, $subPeriodN)
+    {
+        return parent::getValueForAlertInPast($alert, $idSite, $subPeriodN);
     }
 }
 
@@ -110,6 +116,53 @@ class ProcessorTest extends BaseTest
         $this->assertFilterResult('matches_exactly', '3test', array(33, 65));
         $this->assertFilterResult('matches_exactly', 'ninety', array(90));
         $this->assertFilterResult('matches_exactly', 'NoneMatChIng', array());
+    }
+
+    public function test_filterDataTable_MatchesExactlyIntegration()
+    {
+        $t = \Test_Piwik_BaseFixture::getTracker($this->idSite, Date::now()->getDatetime(), $defaultInit = true, $useThirdPartyCookie = 1);
+
+        $t->setUrlReferrer('http://www.google.com.vn/url?sa=t&rct=j&q=%3C%3E%26%5C%22the%20pdo%20extension%20is%20required%20for%20this%20adapter%20but%20the%20extension%20is%20not%20loaded&source=web&cd=4&ved=0FjAD&url=http%3A%2F%2Fforum.piwik.org%2Fread.php%3F2%2C1011&ei=y-HHAQ&usg=AFQjCN2-nt5_GgDeg&cad=rja');
+        $t->setUrl('http://example.org/%C3%A9%C3%A9%C3%A9%22%27...%20%3Cthis%20is%20cool%3E!');
+        $t->setGenerationTime(523);
+        $t->doTrackPageView('incredible title! <>,;');
+
+        $t->setUrl('http://example.org/dir/file.php?foo=bar&foo2=bar');
+        $t->setGenerationTime(123);
+        $t->doTrackPageView('incredible title! <>,;');
+
+        $t->setUrl('http://example.org/dir/file.php?foo=bar&foo2=bar');
+        $t->setGenerationTime(147);
+        $t->doTrackPageView('incredible title! <>,;');
+
+        // for some reasons @dataProvider results in an "Mysql::getProfiler() undefined method" error
+        $assertions = array(
+            array('nb_hits', 'foo', 2),
+            array('nb_visits', 'foo', 1),
+            array('nb_hits', 'i', 3),
+            array('nb_hits', 'foo2=bar', 2),
+            array('nb_hits', 'foo=bar&foo2=bar', 2),
+            array('nb_hits', 'php?foo=bar&foo2=bar', 2),
+            array('nb_hits', 'file.php?foo=bar&foo2=bar', 2),
+            array('nb_hits', 'dir/file.php?foo=bar&foo2=bar', 2),
+     //       array('avg_time_generation', 'dir/file.php?foo=bar&foo2=bar', 2),
+     //       array('avg_time_on_page', 'dir/file.php?foo=bar&foo2=bar', 2),
+     //       array('bounce_rate', 'php?foo=bar', 0)
+        );
+
+        foreach ($assertions as $assert) {
+            $alert = array(
+                'report' => 'Actions.getPageUrls',
+                'metric' => $assert[0],
+                'period' => 'day',
+                'report_condition' => 'contains',
+                'report_matched'   => Common::sanitizeInputValue($assert[1])
+            );
+
+            $value = $this->processor->getValueForAlertInPast($alert, $this->idSite, 0);
+
+            $this->assertEquals($assert[2], $value, $assert[0] . ':' . $assert[1] . ' should return value ' . $assert[2]);
+        }
     }
 
     public function test_filterDataTable_Condition_DoesNotMatchExactly()

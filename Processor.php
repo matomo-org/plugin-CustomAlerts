@@ -194,6 +194,8 @@ class Processor extends \Piwik\Plugin
 			$dataTable->filter('Truncate', array(0, null, $metric));
 		}
 
+        $dataTable->applyQueuedFilters();
+
 		$dataRow = $dataTable->getFirstRow();
 
 		if ($dataRow) {
@@ -212,6 +214,10 @@ class Processor extends \Piwik\Plugin
     protected function filterDataTable($dataTable, $condition, $value)
     {
         $invert = false;
+
+        if ('matches_regex' != $condition && 'does_not_match_regex' != $condition) {
+            $value = str_replace(array('?', '+', '*'), array('\?', '\+', '\*'), $value);
+        }
 
         // Some escaping?
         switch ($condition) {
@@ -273,9 +279,10 @@ class Processor extends \Piwik\Plugin
             'format' => 'original',
             'idSite' => $idSite,
             'period' => $alert['period'],
+            'showColumns' => $alert['metric'],
             'date'   => Date::today()->subPeriod($subPeriodN, $alert['period'])->toString(),
             'flat'   => 1,
-            'filter_truncate' => 0
+            'disable_queued_filters' => 1
         );
 
         // Get the data for the API request
