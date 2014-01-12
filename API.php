@@ -13,6 +13,7 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
+use Piwik\Common;
 use Piwik\Period;
 use Piwik\Db;
 use Piwik\Piwik;
@@ -20,7 +21,6 @@ use Piwik\Plugins\API\ProcessedReport;
 use Piwik\Site;
 use Piwik\Translate;
 use Piwik\Plugins\MobileMessaging\API as APIMobileMessaging;
-use Piwik\Plugins\API\API as MetadataApi;
 use Exception;
 
 /**
@@ -106,7 +106,7 @@ class API extends \Piwik\Plugin\API
 
         Piwik::checkUserHasViewAccess($idSites);
 
-        $name = $this->checkName($name);
+        $this->checkName($name);
         $this->checkPeriod($period);
         $this->checkComparedTo($period, $comparedTo);
         $this->checkMetricCondition($metricCondition);
@@ -116,6 +116,7 @@ class API extends \Piwik\Plugin\API
             $this->checkApiMethodAndMetric($idSite, $report, $metric);
         }
 
+        $name             = Common::unsanitizeInputValue($name);
         $additionalEmails = $this->checkAdditionalEmails($additionalEmails);
         $phoneNumbers     = $this->checkPhoneNumbers($phoneNumbers);
 
@@ -153,7 +154,7 @@ class API extends \Piwik\Plugin\API
         $idSites = Site::getIdSitesFromIdSitesString($idSites);
         Piwik::checkUserHasViewAccess($idSites);
 
-        $name = $this->checkName($name);
+        $this->checkName($name);
         $this->checkPeriod($period);
         $this->checkComparedTo($period, $comparedTo);
         $this->checkMetricCondition($metricCondition);
@@ -163,6 +164,7 @@ class API extends \Piwik\Plugin\API
             $this->checkApiMethodAndMetric($idSite, $report, $metric);
         }
 
+        $name             = Common::unsanitizeInputValue($name);
         $additionalEmails = $this->checkAdditionalEmails($additionalEmails);
         $phoneNumbers     = $this->checkPhoneNumbers($phoneNumbers);
 
@@ -289,8 +291,6 @@ class API extends \Piwik\Plugin\API
         if (empty($name)) {
             throw new Exception(Piwik::translate("General_PleaseSpecifyValue", "name"));
         }
-
-        return urldecode($name);
     }
 
     private function checkMetricCondition($condition)

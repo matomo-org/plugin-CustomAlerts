@@ -23,7 +23,7 @@
 
         <tr>
             <td class="first"><label for="alertName">{{ 'CustomAlerts_AlertName'|translate }}</label></td>
-            <td><input class="inp" type="text" maxlength="100" name="alertName" id="alertName" value="{{ alert.name }}"/></td>
+            <td><input class="inp" type="text" maxlength="100" name="alertName" id="alertName" value="{{ alert.name|e('html_attr') }}"/></td>
         </tr>
         <tr>
             <td class="first"><label for="applyTo">{{ 'CustomAlerts_ApplyTo'|translate }}</label></td>
@@ -175,7 +175,7 @@ function onSubmit(event)
     var idReport = $('#report_idreport').val();
     var apiParameters = {};
     apiParameters.format = 'json';
-    apiParameters.name  = encodeURIComponent($('#alertName').val());
+    apiParameters.name  = $('#alertName').val();
     apiParameters.idAlert = {{ alert.idalert }};
     apiParameters.metric  = $('#metric').find('option:selected').val();
     apiParameters.metricCondition  = $('#metricCondition').find('option:selected').val();

@@ -147,7 +147,7 @@ function onSubmit(event)
     var idReport = $('#report_idreport').val();
     var apiParameters = {};
     apiParameters.format  = 'json';
-    apiParameters.name    = encodeURIComponent($('#alertName').val());
+    apiParameters.name    = $('#alertName').val();
     apiParameters.metric  = $('#metric').find('option:selected').val();
     apiParameters.metricCondition  = $('#metricCondition').find('option:selected').val();
     apiParameters.metricValue = $('#metricValue').val();
