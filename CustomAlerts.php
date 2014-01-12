@@ -131,7 +131,7 @@ class CustomAlerts extends \Piwik\Plugin
 
     private function scheduleTask(&$tasks, $methodName, $period)
     {
-        $siteIds = SitesManagerApi::getInstance()->getAllSitesId();
+        $siteIds = $this->getSiteIds();
 
         foreach ($siteIds as $siteId) {
             $tasks[] = new ScheduledTask (
@@ -141,5 +141,20 @@ class CustomAlerts extends \Piwik\Plugin
                 ScheduledTime::getScheduledTimeForSite($siteId, $period)
             );
         }
+    }
+
+    private function getSiteIds()
+    {
+        $siteIds = SitesManagerApi::getInstance()->getAllSitesId();
+
+        $model  = new Model();
+        $alerts = $model->getAlerts($siteIds);
+
+        $siteIdsHavingAlerts = array();
+        foreach ($alerts as $alert) {
+            $siteIdsHavingAlerts = array_merge($siteIdsHavingAlerts, $alert['id_sites']);
+        }
+
+        return array_unique($siteIdsHavingAlerts);
     }
 }
