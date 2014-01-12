@@ -131,7 +131,7 @@ class CustomAlerts extends \Piwik\Plugin
 
     private function scheduleTask(&$tasks, $methodName, $period)
     {
-        $siteIds = $this->getSiteIds();
+        $siteIds = $this->getSiteIdsHavingAlerts();
 
         foreach ($siteIds as $siteId) {
             $tasks[] = new ScheduledTask (
@@ -143,7 +143,7 @@ class CustomAlerts extends \Piwik\Plugin
         }
     }
 
-    private function getSiteIds()
+    private function getSiteIdsHavingAlerts()
     {
         $siteIds = SitesManagerApi::getInstance()->getAllSitesId();
 
