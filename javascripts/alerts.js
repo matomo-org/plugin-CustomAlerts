@@ -3,8 +3,8 @@ var CustomAlerts = (function($) {
 
     var reportValuesAutoComplete = null;
 
-    function updateMetrics(siteId) {
-        if (!siteId) {
+    function updateFormValues(siteId) {
+        if (!siteId || !$.isNumeric(siteId)) {
             siteId = $('[name=idSite]').val();
         }
 
@@ -20,7 +20,7 @@ var CustomAlerts = (function($) {
             format: 'JSON'
         }, 'GET');
         ajaxRequest.setCallback(function(data) {
-            updateForm(data);
+            renderForm(data);
         });
         ajaxRequest.setErrorCallback(function () {});
         ajaxRequest.send(false);
@@ -86,45 +86,37 @@ var CustomAlerts = (function($) {
         ajaxRequest.send(false);
     }
 
-    function updateForm(data) {
+    function isBlockedReportApiMethod(apiMethod) {
+        return 'MultiSites.getOne' == apiMethod || 'MultiSites.getAll' == apiMethod;
+    }
 
-        var period = $('.period').val();
+    function renderForm(data) {
 
-        $('.comparedToField select').hide();
-        $('.comparedToField select').attr('data-inactive', 'data-inactive');
-        $('.comparedToField select[data-period='+ period + ']').show();
-        $('.comparedToField select[data-period='+ period + ']').removeAttr('data-inactive');
+        updateComparedTo();
 
-        currentGroup = $('.reports').val();
-        options = "";
+        var currentApiMethod = $('#report').val();
+        var options = "";
+
         for(var i = 0; i < data.length; i++)
         {
-            value = data[i].module + '.' + data[i].action;
-            if ('MultiSites.getOne' == value || 'MultiSites.getAll' == value) {
+            var reportMetadata  = data[i];
+            var reportApiMethod = reportMetadata.module + '.' + reportMetadata.action;
+
+            if (isBlockedReportApiMethod(reportApiMethod)) {
                 continue;
             }
 
-            if(currentGroup == undefined) {
-                options += '<option selected="selected" value="' + value + '">' + data[i].name + '</option>';
-                currentGroup = value;
+            if (!currentApiMethod) {
+                options += '<option selected="selected" value="' + reportApiMethod + '">' + reportMetadata.name + '</option>';
+                currentApiMethod = reportApiMethod;
+            } else {
+                options += '<option value="' + reportApiMethod + '">' + reportMetadata.name + '</option>';
             }
-            else {
-                options += '<option value="' + value + '">' + data[i].name + '</option>';
-            }
 
-            if(value == currentGroup)
-            {
-                metrics = data[i].metrics;
+            if (reportApiMethod == currentApiMethod) {
+                updateMetrics(reportMetadata.metrics);
 
-                mOptions = "";
-                for(var metric in metrics)
-                {
-                    mOptions += '<option value="' + metric + '">' + metrics[metric] + '</option>';
-                }
-                $('.metrics').html(mOptions);
-
-                if(data[i].dimension != undefined)
-                {
+                if (reportMetadata.dimension) {
                     $('#reportInfo').text(data[i].dimension);
                     $('.reportCondition').removeAttr('disabled');
                     $('.reportCondition').show();
@@ -132,10 +124,8 @@ var CustomAlerts = (function($) {
                     $('.reportValue').show();
                     $('.reportConditionField').show();
                     $('.reportValueField').show();
-                }
-                else
-                {
-                    $('#reportInfo').text("");
+                } else {
+                    $('#reportInfo').text('');
                     $('.reportCondition').attr('disabled', 'disabled');
                     $('.reportCondition').hide();
                     $('.reportValue').attr('disabled', 'disabled');
@@ -145,11 +135,40 @@ var CustomAlerts = (function($) {
                 }
             }
         }
+
         $('.reports').html(options);
-        $('.reports').val(currentGroup);
+        $('.reports').val(currentApiMethod);
 
         updateReportCondition();
         updateMetricCondition();
+    }
+
+    function updateComparedTo()
+    {
+        var period = $('.period').val();
+
+        $('.comparedToField select').hide();
+        $('.comparedToField select').attr('data-inactive', 'data-inactive');
+        $('.comparedToField select[data-period='+ period + ']').show();
+        $('.comparedToField select[data-period='+ period + ']').removeAttr('data-inactive');
+    }
+
+    function updateMetrics(metrics)
+    {
+        var currentMetric = $('#metric').val();
+        var mOptions = "";
+
+        for (var metric in metrics) {
+
+            var selected = '';
+            if (metric == currentMetric) {
+                selected = ' selected="selected"';
+            }
+            
+            mOptions += '<option value="' + metric + '"' + selected + '>' + metrics[metric] + '</option>';
+        }
+
+        $('.metrics').html(mOptions);
     }
 
     function updateReportCondition()
@@ -206,23 +225,17 @@ var CustomAlerts = (function($) {
         updateReportCondition();
         updateMetricCondition();
 
-        $('.alerts .period').change(function() {
-            updateMetrics();
-        });
-
-        $('.alerts .reports').change(function() {
-            updateMetrics();
-        })
-
+        $('.alerts #period').change(updateFormValues);
+        $('.alerts #report').change(updateFormValues)
+        $('.alerts #metric').change(updateMetricCondition)
         $('.alerts #reportCondition').change(updateReportCondition)
         $('.alerts #metricCondition').change(updateMetricCondition)
-        $('.alerts #metric').change(updateMetricCondition)
 
         var currentSiteId = $('[name=idSite]').val();
         $('.sites_autocomplete').bind('piwik:siteSelected', function (e, site) {
             if (site.id != currentSiteId) {
                 currentSiteId = site.id;
-                updateMetrics(site.id);
+                updateFormValues(site.id);
             }
         });
 
@@ -231,7 +244,7 @@ var CustomAlerts = (function($) {
         });
 
         if ($('.alerts .period').length) {
-            updateMetrics();
+            updateFormValues();
         }
 
         $('.alerts #reportValue').autocomplete({

@@ -1,0 +1,143 @@
+{% if not requirementsAreMet %}
+
+    {% import '@CustomAlerts/macros.twig' as alertsMacro %}
+    {{ alertsMacro.requirementsNotMet() }}
+
+{% else %}
+
+    <div class="entityCancel">
+        {% set backlink = linkTo({'module': 'CustomAlerts', 'action': 'index'}) %}
+        {{ 'CustomAlerts_CancelAndReturnToAlerts'|translate('<a class="entityCancelLink" href="' ~ backlink ~ '">', "</a>")|raw }}
+    </div>
+
+    <form method="POST" onSubmit="return onSubmit(event);">
+        <h2>{{ 'CustomAlerts_ManageAlerts'|translate }}</h2>
+        <table class="tableForm dataTable entityTable">
+            <thead>
+                <tr class="first">
+                    <th colspan="2">{{ headline }}</th>
+                <tr>
+            </thead>
+            <tbody>
+
+            <tr>
+                <td class="first"><label for="alertName">{{ 'CustomAlerts_AlertName'|translate }}</label></td>
+                <td><input class="inp" type="text" maxlength="100" name="alertName" id="alertName" value="{% if alert %}{{ alert.name|e('html_attr') }}{% endif %}"/></td>
+            </tr>
+            <tr>
+                <td class="first"><label for="applyTo">{{ 'CustomAlerts_ApplyTo'|translate }}</label></td>
+                <td>
+                    {% include "@CoreHome/_siteSelect.twig" with {
+                        'siteName':currentSiteName,
+                        'idSite':currentSiteId,
+                        'switchSiteOnSelect':false,
+                        'showAllSitesItem':false,
+                        'showSelectedSite':true,
+                        'siteSelectorId': 'alertReportSiteSelector',
+                        'inputName': 'idSite'
+                    } %}
+                </td>
+            </tr>
+            <tr>
+                <td class="first"><label for="period">{{ 'General_Period'|translate }}</label></td>
+                <td><select class="period inp" name="period" id="period">
+                        <option value="day" {% if alert and alert.period == 'day' %}selected="selected"{% endif %}>{{ 'CoreHome_PeriodDay'|translate }}</option>
+                        <option value="week" {% if alert and alert.period == 'week' %}selected="selected"{% endif %}>{{ 'CoreHome_PeriodWeek'|translate }}</option>
+                        <option value="month" {% if alert and alert.period == 'month' %}selected="selected"{% endif %}>{{ 'CoreHome_PeriodMonth'|translate }}</option>
+                    </select></td>
+            </tr>
+
+            {{ postEvent('Template.reportParametersScheduledReports') }}
+
+            {% if not supportsSMS %}
+                <tr>
+                    <td class="first"><label for="period">{{ 'MobileMessaging_PhoneNumbers'|translate }}</label></td>
+                    <td>
+                        {{ 'CustomAlerts_MobileMessagingPluginNotActivated'|translate('<a href="' ~ linkTo({'module':"CorePluginsAdmin", 'action': 'plugins', 'updated':null}) ~ '#MobileMessaging">', '</a>')|raw }}
+                    </td>
+                </tr>
+            {% endif %}
+
+            <tr>
+                <td class="first"><label for="compared_to">{{ 'CustomAlerts_AlertCondition'|translate }}</label></td>
+                <td>
+
+                    <br />
+                    <span class="reportField">
+                        {{ 'CustomAlerts_ThisAppliesTo'|translate}}
+                        <select class="reports inp inlineSelect" name="report" id="report">
+                            {% if reportMetadata and alert %}
+                                <option value="{{ alert.report|e('html_attr') }}" selected="selected">{{ reportMetadata.name }}</option>
+                            {% endif %}
+                        </select>
+                    </span>
+
+                    <span class="reportConditionField">
+                        <br /> when <span id="reportInfo"></span>
+                        <select class="reportCondition inp inlineSelect" name="reportCondition" id="reportCondition">
+                            {% for condName, condValue in alertGroupConditions %}
+                                <option value="{{ condValue|e('html_attr') }}" {% if alert and condValue == alert.report_condition %}selected="selected"{% endif %}>{{ condName|translate }}</option>
+                            {% endfor %}
+                        </select>
+                    </span>
+
+                    <span class="reportValueField">
+                        <input type="text" role="textbox" autocomplete="off" class="reportValue inp ui-autocomplete-input" maxlength="255" name="reportValue" id="reportValue" value="{% if alert %}{{ alert.report_matched }}{% endif %}" placeholder="{{ 'General_Search'|translate }}" length="15">
+                    </span>
+
+                    <br/><br />
+
+                    <span>
+                        {{ 'CustomAlerts_AlertMeWhen'|translate }}
+                        <select name="metric" id="metric" class="metrics inp inlineSelect">
+                            {% if reportMetadata and alert %}
+                                {% for metricName, metricValue in reportMetadata.metrics %}
+                                    <option value="{{ metricName|e('html_attr') }}" {%  if metricName == alert.metric %}selected="selected"{% endif %}>{{ metricValue }}</option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </span>
+
+                    <span>
+                        <select name="metricCondition" id="metricCondition" class="inp inlineSelect">
+                            {% for condName, condValue in alertMetricConditions %}
+                                <option value="{{ condValue|e('html_attr') }}" {% if alert and condValue == alert.metric_condition %}selected="selected"{% endif %}>{{ condName|translate }}</option>
+                            {% endfor %}
+                        </select>
+                    </span>
+
+                    <span>
+                        <input type="text" class="inp" name="metricValue" id="metricValue" value="{% if alert %}{{ alert.metric_matched|e('html_attr') }}{% endif %}" />
+                        <span class="metricValueDescription">%</span>
+                    </span>
+
+                    <span class="comparedToField">
+                        <br />
+                        compared to the
+                        {% for period, comparablesDatesPeriod in comparablesDates %}
+                            <select name="compared_to"
+                                    class="inlineSelect"
+                                    data-period="{{ period|e('html_attr') }}"
+                                    id="compared_to"
+                                    {% if comparablesDatesPeriod|length <= 1 %}
+                                        disabled="disabled"
+                                    {% endif %}
+                                    >
+                                {% for compDateTranslation, value in comparablesDatesPeriod %}
+                                    <option value="{{ value|e('html_attr') }}"
+                                            {% if alert and value == alert.compared_to %} selected="selected"{% endif %}
+                                            >{{ compDateTranslation|translate }}</option>
+                                {% endfor %}
+                            </select>
+                        {% endfor %}
+                    </span>
+                    <br />
+                    <br />
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <input type="submit" value="{{ 'General_Save'|translate }}" name="submit" class="submit" />
+    </form>
+{% endif %}

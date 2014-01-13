@@ -3,133 +3,13 @@
 {% block content %}
 
 <div class="centerLargeDiv alerts">
-<div class="entityAddContainer">
-{% if not requirementsAreMet %}
-    {% import '@CustomAlerts/macros.twig' as alertsMacro %}
-    {{ alertsMacro.requirementsNotMet() }}
-{% else %}
-    <div class="entityCancel">
-        {% set backlink = linkTo({'module': 'CustomAlerts', 'action': 'index'}) %}
-        {{ 'CustomAlerts_CancelAndReturnToAlerts'|translate('<a class="entityCancelLink" href="' ~ backlink ~ '">', "</a>")|raw }}
+    <div class="entityAddContainer">
+        {% include "@CustomAlerts/form.twig" with {
+            headline: 'CustomAlerts_CreateNewAlert'|translate,
+            currentSiteName: siteName,
+            currentSiteId: idSite
+        } %}
     </div>
-    <form method="POST" onSubmit="return onSubmit(event);">
-        <h2>{{ 'CustomAlerts_ManageAlerts'|translate }}</h2>
-        <table class="tableForm dataTable entityTable">
-            <thead>
-                <tr class="first">
-                    <th colspan="2">{{ 'CustomAlerts_CreateNewAlert'|translate }}</th>
-                <tr>
-            </thead>
-            <tr>
-                <td class="first"><label for="alertName">{{ 'CustomAlerts_AlertName'|translate }}</label></td>
-                <td><input class="inp" type="text" maxlength="100" name="alertName" id="alertName" /></td>
-            </tr>
-            <tr>
-                <td class="first"><label for="applyTo">{{ 'CustomAlerts_ApplyTo'|translate }}</label></td>
-                <td>{% include "@CoreHome/_siteSelect.twig" with {
-                        'siteName':siteName,
-                        'idSite':idSite,
-                        'switchSiteOnSelect':false,
-                        'showAllSitesItem':false,
-                        'showSelectedSite':true,
-                        'siteSelectorId': 'alertReportSiteSelector',
-                        'inputName': 'idSite'
-                    } %}
-                </td>
-            </tr>
-            <tr>
-                <td class="first"><label for="period">{{ 'General_Period'|translate }}</label></td>
-                <td><select class="period inp" name="period" id="period">
-                        <option value="day">{{ 'CoreHome_PeriodDay'|translate }}</option>
-                        <option value="week">{{ 'CoreHome_PeriodWeek'|translate }}</option>
-                        <option value="month">{{ 'CoreHome_PeriodMonth'|translate }}</option>
-                    </select></td>
-            </tr>
-
-            {{ postEvent('Template.reportParametersScheduledReports') }}
-
-            {% if not supportsSMS %}
-                <tr>
-                    <td class="first"><label for="period">{{ 'MobileMessaging_PhoneNumbers'|translate }}</label></td>
-                    <td>
-                        {{ 'CustomAlerts_MobileMessagingPluginNotActivated'|translate('<a href="' ~ linkTo({'module':"CorePluginsAdmin", 'action': 'plugins', 'updated':null}) ~ '#MobileMessaging">', '</a>')|raw }}
-                    </td>
-                </tr>
-            {% endif %}
-
-            <tr>
-                <td class="first"><label for="compared_to">{{ 'CustomAlerts_AlertCondition'|translate }}</label></td>
-                <td>
-                    <br />
-                    <span class="reportField">
-                        {{ 'CustomAlerts_ThisAppliesTo'|translate}}
-                        <select class="reports inp inlineSelect" name="report" id="report">
-                            {% for groupName, groupValue in alertGroups %}
-                                <option value="{{ groupValue|e('html_attr') }}">{{ groupName|translate }}</option>
-                            {% endfor %}
-                        </select>
-                    </span>
-                    <span class="reportConditionField">
-                        <br /> when <span id="reportInfo"></span>
-                        <select class="reportCondition inp inlineSelect" name="reportCondition" id="reportCondition">
-                            {% for condName, condValue in alertGroupConditions %}
-                                <option value="{{ condValue|e('html_attr') }}">{{ condName|translate }}</option>
-                            {% endfor %}
-                        </select>
-                    </span>
-                    <span class="reportValueField">
-                        <input type="text" role="textbox" autocomplete="off" maxlength="255" class="reportValue inp ui-autocomplete-input" name="reportValue" id="reportValue" placeholder="{{ 'General_Search'|translate }}" length="15">
-                    </span>
-                    <br/><br />
-                    <span>
-                        {{ 'CustomAlerts_AlertMeWhen'|translate }}
-                        <select name="metric" id="metric" class="metrics inp inlineSelect" >
-
-                        </select>
-                    </span>
-                    <span>
-                        <select name="metricCondition" id="metricCondition" class="inp inlineSelect">
-                            {% for condName, condValue in alertMetricConditions %}
-                                <option value="{{ condValue|e('html_attr') }}">{{ condName|translate }}</option>
-                            {% endfor %}
-                        </select>
-                    </span>
-                    <span>
-                        <input type="text" placeholder="{{ 'General_Value'|translate|e('html_attr') }}" class="inp" name="metricValue" id="metricValue" />
-                        <span class="metricValueDescription">%</span>
-                    </span>
-
-                    <span class="comparedToField">
-                        <br />
-                        compared to the
-                        {% for period, comparablesDatesPeriod in comparablesDates %}
-                            <select name="compared_to"
-                                    data-period="{{ period|e('html_attr') }}"
-                                    id="compared_to"
-                                    class="inlineSelect"
-                                    {% if comparablesDatesPeriod|length <= 1 %}
-                                        disabled="disabled"
-                                    {% endif %}
-                                    >
-                                {% for compDateTranslation, value in comparablesDatesPeriod %}
-                                    <option value="{{ value|e('html_attr') }}">{{ compDateTranslation|translate }}</option>
-                                {% endfor %}
-                            </select>
-                        {% endfor %}
-                    </span>
-                    <br />
-                    <br />
-                </td>
-            </tr>
-
-        </table>
-
-        <input type="submit" value="{{ 'CustomAlerts_CreateNewAlert'|translate }}" name="submit" class="submit" />
-
-    </form>
-
-{% endif %}
-</div>
 </div>
 
 <script type="text/javascript">

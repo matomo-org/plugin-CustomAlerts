@@ -55,15 +55,7 @@ class Controller extends \Piwik\Plugin\Controller
 	{
         $view = new View('@CustomAlerts/addNewAlert');
 		$this->setGeneralVariablesView($view);
-
-		$view->sitesList = $this->getSitesWithAtLeastViewAccess();
-
-        $view->alertGroups           = array();
-		$view->alertGroupConditions  = Processor::getGroupConditions();
-		$view->alertMetricConditions = Processor::getMetricConditions();
-		$view->comparablesDates   = Processor::getComparablesDates();
-        $view->requirementsAreMet = $this->areRequirementsMet();
-        $view->supportsSMS        = $this->supportsSms();
+        $this->addBasicCreateAndEditVariables($view, null);
 
 		return $view->render();
 	}
@@ -75,17 +67,25 @@ class Controller extends \Piwik\Plugin\Controller
         $view = new View('@CustomAlerts/editAlert');
 		$this->setGeneralVariablesView($view);
 
-		$view->alert     = API::getInstance()->getAlert($idAlert);
-		$view->sitesList = $this->getSitesWithAtLeastViewAccess();
-		$view->reportMetadata        = MetadataApi::getInstance()->getReportMetadata();
-		$view->alertGroupConditions  = Processor::getGroupConditions();
-		$view->alertMetricConditions = Processor::getMetricConditions();
-        $view->comparablesDates   = Processor::getComparablesDates();
-        $view->requirementsAreMet = $this->areRequirementsMet();
-        $view->supportsSMS        = $this->supportsSms();
+        $alert = API::getInstance()->getAlert($idAlert);
+		$view->alertSiteName = $this->findSiteName($alert);
+		$view->alertSiteId   = $this->findSiteId($alert);
+
+        $this->addBasicCreateAndEditVariables($view, $alert);
 
 		return $view->render();
 	}
+
+    private function addBasicCreateAndEditVariables($view, $alert)
+    {
+        $view->alert = $alert;
+        $view->alertGroupConditions  = Processor::getGroupConditions();
+        $view->alertMetricConditions = Processor::getMetricConditions();
+        $view->comparablesDates   = Processor::getComparablesDates();
+        $view->reportMetadata     = $this->findReportMetadata($alert);
+        $view->requirementsAreMet = $this->areRequirementsMet();
+        $view->supportsSMS        = $this->supportsSms();
+    }
 
     private function getSitesWithAtLeastViewAccess()
     {
@@ -102,7 +102,7 @@ class Controller extends \Piwik\Plugin\Controller
         return PluginManager::getInstance()->isPluginActivated('MobileMessaging');
     }
 
-    private function findReportName($alert)
+    private function findReportMetadata($alert)
     {
         if (empty($alert['report']) || empty($alert['id_sites'])) {
             return;
@@ -116,12 +116,30 @@ class Controller extends \Piwik\Plugin\Controller
         $metadata        = $processedReport->getMetadata($idSite, $module, $action);
 
         if (!empty($metadata)) {
-            $report = array_shift($metadata);
+            return array_shift($metadata);
+        }
+    }
+
+    private function findReportName($alert)
+    {
+        $report = $this->findReportMetadata($alert);
+
+        if (!empty($report)) {
             return $report['name'];
         }
     }
 
     private function findSiteName($alert)
+    {
+        $idSite = $this->findSiteId($alert);
+
+        if ($idSite) {
+
+            return Site::getNameFor($idSite);
+        }
+    }
+
+    private function findSiteId($alert)
     {
         if (empty($alert['id_sites'])) {
             return '';
@@ -129,6 +147,6 @@ class Controller extends \Piwik\Plugin\Controller
 
         list($idSite) = $alert['id_sites'];
 
-        return Site::getNameFor($idSite);
+        return $idSite;
     }
 }
