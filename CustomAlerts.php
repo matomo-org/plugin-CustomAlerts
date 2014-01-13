@@ -35,6 +35,7 @@ class CustomAlerts extends \Piwik\Plugin
 		    'MobileMessaging.deletePhoneNumber' => 'removePhoneNumberFromAllAlerts',
 		    'AssetManager.getJavaScriptFiles'   => 'getJavaScriptFiles',
 		    'AssetManager.getStylesheetFiles'   => 'getStylesheetFiles',
+            'Translate.getClientSideTranslationKeys' => 'getClientSideTranslationKeys'
 		);
 	}
 
@@ -156,5 +157,10 @@ class CustomAlerts extends \Piwik\Plugin
         }
 
         return array_unique($siteIdsHavingAlerts);
+    }
+
+    public function getClientSideTranslationKeys(&$translations)
+    {
+        $translations[] = 'CustomAlerts_InvalidMetricValue';
     }
 }

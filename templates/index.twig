@@ -4,9 +4,6 @@
     <div class="centerLargeDiv">
         <h2>{{ 'CustomAlerts_ManageAlerts'|translate }}</h2>
 
-        <div class="entityContainer">
-            {% include "@CustomAlerts/list.twig" %}
-            <a id='bottom'></a>
-        </div>
+        {% include "@CustomAlerts/list.twig" %}
     </div>
 {% endblock %}

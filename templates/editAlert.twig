@@ -146,7 +146,7 @@
         </tr>
 
         </table>
-        <br />
+
         <input type="submit" value="{{ 'General_Save'|translate }}" name="submit" class="submit" />
     </form>
 {% endif %}
@@ -173,41 +173,15 @@ function onSubmit(event)
         event.returnValue = false; // IE8
     }
 
-    var mailSettings   = getReportParametersFunctions.email ? getReportParametersFunctions.email() : {additionalEmails: [], emailMe: false};
-    var mobileSettings = getReportParametersFunctions.mobile ? getReportParametersFunctions.mobile() : {phoneNumbers: ['']};
-
-    var idReport = $('#report_idreport').val();
-    var apiParameters = {};
-    apiParameters.format = 'json';
-    apiParameters.name  = $('#alertName').val();
+    var apiParameters     = CustomAlerts.getApiParameters();
     apiParameters.idAlert = {{ alert.idalert }};
-    apiParameters.metric  = $('#metric').find('option:selected').val();
-    apiParameters.metricCondition  = $('#metricCondition').find('option:selected').val();
-    apiParameters.metricValue = $('#metricValue').val();
-    apiParameters.emailMe = mailSettings.emailMe ? 1 : 0;
-    apiParameters.additionalEmails = (mailSettings.additionalEmails && mailSettings.additionalEmails.length) ? mailSettings.additionalEmails : [''];
-    apiParameters.phoneNumbers = mobileSettings.phoneNumbers;
-    apiParameters.report = $('#report').find('option:selected').val();
-    apiParameters.reportCondition = $('#reportCondition').find('option:selected').val();
-    apiParameters.reportValue  = $('#reportValue').val();
-    apiParameters.idSites = [$('[name=idSite]').val()];
-    apiParameters.comparedTo = $('[name=compared_to]:not([data-inactive])').val();
 
-    if (!$.isNumeric(apiParameters.metricValue)) {
-        var UI = require('piwik/UI');
-        var notification = new UI.Notification();
-        notification.show('{{ 'CustomAlerts_InvalidMetricValue'|translate|e('js') }}', {id: 'CustomAlertsMetricValueError', context: 'error', type: 'toast'});
-        $('#metricValue').css({backgroundColor: '#f2dede'});
+    if (!CustomAlerts.isValidAlert(apiParameters)) {
         return false;
     }
 
-    $('#metricValue').css({backgroundColor: '#ffffff'});
+    CustomAlerts.sendApiRequest('CustomAlerts.editAlert', apiParameters);
 
-    var ajaxHandler = new ajaxHelper();
-    ajaxHandler.addParams(apiParameters, 'POST');
-    ajaxHandler.addParams({period: $('#period').find('option:selected').val(), module: 'API', method: 'CustomAlerts.editAlert'}, 'GET');
-    ajaxHandler.redirectOnSuccess({module: 'CustomAlerts', action: 'index'});
-    ajaxHandler.send(true);
     return false;
 }
 

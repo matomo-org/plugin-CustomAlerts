@@ -1,4 +1,5 @@
-(function($) {
+
+var CustomAlerts = (function($) {
 
     var reportValuesAutoComplete = null;
 
@@ -148,6 +149,7 @@
         $('.reports').val(currentGroup);
 
         updateReportCondition();
+        updateMetricCondition();
     }
 
     function updateReportCondition()
@@ -168,9 +170,14 @@
 
         var isPercentageCondition = condition && 0 === condition.indexOf('percentage_');
         var isPercentageMetric    = metric && -1 !== metric.indexOf('_rate');
+        var isSecondsMetric = metric && -1 !== metric.indexOf('_time_');
 
         if (isPercentageCondition || isPercentageMetric) {
             $('.metricValueDescription').show();
+            $('.metricValueDescription').text('%');
+        } else if (isSecondsMetric) {
+            $('.metricValueDescription').show();
+            $('.metricValueDescription').text('s');
         } else {
             $('.metricValueDescription').hide();
         }
@@ -234,5 +241,57 @@
         });
 
     });
+
+    return {
+        getApiParameters: function () {
+
+            var mailSettings   = getReportParametersFunctions.email ? getReportParametersFunctions.email() : {additionalEmails: [], emailMe: false};
+            var mobileSettings = getReportParametersFunctions.mobile ? getReportParametersFunctions.mobile() : {phoneNumbers: ['']};
+
+            var idReport = $('#report_idreport').val();
+            var apiParameters = {};
+            apiParameters.format = 'json';
+            apiParameters.name  = $('#alertName').val();
+            apiParameters.metric  = $('#metric').find('option:selected').val();
+            apiParameters.metricCondition  = $('#metricCondition').find('option:selected').val();
+            apiParameters.metricValue = $('#metricValue').val();
+            apiParameters.emailMe = mailSettings.emailMe ? 1 : 0;
+            apiParameters.additionalEmails = (mailSettings.additionalEmails && mailSettings.additionalEmails.length) ? mailSettings.additionalEmails : [''];
+            apiParameters.phoneNumbers = mobileSettings.phoneNumbers;
+            apiParameters.report = $('#report').find('option:selected').val();
+            apiParameters.reportCondition = $('#reportCondition').find('option:selected').val();
+            apiParameters.reportValue  = $('#reportValue').val();
+            apiParameters.idSites = [$('[name=idSite]').val()];
+            apiParameters.comparedTo = $('[name=compared_to]:not([data-inactive])').val();
+
+            return apiParameters;
+        },
+
+        isValidAlert: function (alert) {
+
+            if (!$.isNumeric(alert.metricValue)) {
+                var UI = require('piwik/UI');
+                var notification = new UI.Notification();
+                var options = {id: 'CustomAlertsMetricValueError', context: 'error', type: 'toast'};
+
+                notification.show(_pk_translate('CustomAlerts_InvalidMetricValue'), options);
+                $('#metricValue').css({backgroundColor: '#f2dede'});
+                return false;
+            }
+
+            $('#metricValue').css({backgroundColor: '#ffffff'});
+            return true;
+        },
+
+        sendApiRequest: function (method, POSTparams) {
+            var period = $('#period').find('option:selected').val();
+
+            var ajaxHandler = new ajaxHelper();
+            ajaxHandler.addParams(POSTparams, 'POST');
+            ajaxHandler.addParams({period: period, module: 'API', method: method}, 'GET');
+            ajaxHandler.redirectOnSuccess({module: 'CustomAlerts', action: 'index'});
+            ajaxHandler.send(true);
+        }
+    };
 
 })($);
