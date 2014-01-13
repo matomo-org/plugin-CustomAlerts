@@ -164,12 +164,16 @@ class Notifier extends \Piwik\Plugin
             $processedReport = new ProcessedReport();
 
             $alert['reportName']   = null;
+            $alert['dimension']    = null;
             $alert['reportMetric'] = $processedReport->translateMetric($metric, $idSite, $module, $action);
+            $alert['reportConditionName'] = null;
 
             $metadata = $processedReport->getMetadata($idSite, $module, $action);
             if (!empty($metadata)) {
                 $report = array_shift($metadata);
                 $alert['reportName'] = $report['name'];
+                $alert['dimension']  = !empty($report['dimension']) ? $report['dimension'] : null;
+                $alert['reportConditionName'] = Piwik::translate(array_search($alert['report_condition'], Processor::getGroupConditions(), true));
             }
         }
 

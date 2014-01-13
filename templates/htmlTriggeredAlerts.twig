@@ -1,18 +1,23 @@
 {% import '@CustomAlerts/macros.twig' as alertsMacro %}
-<table style="border-collapse: collapse;">
+<table style="border-collapse: collapse;width:100%">
     <thead style="background-color:rgb(228,226,215);color:rgb(37,87,146);">
     <tr>
+        <th style="padding:6px 6px;text-align: left;">{{ 'CustomAlerts_AlertName'|translate }}</th>
+        <th style="padding:6px 6px;text-align: left;">{{ 'General_Report'|translate }}</th>
+        <th style="padding:6px 6px;text-align: left;">{{ 'CustomAlerts_AlertCondition'|translate }}</th>
         <th style="padding:6px 6px;text-align: left;">{{ 'CustomAlerts_Alert'|translate }}</th>
-        <th style="padding:6px 6px;text-align: left;width: 80px;" width="80">{{ 'General_Edit'|translate }}</th>
     </tr>
     </thead>
     <tbody>
 {% for alert in triggeredAlerts %}
-
+    {% set alertNameLink -%}
+        <a href="{{ piwikUrl }}{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert, 'idSite': alert.idsite, 'period': alert.period, 'date': 'yesterday', 'token_auth': ''})|raw }}">{{ alert.alert_name }}</a>
+    {%- endset %}
     <tr>
-        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">{{ 'CustomAlerts_MailAlertContent'|translate("'" ~ alert.alert_name ~ "'", "'" ~ alert.reportMetric|default(alert.metric) ~ "'", "'" ~ alert.reportName|default(alert.report) ~ "'", alertsMacro.metricChangeDescription(alert)) }}</td>
-        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="{{ piwikUrl }}{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert, 'idSite': alert.idsite, 'period': alert.period, 'date': 'yesterday', 'token_auth': ''})|raw }}"
-                >{{ 'CustomAlerts_EditAlert'|translate }}</a></td>
+        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">{{ alertNameLink|raw }}</td>
+        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">{{ alert.reportName|default(alert.report) }}</td>
+        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">{{ alert.dimension|default('') }} {{ alert.reportConditionName }} {% if alert.report_matched %}'{{ alert.report_matched }}'{% endif %}</td>
+        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">{{ alert.reportMetric }} {{ alertsMacro.metricChangeDescription(alert) }}</td>
     </tr>
 
 {% endfor %}

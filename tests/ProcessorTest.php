@@ -145,6 +145,7 @@ class ProcessorTest extends BaseTest
             array('nb_visits', 'foo', 1),
             array('nb_hits', 'i', 3),
             array('nb_hits', 'foo2=bar', 2),
+            array('nb_hits', '/', 2),
             array('nb_hits', 'foo=bar&foo2=bar', 2),
             array('nb_hits', 'php?foo=bar&foo2=bar', 2),
             array('nb_hits', 'file.php?foo=bar&foo2=bar', 2),

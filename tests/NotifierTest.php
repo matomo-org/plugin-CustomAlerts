@@ -136,26 +136,28 @@ FORMATTED;
         $rendered = $this->notifier->formatAlerts($alerts, 'html');
 
         $expected = <<<FORMATTED
-<table style="border-collapse: collapse;">
+<table style="border-collapse: collapse;width:100%">
     <thead style="background-color:rgb(228,226,215);color:rgb(37,87,146);">
     <tr>
+        <th style="padding:6px 6px;text-align: left;">Alert Name</th>
+        <th style="padding:6px 6px;text-align: left;">Report</th>
+        <th style="padding:6px 6px;text-align: left;">Alert Condition</th>
         <th style="padding:6px 6px;text-align: left;">Alert</th>
-        <th style="padding:6px 6px;text-align: left;width: 80px;" width="80">Edit</th>
     </tr>
     </thead>
     <tbody>
-
-    <tr>
-        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">&#039;MyName1&#039; has been triggered as the metric &#039;Visits&#039; in report &#039;Single Website dashboard&#039; is 4493 which is less than 5000.</td>
-        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday&token_auth="
-                >Edit Alert</a></td>
+        <tr>
+        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday&token_auth=">MyName1</a></td>
+        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Single Website dashboard</td>
+        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Website is 'Piwik'</td>
+        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Visits is 4493 which is less than 5000</td>
     </tr>
 
-
-    <tr>
-        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">&#039;MyName2&#039; has been triggered as the metric &#039;Visits&#039; in report &#039;Single Website dashboard&#039; is 4493 which is less than 5000.</td>
-        <td style="border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday&token_auth="
-                >Edit Alert</a></td>
+        <tr>
+        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday&token_auth=">MyName2</a></td>
+        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Single Website dashboard</td>
+        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Website is 'Piwik'</td>
+        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Visits is 4493 which is less than 5000</td>
     </tr>
 
     </tbody>
@@ -278,22 +280,36 @@ t your custom alert settings, please sign in and access the Alerts page.=
     public function test_enrichTriggeredAlerts_shouldEnrichAlerts_IfReportExistsAndMetricIsValid()
     {
         $alerts = array(
-            array('idsite' => 1, 'metric' => 'nb_visits', 'report' => 'MultiSites.getAll'),
-            array('idsite' => 1, 'metric' => 'nb_visits', 'report' => 'NotExistingModule.Action'),
-            array('idsite' => 1, 'metric' => 'bounce_rate', 'report' => 'Actions.getPageUrls'),
-            array('idsite' => 1, 'metric' => 'not_valid', 'report' => 'Actions.getPageUrls')
+            array('idsite' => 1, 'metric' => 'nb_visits', 'report' => 'MultiSites.getAll', 'report_condition' => 'matches_any'),
+            array('idsite' => 1, 'metric' => 'nb_visits', 'report' => 'NotExistingModule.Action', 'report_condition' => 'matches_exactly'),
+            array('idsite' => 1, 'metric' => 'bounce_rate', 'report' => 'Actions.getPageUrls', 'report_condition' => 'matches_exactly'),
+            array('idsite' => 1, 'metric' => 'not_valid', 'report' => 'Actions.getPageUrls', 'report_condition' => 'contains'),
+            // no dimension
+            array('idsite' => 1, 'metric' => 'nb_visits', 'report' => 'VisitsSummary.get', 'report_condition' => 'matches_any')
         );
 
         $enriched = $this->notifier->enrichTriggeredAlerts($alerts);
 
         $alerts[0]['reportName']   = 'All Websites dashboard';
         $alerts[0]['reportMetric'] = 'Visits';
+        $alerts[0]['dimension']    = 'Website';
+        $alerts[0]['reportConditionName'] = 'matches any';
         $alerts[1]['reportName']   = null;
         $alerts[1]['reportMetric'] = null;
+        $alerts[1]['dimension']    = null;
+        $alerts[1]['reportConditionName'] = null;
         $alerts[2]['reportName']   = 'Page URLs';
         $alerts[2]['reportMetric'] = 'Bounce Rate';
+        $alerts[2]['dimension']    = 'Page URL';
+        $alerts[2]['reportConditionName'] = 'is';
         $alerts[3]['reportName']   = 'Page URLs';
         $alerts[3]['reportMetric'] = null;
+        $alerts[3]['dimension']    = 'Page URL';
+        $alerts[3]['reportConditionName'] = 'contains';
+        $alerts[4]['reportName']   = 'Visits Summary';
+        $alerts[4]['reportMetric'] = 'Visits';
+        $alerts[4]['dimension']    = null;
+        $alerts[4]['reportConditionName'] = 'matches any';
 
         $this->assertEquals($alerts, $enriched);
     }

@@ -47,12 +47,12 @@ class Processor extends \Piwik\Plugin
     {
         return array(
             'CustomAlerts_MatchesAnyExpression' => 'matches_any',
-            'General_OperationIs'      => 'matches_exactly',
-            'General_OperationIsNot'   => 'does_not_match_exactly',
+            'CustomAlerts_OperationIs'      => 'matches_exactly',
+            'CustomAlerts_OperationIsNot'   => 'does_not_match_exactly',
             'CustomAlerts_MatchesRegularExpression'      => 'matches_regex',
             'CustomAlerts_DoesNotMatchRegularExpression' => 'does_not_match_regex',
-            'General_OperationContains'         => 'contains',
-            'General_OperationDoesNotContain'   => 'does_not_contain',
+            'CustomAlerts_OperationContains'         => 'contains',
+            'CustomAlerts_OperationDoesNotContain'   => 'does_not_contain',
             'CustomAlerts_StartsWith'       => 'starts_with',
             'CustomAlerts_DoesNotStartWith' => 'does_not_start_with',
             'CustomAlerts_EndsWith'         => 'ends_with',
@@ -127,7 +127,7 @@ class Processor extends \Piwik\Plugin
 
         // Do we have data? stop otherwise.
         if (is_null($valueNew)) {
-            return;
+            $valueNew = 0;
         }
 
         if (365 == $alert['compared_to'] && Date::today()->isLeapYear()) {
@@ -188,7 +188,6 @@ class Processor extends \Piwik\Plugin
      */
 	protected function getMetricFromTable($dataTable, $metric, $filterCond = '', $filterValue = '')
 	{
-
 		if (!empty($filterValue)) {
             $this->filterDataTable($dataTable, $filterCond, $filterValue);
 		}
