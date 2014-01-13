@@ -1,0 +1,166 @@
+<?php
+
+/**
+ * Piwik - Open source web analytics
+ *
+ * @link http://piwik.org
+ * @license http://www.gnu.org/licenses/gpl-3.0.html Gpl v3 or later
+ * @version $Id$
+ *
+ * @category Piwik_Plugins
+ * @package Piwik_Alerts
+ */
+
+namespace Piwik\Plugins\CustomAlerts;
+
+use Piwik\Period;
+use Piwik\Db;
+use Piwik\Piwik;
+use Piwik\Plugins\API\ProcessedReport;
+use Piwik\Translate;
+use Piwik\Plugins\MobileMessaging\API as APIMobileMessaging;
+use Exception;
+
+/**
+ *
+ * @package Piwik_Alerts
+ */
+class Validator
+{
+
+    public function checkAdditionalEmails($additionalEmails)
+    {
+        foreach ($additionalEmails as $email) {
+            if (!Piwik::isValidEmailString($email)) {
+                throw new \Exception(Piwik::translate('UsersManager_ExceptionInvalidEmail') . ' (' . $email . ')');
+            }
+        }
+    }
+
+    public function filterPhoneNumbers($phoneNumbers)
+    {
+        $availablePhoneNumbers = APIMobileMessaging::getInstance()->getActivatedPhoneNumbers();
+
+        foreach ($phoneNumbers as $key => &$phoneNumber) {
+
+            $phoneNumber = trim($phoneNumber);
+
+            if (!in_array($phoneNumber, $availablePhoneNumbers)) {
+                unset($phoneNumbers[$key]);
+            }
+        }
+
+        return array_values($phoneNumbers);
+    }
+
+    public function checkPeriod($period)
+    {
+        if (!$this->isValidPeriod($period)) {
+            throw new Exception(Piwik::translate('CustomAlerts_InvalidPeriod'));
+        }
+    }
+
+    public function isValidPeriod($period)
+    {
+        return in_array($period, array('day', 'week', 'month', 'year'));
+    }
+
+    public function checkName($name)
+    {
+        if (empty($name)) {
+            throw new Exception(Piwik::translate("General_PleaseSpecifyValue", "name"));
+        }
+    }
+
+    public function isValidComparableDate($period, $comparedToDate)
+    {
+        $dates = Processor::getComparablesDates();
+        if (!array_key_exists($period, $dates)) {
+            return false;
+        }
+
+        return in_array($comparedToDate, array_values($dates[$period]));
+    }
+
+    public function isValidGroupCondition($condition)
+    {
+        $conditions = Processor::getGroupConditions();
+        $conditions = array_values($conditions);
+
+        return in_array($condition, $conditions);
+    }
+
+    public function isValidMetricCondition($condition)
+    {
+        $conditions = Processor::getMetricConditions();
+        $conditions = array_values($conditions);
+
+        return in_array($condition, $conditions);
+    }
+
+    public function checkMetricCondition($condition)
+    {
+        if (empty($condition)) {
+            throw new Exception(Piwik::translate('CustomAlerts_InvalidMetricCondition'));
+        }
+
+        if (!self::isValidMetricCondition($condition)) {
+            throw new Exception(Piwik::translate('CustomAlerts_InvalidMetricCondition'));
+        }
+    }
+
+    public function checkReportCondition($condition)
+    {
+        if (!empty($condition) && !self::isValidGroupCondition($condition)) {
+            throw new Exception(Piwik::translate('CustomAlerts_InvalidReportCondition'));
+        }
+    }
+
+    public function checkComparedTo($period, $comparedTo)
+    {
+        if (!self::isValidComparableDate($period, $comparedTo)) {
+            throw new Exception(Piwik::translate('CustomAlerts_InvalidComparableDate'));
+        }
+    }
+
+    /**
+     * Checks whether a report + metric exists for
+     * the given idSites and if the a dimension is
+     * given (requires report_condition, report_matched)
+     *
+     * @param int $idSite
+     * @param string $apiMethod for example MultiSites.getAll
+     * @param string $metric
+     * @throws \Exception
+     * @return boolean
+     */
+    public function checkApiMethodAndMetric($idSite, $apiMethod, $metric)
+    {
+        if (empty($apiMethod) || false === strpos($apiMethod, '.')) {
+            throw new Exception(Piwik::translate('CustomAlerts_InvalidReport'));
+        }
+
+        list($module, $action) = explode(".", $apiMethod);
+
+        $processedReport = new ProcessedReport();
+
+        if (!$processedReport->isValidReportForSite($idSite, $module, $action)) {
+            throw new Exception(Piwik::translate('CustomAlerts_InvalidReport'));
+        }
+
+        if (!$processedReport->isValidMetricForReport($metric, $idSite, $module, $action)) {
+            throw new Exception(Piwik::translate('CustomAlerts_InvalidMetric'));
+        }
+    }
+
+    /**
+     * @param $alert
+     * @throws \Exception
+     */
+    public function checkUserHasPermissionForAlert($alert)
+    {
+        if (!Piwik::isUserIsSuperUserOrTheUser($alert['login'])) {
+            throw new Exception(Piwik::translate('CustomAlerts_AccessException', $alert['idalert']));
+        }
+    }
+}

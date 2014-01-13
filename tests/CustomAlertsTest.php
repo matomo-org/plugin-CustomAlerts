@@ -22,6 +22,38 @@ use Piwik\Translate;
  */
 class CustomAlertsTest extends BaseTest
 {
+    /**
+     * @var \Piwik\Plugins\CustomAlerts\CustomAlerts
+     */
+    private $plugin = null;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->plugin = new CustomAlerts();
+    }
+
+    public function test_getSiteIdsHavingAlerts()
+    {
+        $siteIds = $this->plugin->getSiteIdsHavingAlerts();
+        $this->assertEquals(array(), $siteIds);
+
+
+        $this->createAlert('Initial1', array(), array(1));
+        $siteIds = $this->plugin->getSiteIdsHavingAlerts();
+        $this->assertEquals(array(1), $siteIds);
+
+
+        $this->createAlert('Initial2', array(), array(1, 3));
+        $siteIds = $this->plugin->getSiteIdsHavingAlerts();
+        $this->assertEquals(array(1, 3), $siteIds);
+
+
+        $this->createAlert('Initial3', array(), array(2));
+        $siteIds = $this->plugin->getSiteIdsHavingAlerts();
+        $this->assertEquals(array(1, 3, 2), $siteIds);
+    }
 
     public function test_removePhoneNumberFromAllAlerts()
     {
@@ -32,8 +64,7 @@ class CustomAlertsTest extends BaseTest
         $alert5 = $this->createAlert('Initial5', array('123445679', '2384'));
         $alert6 = $this->createAlert('Initial6', array('+123445679', '123445679'));
 
-        $alerts = new CustomAlerts();
-        $alerts->removePhoneNumberFromAllAlerts('+123445679');
+        $this->plugin->removePhoneNumberFromAllAlerts('+123445679');
 
         $this->assertOnlyPhoneNumberChanged(1, $alert1, array());
         $this->assertOnlyPhoneNumberChanged(2, $alert2, null);
@@ -43,9 +74,8 @@ class CustomAlertsTest extends BaseTest
         $this->assertOnlyPhoneNumberChanged(6, $alert6, array('123445679'));
     }
 
-    private function createAlert($name, $phoneNumbers)
+    private function createAlert($name, $phoneNumbers, $idSites = array(1))
     {
-        $idSites = array(1);
         $report  = 'MultiSites.getOne';
         $emails  = array('test1@example.com', 'test2@example.com');
         $login   = Piwik::getCurrentUserLogin();

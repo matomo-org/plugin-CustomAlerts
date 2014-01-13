@@ -144,7 +144,7 @@ class CustomAlerts extends \Piwik\Plugin
         }
     }
 
-    private function getSiteIdsHavingAlerts()
+    public function getSiteIdsHavingAlerts()
     {
         $siteIds = SitesManagerApi::getInstance()->getAllSitesId();
 
@@ -156,7 +156,7 @@ class CustomAlerts extends \Piwik\Plugin
             $siteIdsHavingAlerts = array_merge($siteIdsHavingAlerts, $alert['id_sites']);
         }
 
-        return array_unique($siteIdsHavingAlerts);
+        return array_values(array_unique($siteIdsHavingAlerts));
     }
 
     public function getClientSideTranslationKeys(&$translations)

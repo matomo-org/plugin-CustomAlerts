@@ -16,15 +16,12 @@ namespace Piwik\Plugins\CustomAlerts;
 use Piwik\Mail;
 use Piwik\Period;
 use Piwik\Piwik;
-use Piwik\DataTable;
 use Piwik\Date;
 use Piwik\Plugin\Manager as PluginManager;
 use Piwik\Plugins\API\ProcessedReport;
 use Piwik\Plugins\MobileMessaging\API as APIMobileMessaging;
 use Piwik\Site;
-use Piwik\Translate;
 use Piwik\View;
-use Piwik\Db;
 use Piwik\Plugins\UsersManager\API as UsersManagerApi;
 
 /**
@@ -36,7 +33,7 @@ class Notifier extends \Piwik\Plugin
     protected function getTriggeredAlerts($period, $idSite)
     {
         $api    = API::getInstance();
-        $alerts = $api->getTriggeredAlerts($period, Date::today(), false);
+        $alerts = $api->getTriggeredAlerts($period, $this->getToday(), false);
 
         return array_filter($alerts, function ($alert) use ($idSite) {
             return $alert['idsite'] == $idSite && empty($alert['ts_last_sent']);
@@ -53,9 +50,50 @@ class Notifier extends \Piwik\Plugin
 	{
 		$triggeredAlerts = $this->getTriggeredAlerts($period, $idSite);
 
+        foreach($triggeredAlerts as $triggeredAlert) {
+            $this->markAlertAsSent($triggeredAlert);
+        }
+
+        $alertsPerEmail = $this->groupAlertsPerEmailRecipient($triggeredAlerts);
+        foreach ($alertsPerEmail as $email => $alerts) {
+            $this->sendAlertsPerEmailToRecipient($alerts, new Mail(), $email, $period, $idSite);
+        }
+
+        $alertsPerSms = $this->groupAlertsPerSmsRecipient($triggeredAlerts);
+        foreach ($alertsPerSms as $phoneNumber => $alerts) {
+            $this->sendAlertsPerSmsToRecipient($alerts, APIMobileMessaging::getInstance(), $phoneNumber);
+        }
+	}
+
+    private function groupAlertsPerSmsRecipient($triggeredAlerts)
+    {
+        $recipients = array();
+
+        foreach($triggeredAlerts as $triggeredAlert) {
+
+            $phoneNumbers = $triggeredAlert['phone_numbers'];
+
+            if (empty($phoneNumbers)) {
+                $phoneNumbers = array();
+            }
+
+            foreach ($phoneNumbers as $phoneNumber) {
+                if (!array_key_exists($phoneNumber, $recipients)) {
+                    $recipients[$phoneNumber] = array();
+                }
+
+                $recipients[$phoneNumber][] = $triggeredAlert;
+            }
+        }
+
+        return $recipients;
+    }
+
+    private function groupAlertsPerEmailRecipient($triggeredAlerts)
+    {
         $alertsPerEmail = array();
-        $alertsPerSms   = array();
-		foreach($triggeredAlerts as $triggeredAlert) {
+
+        foreach($triggeredAlerts as $triggeredAlert) {
 
             $emails = $this->getEmailRecipientsForAlert($triggeredAlert);
 
@@ -66,31 +104,10 @@ class Notifier extends \Piwik\Plugin
 
                 $alertsPerEmail[$mail][] = $triggeredAlert;
             }
-
-            $phoneNumbers = $triggeredAlert['phone_numbers'];
-
-            if (empty($phoneNumbers)) {
-                $phoneNumbers = array();
-            }
-            foreach ($phoneNumbers as $phoneNumber) {
-                if (!array_key_exists($phoneNumber, $alertsPerSms)) {
-                    $alertsPerSms[$phoneNumber] = array();
-                }
-
-                $alertsPerSms[$phoneNumber][] = $triggeredAlert;
-            }
-
-            $this->markAlertAsSent($triggeredAlert);
-		}
-
-        foreach ($alertsPerEmail as $email => $alerts) {
-            $this->sendAlertsPerEmailToRecipient($alerts, new Mail(), $email, $period, $idSite);
         }
 
-        foreach ($alertsPerSms as $phoneNumber => $alerts) {
-            $this->sendAlertsPerSmsToRecipient($alerts, APIMobileMessaging::getInstance(), $phoneNumber);
-        }
-	}
+        return $alertsPerEmail;
+    }
 
     protected function markAlertAsSent($triggeredAlert)
     {
@@ -173,7 +190,9 @@ class Notifier extends \Piwik\Plugin
                 $report = array_shift($metadata);
                 $alert['reportName'] = $report['name'];
                 $alert['dimension']  = !empty($report['dimension']) ? $report['dimension'] : null;
-                $alert['reportConditionName'] = Piwik::translate(array_search($alert['report_condition'], Processor::getGroupConditions(), true));
+
+                $conditionTranslation = array_search($alert['report_condition'], Processor::getGroupConditions(), true);
+                $alert['reportConditionName'] = $conditionTranslation ? Piwik::translate($conditionTranslation) : null;
             }
         }
 
@@ -208,20 +227,20 @@ class Notifier extends \Piwik\Plugin
     /**
      * @param array $alerts
      * @param Mail $mail
-     * @param string[] $recipients Email addresses
+     * @param string[] $recipient Email addresses
      * @param $period
      * @param $idSite
      */
-    protected function sendAlertsPerEmailToRecipient($alerts, Mail $mail, $recipients, $period, $idSite)
+    protected function sendAlertsPerEmailToRecipient($alerts, Mail $mail, $recipient, $period, $idSite)
     {
-        if (empty($recipients) || empty($alerts)) {
+        if (empty($recipient) || empty($alerts)) {
             return;
         }
 
         $prettyDate  = $this->getPrettyDateForSite($period, $idSite);
         $websiteName = Site::getNameFor($idSite);
 
-        $mail->addTo($recipients);
+        $mail->addTo($recipient);
         $mail->setSubject(Piwik::translate('CustomAlerts_MailAlertSubject', array($websiteName, $prettyDate)));
 
         $viewHtml = new View('@CustomAlerts/alertHtmlMail');

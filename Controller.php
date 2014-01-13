@@ -104,11 +104,11 @@ class Controller extends \Piwik\Plugin\Controller
 
     private function findReportMetadata($alert)
     {
-        if (empty($alert['report']) || empty($alert['id_sites'])) {
+        $idSite = $this->findSiteId($alert);
+
+        if (empty($idSite)) {
             return;
         }
-
-        list($idSite) = $alert['id_sites'];
 
         list($module, $action) = explode('.', $alert['report']);
 
@@ -142,7 +142,7 @@ class Controller extends \Piwik\Plugin\Controller
     private function findSiteId($alert)
     {
         if (empty($alert['id_sites'])) {
-            return '';
+            return;
         }
 
         list($idSite) = $alert['id_sites'];

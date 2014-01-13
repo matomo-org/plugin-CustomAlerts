@@ -238,14 +238,9 @@ class Model
 			'metric_matched'   => (float) $metricValue,
 			'report'           => $report,
             'compared_to'      => $comparedTo,
-            'report_condition' => null,
-            'report_matched'   => null
+            'report_condition' => $reportCondition,
+            'report_matched'   => $reportValue
 		);
-
-		if (!empty($reportCondition) && !empty($reportCondition)) {
-			$newAlert['report_condition'] = $reportCondition;
-			$newAlert['report_matched']   = $reportValue;
-		}
 
         $db = Db::get();
 		$db->insert(Common::prefixTable('alert'), $newAlert);
@@ -290,14 +285,9 @@ class Model
 			'metric_matched'   => (float) $metricValue,
 			'report'           => $report,
             'compared_to'      => $comparedTo,
-            'report_condition' => null,
-            'report_matched'   => null
+            'report_condition' => $reportCondition,
+            'report_matched'   => $reportValue
 		);
-
-		if (!empty($reportCondition) && !empty($reportCondition)) {
-			$alert['report_condition'] = $reportCondition;
-			$alert['report_matched']   = $reportValue;
-		}
 
         $db = Db::get();
 		$db->update(Common::prefixTable('alert'), $alert, "idalert = " . intval($idAlert));
@@ -379,10 +369,6 @@ class Model
 
     private function completeAlerts($alerts)
     {
-        if (empty($alerts)) {
-            return $alerts;
-        }
-
         foreach ($alerts as &$alert) {
             $alert['additional_emails'] = json_decode($alert['additional_emails']);
             $alert['phone_numbers']     = json_decode($alert['phone_numbers']);

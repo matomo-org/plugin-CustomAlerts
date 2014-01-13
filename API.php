@@ -14,10 +14,7 @@
 namespace Piwik\Plugins\CustomAlerts;
 
 use Piwik\Common;
-use Piwik\Period;
-use Piwik\Db;
 use Piwik\Piwik;
-use Piwik\Plugins\API\ProcessedReport;
 use Piwik\Site;
 use Piwik\Translate;
 use Piwik\Plugins\MobileMessaging\API as APIMobileMessaging;
@@ -30,12 +27,22 @@ use Exception;
  */
 class API extends \Piwik\Plugin\API
 {
+    private $validator;
+
+    protected function __construct()
+    {
+        parent::__construct();
+
+        $this->validator = new Validator();
+    }
+
     /**
-     * Returns a single Alert
+     * Returns a single alert.
      *
      * @param int $idAlert
      *
-     * @throws \Exception
+     * @throws \Exception In case alert does not exist or user has no permission to access alert.
+     *
      * @return array
      */
 	public function getAlert($idAlert)
@@ -46,7 +53,7 @@ class API extends \Piwik\Plugin\API
             throw new Exception(Piwik::translate('CustomAlerts_AlertDoesNotExist', $idAlert));
         }
 
-        $this->checkUserHasPermissionForAlert($alert);
+        $this->validator->checkUserHasPermissionForAlert($alert);
 
         return $alert;
     }
@@ -72,7 +79,7 @@ class API extends \Piwik\Plugin\API
 
         foreach ($alerts as $index => $alert) {
             try {
-                $this->checkUserHasPermissionForAlert($alert);
+                $this->validator->checkUserHasPermissionForAlert($alert);
             } catch (Exception $e) {
                 unset($alerts[$index]);
             }
@@ -102,25 +109,19 @@ class API extends \Piwik\Plugin\API
      */
 	public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $report, $reportCondition = false, $reportValue = false)
 	{
-        $idSites = Site::getIdSitesFromIdSitesString($idSites);
+        $idSites          = Site::getIdSitesFromIdSitesString($idSites);
+        $additionalEmails = $this->filterAdditionalEmails($additionalEmails);
+        $phoneNumbers     = $this->filterPhoneNumbers($phoneNumbers);
 
-        Piwik::checkUserHasViewAccess($idSites);
+        $this->checkAlert($idSites, $name, $period, $additionalEmails, $metricCondition, $metric, $comparedTo, $reportCondition, $report);
 
-        $this->checkName($name);
-        $this->checkPeriod($period);
-        $this->checkComparedTo($period, $comparedTo);
-        $this->checkMetricCondition($metricCondition);
-        $this->checkReportCondition($reportCondition);
-
-        foreach ($idSites as $idSite) {
-            $this->checkApiMethodAndMetric($idSite, $report, $metric);
-        }
-
-        $name             = Common::unsanitizeInputValue($name);
-        $additionalEmails = $this->checkAdditionalEmails($additionalEmails);
-        $phoneNumbers     = $this->checkPhoneNumbers($phoneNumbers);
-
+        $name  = Common::unsanitizeInputValue($name);
         $login = Piwik::getCurrentUserLogin();
+
+        if (empty($reportCondition) || empty($reportCondition)) {
+            $reportCondition = null;
+            $reportValue     = null;
+        }
 
         return $this->getModel()->createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $report, $reportCondition, $reportValue);
 	}
@@ -151,22 +152,18 @@ class API extends \Piwik\Plugin\API
         // make sure alert exists and user has permission to read
         $this->getAlert($idAlert);
 
-        $idSites = Site::getIdSitesFromIdSitesString($idSites);
-        Piwik::checkUserHasViewAccess($idSites);
+        $idSites          = Site::getIdSitesFromIdSitesString($idSites);
+        $additionalEmails = $this->filterAdditionalEmails($additionalEmails);
+        $phoneNumbers     = $this->filterPhoneNumbers($phoneNumbers);
 
-        $this->checkName($name);
-        $this->checkPeriod($period);
-        $this->checkComparedTo($period, $comparedTo);
-        $this->checkMetricCondition($metricCondition);
-        $this->checkReportCondition($reportCondition);
+        $this->checkAlert($idSites, $name, $period, $additionalEmails, $metricCondition, $metric, $comparedTo, $reportCondition, $report);
 
-        foreach ($idSites as $idSite) {
-            $this->checkApiMethodAndMetric($idSite, $report, $metric);
+        $name = Common::unsanitizeInputValue($name);
+
+        if (empty($reportCondition) || empty($reportCondition)) {
+            $reportCondition = null;
+            $reportValue     = null;
         }
-
-        $name             = Common::unsanitizeInputValue($name);
-        $additionalEmails = $this->checkAdditionalEmails($additionalEmails);
-        $phoneNumbers     = $this->checkPhoneNumbers($phoneNumbers);
 
         return $this->getModel()->updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $report, $reportCondition, $reportValue);
 	}
@@ -196,9 +193,7 @@ class API extends \Piwik\Plugin\API
 	{
         Piwik::checkUserIsSuperUser();
 
-        if (!$this->isValidPeriod($period)) {
-            throw new Exception(Piwik::translate('CustomAlerts_InvalidPeriod'));
-        }
+        $this->validator->checkPeriod($period);
 
         return $this->getModel()->getAllAlertsForPeriod($period);
 	}
@@ -232,7 +227,7 @@ class API extends \Piwik\Plugin\API
 	{
         Piwik::checkUserIsSuperUserOrTheUser($login);
 
-        $this->checkPeriod($period);
+        $this->validator->checkPeriod($period);
 
         return $this->getModel()->getTriggeredAlerts($period, $date, $login);
 	}
@@ -242,23 +237,24 @@ class API extends \Piwik\Plugin\API
         return new Model();
     }
 
-    private function checkAdditionalEmails($additionalEmails)
+    private function filterAdditionalEmails($additionalEmails)
     {
+        if (empty($additionalEmails)) {
+            return array();
+        }
+
         foreach ($additionalEmails as &$email) {
 
             $email = trim($email);
             if (empty($email)) {
                 $email = false;
-            } elseif (!Piwik::isValidEmailString($email)) {
-                throw new \Exception(Piwik::translate('UsersManager_ExceptionInvalidEmail') . ' (' . $email . ')');
             }
-
         }
 
         return array_filter($additionalEmails);
     }
 
-    private function checkPhoneNumbers($phoneNumbers)
+    private function filterPhoneNumbers($phoneNumbers)
     {
         $availablePhoneNumbers = APIMobileMessaging::getInstance()->getActivatedPhoneNumbers();
 
@@ -274,88 +270,21 @@ class API extends \Piwik\Plugin\API
         return array_values($phoneNumbers);
     }
 
-    private function checkPeriod($period)
+    private function checkAlert($idSites, $name, $period, $additionalEmails, $metricCondition, $metricValue, $comparedTo, $reportCondition, $report)
     {
-        if (!$this->isValidPeriod($period)) {
-            throw new Exception(Piwik::translate('CustomAlerts_InvalidPeriod'));
+        Piwik::checkUserHasViewAccess($idSites);
+
+        $this->validator->checkName($name);
+        $this->validator->checkPeriod($period);
+        $this->validator->checkComparedTo($period, $comparedTo);
+        $this->validator->checkMetricCondition($metricCondition);
+        $this->validator->checkReportCondition($reportCondition);
+
+        foreach ($idSites as $idSite) {
+            $this->validator->checkApiMethodAndMetric($idSite, $report, $metricValue);
         }
+
+        $this->validator->checkAdditionalEmails($additionalEmails);
     }
 
-    private function isValidPeriod($period)
-    {
-        return in_array($period, array('day', 'week', 'month', 'year'));
-    }
-
-    private function checkName($name)
-    {
-        if (empty($name)) {
-            throw new Exception(Piwik::translate("General_PleaseSpecifyValue", "name"));
-        }
-    }
-
-    private function checkMetricCondition($condition)
-    {
-        if (empty($condition)) {
-            throw new Exception(Piwik::translate('CustomAlerts_InvalidMetricCondition'));
-        }
-
-        if (!Processor::isValidMetricCondition($condition)) {
-            throw new Exception(Piwik::translate('CustomAlerts_InvalidMetricCondition'));
-        }
-    }
-
-    private function checkReportCondition($condition)
-    {
-        if (!empty($condition) && !Processor::isValidGroupCondition($condition)) {
-            throw new Exception(Piwik::translate('CustomAlerts_InvalidReportCondition'));
-        }
-    }
-
-    private function checkComparedTo($period, $comparedTo)
-    {
-        if (!Processor::isValidComparableDate($period, $comparedTo)) {
-            throw new Exception(Piwik::translate('CustomAlerts_InvalidComparableDate'));
-        }
-    }
-
-    /**
-     * Checks whether a report + metric exists for
-     * the given idSites and if the a dimension is
-     * given (requires report_condition, report_matched)
-     *
-     * @param int $idSite
-     * @param string $apiMethod for example MultiSites.getAll
-     * @param string $metric
-     * @throws \Exception
-     * @return boolean
-     */
-    private function checkApiMethodAndMetric($idSite, $apiMethod, $metric)
-    {
-        if (empty($apiMethod) || false === strpos($apiMethod, '.')) {
-            throw new Exception(Piwik::translate('CustomAlerts_InvalidReport'));
-        }
-
-        list($module, $action) = explode(".", $apiMethod);
-
-        $processedReport = new ProcessedReport();
-
-        if (!$processedReport->isValidReportForSite($idSite, $module, $action)) {
-            throw new Exception(Piwik::translate('CustomAlerts_InvalidReport'));
-        }
-
-        if (!$processedReport->isValidMetricForReport($metric, $idSite, $module, $action)) {
-            throw new Exception(Piwik::translate('CustomAlerts_InvalidMetric'));
-        }
-    }
-
-    /**
-     * @param $alert
-     * @throws \Exception
-     */
-    private function checkUserHasPermissionForAlert($alert)
-    {
-        if (!Piwik::isUserIsSuperUserOrTheUser($alert['login'])) {
-            throw new Exception(Piwik::translate('CustomAlerts_AccessException', $alert['idalert']));
-        }
-    }
 }

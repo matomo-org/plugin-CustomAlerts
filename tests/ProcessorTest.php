@@ -21,9 +21,9 @@ class CustomProcessor extends Processor {
         parent::filterDataTable($dataTable, $condition, $value);
     }
 
-    public function getMetricFromTable($dataTable, $metric, $filterCond = '', $filterValue = '')
+    public function aggregateToOneValue($dataTable, $metric, $filterCond = '', $filterValue = '')
     {
-        return parent::getMetricFromTable($dataTable, $metric, $filterCond, $filterValue);
+        return parent::aggregateToOneValue($dataTable, $metric, $filterCond, $filterValue);
     }
 
     public function processAlert($alert, $idSite)
@@ -74,36 +74,6 @@ class ProcessorTest extends BaseTest
         ));
 
         return $dataTable;
-    }
-
-    public function test_isValidGroupCondition()
-    {
-        $this->assertFalse(Processor::isValidGroupCondition(null));
-        $this->assertFalse(Processor::isValidGroupCondition(''));
-        $this->assertFalse(Processor::isValidGroupCondition('matchesany'));
-
-        $this->assertTrue(Processor::isValidGroupCondition('matches_any'));
-        $this->assertTrue(Processor::isValidGroupCondition('matches_exactly'));
-    }
-
-    public function test_isValidMetricCondition()
-    {
-        $this->assertFalse(Processor::isValidMetricCondition(null));
-        $this->assertFalse(Processor::isValidMetricCondition(''));
-        $this->assertFalse(Processor::isValidMetricCondition('lessthan'));
-
-        $this->assertTrue(Processor::isValidMetricCondition('less_than'));
-        $this->assertTrue(Processor::isValidMetricCondition('greater_than'));
-    }
-
-    public function test_isValidComparableDate()
-    {
-        $this->assertFalse(Processor::isValidComparableDate('invalid', 1));
-        $this->assertFalse(Processor::isValidComparableDate('', 12));
-        $this->assertFalse(Processor::isValidComparableDate('day', 88));
-
-        $this->assertTrue(Processor::isValidComparableDate('day', 1));
-        $this->assertTrue(Processor::isValidComparableDate('month', 12));
     }
 
     public function test_filterDataTable_Condition_MatchesAny()
@@ -251,15 +221,15 @@ class ProcessorTest extends BaseTest
 
     public function test_getMetricFromTable()
     {
-        $this->assertMetricFromTable('visits', '', '', 365);
-        $this->assertMetricFromTable('visits', 'contains', '3test', 165);
-        $this->assertMetricFromTable('visits', 'matches_exactly', 'ten', 10);
-        $this->assertMetricFromTable('visits', 'matches_exactly', 'NonE', null);
+        $this->assertAggregateToOneValue('visits', '', '', 365);
+        $this->assertAggregateToOneValue('visits', 'contains', '3test', 165);
+        $this->assertAggregateToOneValue('visits', 'matches_exactly', 'ten', 10);
+        $this->assertAggregateToOneValue('visits', 'matches_exactly', 'NonE', null);
     }
 
     public function test_getMetricFromTable_invalidMetric()
     {
-        $this->assertMetricFromTable('NotValidMeTriC', '', '', null);
+        $this->assertAggregateToOneValue('NotValidMeTriC', '', '', null);
     }
 
     public function test_shouldBeTriggered_GreaterThan()
@@ -469,11 +439,11 @@ class ProcessorTest extends BaseTest
         }
     }
 
-    private function assertMetricFromTable($metric, $filterCondition, $filterValue, $result)
+    private function assertAggregateToOneValue($metric, $filterCondition, $filterValue, $result)
     {
         $dataTable = $this->getDataTable();
 
-        $metric = $this->processor->getMetricFromTable($dataTable, $metric, $filterCondition, $filterValue);
+        $metric = $this->processor->aggregateToOneValue($dataTable, $metric, $filterCondition, $filterValue);
 
         $this->assertEquals($result, $metric);
     }

@@ -23,7 +23,7 @@ use Piwik\Plugins\API\ProcessedReport;
  *
  * @package Piwik_CustomAlerts
  */
-class Processor extends \Piwik\Plugin
+class Processor
 {
     public static function getComparablesDates()
     {
@@ -72,32 +72,6 @@ class Processor extends \Piwik\Plugin
         );
     }
 
-    public static function isValidComparableDate($period, $comparedToDate)
-    {
-        $dates = self::getComparablesDates();
-        if (!array_key_exists($period, $dates)) {
-            return false;
-        }
-
-        return in_array($comparedToDate, array_values($dates[$period]));
-    }
-
-    public static function isValidGroupCondition($condition)
-    {
-        $conditions = self::getGroupConditions();
-        $conditions = array_values($conditions);
-
-        return in_array($condition, $conditions);
-    }
-
-    public static function isValidMetricCondition($condition)
-    {
-        $conditions = self::getMetricConditions();
-        $conditions = array_values($conditions);
-
-        return in_array($condition, $conditions);
-    }
-
 	public function processAlerts($period, $idSite)
 	{
         $alerts = $this->getAllAlerts($period);
@@ -109,17 +83,7 @@ class Processor extends \Piwik\Plugin
 
     protected function processAlert($alert, $idSite)
     {
-        if (empty($alert['id_sites']) || !in_array($idSite, $alert['id_sites'])) {
-            return;
-        }
-
-        if (!self::isValidComparableDate($alert['period'], $alert['compared_to'])) {
-            // actually it would be nice to log or send a notification or whatever that we have skipped an alert
-            return;
-        }
-
-        if (!$this->reportExists($idSite, $alert['report'], $alert['metric'])) {
-            // actually it would be nice to log or send a notification or whatever that we have skipped an alert
+        if (!$this->shouldBeProcessed($alert, $idSite)) {
             return;
         }
 
@@ -141,13 +105,36 @@ class Processor extends \Piwik\Plugin
         }
     }
 
+    private function shouldBeProcessed($alert, $idSite)
+    {
+        if (empty($alert['id_sites']) || !in_array($idSite, $alert['id_sites'])) {
+            return false;
+        }
+
+        $validator = new Validator();
+        if (!$validator->isValidComparableDate($alert['period'], $alert['compared_to'])) {
+            // actually it would be nice to log or send a notification or whatever that we have skipped an alert
+            return false;
+        }
+
+        if (!$this->reportExists($idSite, $alert['report'], $alert['metric'])) {
+            // actually it would be nice to log or send a notification or whatever that we have skipped an alert
+            return false;
+        }
+
+        return true;
+    }
+
     private function reportExists($idSite, $report, $metric)
     {
-        $processedReport = new ProcessedReport();
+        try {
+            $validator = new Validator();
+            $validator->checkApiMethodAndMetric($idSite, $report, $metric);
+        } catch (\Exception $e) {
+            return false;
+        }
 
-        list($module, $action) = explode('.' , $report);
-
-        return $processedReport->isValidMetricForReport($metric, $idSite, $module, $action);
+        return true;
     }
 
     protected function shouldBeTriggered($alert, $valueNew, $valueOld)
@@ -180,13 +167,13 @@ class Processor extends \Piwik\Plugin
 
     /**
      * @param DataTable $dataTable DataTable
-     * @param string $metric Metric to fetch from row.
-     * @param string $filterCond Condition to filter for.
-     * @param string $filterValue Value to find
+     * @param string $metric       Metric to fetch from row.
+     * @param string $filterCond   Condition to filter for.
+     * @param string $filterValue  Value to find
      *
      * @return mixed
      */
-	protected function getMetricFromTable($dataTable, $metric, $filterCond = '', $filterValue = '')
+	protected function aggregateToOneValue($dataTable, $metric, $filterCond = '', $filterValue = '')
 	{
 		if (!empty($filterValue)) {
             $this->filterDataTable($dataTable, $filterCond, $filterValue);
@@ -200,17 +187,17 @@ class Processor extends \Piwik\Plugin
 
 		$dataRow = $dataTable->getFirstRow();
 
-		if ($dataRow) {
-			$value = $dataRow->getColumn($metric);
-
-            if ($value) {
-                $value = str_replace(array('%', 's'), '', $value);
-            }
-
-            return $value;
+		if (!$dataRow) {
+            return null;
         }
 
-        return null;
+        $value = $dataRow->getColumn($metric);
+
+        if ($value && is_string($value)) {
+            $value = str_replace(array('%', 's'), '', $value);
+        }
+
+        return $value;
 	}
 
     /**
@@ -282,33 +269,32 @@ class Processor extends \Piwik\Plugin
      */
     protected function getValueForAlertInPast($alert, $idSite, $subPeriodN)
     {
+        $date = Date::today()->subPeriod($subPeriodN, $alert['period'])->toString();
+
         $params = array(
             'method' => $alert['report'],
             'format' => 'original',
             'idSite' => $idSite,
             'period' => $alert['period'],
-            'date'   => Date::today()->subPeriod($subPeriodN, $alert['period'])->toString(),
+            'date'   => $date,
             'flat'   => 1,
             'disable_queued_filters' => 1
         );
 
-        // Get the data for the API request
         $request = new Piwik\API\Request($params);
         $table   = $request->process();
 
-        return $this->getMetricFromTable($table, $alert['metric'], $alert['report_condition'], $alert['report_matched']);
+        return $this->aggregateToOneValue($table, $alert['metric'], $alert['report_condition'], $alert['report_matched']);
     }
 
     protected function triggerAlert($alert, $idSite, $valueNew, $valueOld)
     {
-        $api = API::getInstance();
-        $api->triggerAlert($alert['idalert'], $idSite, $valueNew, $valueOld);
+        API::getInstance()->triggerAlert($alert['idalert'], $idSite, $valueNew, $valueOld);
     }
 
     private function getAllAlerts($period)
     {
-        $api = API::getInstance();
-        return $api->getAllAlertsForPeriod($period);
+        return API::getInstance()->getAllAlertsForPeriod($period);
     }
 
 }
