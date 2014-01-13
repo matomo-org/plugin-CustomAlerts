@@ -3,6 +3,11 @@ var CustomAlerts = (function($) {
 
     var reportValuesAutoComplete = null;
 
+    function getPeriodValue()
+    {
+        return $("#period").val();
+    }
+
     function updateFormValues(siteId) {
         if (!siteId || !$.isNumeric(siteId)) {
             siteId = $('[name=idSite]').val();
@@ -15,7 +20,7 @@ var CustomAlerts = (function($) {
             module: 'API',
             method: 'API.getReportMetadata',
             date: piwik.currentDateString,
-            period: $(".period").val(),
+            period: getPeriodValue(),
             idSites: [siteId],
             format: 'JSON'
         }, 'GET');
@@ -145,7 +150,7 @@ var CustomAlerts = (function($) {
 
     function updateComparedTo()
     {
-        var period = $('.period').val();
+        var period = getPeriodValue();
 
         $('.comparedToField select').hide();
         $('.comparedToField select').attr('data-inactive', 'data-inactive');
@@ -243,7 +248,7 @@ var CustomAlerts = (function($) {
             deleteAlert($(this).attr('id'));
         });
 
-        if ($('.alerts .period').length) {
+        if ($('.alerts #period').length) {
             updateFormValues();
         }
 
@@ -297,7 +302,7 @@ var CustomAlerts = (function($) {
         },
 
         sendApiRequest: function (method, POSTparams) {
-            var period = $('#period').find('option:selected').val();
+            var period = getPeriodValue();
 
             var ajaxHandler = new ajaxHelper();
             ajaxHandler.addParams(POSTparams, 'POST');

@@ -73,7 +73,7 @@
                     </span>
 
                     <span class="reportConditionField">
-                        <br /> when <span id="reportInfo"></span>
+                        <br /> {{ 'CustomAlerts_When'|translate }} <span id="reportInfo"></span>
                         <select class="reportCondition inp inlineSelect" name="reportCondition" id="reportCondition">
                             {% for condName, condValue in alertGroupConditions %}
                                 <option value="{{ condValue|e('html_attr') }}" {% if alert and condValue == alert.report_condition %}selected="selected"{% endif %}>{{ condName|translate }}</option>
@@ -113,7 +113,7 @@
 
                     <span class="comparedToField">
                         <br />
-                        compared to the
+                        {{ 'CustomAlerts_ComparedToThe'|translate }}
                         {% for period, comparablesDatesPeriod in comparablesDates %}
                             <select name="compared_to"
                                     class="inlineSelect"

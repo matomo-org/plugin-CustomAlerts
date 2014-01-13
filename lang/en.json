@@ -60,6 +60,8 @@
         "MonthComparedToPreviousMonth": "previous month",
         "MonthComparedToPreviousYear": "same month in the previous year",
         "ScheduledReportsPluginNotActivated": "The ScheduledReports plugin is required in order to create or edit alerts. You can activate it by accessing the %splugin settings page%s.",
-        "MobileMessagingPluginNotActivated": "The MobileMessaging plugin is required to send SMS alerts. You can activate it by accessing the %splugin settings page%s."
+        "MobileMessagingPluginNotActivated": "The MobileMessaging plugin is required to send SMS alerts. You can activate it by accessing the %splugin settings page%s.",
+        "When": "when",
+        "ComparedToThe": "compared to the"
     }
 }
