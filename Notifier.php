@@ -180,6 +180,8 @@ class Notifier extends \Piwik\Plugin
 
             $processedReport = new ProcessedReport();
 
+            $alert['value_old']    = (int) $alert['value_old'] == $alert['value_old'] ? (int) $alert['value_old'] : $alert['value_old'];
+            $alert['value_new']    = (int) $alert['value_new'] == $alert['value_new'] ? (int) $alert['value_new'] : $alert['value_new'];
             $alert['reportName']   = null;
             $alert['dimension']    = null;
             $alert['reportMetric'] = $processedReport->translateMetric($metric, $idSite, $module, $action);

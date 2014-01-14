@@ -138,7 +138,7 @@ class ModelTest extends BaseTEst
 
     public function test_triggerAlert_getTriggeredAlerts_ShouldMarkAlertAsTriggeredForGivenWebsite()
     {
-        $this->model->triggerAlert(2, 1, 99, 48);
+        $this->model->triggerAlert(2, 1, 99, 48.519);
         $triggeredAlerts = $this->model->getTriggeredAlerts('week', 'today', 'superUserLogin');
 
         $this->assertCount(1, $triggeredAlerts);
@@ -162,7 +162,7 @@ class ModelTest extends BaseTEst
             'metric_matched' => '5',
             'compared_to' => 1,
             'value_new' => 99,
-            'value_old' => 48,
+            'value_old' => 48.519,
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers' => array('0123456789'),
             'email_me' => false,

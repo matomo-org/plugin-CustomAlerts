@@ -57,8 +57,8 @@ class Model
 			`idsite` INT( 11 ) NOT NULL ,
 			`ts_triggered` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
 			`ts_last_sent` timestamp NULL DEFAULT NULL,
-			`value_old` BIGINT unsigned DEFAULT NULL,
-			`value_new` BIGINT unsigned DEFAULT NULL,
+			`value_old` DECIMAL (20,3) DEFAULT NULL,
+			`value_new` DECIMAL (20,3) DEFAULT NULL,
 			KEY `ts_triggered` (`ts_triggered`)
 		)";
 
@@ -83,7 +83,6 @@ class Model
             Db::exec($sql);
         }
     }
-
 
     /**
      * Returns a single Alert

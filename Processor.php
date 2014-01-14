@@ -13,11 +13,9 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
-use Piwik;
+use Piwik\API\Request as ApiRequest;
 use Piwik\DataTable;
 use Piwik\Date;
-use Piwik\Db;
-use Piwik\Plugins\API\ProcessedReport;
 
 /**
  *
@@ -139,6 +137,10 @@ class Processor
 
     protected function shouldBeTriggered($alert, $valueNew, $valueOld)
     {
+        if (empty($valueOld) && empty($valueNew)) {
+            return false;
+        }
+
         if (!empty($valueOld)) {
             $percentage = ((($valueNew / $valueOld) * 100) - 100);
         } else {
@@ -281,7 +283,7 @@ class Processor
             'disable_queued_filters' => 1
         );
 
-        $request = new Piwik\API\Request($params);
+        $request = new ApiRequest($params);
         $table   = $request->process();
 
         return $this->aggregateToOneValue($table, $alert['metric'], $alert['report_condition'], $alert['report_matched']);
