@@ -118,7 +118,7 @@ class API extends \Piwik\Plugin\API
         $name  = Common::unsanitizeInputValue($name);
         $login = Piwik::getCurrentUserLogin();
 
-        if (empty($reportCondition) || empty($reportCondition)) {
+        if (empty($reportCondition) || empty($reportValue)) {
             $reportCondition = null;
             $reportValue     = null;
         }
@@ -160,7 +160,7 @@ class API extends \Piwik\Plugin\API
 
         $name = Common::unsanitizeInputValue($name);
 
-        if (empty($reportCondition) || empty($reportCondition)) {
+        if (empty($reportCondition) || empty($reportValue)) {
             $reportCondition = null;
             $reportValue     = null;
         }

@@ -32,8 +32,7 @@ class Notifier extends \Piwik\Plugin
 {
     protected function getTriggeredAlerts($period, $idSite)
     {
-        $api    = API::getInstance();
-        $alerts = $api->getTriggeredAlerts($period, $this->getToday(), false);
+        $alerts = API::getInstance()->getTriggeredAlerts($period, $this->getToday(), false);
 
         return array_filter($alerts, function ($alert) use ($idSite) {
             return $alert['idsite'] == $idSite && empty($alert['ts_last_sent']);
