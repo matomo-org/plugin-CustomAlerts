@@ -7,7 +7,7 @@
 
     <div class="entityCancel">
         {% set backlink = linkTo({'module': 'CustomAlerts', 'action': 'index'}) %}
-        {{ 'CustomAlerts_CancelAndReturnToAlerts'|translate('<a class="entityCancelLink" href="' ~ backlink|e('url') ~ '">', "</a>")|raw }}
+        {{ 'CustomAlerts_CancelAndReturnToAlerts'|translate('<a class="entityCancelLink" href="' ~ backlink ~ '">', "</a>")|raw }}
     </div>
 
     <form method="POST" onSubmit="return onSubmit(event);">
