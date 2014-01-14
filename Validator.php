@@ -60,7 +60,7 @@ class Validator
 
     public function isValidPeriod($period)
     {
-        return in_array($period, array('day', 'week', 'month', 'year'));
+        return in_array($period, array('day', 'week', 'month'));
     }
 
     public function checkName($name)
