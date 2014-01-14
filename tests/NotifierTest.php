@@ -146,14 +146,14 @@ FORMATTED;
     </tr>
     </thead>
     <tbody>
-        <tr>
+    <tr>
         <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday&token_auth=">MyName1</a></td>
         <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Single Website dashboard</td>
         <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Website is 'Piwik'</td>
         <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Visits decreased more than 5000 from 228.128 to 4493</td>
     </tr>
 
-        <tr>
+    <tr>
         <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday&token_auth=">MyName2</a></td>
         <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Single Website dashboard</td>
         <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Website is 'Piwik'</td>

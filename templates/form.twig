@@ -7,7 +7,7 @@
 
     <div class="entityCancel">
         {% set backlink = linkTo({'module': 'CustomAlerts', 'action': 'index'}) %}
-        {{ 'CustomAlerts_CancelAndReturnToAlerts'|translate('<a class="entityCancelLink" href="' ~ backlink ~ '">', "</a>")|raw }}
+        {{ 'CustomAlerts_CancelAndReturnToAlerts'|translate('<a class="entityCancelLink" href="' ~ backlink|e('url') ~ '">', "</a>")|raw }}
     </div>
 
     <form method="POST" onSubmit="return onSubmit(event);">
@@ -82,7 +82,7 @@
                     </span>
 
                     <span class="reportValueField">
-                        <input type="text" role="textbox" autocomplete="off" class="reportValue inp ui-autocomplete-input" maxlength="255" name="reportValue" id="reportValue" value="{% if alert %}{{ alert.report_matched }}{% endif %}" placeholder="{{ 'General_Search'|translate }}" length="15">
+                        <input type="text" role="textbox" autocomplete="off" class="reportValue inp ui-autocomplete-input" maxlength="255" name="reportValue" id="reportValue" value="{% if alert %}{{ alert.report_matched|raw }}{% endif %}" placeholder="{{ 'General_Search'|translate }}" length="15">
                     </span>
 
                     <br/><br />

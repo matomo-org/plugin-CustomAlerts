@@ -10,11 +10,8 @@
     </thead>
     <tbody>
 {% for alert in triggeredAlerts %}
-    {% set alertNameLink -%}
-        <a href="{{ piwikUrl }}{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert, 'idSite': alert.idsite, 'period': alert.period, 'date': 'yesterday', 'token_auth': ''})|raw }}">{{ alert.alert_name }}</a>
-    {%- endset %}
     <tr>
-        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">{{ alertNameLink|raw }}</td>
+        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="{{ piwikUrl }}{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert, 'idSite': alert.idsite, 'period': alert.period, 'date': 'yesterday', 'token_auth': ''})|raw }}">{{ alert.alert_name }}</a></td>
         <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">{{ alert.reportName|default(alert.report) }}</td>
         <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">{{ alert.dimension|default('') }} {{ alert.reportConditionName }} {% if alert.report_matched %}'{{ alert.report_matched }}'{% endif %}</td>
         <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">{{ alert.reportMetric }} {{ alertsMacro.metricChangeDescription(alert) }}</td>
