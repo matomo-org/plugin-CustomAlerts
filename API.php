@@ -100,20 +100,20 @@ class API extends \Piwik\Plugin\API
      * @param string $metric (nb_uniq_visits, sum_visit_length, ..)
      * @param string $metricCondition
      * @param float $metricValue
-     * @param string $report
+     * @param string $reportUniqueId
      * @param int $comparedTo
      * @param bool|string $reportCondition
      * @param bool|string $reportValue
      * @internal param bool $enableEmail
      * @return int ID of new Alert
      */
-	public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $report, $reportCondition = false, $reportValue = false)
+	public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false)
 	{
         $idSites          = Site::getIdSitesFromIdSitesString($idSites);
         $additionalEmails = $this->filterAdditionalEmails($additionalEmails);
         $phoneNumbers     = $this->filterPhoneNumbers($phoneNumbers);
 
-        $this->checkAlert($idSites, $name, $period, $additionalEmails, $metricCondition, $metric, $comparedTo, $reportCondition, $report);
+        $this->checkAlert($idSites, $name, $period, $additionalEmails, $metricCondition, $metric, $comparedTo, $reportCondition, $reportUniqueId);
 
         $name  = Common::unsanitizeInputValue($name);
         $login = Piwik::getCurrentUserLogin();
@@ -123,7 +123,7 @@ class API extends \Piwik\Plugin\API
             $reportValue     = null;
         }
 
-        return $this->getModel()->createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $report, $reportCondition, $reportValue);
+        return $this->getModel()->createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue);
 	}
 
     /**
@@ -139,7 +139,7 @@ class API extends \Piwik\Plugin\API
      * @param string $metric (nb_uniq_visits, sum_visit_length, ..)
      * @param string $metricCondition
      * @param float $metricValue
-     * @param string $report
+     * @param string $reportUniqueId
      * @param int $comparedTo
      * @param bool|string $reportCondition
      * @param bool|string $reportValue
@@ -147,7 +147,7 @@ class API extends \Piwik\Plugin\API
      * @internal param bool $enableEmail
      * @return boolean
      */
-	public function editAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $report, $reportCondition = false, $reportValue = false)
+	public function editAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false)
 	{
         // make sure alert exists and user has permission to read
         $this->getAlert($idAlert);
@@ -156,7 +156,7 @@ class API extends \Piwik\Plugin\API
         $additionalEmails = $this->filterAdditionalEmails($additionalEmails);
         $phoneNumbers     = $this->filterPhoneNumbers($phoneNumbers);
 
-        $this->checkAlert($idSites, $name, $period, $additionalEmails, $metricCondition, $metric, $comparedTo, $reportCondition, $report);
+        $this->checkAlert($idSites, $name, $period, $additionalEmails, $metricCondition, $metric, $comparedTo, $reportCondition, $reportUniqueId);
 
         $name = Common::unsanitizeInputValue($name);
 
@@ -165,7 +165,7 @@ class API extends \Piwik\Plugin\API
             $reportValue     = null;
         }
 
-        return $this->getModel()->updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $report, $reportCondition, $reportValue);
+        return $this->getModel()->updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue);
 	}
 
     /**
@@ -270,7 +270,7 @@ class API extends \Piwik\Plugin\API
         return array_values($phoneNumbers);
     }
 
-    private function checkAlert($idSites, $name, $period, $additionalEmails, $metricCondition, $metricValue, $comparedTo, $reportCondition, $report)
+    private function checkAlert($idSites, $name, $period, $additionalEmails, $metricCondition, $metricValue, $comparedTo, $reportCondition, $reportUniqueId)
     {
         Piwik::checkUserHasViewAccess($idSites);
 
@@ -281,7 +281,7 @@ class API extends \Piwik\Plugin\API
         $this->validator->checkReportCondition($reportCondition);
 
         foreach ($idSites as $idSite) {
-            $this->validator->checkApiMethodAndMetric($idSite, $report, $metricValue);
+            $this->validator->checkApiMethodAndMetric($idSite, $reportUniqueId, $metricValue);
         }
 
         $this->validator->checkAdditionalEmails($additionalEmails);

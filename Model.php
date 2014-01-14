@@ -212,7 +212,7 @@ class Model
      * @param string $metricCondition
      * @param float $metricValue
      * @param int $comparedTo
-     * @param string $report
+     * @param string $reportUniqueId
      * @param string $reportCondition
      * @param string $reportValue
      *
@@ -220,7 +220,7 @@ class Model
      * @internal param bool $enableEmail
      * @return int ID of new Alert
      */
-	public function createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $report, $reportCondition, $reportValue)
+	public function createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue)
 	{
         $idAlert = $this->getNextAlertId();
 
@@ -235,7 +235,7 @@ class Model
 			'metric'           => $metric,
 			'metric_condition' => $metricCondition,
 			'metric_matched'   => (float) $metricValue,
-			'report'           => $report,
+			'report'           => $reportUniqueId,
             'compared_to'      => $comparedTo,
             'report_condition' => $reportCondition,
             'report_matched'   => $reportValue
@@ -263,7 +263,7 @@ class Model
      * @param string $metricCondition
      * @param float $metricValue
      * @param int $comparedTo
-     * @param string $report
+     * @param string $reportUniqueId
      * @param string $reportCondition
      * @param string $reportValue
      *
@@ -271,7 +271,7 @@ class Model
      * @internal param bool $enableEmail
      * @return boolean
      */
-	public function updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $report, $reportCondition, $reportValue)
+	public function updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue)
 	{
 		$alert = array(
 			'name'             => $name,
@@ -282,7 +282,7 @@ class Model
 			'metric'           => $metric,
 			'metric_condition' => $metricCondition,
 			'metric_matched'   => (float) $metricValue,
-			'report'           => $report,
+			'report'           => $reportUniqueId,
             'compared_to'      => $comparedTo,
             'report_condition' => $reportCondition,
             'report_matched'   => $reportValue

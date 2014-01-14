@@ -275,7 +275,7 @@ var CustomAlerts = (function($) {
             apiParameters.emailMe = mailSettings.emailMe ? 1 : 0;
             apiParameters.additionalEmails = (mailSettings.additionalEmails && mailSettings.additionalEmails.length) ? mailSettings.additionalEmails : [''];
             apiParameters.phoneNumbers = mobileSettings.phoneNumbers;
-            apiParameters.report = $('#report').find('option:selected').val();
+            apiParameters.reportUniqueId = $('#report').find('option:selected').val();
             apiParameters.reportCondition = $('#reportCondition').find('option:selected').val();
             apiParameters.reportValue  = $('#reportValue').val();
             apiParameters.idSites = [$('[name=idSite]').val()];
