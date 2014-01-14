@@ -91,8 +91,8 @@ var CustomAlerts = (function($) {
         ajaxRequest.send(false);
     }
 
-    function isBlockedReportApiMethod(apiMethod) {
-        return 'MultiSites.getOne' == apiMethod || 'MultiSites.getAll' == apiMethod;
+    function isBlockedReportApiMethod(apiMethodUniqueId) {
+        return 'MultiSites_getOne' == apiMethodUniqueId || 'MultiSites_getAll' == apiMethodUniqueId;
     }
 
     function renderForm(data) {
@@ -102,10 +102,9 @@ var CustomAlerts = (function($) {
         var currentApiMethod = $('#report').val();
         var options = "";
 
-        for(var i = 0; i < data.length; i++)
-        {
+        for (var i = 0; i < data.length; i++) {
             var reportMetadata  = data[i];
-            var reportApiMethod = reportMetadata.module + '.' + reportMetadata.action;
+            var reportApiMethod = reportMetadata.uniqueId;
 
             if (isBlockedReportApiMethod(reportApiMethod)) {
                 continue;

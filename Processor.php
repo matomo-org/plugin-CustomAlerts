@@ -16,6 +16,7 @@ namespace Piwik\Plugins\CustomAlerts;
 use Piwik\API\Request as ApiRequest;
 use Piwik\DataTable;
 use Piwik\Date;
+use Piwik\Plugins\API\ProcessedReport;
 
 /**
  *
@@ -271,10 +272,13 @@ class Processor
      */
     protected function getValueForAlertInPast($alert, $idSite, $subPeriodN)
     {
+        $processedReport = new ProcessedReport();
+        $report = $processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
+
         $date = Date::today()->subPeriod($subPeriodN, $alert['period'])->toString();
 
         $params = array(
-            'method' => $alert['report'],
+            'method' => $report['module'] . '.' . $report['action'],
             'format' => 'original',
             'idSite' => $idSite,
             'period' => $alert['period'],
@@ -282,6 +286,10 @@ class Processor
             'flat'   => 1,
             'disable_queued_filters' => 1
         );
+
+        if (!empty($report['parameters'])) {
+            $params = array_merge($params, $report['parameters']);
+        }
 
         $request = new ApiRequest($params);
         $table   = $request->process();

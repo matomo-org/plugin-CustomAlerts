@@ -173,7 +173,6 @@ class Notifier extends \Piwik\Plugin
     protected function enrichTriggeredAlerts($triggeredAlerts)
     {
         foreach ($triggeredAlerts as &$alert) {
-            list($module, $action) = explode('.', $alert['report']);
             $idSite = $alert['idsite'];
             $metric = $alert['metric'];
 
@@ -183,12 +182,11 @@ class Notifier extends \Piwik\Plugin
             $alert['value_new']    = (int) $alert['value_new'] == $alert['value_new'] ? (int) $alert['value_new'] : $alert['value_new'];
             $alert['reportName']   = null;
             $alert['dimension']    = null;
-            $alert['reportMetric'] = $processedReport->translateMetric($metric, $idSite, $module, $action);
+            $alert['reportMetric'] = $processedReport->translateMetric($metric, $idSite, $alert['report']);
             $alert['reportConditionName'] = null;
 
-            $metadata = $processedReport->getMetadata($idSite, $module, $action);
-            if (!empty($metadata)) {
-                $report = array_shift($metadata);
+            $report = $processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
+            if (!empty($report)) {
                 $alert['reportName'] = $report['name'];
                 $alert['dimension']  = !empty($report['dimension']) ? $report['dimension'] : null;
 

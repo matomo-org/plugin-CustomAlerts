@@ -76,7 +76,7 @@ class CustomAlertsTest extends BaseTest
 
     private function createAlert($name, $phoneNumbers, $idSites = array(1))
     {
-        $report  = 'MultiSites.getOne';
+        $report  = 'MultiSites_getOne';
         $emails  = array('test1@example.com', 'test2@example.com');
         $login   = Piwik::getCurrentUserLogin();
 

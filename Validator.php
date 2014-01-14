@@ -127,26 +127,24 @@ class Validator
      * given (requires report_condition, report_matched)
      *
      * @param int $idSite
-     * @param string $apiMethod for example MultiSites.getAll
+     * @param string $apiMethodUniqueId for example MultiSites.getAll
      * @param string $metric
      * @throws \Exception
      * @return boolean
      */
-    public function checkApiMethodAndMetric($idSite, $apiMethod, $metric)
+    public function checkApiMethodAndMetric($idSite, $apiMethodUniqueId, $metric)
     {
-        if (empty($apiMethod) || false === strpos($apiMethod, '.')) {
+        if (empty($apiMethodUniqueId) || false === strpos($apiMethodUniqueId, '_')) {
             throw new Exception(Piwik::translate('CustomAlerts_InvalidReport'));
         }
-
-        list($module, $action) = explode(".", $apiMethod);
 
         $processedReport = new ProcessedReport();
 
-        if (!$processedReport->isValidReportForSite($idSite, $module, $action)) {
+        if (!$processedReport->isValidReportForSite($idSite, $apiMethodUniqueId)) {
             throw new Exception(Piwik::translate('CustomAlerts_InvalidReport'));
         }
 
-        if (!$processedReport->isValidMetricForReport($metric, $idSite, $module, $action)) {
+        if (!$processedReport->isValidMetricForReport($metric, $idSite, $apiMethodUniqueId)) {
             throw new Exception(Piwik::translate('CustomAlerts_InvalidMetric'));
         }
     }

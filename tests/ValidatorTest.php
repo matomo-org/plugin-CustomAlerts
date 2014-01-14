@@ -132,15 +132,15 @@ class ValidatorTest extends BaseTest
         return array(
             array(1, '', 'nb_visits', 'CustomAlerts_InvalidReport'),
             array(1, 'actionwithoutmethod', 'nb_visits', 'CustomAlerts_InvalidReport'),
-            array(1, 'MultiSites.NotExisting', 'nb_visits', 'CustomAlerts_InvalidReport'),
-            array(1, 'NotExisting.get', 'nb_visits', 'CustomAlerts_InvalidReport'),
-            array(1, 'MultiSites.getAll', 'nb_notexist', 'CustomAlerts_InvalidMetric')
+            array(1, 'MultiSites_NotExisting', 'nb_visits', 'CustomAlerts_InvalidReport'),
+            array(1, 'NotExisting_get', 'nb_visits', 'CustomAlerts_InvalidReport'),
+            array(1, 'MultiSites_getAll', 'nb_notexist', 'CustomAlerts_InvalidMetric')
         );
     }
 
     public function test_checkApiMethodAndMetric_ShouldNotFail_IfValid()
     {
-        $this->assertNull($this->validator->checkApiMethodAndMetric(1, 'MultiSites.getAll', 'nb_visits'));
+        $this->assertNull($this->validator->checkApiMethodAndMetric(1, 'MultiSites_getAll', 'nb_visits'));
     }
 
     /**

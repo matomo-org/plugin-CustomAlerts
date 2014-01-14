@@ -280,12 +280,12 @@ t your custom alert settings, please sign in and access the Alerts page.=
     public function test_enrichTriggeredAlerts_shouldEnrichAlerts_IfReportExistsAndMetricIsValid()
     {
         $alerts = array(
-            array('idsite' => 1, 'metric' => 'nb_visits', 'report' => 'MultiSites.getAll', 'report_condition' => 'matches_any', 'value_old' => '228.001', 'value_new' => '1.0'),
-            array('idsite' => 1, 'metric' => 'nb_visits', 'report' => 'NotExistingModule.Action', 'report_condition' => 'matches_exactly', 'value_old' => '228.000', 'value_new' => '1.0'),
-            array('idsite' => 1, 'metric' => 'bounce_rate', 'report' => 'Actions.getPageUrls', 'report_condition' => 'matches_exactly', 'value_old' => '228.999', 'value_new' => '1.0'),
-            array('idsite' => 1, 'metric' => 'not_valid', 'report' => 'Actions.getPageUrls', 'report_condition' => 'contains', 'value_old' => '228.001', 'value_new' => '1.01'),
+            array('idsite' => 1, 'metric' => 'nb_visits', 'report' => 'MultiSites_getAll', 'report_condition' => 'matches_any', 'value_old' => '228.001', 'value_new' => '1.0'),
+            array('idsite' => 1, 'metric' => 'nb_visits', 'report' => 'NotExistingModule_Action', 'report_condition' => 'matches_exactly', 'value_old' => '228.000', 'value_new' => '1.0'),
+            array('idsite' => 1, 'metric' => 'bounce_rate', 'report' => 'Actions_getPageUrls', 'report_condition' => 'matches_exactly', 'value_old' => '228.999', 'value_new' => '1.0'),
+            array('idsite' => 1, 'metric' => 'not_valid', 'report' => 'Actions_getPageUrls', 'report_condition' => 'contains', 'value_old' => '228.001', 'value_new' => '1.01'),
             // no dimension
-            array('idsite' => 1, 'metric' => 'nb_visits', 'report' => 'VisitsSummary.get', 'report_condition' => 'matches_any', 'value_old' => '228.001', 'value_new' => '10')
+            array('idsite' => 1, 'metric' => 'nb_visits', 'report' => 'VisitsSummary_get', 'report_condition' => 'matches_any', 'value_old' => '228.001', 'value_new' => '10')
         );
 
         $enriched = $this->notifier->enrichTriggeredAlerts($alerts);
@@ -328,7 +328,7 @@ t your custom alert settings, please sign in and access the Alerts page.=
         $this->assertEquals($alerts, $enriched);
     }
 
-    private function buildAlert($id, $name, $period = 'week', $idSite = 1, $siteName = 'Piwik test', $login = 'superUserLogin', $metric = 'nb_visits', $metricCondition = 'decrease_more_than', $metricMatched = 5000, $report = 'MultiSites.getOne', $reportCondition = 'matches_exactly', $reportMatched = 'Piwik')
+    private function buildAlert($id, $name, $period = 'week', $idSite = 1, $siteName = 'Piwik test', $login = 'superUserLogin', $metric = 'nb_visits', $metricCondition = 'decrease_more_than', $metricMatched = 5000, $report = 'MultiSites_getOne', $reportCondition = 'matches_exactly', $reportMatched = 'Piwik')
     {
         return array(
             'idalert' => $id,

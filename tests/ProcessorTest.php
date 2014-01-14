@@ -127,7 +127,7 @@ class ProcessorTest extends BaseTest
 
         foreach ($assertions as $assert) {
             $alert = array(
-                'report' => 'Actions.getPageUrls',
+                'report' => 'Actions_getPageUrls',
                 'metric' => $assert[0],
                 'period' => 'day',
                 'report_condition' => 'contains',
@@ -354,14 +354,14 @@ class ProcessorTest extends BaseTest
 
     public function test_processAlert_shouldNotFail_IfReportDoesNotExist()
     {
-        $alert = $this->buildAlert(array(1,2), 'NotExistingReport.Action');
+        $alert = $this->buildAlert(array(1,2), 'NotExistingReport_Action');
 
         $this->assertProcessNotRun($alert, array(1,2,3));
     }
 
     public function test_processAlert_shouldNotFail_IfMetricDoesNotBelongToTheReport()
     {
-        $alert = $this->buildAlert(array(1,2), 'MultiSites.getAll', 'not_existing_metric');
+        $alert = $this->buildAlert(array(1,2), 'MultiSites_getAll', 'not_existing_metric');
 
         $this->assertProcessNotRun($alert, array(1,2,3));
     }
@@ -382,7 +382,7 @@ class ProcessorTest extends BaseTest
 
     public function test_processAlert_shouldOnlyBeTriggeredIfAlertMatches()
     {
-        $alert = $this->buildAlert(array(1), 'MultiSites.getAll', 'nb_visits', '5', 'day', $comparedTo = 7);
+        $alert = $this->buildAlert(array(1), 'MultiSites_getAll', 'nb_visits', '5', 'day', $comparedTo = 7);
 
         $methods = array('getValueForAlertInPast', 'triggerAlert');
         $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomProcessor', $methods);
@@ -458,7 +458,7 @@ class ProcessorTest extends BaseTest
         return $this->processor->shouldBeTriggered($alert, $metricPast1, $metricPast2);
     }
 
-    private function buildAlert($idSites = array(1,2), $report = 'MultiSites.getAll', $metric = 'nb_visits', $metricMatched = '4', $period = 'month', $comparedTo = 12)
+    private function buildAlert($idSites = array(1,2), $report = 'MultiSites_getAll', $metric = 'nb_visits', $metricMatched = '4', $period = 'month', $comparedTo = 12)
     {
         return array(
             'idalert' => 1,

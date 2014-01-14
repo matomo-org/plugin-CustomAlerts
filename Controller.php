@@ -110,14 +110,10 @@ class Controller extends \Piwik\Plugin\Controller
             return;
         }
 
-        list($module, $action) = explode('.', $alert['report']);
-
         $processedReport = new ProcessedReport();
-        $metadata        = $processedReport->getMetadata($idSite, $module, $action);
+        $report = $processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
 
-        if (!empty($metadata)) {
-            return array_shift($metadata);
-        }
+        return $report;
     }
 
     private function findReportName($alert)

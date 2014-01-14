@@ -67,7 +67,7 @@ class ApiTest extends BaseTest
     public function test_addAlert_ShouldFail_IfInvalidReportProvided()
     {
         $this->setSuperUser();
-        $this->createAlert('InvalidReport', 'week', null, 'nb_visits', 'IkReport.NotExisTing');
+        $this->createAlert('InvalidReport', 'week', null, 'nb_visits', 'IkReport_NotExisTing');
     }
 
     /**
@@ -87,7 +87,7 @@ class ApiTest extends BaseTest
     public function test_addAlert_ShouldFail_IfInvalidMetricCondition()
     {
         $this->setSuperUser();
-        $this->createAlert('InvalidMetricCondition', 'week', null, 'nb_visits', 'MultiSites.getOne', 'InvaLiD');
+        $this->createAlert('InvalidMetricCondition', 'week', null, 'nb_visits', 'MultiSites_getOne', 'InvaLiD');
     }
 
     /**
@@ -97,7 +97,7 @@ class ApiTest extends BaseTest
     public function test_addAlert_ShouldFail_IfEmptyMetricCondition()
     {
         $this->setSuperUser();
-        $this->createAlert('EmptyMetricCondition', 'week', null, 'nb_visits', 'MultiSites.getOne', '');
+        $this->createAlert('EmptyMetricCondition', 'week', null, 'nb_visits', 'MultiSites_getOne', '');
     }
 
     /**
@@ -107,7 +107,7 @@ class ApiTest extends BaseTest
     public function test_addAlert_ShouldFail_IfInvalidReportCondition()
     {
         $this->setSuperUser();
-        $this->createAlert('InvalidReportCondition', 'week', null, 'nb_visits', 'MultiSites.getOne', 'less_than', 'InvaLiD');
+        $this->createAlert('InvalidReportCondition', 'week', null, 'nb_visits', 'MultiSites_getOne', 'less_than', 'InvaLiD');
     }
 
     /**
@@ -117,7 +117,7 @@ class ApiTest extends BaseTest
     public function test_addAlert_ShouldFail_IfInvalidComparableDate()
     {
         $this->setSuperUser();
-        $this->createAlert('InvalidComparableDate', 'week', null, 'nb_visits', 'MultiSites.getOne', 'less_than', 'matches_exactly', array(), 99);
+        $this->createAlert('InvalidComparableDate', 'week', null, 'nb_visits', 'MultiSites_getOne', 'less_than', 'matches_exactly', array(), 99);
     }
 
     /**
@@ -127,7 +127,7 @@ class ApiTest extends BaseTest
     public function test_addAlert_ShouldFail_IfInvalidEmail()
     {
         $this->setSuperUser();
-        $this->createAlert('InvalidEmail', 'week', null, 'nb_visits', 'MultiSites.getOne', 'less_than', 'matches_any', array('test@example.com', 'inv+34i32s?y', 'test2@example.com'));
+        $this->createAlert('InvalidEmail', 'week', null, 'nb_visits', 'MultiSites_getOne', 'less_than', 'matches_any', array('test@example.com', 'inv+34i32s?y', 'test2@example.com'));
     }
 
     public function test_addAlert_ShouldCreateANewAlert()
@@ -177,7 +177,7 @@ class ApiTest extends BaseTest
         $this->setSuperUser();
 
         $id = $this->createAlert('MyAlert');
-        $this->editAlert($id, 'InvalidMetricCondition', 'week', null, 'nb_visits', 'MultiSites.getOne', 'InvaLiD');
+        $this->editAlert($id, 'InvalidMetricCondition', 'week', null, 'nb_visits', 'MultiSites_getOne', 'InvaLiD');
     }
 
     /**
@@ -189,7 +189,7 @@ class ApiTest extends BaseTest
         $this->setSuperUser();
 
         $id = $this->createAlert('MyAlert');
-        $this->editAlert($id, 'EmptyMetricCondition', 'week', null, 'nb_visits', 'MultiSites.getOne', '');
+        $this->editAlert($id, 'EmptyMetricCondition', 'week', null, 'nb_visits', 'MultiSites_getOne', '');
     }
 
     /**
@@ -201,7 +201,7 @@ class ApiTest extends BaseTest
         $this->setSuperUser();
 
         $id = $this->createAlert('MyAlert');
-        $this->editAlert($id, 'InvalidReportCondition', 'week', null, 'nb_visits', 'MultiSites.getOne', 'less_than', 'InvaLiD');
+        $this->editAlert($id, 'InvalidReportCondition', 'week', null, 'nb_visits', 'MultiSites_getOne', 'less_than', 'InvaLiD');
     }
 
     /**
@@ -213,7 +213,7 @@ class ApiTest extends BaseTest
         $this->setSuperUser();
 
         $id = $this->createAlert('MyAlert');
-        $this->editAlert($id, 'InvalidEmail', 'week', null, 'nb_visits', 'MultiSites.getOne', 'less_than', 'matches_any', array('test@example.com', 'inv+34i32s?y', 'test2@example.com'));
+        $this->editAlert($id, 'InvalidEmail', 'week', null, 'nb_visits', 'MultiSites_getOne', 'less_than', 'matches_any', array('test@example.com', 'inv+34i32s?y', 'test2@example.com'));
     }
 
     public function test_editAlert_ShouldUpdateExistingEntry()
@@ -398,7 +398,7 @@ class ApiTest extends BaseTest
             'period' => 'week',
             'site_name' => 'Piwik test',
             'login' => 'superUserLogin',
-            'report' => 'MultiSites.getOne',
+            'report' => 'MultiSites_getOne',
             'report_condition' => 'matches_exactly',
             'report_matched' => 'Piwik',
             'metric' => 'nb_visits',
@@ -470,7 +470,7 @@ class ApiTest extends BaseTest
     }
 
 
-    protected function createAlert($name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites.getOne', $metricCondition = 'less_than', $reportCondition = 'matches_exactly', $emails = array('test1@example.com', 'test2@example.com'), $comparedTo = 1)
+    protected function createAlert($name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites_getOne', $metricCondition = 'less_than', $reportCondition = 'matches_exactly', $emails = array('test1@example.com', 'test2@example.com'), $comparedTo = 1)
     {
         if (is_null($idSites)) {
             $idSites = $this->idSite;
@@ -483,7 +483,7 @@ class ApiTest extends BaseTest
         return $id;
     }
 
-    protected function editAlert($id, $name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites.getOne', $metricCondition = 'less_than', $reportCondition = 'matches_exactly', $emails = array('test1@example.com', 'test2@example.com'))
+    protected function editAlert($id, $name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites_getOne', $metricCondition = 'less_than', $reportCondition = 'matches_exactly', $emails = array('test1@example.com', 'test2@example.com'))
     {
         if (is_null($idSites)) {
             $idSites = $this->idSite;
@@ -497,7 +497,7 @@ class ApiTest extends BaseTest
         return $id;
     }
 
-    protected function assertIsAlert($id, $name, $period = 'week', $idSites = null, $login = 'superUserLogin', $metric = 'nb_visits', $metricCondition = 'less_than', $metricMatched = 5, $report = 'MultiSites.getOne', $reportCondition = 'matches_exactly', $reportMatched = 'Piwik')
+    protected function assertIsAlert($id, $name, $period = 'week', $idSites = null, $login = 'superUserLogin', $metric = 'nb_visits', $metricCondition = 'less_than', $metricMatched = 5, $report = 'MultiSites_getOne', $reportCondition = 'matches_exactly', $reportMatched = 'Piwik')
     {
         if (is_null($idSites)) {
             $idSites = array($this->idSite);

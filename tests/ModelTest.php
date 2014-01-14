@@ -154,7 +154,7 @@ class ModelTest extends BaseTEst
             'period' => 'week',
             'site_name' => 'Piwik test',
             'login' => 'superUserLogin',
-            'report' => 'MultiSites.getOne',
+            'report' => 'MultiSites_getOne',
             'report_condition' => 'matches_exactly',
             'report_matched' => 'Piwik',
             'metric' => 'nb_visits',
@@ -250,7 +250,7 @@ class ModelTest extends BaseTEst
         return $tableNames;
     }
 
-    private function createAlert($name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites.getOne')
+    private function createAlert($name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites_getOne')
     {
         if (is_null($idSites)) {
             $idSites = $this->idSite;
@@ -267,7 +267,7 @@ class ModelTest extends BaseTEst
         return $id;
     }
 
-    private function editAlert($id, $name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites.getOne')
+    private function editAlert($id, $name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites_getOne')
     {
         if (is_null($idSites)) {
             $idSites = $this->idSite;
@@ -283,7 +283,7 @@ class ModelTest extends BaseTEst
         return $id;
     }
 
-    private function assertIsAlert($id, $name, $period = 'week', $idSites = null, $login = 'superUserLogin', $metric = 'nb_visits', $metricCondition = 'less_than', $metricMatched = 5, $report = 'MultiSites.getOne', $reportCondition = 'matches_exactly', $reportMatched = 'Piwik')
+    private function assertIsAlert($id, $name, $period = 'week', $idSites = null, $login = 'superUserLogin', $metric = 'nb_visits', $metricCondition = 'less_than', $metricMatched = 5, $report = 'MultiSites_getOne', $reportCondition = 'matches_exactly', $reportMatched = 'Piwik')
     {
         if (is_null($idSites)) {
             $idSites = array($this->idSite);
