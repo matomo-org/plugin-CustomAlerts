@@ -68,6 +68,10 @@ class Validator
         if (empty($name)) {
             throw new Exception(Piwik::translate("General_PleaseSpecifyValue", "name"));
         }
+
+        if (mb_strlen($name) > 100) {
+            throw new Exception(Piwik::translate("CustomAlerts_ParmeterIsTooLong", array(Piwik::translate('General_Name'), 100)));
+        }
     }
 
     public function isValidComparableDate($period, $comparedToDate)

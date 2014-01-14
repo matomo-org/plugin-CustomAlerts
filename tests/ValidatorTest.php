@@ -107,6 +107,16 @@ class ValidatorTest extends BaseTest
         $this->validator->checkName('');
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_ParmeterIsTooLong
+     */
+    public function test_checkName_ShouldFail_IfNameIsTooLong()
+    {
+        $name = range(0, 101);
+        $this->validator->checkName(implode('', $name));
+    }
+
     public function test_checkName_ShouldNotFail_IfNameIsNotEmpty()
     {
         $this->validator->checkName('b');
