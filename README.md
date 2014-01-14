@@ -1,5 +1,7 @@
 # Piwik CustomAlerts Plugin 
 
+[![Build Status](https://travis-ci.org/piwik/plugin-CustomAlerts.png?branch=master)](https://travis-ci.org/piwik/plugin-CustomAlerts)
+
 ## Description
 
 Create Custom Alerts + Be notified by email/SMS!
