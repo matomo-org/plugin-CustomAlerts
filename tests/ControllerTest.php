@@ -133,16 +133,23 @@ FORMATTED;
 
     public function test_enrichTriggeredAlerts_shouldEnrichAlerts_IfReportExistsAndMetricIsValid()
     {
+        $timestamp = 1389824417;
         $alerts = array(
-            array('idsite' => 1, 'metric' => 'nb_visits', 'report' => 'MultiSites_getAll', 'report_condition' => 'matches_any', 'value_old' => '228.001', 'value_new' => '1.0'),
-            array('idsite' => 1, 'metric' => 'nb_visits', 'report' => 'NotExistingModule_Action', 'report_condition' => 'matches_exactly', 'value_old' => '228.000', 'value_new' => '1.0'),
-            array('idsite' => 1, 'metric' => 'bounce_rate', 'report' => 'Actions_getPageUrls', 'report_condition' => 'matches_exactly', 'value_old' => '228.999', 'value_new' => '1.0'),
-            array('idsite' => 1, 'metric' => 'not_valid', 'report' => 'Actions_getPageUrls', 'report_condition' => 'contains', 'value_old' => '228.001', 'value_new' => '1.01'),
+            array('idsite' => 1, 'ts_triggered' => $timestamp, 'metric' => 'nb_visits', 'report' => 'MultiSites_getAll', 'report_condition' => 'matches_any', 'value_old' => '228.001', 'value_new' => '1.0'),
+            array('idsite' => 1, 'ts_triggered' => $timestamp, 'metric' => 'nb_visits', 'report' => 'NotExistingModule_Action', 'report_condition' => 'matches_exactly', 'value_old' => '228.000', 'value_new' => '1.0'),
+            array('idsite' => 1, 'ts_triggered' => $timestamp, 'metric' => 'bounce_rate', 'report' => 'Actions_getPageUrls', 'report_condition' => 'matches_exactly', 'value_old' => '228.999', 'value_new' => '1.0'),
+            array('idsite' => 1, 'ts_triggered' => $timestamp, 'metric' => 'not_valid', 'report' => 'Actions_getPageUrls', 'report_condition' => 'contains', 'value_old' => '228.001', 'value_new' => '1.01'),
             // no dimension
-            array('idsite' => 1, 'metric' => 'nb_visits', 'report' => 'VisitsSummary_get', 'report_condition' => 'matches_any', 'value_old' => '228.001', 'value_new' => '10')
+            array('idsite' => 1, 'ts_triggered' => $timestamp, 'metric' => 'nb_visits', 'report' => 'VisitsSummary_get', 'report_condition' => 'matches_any', 'value_old' => '228.001', 'value_new' => '10')
         );
 
         $enriched = $this->controller->enrichTriggeredAlerts($alerts);
+
+        for ($index = 0; $index < count($enriched); $index++) {
+            $this->assertEquals($timestamp, $enriched[$index]['ts_triggered']->getTimestamp());
+            unset($enriched[$index]['ts_triggered']);
+            unset($alerts[$index]['ts_triggered']);
+        }
 
         $alerts[0]['reportName']   = 'All Websites dashboard';
         $alerts[0]['reportMetric'] = 'Visits';
@@ -183,7 +190,7 @@ FORMATTED;
         $alerts[4]['value_new']    = 10;
         $alerts[4]['siteName']     = 'Piwik test';
         $this->assertInternalType('int', $alerts[4]['value_new']);
-
+    
         $this->assertEquals($alerts, $enriched);
     }
 
@@ -205,7 +212,8 @@ FORMATTED;
             'phone_numbers' => array('+1234567890', '232'),
             'email_me' => true,
             'value_new' => '4493.000',
-            'value_old' => '228.128'
+            'value_old' => '228.128',
+            'ts_triggered' => time()
         );
     }
 

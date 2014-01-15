@@ -91,6 +91,49 @@ class Controller extends \Piwik\Plugin\Controller
 		return $view->render();
 	}
 
+    /**
+     * Returns the Alerts that were triggered in $format.
+     *
+     * @param array $triggeredAlerts
+     * @param string $format Can be 'html' or 'tsv'
+     * @throws \Exception
+     * @return string
+     */
+    public function formatAlerts($triggeredAlerts, $format)
+    {
+        switch ($format) {
+            case 'html_extended':
+                $view = new View('@CustomAlerts/htmlTriggeredAlerts');
+                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
+                $view->extended        = true;
+
+                return $view->render();
+
+            case 'html':
+                $view = new View('@CustomAlerts/htmlTriggeredAlerts');
+                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
+                $view->extended        = false;
+
+                return $view->render();
+
+            case 'sms':
+
+                $view = new View('@CustomAlerts/smsTriggeredAlerts');
+                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
+
+                return $view->render();
+
+            case 'text':
+
+                $view = new View('@CustomAlerts/textTriggeredAlerts');
+                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
+
+                return $view->render();
+        }
+
+        throw new \Exception('Unsupported format');
+    }
+
     private function addBasicCreateAndEditVariables($view, $alert)
     {
         $view->alert = $alert;
@@ -152,61 +195,23 @@ class Controller extends \Piwik\Plugin\Controller
 
     private function findSiteId($alert)
     {
-        if (empty($alert['id_sites'])) {
+        if (empty($alert)) {
             return;
         }
 
-        list($idSite) = $alert['id_sites'];
+        if (array_key_exists('id_sites', $alert) && !empty($alert['id_sites'])) {
+            list($idSite) = $alert['id_sites'];
+            return $idSite;
+        }
 
-        return $idSite;
+        if (array_key_exists('idsite', $alert)) {
+            return $alert['idsite'];
+        }
     }
 
     private function getSiteIdsHavingAccess()
     {
         return SitesManagerApi::getInstance()->getSitesIdWithAtLeastViewAccess();
-    }
-
-    /**
-     * Returns the Alerts that were triggered in $format.
-     *
-     * @param array $triggeredAlerts
-     * @param string $format Can be 'html' or 'tsv'
-     * @throws \Exception
-     * @return string
-     */
-    public function formatAlerts($triggeredAlerts, $format)
-    {
-        switch ($format) {
-            case 'html_extended':
-                $view = new View('@CustomAlerts/htmlTriggeredAlerts');
-                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
-                $view->extended        = true;
-
-                return $view->render();
-
-            case 'html':
-                $view = new View('@CustomAlerts/htmlTriggeredAlerts');
-                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
-                $view->extended        = false;
-
-                return $view->render();
-
-            case 'sms':
-
-                $view = new View('@CustomAlerts/smsTriggeredAlerts');
-                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
-
-                return $view->render();
-
-            case 'text':
-
-                $view = new View('@CustomAlerts/textTriggeredAlerts');
-                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
-
-                return $view->render();
-        }
-
-        throw new \Exception('Unsupported format');
     }
 
     protected function enrichTriggeredAlerts($triggeredAlerts)
@@ -224,15 +229,15 @@ class Controller extends \Piwik\Plugin\Controller
             }
 
             if (empty($cached[$idSite]['siteName'])) {
-                $cached[$idSite]['siteName'] = Site::getNameFor($idSite);
+                $cached[$idSite]['siteName'] = $this->findSiteName($alert);
             }
 
             if (!array_key_exists($report, $cached[$idSite]['report'])) {
-                $cached[$idSite]['report'][$report] = $processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
+                $cached[$idSite]['report'][$report] = $this->findReportMetadata($alert);
                 $cached[$idSite]['metric'][$report] = array();
             }
 
-            if (!array_key_exists($metric, $cached[$idSite]['metric'][$report])) {
+            if (is_array($cached[$idSite]['metric'][$report]) && !array_key_exists($metric, $cached[$idSite]['metric'][$report])) {
                 $cached[$idSite]['metric'][$report][$metric] = $processedReport->translateMetric($metric, $idSite, $alert['report']);
             }
         }
@@ -252,10 +257,10 @@ class Controller extends \Piwik\Plugin\Controller
             $alert['ts_triggered'] = Date::factory($alert['ts_triggered']);
 
             if (!empty($cached[$idSite]['report'][$report])) {
-                $report = $cached[$idSite]['report'][$report];
+                $reportMetadata = $cached[$idSite]['report'][$report];
 
-                $alert['reportName'] = $report['name'];
-                $alert['dimension']  = !empty($report['dimension']) ? $report['dimension'] : null;
+                $alert['reportName'] = $reportMetadata['name'];
+                $alert['dimension']  = !empty($reportMetadata['dimension']) ? $reportMetadata['dimension'] : null;
 
                 $conditionTranslation = array_search($alert['report_condition'], Processor::getGroupConditions(), true);
                 $alert['reportConditionName'] = $conditionTranslation ? Piwik::translate($conditionTranslation) : null;
