@@ -11,5 +11,8 @@
             "email": "hello@piwik.org",
             "homepage": "http://piwik.org"
         }
-    ]
+    ],
+    "license": "GPL v3+",
+    "keywords": ["alerts", "notification", "report", "monitoring"],
+    "homepage": "http://piwik.org"
 }
