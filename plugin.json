@@ -4,5 +4,12 @@
     "version": "0.1.0",
     "require": {
         "piwik": ">=2.0.4"
-    }
+    },
+    "authors": [
+        {
+            "name": "Piwik",
+            "email": "hello@piwik.org",
+            "homepage": "http://piwik.org"
+        }
+    ]
 }
