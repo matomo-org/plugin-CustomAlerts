@@ -273,6 +273,26 @@ class ModelTest extends BaseTest
         $this->assertNull($triggeredAlerts[0]['ts_last_sent']);
     }
 
+    public function test_deleteTriggeredAlertsForSite()
+    {
+        $this->model->triggerAlert(1, 1, 99, 48);
+        $this->model->triggerAlert(1, 2, 99, 48);
+        $this->model->triggerAlert(1, 3, 99, 48);
+        $this->model->triggerAlert(1, 2, 99, 48);
+
+        $alerts = $this->model->getTriggeredAlerts(array(1, 2, 3), 'superUserLogin');
+        $this->assertCount(4, $alerts);
+
+        $this->model->deleteTriggeredAlertsForSite(2);
+
+        // verify actually removed the correct ones
+        $alerts = $this->model->getTriggeredAlerts(array(1, 2, 3), 'superUserLogin');
+        $this->assertCount(2, $alerts);
+
+        $this->assertEquals(1, $alerts[0]['idtriggered']);
+        $this->assertEquals(3, $alerts[1]['idtriggered']);
+    }
+
     private function assertContainTables($expectedTables)
     {
         $tableNames = $this->getCurrentAvailableTableNames();

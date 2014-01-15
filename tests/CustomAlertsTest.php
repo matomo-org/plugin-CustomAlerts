@@ -83,7 +83,15 @@ class CustomAlertsTest extends BaseTest
         $this->createAlert('Initial5', array(), array(2));
         $this->createAlert('Initial6', array(), array(2));
 
-        $this->plugin->deleteAlertsForWebsite(2);
+        $this->model->triggerAlert(1, 1, 99, 48);
+        $this->model->triggerAlert(1, 2, 99, 48);
+        $this->model->triggerAlert(2, 3, 99, 48);
+        $this->model->triggerAlert(3, 2, 99, 48);
+
+        $alerts = $this->model->getTriggeredAlerts(array(1, 2, 3), 'superUserLogin');
+        $this->assertCount(4, $alerts);
+
+        $this->plugin->deleteAlertsForSite(2);
 
         $alerts = $this->model->getAllAlerts();
 
@@ -94,6 +102,9 @@ class CustomAlertsTest extends BaseTest
         $this->assertEquals($alerts[3]['id_sites'], array(1, 3));
         $this->assertEquals($alerts[4]['id_sites'], array());
         $this->assertEquals($alerts[5]['id_sites'], array());
+
+        $alerts = $this->model->getTriggeredAlerts(array(1, 2, 3), 'superUserLogin');
+        $this->assertCount(2, $alerts);
     }
 
     public function test_deleteAlertsForLogin()

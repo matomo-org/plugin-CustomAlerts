@@ -358,6 +358,24 @@ class Model
         $db->update(Common::prefixTable('alert_triggered'), $log, $where);
     }
 
+    public function setSiteIds($idAlert, $idSites)
+    {
+        $this->removeAllSites($idAlert);
+
+        $db = Db::get();
+        foreach ($idSites as $idSite) {
+            $db->insert(Common::prefixTable('alert_site'), array(
+                'idalert' => intval($idAlert),
+                'idsite' => intval($idSite)
+            ));
+        }
+    }
+
+    public function deleteTriggeredAlertsForSite($idSite)
+    {
+        Db::get()->query("DELETE FROM " . Common::prefixTable("alert_triggered") . " WHERE idsite = ?", $idSite);
+    }
+
     private function getDefinedSiteIds($idAlert)
     {
         $sql   = "SELECT idsite FROM " . Common::prefixTable('alert_site') . " WHERE idalert = ?";
@@ -393,19 +411,6 @@ class Model
         }
 
         return $alerts;
-    }
-
-    public function setSiteIds($idAlert, $idSites)
-    {
-        $this->removeAllSites($idAlert);
-
-        $db = Db::get();
-        foreach ($idSites as $idSite) {
-            $db->insert(Common::prefixTable('alert_site'), array(
-                'idalert' => intval($idAlert),
-                'idsite' => intval($idSite)
-            ));
-        }
     }
 
     private function removeAllSites($idAlert)

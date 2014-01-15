@@ -39,7 +39,7 @@ class CustomAlerts extends \Piwik\Plugin
             'Request.dispatch'                  => 'checkControllerPermission',
             'Translate.getClientSideTranslationKeys' => 'getClientSideTranslationKeys',
             'UsersManager.deleteUser'           => 'deleteAlertsForLogin',
-            'SitesManager.deleteSite.end'       => 'deleteAlertsForWebsite'
+            'SitesManager.deleteSite.end'       => 'deleteAlertsForSite'
 		);
 	}
 
@@ -114,9 +114,11 @@ class CustomAlerts extends \Piwik\Plugin
         }
     }
 
-    public function deleteAlertsForWebsite($idSite)
+    public function deleteAlertsForSite($idSite)
     {
         $model  = $this->getModel();
+        $model->deleteTriggeredAlertsForSite($idSite);
+
         $alerts = $this->getAllAlerts();
 
         foreach ($alerts as $alert) {
