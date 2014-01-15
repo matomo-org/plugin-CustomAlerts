@@ -399,7 +399,7 @@ class Model
         return $alerts;
     }
 
-    private function setSiteIds($idAlert, $idSites)
+    public function setSiteIds($idAlert, $idSites)
     {
         $this->removeAllSites($idAlert);
 

@@ -37,7 +37,9 @@ class CustomAlerts extends \Piwik\Plugin
 		    'AssetManager.getStylesheetFiles'   => 'getStylesheetFiles',
             'API.Request.dispatch'              => 'checkApiPermission',
             'Request.dispatch'                  => 'checkControllerPermission',
-            'Translate.getClientSideTranslationKeys' => 'getClientSideTranslationKeys'
+            'Translate.getClientSideTranslationKeys' => 'getClientSideTranslationKeys',
+            'UsersManager.deleteUser'           => 'deleteAlertsForLogin',
+            'SitesManager.deleteSite.end'       => 'deleteAlertsForWebsite'
 		);
 	}
 
@@ -100,10 +102,37 @@ class CustomAlerts extends \Piwik\Plugin
         $this->scheduleTask($tasks, 'runAlertsMonthly', 'month');
     }
 
+    public function deleteAlertsForLogin($userLogin)
+    {
+        $model  = $this->getModel();
+        $alerts = $this->getAllAlerts();
+
+        foreach ($alerts as $alert) {
+            if ($alert['login'] == $userLogin) {
+                $model->deleteAlert($alert['idalert']);
+            }
+        }
+    }
+
+    public function deleteAlertsForWebsite($idSite)
+    {
+        $model  = $this->getModel();
+        $alerts = $this->getAllAlerts();
+
+        foreach ($alerts as $alert) {
+            $key = array_search($idSite, $alert['id_sites']);
+
+            if (false !== $key) {
+                unset($alert['id_sites'][$key]);
+                $model->setSiteIds($alert['idalert'], array_values($alert['id_sites']));
+            }
+        }
+    }
+
     public function removePhoneNumberFromAllAlerts($phoneNumber)
     {
-        $model  = new Model();
-        $alerts = $model->getAllAlerts();
+        $model  = $this->getModel();
+        $alerts = $this->getAllAlerts();
 
         foreach ($alerts as $alert) {
             if (empty($alert['phone_numbers']) || !is_array($alert['phone_numbers'])) {
@@ -189,5 +218,18 @@ class CustomAlerts extends \Piwik\Plugin
     public function getClientSideTranslationKeys(&$translations)
     {
         $translations[] = 'CustomAlerts_InvalidMetricValue';
+    }
+
+    private function getModel()
+    {
+        return new Model();
+    }
+
+    /**
+     * @return array
+     */
+    private function getAllAlerts()
+    {
+        return $this->getModel()->getAllAlerts();
     }
 }

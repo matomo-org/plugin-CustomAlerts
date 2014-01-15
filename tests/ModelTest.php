@@ -79,6 +79,26 @@ class ModelTest extends BaseTEst
         $this->assertIsAlert(2, 'MyCustomAlert', 'day', array(1));
     }
 
+    public function test_setSiteId_ShouldUpdateExistingSiteIds()
+    {
+        $this->model->setSiteIds(1, array(1));
+        $alert = $this->model->getAlert(1);
+        $this->assertEquals(array(1), $alert['id_sites']);
+
+        $this->model->setSiteIds(1, array());
+        $alert = $this->model->getAlert(1);
+        $this->assertEquals(array(), $alert['id_sites']);
+
+        $this->model->setSiteIds(1, array(1, 2));
+        $alert = $this->model->getAlert(1);
+        $this->assertEquals(array(1, 2), $alert['id_sites']);
+    }
+
+    public function test_setSiteId_ShouldNotFail_IfAlertDoesNotExist()
+    {
+        $this->assertNull($this->model->setSiteIds(999995, array(1)));
+    }
+
     public function test_getAlert_ShouldLoadAlertAndRelatedWebsiteIds_IfExists()
     {
         $this->assertIsAlert(1, 'Initial1', 'day', array(1));
