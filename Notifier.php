@@ -147,9 +147,17 @@ class Notifier extends \Piwik\Plugin
 	public function formatAlerts($triggeredAlerts, $format)
 	{
 		switch ($format) {
+            case 'html_extended':
+                $view = new View('@CustomAlerts/htmlTriggeredAlerts');
+                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
+                $view->extended        = true;
+
+                return $view->render();
+
 			case 'html':
 				$view = new View('@CustomAlerts/htmlTriggeredAlerts');
 				$view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
+                $view->extended        = false;
 
 				return $view->render();
 
@@ -173,21 +181,48 @@ class Notifier extends \Piwik\Plugin
 
     protected function enrichTriggeredAlerts($triggeredAlerts)
     {
+        $processedReport = new ProcessedReport();
+
+        $cached = array();
         foreach ($triggeredAlerts as &$alert) {
             $idSite = $alert['idsite'];
             $metric = $alert['metric'];
+            $report = $alert['report'];
 
-            $processedReport = new ProcessedReport();
+            if (!array_key_exists($idSite, $cached)) {
+                $cached[$idSite] = array('report' => array(), 'metric' => array(), 'siteName' => '');
+            }
+
+            if (empty($cached[$idSite]['siteName'])) {
+                $cached[$idSite]['siteName'] = Site::getNameFor($idSite);
+            }
+
+            if (!array_key_exists($report, $cached[$idSite]['report'])) {
+                $cached[$idSite]['report'][$report] = $processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
+                $cached[$idSite]['metric'][$report] = array();
+            }
+
+            if (!array_key_exists($metric, $cached[$idSite]['metric'][$report])) {
+                $cached[$idSite]['metric'][$report][$metric] = $processedReport->translateMetric($metric, $idSite, $alert['report']);
+            }
+        }
+
+        foreach ($triggeredAlerts as &$alert) {
+            $idSite = $alert['idsite'];
+            $metric = $alert['metric'];
+            $report = $alert['report'];
 
             $alert['value_old']    = (int) $alert['value_old'] == $alert['value_old'] ? (int) $alert['value_old'] : $alert['value_old'];
             $alert['value_new']    = (int) $alert['value_new'] == $alert['value_new'] ? (int) $alert['value_new'] : $alert['value_new'];
             $alert['reportName']   = null;
             $alert['dimension']    = null;
-            $alert['reportMetric'] = $processedReport->translateMetric($metric, $idSite, $alert['report']);
+            $alert['reportMetric'] = !empty($cached[$idSite]['metric'][$report][$metric]) ? $cached[$idSite]['metric'][$report][$metric] : null;
             $alert['reportConditionName'] = null;
+            $alert['siteName'] = $cached[$idSite]['siteName'];
 
-            $report = $processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
-            if (!empty($report)) {
+            if (!empty($cached[$idSite]['report'][$report])) {
+                $report = $cached[$idSite]['report'][$report];
+
                 $alert['reportName'] = $report['name'];
                 $alert['dimension']  = !empty($report['dimension']) ? $report['dimension'] : null;
 

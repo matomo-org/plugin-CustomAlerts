@@ -61,7 +61,7 @@ class Controller extends \Piwik\Plugin\Controller
         array_slice($alerts, 0, 100);
 
         $notifier = new Notifier();
-        $view->alertsFormatted = $notifier->formatAlerts($alerts, 'html');
+        $view->alertsFormatted = $notifier->formatAlerts($alerts, 'html_extended');
 
 		return $view->render();
 	}

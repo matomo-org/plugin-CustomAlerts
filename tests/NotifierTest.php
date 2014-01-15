@@ -35,10 +35,6 @@ class CustomNotifier extends Notifier
         $this->alerts = $alerts;
     }
 
-    public function formatAlerts($triggeredAlerts, $format) {
-        return parent::formatAlerts($triggeredAlerts, $format);
-    }
-
     public function enrichTriggeredAlerts($triggeredAlerts) {
         return parent::enrichTriggeredAlerts($triggeredAlerts);
     }
@@ -140,7 +136,7 @@ FORMATTED;
     <thead style="background-color:rgb(228,226,215);color:rgb(37,87,146);">
     <tr>
         <th style="padding:6px 6px;text-align: left;">Alert Name</th>
-        <th style="padding:6px 6px;text-align: left;">Report</th>
+                <th style="padding:6px 6px;text-align: left;">Report</th>
         <th style="padding:6px 6px;text-align: left;">Alert Condition</th>
         <th style="padding:6px 6px;text-align: left;">Alert</th>
     </tr>
@@ -148,14 +144,14 @@ FORMATTED;
     <tbody>
     <tr>
         <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday&token_auth=">MyName1</a></td>
-        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Single Website dashboard</td>
+                <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Single Website dashboard</td>
         <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Website is 'Piwik'</td>
         <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Visits decreased more than 5000 from 228.128 to 4493</td>
     </tr>
 
     <tr>
         <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday&token_auth=">MyName2</a></td>
-        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Single Website dashboard</td>
+                <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Single Website dashboard</td>
         <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Website is 'Piwik'</td>
         <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Visits decreased more than 5000 from 228.128 to 4493</td>
     </tr>
@@ -296,6 +292,7 @@ t your custom alert settings, please sign in and access the Alerts page.=
         $alerts[0]['reportConditionName'] = 'matches any';
         $alerts[0]['value_old']    = '228.001';
         $alerts[0]['value_new']    = 1;
+        $alerts[0]['siteName']     = 'Piwik test';
         $this->assertInternalType('int', $alerts[0]['value_new']);
         $alerts[1]['reportName']   = null;
         $alerts[1]['reportMetric'] = null;
@@ -303,6 +300,7 @@ t your custom alert settings, please sign in and access the Alerts page.=
         $alerts[1]['reportConditionName'] = null;
         $alerts[1]['value_old']    = 228;
         $alerts[1]['value_new']    = 1;
+        $alerts[1]['siteName']     = 'Piwik test';
         $this->assertInternalType('int', $alerts[1]['value_old']);
         $this->assertInternalType('int', $alerts[1]['value_new']);
         $alerts[2]['reportName']   = 'Page URLs';
@@ -311,18 +309,21 @@ t your custom alert settings, please sign in and access the Alerts page.=
         $alerts[2]['reportConditionName'] = 'is';
         $alerts[2]['value_old']    = '228.999';
         $alerts[2]['value_new']    = '1';
+        $alerts[2]['siteName']     = 'Piwik test';
         $alerts[3]['reportName']   = 'Page URLs';
         $alerts[3]['reportMetric'] = null;
         $alerts[3]['dimension']    = 'Page URL';
         $alerts[3]['reportConditionName'] = 'contains';
         $alerts[3]['value_old']    = '228.001';
         $alerts[3]['value_new']    = '1.01';
+        $alerts[3]['siteName']     = 'Piwik test';
         $alerts[4]['reportName']   = 'Visits Summary';
         $alerts[4]['reportMetric'] = 'Visits';
         $alerts[4]['dimension']    = null;
         $alerts[4]['reportConditionName'] = 'matches any';
         $alerts[4]['value_old']    = '228.001';
         $alerts[4]['value_new']    = 10;
+        $alerts[4]['siteName']     = 'Piwik test';
         $this->assertInternalType('int', $alerts[4]['value_new']);
 
         $this->assertEquals($alerts, $enriched);

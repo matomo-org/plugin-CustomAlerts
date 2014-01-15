@@ -51,7 +51,7 @@
         "IncreasesMoreThan": "increases more than",
         "PercentageDecreasesMoreThan": "% decreases more than",
         "PercentageIncreasesMoreThan": "% increases more than",
-        "NoAlertsDefined": "You haven't created any Alerts yet, create one now!",
+        "NoAlertsDefined": "You haven't created any alerts yet, create one now!",
         "CancelAndReturnToAlerts": "Cancel and %sreturn to the list of alerts%s",
         "InvalidReportCondition": "Report condition is not a valid value",
         "InvalidMetricCondition": "Metric condition is not a valid value",
