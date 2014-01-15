@@ -59,6 +59,7 @@ class Controller extends \Piwik\Plugin\Controller
         $idSites = $this->getSiteIdsHavingAccess();
         $alerts  = API::getInstance()->getTriggeredAlerts($idSites);
         array_slice($alerts, 0, 100);
+        $alerts  = array_reverse($alerts);
 
         $notifier = new Notifier();
         $view->alertsFormatted = $notifier->formatAlerts($alerts, 'html_extended');
