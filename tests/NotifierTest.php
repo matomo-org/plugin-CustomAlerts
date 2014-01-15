@@ -204,7 +204,8 @@ t your custom alert settings, please sign in and access the Alerts page.=
             'phone_numbers' => array('+1234567890', '232'),
             'email_me' => true,
             'value_new' => '4493.000',
-            'value_old' => '228.128'
+            'value_old' => '228.128',
+            'ts_triggered' => time()
         );
     }
 

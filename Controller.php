@@ -12,6 +12,7 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
+use Piwik\Date;
 use Piwik\Piwik;
 use Piwik\Plugins\API\ProcessedReport;
 use Piwik\Site;
@@ -247,7 +248,8 @@ class Controller extends \Piwik\Plugin\Controller
             $alert['dimension']    = null;
             $alert['reportMetric'] = !empty($cached[$idSite]['metric'][$report][$metric]) ? $cached[$idSite]['metric'][$report][$metric] : null;
             $alert['reportConditionName'] = null;
-            $alert['siteName'] = $cached[$idSite]['siteName'];
+            $alert['siteName']     = $cached[$idSite]['siteName'];
+            $alert['ts_triggered'] = Date::factory($alert['ts_triggered']);
 
             if (!empty($cached[$idSite]['report'][$report])) {
                 $report = $cached[$idSite]['report'][$report];

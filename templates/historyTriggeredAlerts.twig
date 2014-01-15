@@ -9,8 +9,9 @@
 
         <div class='entityListContainer'>
             <div class="entityCancel">
-                {% set backlink = linkTo({'module': 'CustomAlerts', 'action': 'index'}) %}
-                {{ 'CustomAlerts_CancelAndReturnToAlerts'|translate('<a class="entityCancelLink" href="' ~ backlink ~ '">', "</a>")|raw }}
+                <a class="entityCancelLink"
+                   href="{{ linkTo({'module': 'CustomAlerts', 'action': 'index'}) }}"
+                    >{{ 'CustomAlerts_ManageAlerts'|translate }}</a>
             </div>
 
             {{ alertsFormatted|raw }}
