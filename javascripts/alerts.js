@@ -53,15 +53,16 @@ var CustomAlerts = (function($) {
 
         reportValuesAutoComplete = [];
 
-        var report = $('#report').find('option:selected').val();
+        var report = $('#report').find('option:selected')
 
         if (!report) {
             return;
         }
 
-        report = report.split('.');
+        var apiModule = report.attr('data-module');
+        var apiAction = report.attr('data-action');
 
-        if (!metric || !$.isArray(report) || !report[0] || !report[1]) {
+        if (!metric || !apiModule || !apiAction) {
             sendFeedback(reportValuesAutoComplete);
         }
 
@@ -72,8 +73,8 @@ var CustomAlerts = (function($) {
             date: 'yesterday',
             period: 'month',
             showColumns: metric,
-            apiModule: report[0],
-            apiAction: report[1],
+            apiModule: apiModule,
+            apiAction: apiAction,
             idSite: $('[name=idSite]').val(),
             format: 'JSON'
         }, 'GET');
@@ -110,12 +111,13 @@ var CustomAlerts = (function($) {
                 continue;
             }
 
+            var selected = '';
             if (!currentApiMethod) {
-                options += '<option selected="selected" value="' + reportApiMethod + '">' + reportMetadata.name + '</option>';
                 currentApiMethod = reportApiMethod;
-            } else {
-                options += '<option value="' + reportApiMethod + '">' + reportMetadata.name + '</option>';
+                selected = 'selected="selected"';
             }
+
+            options += '<option data-module="' + reportMetadata.module + '" data-action="' + reportMetadata.action + '" ' + selected + ' value="' + reportApiMethod + '">' + reportMetadata.name + '</option>';
 
             if (reportApiMethod == currentApiMethod) {
                 updateMetrics(reportMetadata.metrics);
