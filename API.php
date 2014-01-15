@@ -60,10 +60,9 @@ class API extends \Piwik\Plugin\API
 
     /**
      * Returns the Alerts that are defined on the idSites given.
-     * Each alert will be only returned if the current user is the superUser or if the alert belongs to
-     * the current user.
      *
      * @param array $idSites
+     *
      * @return array
      */
 	public function getAlerts($idSites)
@@ -75,17 +74,10 @@ class API extends \Piwik\Plugin\API
         $idSites = Site::getIdSitesFromIdSitesString($idSites);
         Piwik::checkUserHasViewAccess($idSites);
 
-        $alerts = $this->getModel()->getAlerts($idSites);
+        $login  = Piwik::getCurrentUserLogin();
+        $alerts = $this->getModel()->getAlerts($idSites, $login);
 
-        foreach ($alerts as $index => $alert) {
-            try {
-                $this->validator->checkUserHasPermissionForAlert($alert);
-            } catch (Exception $e) {
-                unset($alerts[$index]);
-            }
-        }
-
-        return array_values($alerts);
+        return $alerts;
 	}
 
     /**
@@ -183,54 +175,25 @@ class API extends \Piwik\Plugin\API
 	}
 
     /**
-     * Get all alerts
-     *
-     * @param string $period
-     * @return array
-     * @throws \Exception
-     */
-	public function getAllAlertsForPeriod($period)
-	{
-        Piwik::checkUserIsSuperUser();
-
-        $this->validator->checkPeriod($period);
-
-        return $this->getModel()->getAllAlertsForPeriod($period);
-	}
-
-    /**
      * Get triggered alerts.
      *
-     * @param int $idAlert
-     * @param int $idSite
-     * @param string|int $valueNew
-     * @param string|int $valueOld
-     * @throws \Exception
+     * @param int[] idSites
+     *
+     * @return array
      */
-    public function triggerAlert($idAlert, $idSite, $valueNew, $valueOld)
+    public function getTriggeredAlerts($idSites)
     {
-        // make sure alert exists and user has permission to read
-        $this->getAlert($idAlert);
+        if (empty($idSites)) {
+            return array();
+        }
 
-        $this->getModel()->triggerAlert($idAlert, $idSite, $valueNew, $valueOld);
+        $idSites = Site::getIdSitesFromIdSitesString($idSites);
+        Piwik::checkUserHasViewAccess($idSites);
+
+        $login = Piwik::getCurrentUserLogin();
+
+        return $this->getModel()->getTriggeredAlerts($idSites, $login);
     }
-
-    /**
-     * Get triggered alerts.
-     *
-     * @param string $period
-     * @param string $date
-     * @param string $login
-     * @return array
-     */
-	public function getTriggeredAlerts($period, $date, $login)
-	{
-        Piwik::checkUserIsSuperUserOrTheUser($login);
-
-        $this->validator->checkPeriod($period);
-
-        return $this->getModel()->getTriggeredAlerts($period, $date, $login);
-	}
 
     private function getModel()
     {

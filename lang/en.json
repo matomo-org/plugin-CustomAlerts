@@ -21,6 +21,7 @@
         "OperationContains": "contains",
         "OperationDoesNotContain": "does not contain",
         "ManageAlerts": "Manage Custom Alerts",
+        "AlertsHistory": "History of triggered alerts",
         "AlertCondition": "Alert Condition",
         "AlertDoesNotExist": "Alert with ID %d does not exist!",
         "AccessException": "You are not the owner of the Alert with ID %d",

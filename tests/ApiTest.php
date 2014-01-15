@@ -235,17 +235,6 @@ class ApiTest extends BaseTest
         $this->assertIsAlert(3, 'Initial3', 'month', array(2));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_AlertDoesNotExist
-     */
-    public function test_getAlert_ShouldFail_IfInvalidIdProvided()
-    {
-        $this->setSuperUser();
-
-        $this->api->getAlert(9999);
-    }
-
     public function test_getAlerts_shouldReturnAllAlertsThatMatchTheIdSites()
     {
         $this->setSuperUser();
@@ -264,14 +253,18 @@ class ApiTest extends BaseTest
         $this->assertCount(3, $alerts);
     }
 
-    public function test_getAlerts_shouldReturnOnlyAlertsThatMatchTheLoginIfNotSuperUser()
+    public function test_getAlerts_shouldReturnOnlyAlertsThatMatchTheLogin()
     {
         $siteIds = array($this->idSite2, $this->idSite);
 
         \FakeAccess::$idSitesView = $siteIds;
-        $alerts = $this->api->getAlerts($siteIds);
 
+        $alerts = $this->api->getAlerts($siteIds);
         $this->assertCount(0, $alerts);
+
+        \FakeAccess::$identity = 'superUserLogin';
+        $alerts = $this->api->getAlerts($siteIds);
+        $this->assertCount(3, $alerts);
     }
 
     /**
@@ -281,40 +274,6 @@ class ApiTest extends BaseTest
     public function test_getAlerts_shouldFail_IfUserDoesNotHaveAccessToWebsite()
     {
         $this->api->getAlerts(array($this->idSite));
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage checkUserIsSuperUser Fake exception
-     */
-    public function test_getAllAlertsForPeriod_shouldFail_IfUserIsNotTheSuperUser()
-    {
-        $this->api->getAllAlertsForPeriod('day');
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_InvalidPeriod
-     */
-    public function test_getAllAlertsForPeriod_shouldFail_IfPeriodIsNotValid()
-    {
-        $this->setSuperUser();
-        $this->api->getAllAlertsForPeriod('invAliDPeriOd');
-    }
-
-    public function test_getAllAlertsForPeriod_shouldReturnAllAlertsHavingSamePeriod()
-    {
-        $this->setSuperUser();
-
-        $this->createAlert('Custom', 'week', array());
-        $alerts = $this->api->getAllAlertsForPeriod('week');
-        $this->assertCount(2, $alerts);
-        $this->assertEquals('Initial2', $alerts[0]['name']);
-        $this->assertEquals('Custom', $alerts[1]['name']);
-
-        $alerts = $this->api->getAllAlertsForPeriod('day');
-        $this->assertCount(1, $alerts);
-        $this->assertEquals('Initial1', $alerts[0]['name']);
     }
 
     public function test_getAllAlerts_shouldReturnAllAlerts()
@@ -330,14 +289,44 @@ class ApiTest extends BaseTest
 
     /**
      * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_AlertDoesNotExist
+     */
+    public function test_getAlert_ShouldFail_IfInvalidIdProvided()
+    {
+        $this->setSuperUser();
+
+        $this->api->getAlert(9999);
+    }
+
+    /**
+     * @expectedException \Exception
      * @expectedExceptionMessage CustomAlerts_AccessException
      */
-    public function test_getAlert_ShouldFail_IfNotOwnerOfAlertAndIfNotSuperUser()
+    public function test_getAlert_ShouldFail_IfNotOwnerOfAlert()
     {
         $this->api->getAlert(2);
     }
 
-    public function test_deleteAlert_ShouldNotRemoveAlertButMarkItAsDeleted()
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_AccessException
+     */
+    public function test_getAlert_ShouldFail_IfNotOwnerOfAlertEventIfUserIsSuperUser()
+    {
+        $this->setSuperUser();
+        \FakeAccess::$identity = 'test';
+        $this->api->getAlert(2);
+    }
+
+    public function test_getAlert_ShouldReturnAlertIfAllowedAndExists()
+    {
+        $this->setSuperUser();
+        $this->api->getAlert(2);
+
+        $this->assertIsAlert(2, 'Initial2', 'week', array($this->idSite, $this->idSite2));
+    }
+
+    public function test_deleteAlert_ShouldRemoveAlert()
     {
         $this->setSuperUser();
         $alerts = $this->api->getAlerts(array($this->idSite, $this->idSite2));
@@ -355,35 +344,29 @@ class ApiTest extends BaseTest
      * @expectedException \Exception
      * @expectedExceptionMessage CustomAlerts_AccessException
      */
-    public function test_deleteAlert_ShouldFail_IfNotOwnerOfAlertAndIfNotSuperUser()
+    public function test_deleteAlert_ShouldFail_IfNotOwnerOfAlert()
     {
         $this->api->deleteAlert(2);
     }
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_AlertDoesNotExist
-     */
-    public function test_triggerAlert_shouldFail_IfAlertDoesNotExist()
-    {
-        $this->api->triggerAlert(99, 1, 94, 48);
-    }
-
-    /**
-     * @expectedException \Exception
      * @expectedExceptionMessage CustomAlerts_AccessException
      */
-    public function test_triggerAlert_shouldFail_IfNotEnoughPermissions()
+    public function test_deleteAlert_ShouldFail_IfNotOwnerOfAlertEvenIfUserIsSuperuser()
     {
-        $this->api->triggerAlert(2, 1, 94, 48);
+        $this->setSuperUser();
+        \FakeAccess::$identity = 'test';
+
+        $this->api->deleteAlert(2);
     }
 
-    public function test_triggerAlert_getTriggeredAlerts_ShouldMarkAlertAsTriggeredForGivenWebsite()
+    public function test_triggerAlert_getTriggeredAlertsForPeriod_ShouldMarkAlertAsTriggeredForGivenWebsite()
     {
         $this->setSuperUser();
 
-        $this->api->triggerAlert(2, 1, 94, 48);
-        $triggeredAlerts = $this->api->getTriggeredAlerts('week', 'today', 'superUserLogin');
+        $this->model->triggerAlert(2, 1, 94, 48);
+        $triggeredAlerts = $this->api->getTriggeredAlerts(array(1));
 
         $this->assertCount(1, $triggeredAlerts);
 
@@ -418,57 +401,42 @@ class ApiTest extends BaseTest
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage checkUserIsSuperUser Fake exception
+     * @expectedExceptionMessage checkUserHasViewAccess Fake exception
      */
-    public function test_triggerAlert_shouldVerifyWhetherUserIsActuallyTheUser()
+    public function test_getTriggeredAlerts_ShouldThrowException_IfNotEnoughPermission()
     {
-        $this->api->getTriggeredAlerts('InvaLiDPeriOd', 'today', 'superUserLogin');
+        $this->setUser();
+        $this->api->getTriggeredAlerts(array(1));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_InvalidPeriod
-     */
-    public function test_triggerAlert_getTriggeredAlerts_ShouldFailIfPeriodIsInvalid()
+    public function test_getTriggeredAlerts_ShouldReturnAllThatMatchesLoginAndIdSite()
     {
+        $idSite = 1;
+
         $this->setSuperUser();
+        $this->model->triggerAlert(2, $idSite, 99, 48);
 
-        $this->api->triggerAlert(2, 1, 99, 48);
-        $triggeredAlerts = $this->api->getTriggeredAlerts('InvaLiDPeriOd', 'today', 'superUserLogin');
-
-        $this->assertEquals(array(), $triggeredAlerts);
-    }
-
-    public function test_triggerAlert_getTriggeredAlerts_ShouldReturnAnAlertOnlyIfPeriodMatches()
-    {
-        $this->setSuperUser();
-
-        $this->api->triggerAlert(2, 1, 99, 48);
-        $triggeredAlerts = $this->api->getTriggeredAlerts('day', 'today', 'superUserLogin');
-
-        $this->assertEquals(array(), $triggeredAlerts);
-    }
-
-    public function test_triggerAlert_getTriggeredAlerts_ShouldReturnAnAlertOnlyIfDateMatches()
-    {
-        $this->setSuperUser();
-
-        $this->api->triggerAlert(1, 1, 99, 48);
-        $triggeredAlerts = $this->api->getTriggeredAlerts('day', 'yesterday', 'superUserLogin');
-
-        $this->assertEquals(array(), $triggeredAlerts);
-    }
-
-    public function test_getTriggeredAlerts_ShouldReturnAlertsForSuperUserByDefault()
-    {
-        $this->setSuperUser();
-
-        $this->api->triggerAlert(1, 1, 99, 48);
-        $triggeredAlerts = $this->api->getTriggeredAlerts('day', 'today', false);
-
+        $triggeredAlerts = $this->api->getTriggeredAlerts(array($idSite));
         $this->assertCount(1, $triggeredAlerts);
-    }
 
+        $triggeredAlerts = $this->api->getTriggeredAlerts(array($idSite, 2));
+        $this->assertCount(1, $triggeredAlerts);
+
+        // no matching site
+        $triggeredAlerts = $this->api->getTriggeredAlerts(array(2));
+        $this->assertCount(0, $triggeredAlerts);
+
+        // different login
+        \FakeAccess::$identity = 'differentLoginButStillSuperuser';
+        $triggeredAlerts = $this->api->getTriggeredAlerts(array($idSite, 2));
+        $this->assertCount(0, $triggeredAlerts);
+
+        // different login
+        $this->setUser();
+        \FakeAccess::$idSitesView = array(1);
+        $triggeredAlerts = $this->api->getTriggeredAlerts(array(1));
+        $this->assertCount(0, $triggeredAlerts);
+    }
 
     protected function createAlert($name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites_getOne', $metricCondition = 'less_than', $reportCondition = 'matches_exactly', $emails = array('test1@example.com', 'test2@example.com'), $comparedTo = 1)
     {

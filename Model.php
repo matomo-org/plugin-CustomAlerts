@@ -110,30 +110,68 @@ class Model
      * Returns the Alerts that are defined on the idSites given.
      *
      * @param array $idSites
+     * @param bool|string $login   false returns alerts for all users
+     *
      * @return array
      */
-	public function getAlerts($idSites)
+	public function getAlerts($idSites, $login)
 	{
-		$alerts = Db::fetchAll(("SELECT * FROM "
-						. Common::prefixTable('alert')
-						. " WHERE idalert IN (
-					 SELECT pas.idalert FROM " . Common::prefixTable('alert_site')
-						. "  pas WHERE idsite IN (" . implode(",", $idSites) . ")) "
-		));
+        $sql    = ("SELECT * FROM " . Common::prefixTable('alert')
+                . " WHERE idalert IN (" . $this->getInnerSiteQuery($idSites) . ") ");
+        $values = array();
 
+        if ($login !== false) {
+            $sql     .= " AND login = ?";
+            $values[] = $login;
+        }
+
+        $alerts = Db::fetchAll($sql, $values);
         $alerts = $this->completeAlerts($alerts);
 
         return $alerts;
 	}
 
-	public function getTriggeredAlerts($period, $date, $login)
+	public function getTriggeredAlertsForPeriod($period, $date)
 	{
 		$piwikDate = Date::factory($date);
 		$date      = Period::factory($period, $piwikDate);
 
-        $db = Db::get();
+        $db  = Db::get();
+		$sql = $this->getTriggeredAlertsSelectPart()
+               . " WHERE  period = ? AND ts_triggered BETWEEN ? AND ?";
 
-		$sql = "SELECT pa.idalert AS idalert,
+        $values = array(
+            $period,
+            $date->getDateStart()->getDateStartUTC(),
+            $date->getDateEnd()->getDateEndUTC()
+        );
+
+		$alerts = $db->fetchAll($sql, $values);
+        $alerts = $this->completeAlerts($alerts);
+
+        return $alerts;
+	}
+
+	public function getTriggeredAlerts($idSites, $login)
+	{
+        $idSites = array_map('intval', $idSites);
+
+        $db  = Db::get();
+		$sql = $this->getTriggeredAlertsSelectPart()
+             . " WHERE pal.idsite IN (" . implode(',' , $idSites) . ")"
+             . " AND pa.idalert IN (" . $this->getInnerSiteQuery($idSites) . ")"
+             . " AND login = ?";
+        $values = array($login);
+
+		$alerts = $db->fetchAll($sql, $values);
+        $alerts = $this->completeAlerts($alerts);
+
+        return $alerts;
+	}
+
+    private function getTriggeredAlertsSelectPart()
+    {
+        return "SELECT pa.idalert AS idalert,
 				pal.idsite AS idsite,
 				pal.ts_triggered AS ts_triggered,
 				pal.ts_last_sent AS ts_last_sent,
@@ -157,26 +195,8 @@ class Model
 				JOIN ". Common::prefixTable('alert') ." pa
 				ON pal.idalert = pa.idalert
 				JOIN ". Common::prefixTable('site') ." ps
-				ON pal.idsite = ps.idsite
-			WHERE  period = ?
-				AND ts_triggered BETWEEN ? AND ?";
-
-        $values = array(
-            $period,
-            $date->getDateStart()->getDateStartUTC(),
-            $date->getDateEnd()->getDateEndUTC()
-        );
-
-		if ($login !== false) {
-			$sql     .= " AND login = ?";
-            $values[] = $login;
-		}
-
-		$alerts = $db->fetchAll($sql, $values);
-        $alerts = $this->completeAlerts($alerts);
-
-        return $alerts;
-	}
+				ON pal.idsite = ps.idsite";
+    }
 
     public function getAllAlerts()
     {
@@ -395,6 +415,20 @@ class Model
     private function removeAllSites($idAlert)
     {
         Db::get()->query("DELETE FROM " . Common::prefixTable("alert_site") . " WHERE idalert = ?", $idAlert);
+    }
+
+    /**
+     * @param $idSites
+     * @return array
+     */
+    protected function getInnerSiteQuery($idSites)
+    {
+        $idSites = array_map('intval', $idSites);
+
+        $innerSiteQuery = "SELECT idalert FROM " . Common::prefixTable('alert_site')
+                        . " WHERE idsite IN (" . implode(",", $idSites) . ")";
+
+        return $innerSiteQuery;
     }
 
 }

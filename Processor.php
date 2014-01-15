@@ -299,12 +299,17 @@ class Processor
 
     protected function triggerAlert($alert, $idSite, $valueNew, $valueOld)
     {
-        API::getInstance()->triggerAlert($alert['idalert'], $idSite, $valueNew, $valueOld);
+        $this->getModel()->triggerAlert($alert['idalert'], $idSite, $valueNew, $valueOld);
     }
 
     private function getAllAlerts($period)
     {
-        return API::getInstance()->getAllAlertsForPeriod($period);
+        return $this->getModel()->getAllAlertsForPeriod($period);
+    }
+
+    private function getModel()
+    {
+        return new Model();
     }
 
 }

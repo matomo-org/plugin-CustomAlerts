@@ -35,16 +35,29 @@ class CustomAlerts extends \Piwik\Plugin
 		    'MobileMessaging.deletePhoneNumber' => 'removePhoneNumberFromAllAlerts',
 		    'AssetManager.getJavaScriptFiles'   => 'getJavaScriptFiles',
 		    'AssetManager.getStylesheetFiles'   => 'getStylesheetFiles',
-            'API.Request.dispatch'              => 'checkPermission',
+            'API.Request.dispatch'              => 'checkApiPermission',
+            'Request.dispatch'                  => 'checkControllerPermission',
             'Translate.getClientSideTranslationKeys' => 'getClientSideTranslationKeys'
 		);
 	}
 
-    public function checkPermission(&$parameters, $pluginName, $methodName)
+    public function checkApiPermission(&$parameters, $pluginName, $methodName)
     {
         if ($pluginName == 'CustomAlerts') {
-            Piwik::checkUserIsNotAnonymous();
+            $this->checkPermission();
         }
+    }
+
+    public function checkControllerPermission($module)
+    {
+        if ($module == 'CustomAlerts') {
+            $this->checkPermission();
+        }
+    }
+
+    private function checkPermission()
+    {
+        Piwik::checkUserIsNotAnonymous();
     }
 
     public function install()

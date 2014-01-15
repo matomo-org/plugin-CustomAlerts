@@ -32,7 +32,8 @@ class Notifier extends \Piwik\Plugin
 {
     protected function getTriggeredAlerts($period, $idSite)
     {
-        $alerts = API::getInstance()->getTriggeredAlerts($period, $this->getToday(), false);
+        $model  = new Model();
+        $alerts = $model->getTriggeredAlertsForPeriod($period, $this->getToday(), false);
 
         return array_filter($alerts, function ($alert) use ($idSite) {
             return $alert['idsite'] == $idSite && empty($alert['ts_last_sent']);
@@ -143,7 +144,7 @@ class Notifier extends \Piwik\Plugin
      * @throws \Exception
      * @return string
      */
-	protected function formatAlerts($triggeredAlerts, $format)
+	public function formatAlerts($triggeredAlerts, $format)
 	{
 		switch ($format) {
 			case 'html':

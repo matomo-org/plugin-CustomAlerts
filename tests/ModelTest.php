@@ -86,20 +86,27 @@ class ModelTest extends BaseTEst
         $this->assertIsAlert(3, 'Initial3', 'month', array(2));
     }
 
-    public function test_getAlerts_shouldReturnAllAlertsThatMatchTheIdSites()
+    public function test_getAlerts_shouldReturnAllAlertsThatMatchTheIdSitesAndLogin()
     {
-        $alerts = $this->model->getAlerts(array($this->idSite));
+        $alerts = $this->model->getAlerts(array($this->idSite), false);
         $this->assertCount(2, $alerts);
         $this->assertEquals('Initial1', $alerts[0]['name']);
         $this->assertEquals('Initial2', $alerts[1]['name']);
 
-        $alerts = $this->model->getAlerts(array($this->idSite2));
+        $alerts = $this->model->getAlerts(array($this->idSite2), false);
         $this->assertCount(2, $alerts);
         $this->assertEquals('Initial2', $alerts[0]['name']);
         $this->assertEquals('Initial3', $alerts[1]['name']);
 
-        $alerts = $this->model->getAlerts(array($this->idSite2, $this->idSite));
+        $alerts = $this->model->getAlerts(array($this->idSite2, $this->idSite), false);
         $this->assertCount(3, $alerts);
+
+        $alerts = $this->model->getAlerts(array($this->idSite2, $this->idSite), 'unknownuser');
+        $this->assertCount(0, $alerts);
+
+        $this->createAlert('myname', 'week', array($this->idSite), 'nb_visits', 'MultiSites_getOne', 'unknownuser');
+        $alerts = $this->model->getAlerts(array($this->idSite2, $this->idSite), 'unknownuser');
+        $this->assertCount(1, $alerts);
     }
 
     public function test_getAllAlerts_shouldReturnAllAlerts()
@@ -136,10 +143,10 @@ class ModelTest extends BaseTEst
         $this->assertEmpty($alert);
     }
 
-    public function test_triggerAlert_getTriggeredAlerts_ShouldMarkAlertAsTriggeredForGivenWebsite()
+    public function test_triggerAlert_getTriggeredAlertsForPeriod_ShouldMarkAlertAsTriggeredForGivenWebsite()
     {
         $this->model->triggerAlert(2, 1, 99, 48.519);
-        $triggeredAlerts = $this->model->getTriggeredAlerts('week', 'today', 'superUserLogin');
+        $triggeredAlerts = $this->model->getTriggeredAlertsForPeriod('week', 'today', 'superUserLogin');
 
         $this->assertCount(1, $triggeredAlerts);
 
@@ -172,26 +179,45 @@ class ModelTest extends BaseTEst
         $this->assertEquals(array($expected), $triggeredAlerts);
     }
 
-    public function test_getTriggeredAlerts_ShouldReturnAnAlertOnlyIfPeriodMatches()
+    public function test_getTriggeredAlerts_ShouldReturnAllThatMatchesLoginAndIdSite()
+    {
+        $idSite = 1;
+
+        $this->model->triggerAlert(2, $idSite, 99, 48);
+
+        $triggeredAlerts = $this->model->getTriggeredAlerts(array($idSite), 'superUserLogin');
+        $this->assertCount(1, $triggeredAlerts);
+
+        $triggeredAlerts = $this->model->getTriggeredAlerts(array($idSite, 2), 'superUserLogin');
+        $this->assertCount(1, $triggeredAlerts);
+
+        $triggeredAlerts = $this->model->getTriggeredAlerts(array(3), 'superUserLogin');
+        $this->assertCount(0, $triggeredAlerts);
+
+        $triggeredAlerts = $this->model->getTriggeredAlerts(array($idSite), 'nonmatchinglogin');
+        $this->assertCount(0, $triggeredAlerts);
+    }
+
+    public function test_getTriggeredAlertsForPeriod_ShouldReturnAnAlertOnlyIfPeriodMatches()
     {
         $this->model->triggerAlert(2, 1, 99, 48);
-        $triggeredAlerts = $this->model->getTriggeredAlerts('day', 'today', 'superUserLogin');
+        $triggeredAlerts = $this->model->getTriggeredAlertsForPeriod('day', 'today');
 
         $this->assertEquals(array(), $triggeredAlerts);
     }
 
-    public function test_getTriggeredAlerts_ShouldReturnAnAlertOnlyIfDateMatches()
+    public function test_getTriggeredAlertsForPeriod_ShouldReturnAnAlertOnlyIfDateMatches()
     {
         $this->model->triggerAlert(1, 1, 99, 48);
-        $triggeredAlerts = $this->model->getTriggeredAlerts('day', 'yesterday', 'superUserLogin');
+        $triggeredAlerts = $this->model->getTriggeredAlertsForPeriod('day', 'yesterday');
 
         $this->assertEquals(array(), $triggeredAlerts);
     }
 
-    public function test_getTriggeredAlerts_ShouldReturnAllAlerts_IfLoginIsFalse()
+    public function test_getTriggeredAlertsForPeriod_ShouldReturnAllAlertsThatMatchesDateAndPeriod()
     {
         $this->model->triggerAlert(1, 1, 99, 48);
-        $triggeredAlerts = $this->model->getTriggeredAlerts('day', 'today', false);
+        $triggeredAlerts = $this->model->getTriggeredAlertsForPeriod('day', 'today');
 
         $this->assertCount(1, $triggeredAlerts);
     }
@@ -199,24 +225,24 @@ class ModelTest extends BaseTEst
     public function test_markTriggeredAlertAsSent_shouldSetTsLastSent()
     {
         $this->model->triggerAlert(1, 1, 99, 48);
-        $triggeredAlerts = $this->model->getTriggeredAlerts('day', 'today', false);
+        $triggeredAlerts = $this->model->getTriggeredAlertsForPeriod('day', 'today', false);
 
         $this->model->markTriggeredAlertAsSent($triggeredAlerts[0], 1389301798);
 
         // verify
-        $triggeredAlerts = $this->model->getTriggeredAlerts('day', 'today', false);
+        $triggeredAlerts = $this->model->getTriggeredAlertsForPeriod('day', 'today', false);
         $this->assertEquals('2014-01-09 21:09:58', $triggeredAlerts[0]['ts_last_sent']);
     }
 
     public function test_markTriggeredAlertAsSent_shouldNotSetTsLastSent_IfSiteIdDoesNotMatch()
     {
         $this->model->triggerAlert(1, 1, 99, 48);
-        $triggeredAlerts = $this->model->getTriggeredAlerts('day', 'today', false);
+        $triggeredAlerts = $this->model->getTriggeredAlertsForPeriod('day', 'today');
         $triggeredAlerts[0]['idsite'] = 2;
         $this->model->markTriggeredAlertAsSent($triggeredAlerts[0], 1389301798);
 
         // verify
-        $triggeredAlerts = $this->model->getTriggeredAlerts('day', 'today', false);
+        $triggeredAlerts = $this->model->getTriggeredAlertsForPeriod('day', 'today');
         $this->assertNull($triggeredAlerts[0]['ts_last_sent']);
     }
 
@@ -250,7 +276,7 @@ class ModelTest extends BaseTEst
         return $tableNames;
     }
 
-    private function createAlert($name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites_getOne')
+    private function createAlert($name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites_getOne', $login = 'superUserLogin')
     {
         if (is_null($idSites)) {
             $idSites = $this->idSite;
@@ -261,7 +287,6 @@ class ModelTest extends BaseTEst
 
         $emails = array('test1@example.com', 'test2@example.com');
         $phoneNumbers = array('0123456789');
-        $login = 'superUserLogin';
 
         $id = $this->model->createAlert($name, $idSites, $login, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $comparedTo = 1, $report, 'matches_exactly', 'Piwik');
         return $id;

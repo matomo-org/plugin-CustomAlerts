@@ -18,7 +18,6 @@ use Piwik\View;
 use Piwik\Common;
 use Piwik\Plugin\Manager as PluginManager;
 use Piwik\Plugins\SitesManager\API as SitesManagerApi;
-use Piwik\Plugins\API\API as MetadataApi;
 use Piwik\Period;
 use Piwik\Db;
 
@@ -28,6 +27,7 @@ use Piwik\Db;
  */
 class Controller extends \Piwik\Plugin\Controller
 {
+    private $cachedReports = array();
 
 	/**
 	 * Shows all Alerts of the current selected idSite.
@@ -37,8 +37,8 @@ class Controller extends \Piwik\Plugin\Controller
         $view = new View('@CustomAlerts/index');
         $this->setGeneralVariablesView($view);
 
-        $siteIds = SitesManagerApi::getInstance()->getSitesIdWithAtLeastViewAccess();
-        $alerts  = API::getInstance()->getAlerts($siteIds);
+        $idSites = $this->getSiteIdsHavingAccess();
+        $alerts  = API::getInstance()->getAlerts($idSites);
 
         foreach ($alerts as &$alert) {
             $alert['reportName'] = $this->findReportName($alert);
@@ -47,6 +47,21 @@ class Controller extends \Piwik\Plugin\Controller
 
         $view->alerts = $alerts;
         $view->requirementsAreMet = $this->areRequirementsMet();
+
+		return $view->render();
+	}
+
+	public function historyTriggeredAlerts()
+	{
+        $view = new View('@CustomAlerts/historyTriggeredAlerts');
+        $this->setGeneralVariablesView($view);
+
+        $idSites = $this->getSiteIdsHavingAccess();
+        $alerts  = API::getInstance()->getTriggeredAlerts($idSites);
+        array_slice($alerts, 0, 100);
+
+        $notifier = new Notifier();
+        $view->alertsFormatted = $notifier->formatAlerts($alerts, 'html');
 
 		return $view->render();
 	}
@@ -110,8 +125,20 @@ class Controller extends \Piwik\Plugin\Controller
             return;
         }
 
+        $reportUniqueId = $alert['report'];
+
+        if (!empty($this->cachedReports[$idSite][$reportUniqueId])) {
+            return $this->cachedReports[$idSite][$reportUniqueId];
+        }
+
         $processedReport = new ProcessedReport();
-        $report = $processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
+        $report = $processedReport->getReportMetadataByUniqueId($idSite, $reportUniqueId);
+
+        if (!array_key_exists($idSite, $this->cachedReports)) {
+            $this->cachedReports[$idSite] = array();
+        }
+
+        $this->cachedReports[$idSite][$reportUniqueId] = $report;
 
         return $report;
     }
@@ -144,5 +171,11 @@ class Controller extends \Piwik\Plugin\Controller
         list($idSite) = $alert['id_sites'];
 
         return $idSite;
+    }
+
+    private function getSiteIdsHavingAccess()
+    {
+        $idSites = SitesManagerApi::getInstance()->getSitesIdWithAtLeastViewAccess();
+        return $idSites;
     }
 }

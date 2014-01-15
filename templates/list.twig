@@ -1,7 +1,12 @@
 {% import '@CustomAlerts/macros.twig' as alertsMacro %}
 
 <div class='entityListContainer'>
-	<table class="dataTable entityTable">
+
+    <div class="entityCancel">
+        <a href="{{ linkTo({'module': 'CustomAlerts', 'action': 'historyTriggeredAlerts'}) }}">{{ 'CustomAlerts_AlertsHistory'|translate }}</a>
+    </div>
+
+    <table class="dataTable entityTable">
         <thead>
             <tr>
                 <th>{{ 'General_Name'|translate }}</th>

@@ -1,0 +1,22 @@
+{% extends 'dashboard.twig' %}
+
+{% import '@CustomAlerts/macros.twig' as alertsMacro %}
+
+{% block content %}
+
+    <div class="centerLargeDiv">
+        <h2>{{ 'CustomAlerts_AlertsHistory'|translate }}</h2>
+
+        <div class='entityListContainer'>
+        <div class="entityCancel">
+                {% set backlink = linkTo({'module': 'CustomAlerts', 'action': 'index'}) %}
+                {{ 'CustomAlerts_CancelAndReturnToAlerts'|translate('<a class="entityCancelLink" href="' ~ backlink ~ '">', "</a>")|raw }}
+            </div>
+
+            {{ alertsFormatted|raw }}
+        </div>
+
+        <br />
+        <br />
+    </div>
+{% endblock %}

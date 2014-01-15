@@ -61,6 +61,22 @@ class ValidatorTest extends BaseTest
         $this->validator->checkUserHasPermissionForAlert($alert);
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_AccessException
+     */
+    public function test_checkUserHasPermissionForAlert_ShouldFail_IfInvalidEventIfUserIsSuperUser()
+    {
+        $this->setSuperUser();
+
+        $alert = array(
+            'idalert' => 5,
+            'login'   => 'WhatEver'
+        );
+
+        $this->validator->checkUserHasPermissionForAlert($alert);
+    }
+
     public function test_checkUserHasPermissionForAlert_ShouldNotFail_IfValid()
     {
         $this->setUser();
