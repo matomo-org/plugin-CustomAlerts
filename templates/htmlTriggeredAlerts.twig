@@ -24,7 +24,7 @@
             <td>{{ alert.siteName }}</td>
         {% endif %}
         <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);{{ style }}">{{ alert.reportName|default(alert.report) }}</td>
-        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);{{ style }}">{{ alert.dimension|default('') }} {{ alert.reportConditionName }} {% if alert.report_matched %}'{{ alert.report_matched|raw }}'{% endif %}</td>
+        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);{{ style }}">{{ alert.dimension|default('') }} {{ alert.reportConditionName }} {% if alert.report_matched %}'{{ alert.report_matched|truncate(100)|raw }}'{% endif %}</td>
         <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);{{ style }}">{{ alert.reportMetric }} {{ alertsMacro.metricChangeDescription(alert) }}</td>
     </tr>
 
