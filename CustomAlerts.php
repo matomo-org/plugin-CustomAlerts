@@ -48,11 +48,17 @@ class CustomAlerts extends \Piwik\Plugin
         }
     }
 
-    public function checkControllerPermission($module)
+    public function checkControllerPermission($module, $action)
     {
-        if ($module == 'CustomAlerts') {
-            $this->checkPermission();
+        if ($module != 'CustomAlerts') {
+            return;
         }
+
+        if ($action == 'formatAlerts') {
+            throw new \Exception('Not directly callable');
+        }
+
+        $this->checkPermission();
     }
 
     private function checkPermission()
@@ -170,7 +176,7 @@ class CustomAlerts extends \Piwik\Plugin
         $siteIds = SitesManagerApi::getInstance()->getAllSitesId();
 
         $model  = new Model();
-        $alerts = $model->getAlerts($siteIds, false);
+        $alerts = $model->getAlerts($siteIds);
 
         $siteIdsHavingAlerts = array();
         foreach ($alerts as $alert) {

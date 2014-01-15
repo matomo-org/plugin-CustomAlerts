@@ -88,17 +88,17 @@ class ModelTest extends BaseTEst
 
     public function test_getAlerts_shouldReturnAllAlertsThatMatchTheIdSitesAndLogin()
     {
-        $alerts = $this->model->getAlerts(array($this->idSite), false);
+        $alerts = $this->model->getAlerts(array($this->idSite));
         $this->assertCount(2, $alerts);
         $this->assertEquals('Initial1', $alerts[0]['name']);
         $this->assertEquals('Initial2', $alerts[1]['name']);
 
-        $alerts = $this->model->getAlerts(array($this->idSite2), false);
+        $alerts = $this->model->getAlerts(array($this->idSite2));
         $this->assertCount(2, $alerts);
         $this->assertEquals('Initial2', $alerts[0]['name']);
         $this->assertEquals('Initial3', $alerts[1]['name']);
 
-        $alerts = $this->model->getAlerts(array($this->idSite2, $this->idSite), false);
+        $alerts = $this->model->getAlerts(array($this->idSite2, $this->idSite));
         $this->assertCount(3, $alerts);
 
         $alerts = $this->model->getAlerts(array($this->idSite2, $this->idSite), 'unknownuser');

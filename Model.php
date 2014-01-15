@@ -114,10 +114,10 @@ class Model
      *
      * @return array
      */
-	public function getAlerts($idSites, $login)
+	public function getAlerts($idSites, $login = false)
 	{
         $sql    = ("SELECT * FROM " . Common::prefixTable('alert')
-                . " WHERE idalert IN (" . $this->getInnerSiteQuery($idSites) . ") ");
+                 . " WHERE idalert IN (" . $this->getInnerSiteQuery($idSites) . ") ");
         $values = array();
 
         if ($login !== false) {

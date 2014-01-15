@@ -18,7 +18,6 @@ use Piwik\Period;
 use Piwik\Piwik;
 use Piwik\Date;
 use Piwik\Plugin\Manager as PluginManager;
-use Piwik\Plugins\API\ProcessedReport;
 use Piwik\Plugins\MobileMessaging\API as APIMobileMessaging;
 use Piwik\Site;
 use Piwik\View;
@@ -137,104 +136,6 @@ class Notifier extends \Piwik\Plugin
     }
 
     /**
-     * Returns the Alerts that were triggered in $format.
-     *
-     * @param array $triggeredAlerts
-     * @param string $format Can be 'html' or 'tsv'
-     * @throws \Exception
-     * @return string
-     */
-	public function formatAlerts($triggeredAlerts, $format)
-	{
-		switch ($format) {
-            case 'html_extended':
-                $view = new View('@CustomAlerts/htmlTriggeredAlerts');
-                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
-                $view->extended        = true;
-
-                return $view->render();
-
-			case 'html':
-				$view = new View('@CustomAlerts/htmlTriggeredAlerts');
-				$view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
-                $view->extended        = false;
-
-				return $view->render();
-
-            case 'sms':
-
-                $view = new View('@CustomAlerts/smsTriggeredAlerts');
-                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
-
-                return $view->render();
-
-			case 'text':
-
-                $view = new View('@CustomAlerts/textTriggeredAlerts');
-                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
-
-                return $view->render();
-		}
-
-        throw new \Exception('Unsupported format');
-	}
-
-    protected function enrichTriggeredAlerts($triggeredAlerts)
-    {
-        $processedReport = new ProcessedReport();
-
-        $cached = array();
-        foreach ($triggeredAlerts as &$alert) {
-            $idSite = $alert['idsite'];
-            $metric = $alert['metric'];
-            $report = $alert['report'];
-
-            if (!array_key_exists($idSite, $cached)) {
-                $cached[$idSite] = array('report' => array(), 'metric' => array(), 'siteName' => '');
-            }
-
-            if (empty($cached[$idSite]['siteName'])) {
-                $cached[$idSite]['siteName'] = Site::getNameFor($idSite);
-            }
-
-            if (!array_key_exists($report, $cached[$idSite]['report'])) {
-                $cached[$idSite]['report'][$report] = $processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
-                $cached[$idSite]['metric'][$report] = array();
-            }
-
-            if (!array_key_exists($metric, $cached[$idSite]['metric'][$report])) {
-                $cached[$idSite]['metric'][$report][$metric] = $processedReport->translateMetric($metric, $idSite, $alert['report']);
-            }
-        }
-
-        foreach ($triggeredAlerts as &$alert) {
-            $idSite = $alert['idsite'];
-            $metric = $alert['metric'];
-            $report = $alert['report'];
-
-            $alert['value_old']    = (int) $alert['value_old'] == $alert['value_old'] ? (int) $alert['value_old'] : $alert['value_old'];
-            $alert['value_new']    = (int) $alert['value_new'] == $alert['value_new'] ? (int) $alert['value_new'] : $alert['value_new'];
-            $alert['reportName']   = null;
-            $alert['dimension']    = null;
-            $alert['reportMetric'] = !empty($cached[$idSite]['metric'][$report][$metric]) ? $cached[$idSite]['metric'][$report][$metric] : null;
-            $alert['reportConditionName'] = null;
-            $alert['siteName'] = $cached[$idSite]['siteName'];
-
-            if (!empty($cached[$idSite]['report'][$report])) {
-                $report = $cached[$idSite]['report'][$report];
-
-                $alert['reportName'] = $report['name'];
-                $alert['dimension']  = !empty($report['dimension']) ? $report['dimension'] : null;
-
-                $conditionTranslation = array_search($alert['report_condition'], Processor::getGroupConditions(), true);
-                $alert['reportConditionName'] = $conditionTranslation ? Piwik::translate($conditionTranslation) : null;
-            }
-        }
-
-        return $triggeredAlerts;
-    }
-
-    /**
      * @param array  $alerts
      * @param APIMobileMessaging $mobileMessagingAPI
      * @param string $phoneNumber
@@ -249,7 +150,8 @@ class Notifier extends \Piwik\Plugin
             return;
         }
 
-        $content = $this->formatAlerts($alerts, 'sms');
+        $controller = new Controller();
+        $content = $controller->formatAlerts($alerts, 'sms');
         $subject = Piwik::translate('CustomAlerts_SmsAlertFromName');
 
         $mobileMessagingAPI->sendSMS(
@@ -278,12 +180,14 @@ class Notifier extends \Piwik\Plugin
         $mail->addTo($recipient);
         $mail->setSubject(Piwik::translate('CustomAlerts_MailAlertSubject', array($websiteName, $prettyDate)));
 
+        $controller = new Controller();
+
         $viewHtml = new View('@CustomAlerts/alertHtmlMail');
-        $viewHtml->assign('triggeredAlerts', $this->formatAlerts($alerts, 'html'));
+        $viewHtml->assign('triggeredAlerts', $controller->formatAlerts($alerts, 'html'));
         $mail->setBodyHtml($viewHtml->render());
 
         $viewText = new View('@CustomAlerts/alertTextMail');
-        $viewText->assign('triggeredAlerts', $this->formatAlerts($alerts, 'text'));
+        $viewText->assign('triggeredAlerts', $controller->formatAlerts($alerts, 'text'));
         $viewText->setContentType('text/plain');
         $mail->setBodyText($viewText->render());
 
