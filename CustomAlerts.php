@@ -35,9 +35,17 @@ class CustomAlerts extends \Piwik\Plugin
 		    'MobileMessaging.deletePhoneNumber' => 'removePhoneNumberFromAllAlerts',
 		    'AssetManager.getJavaScriptFiles'   => 'getJavaScriptFiles',
 		    'AssetManager.getStylesheetFiles'   => 'getStylesheetFiles',
+            'API.Request.dispatch'              => 'checkPermission',
             'Translate.getClientSideTranslationKeys' => 'getClientSideTranslationKeys'
 		);
 	}
+
+    public function checkPermission(&$parameters, $pluginName, $methodName)
+    {
+        if ($pluginName == 'CustomAlerts') {
+            Piwik::checkUserIsNotAnonymous();
+        }
+    }
 
     public function install()
     {
@@ -63,7 +71,7 @@ class CustomAlerts extends \Piwik\Plugin
     {
         $title = Piwik::translate('CustomAlerts_Alerts');
 
-        MenuTop::addEntry($title, array('module' => 'CustomAlerts', 'action' => 'index'), true, 9);
+        MenuTop::addEntry($title, array('module' => 'CustomAlerts', 'action' => 'index'), !Piwik::isUserIsAnonymous(), 9);
     }
 
     public function getScheduledTasks(&$tasks)
@@ -149,7 +157,7 @@ class CustomAlerts extends \Piwik\Plugin
         $siteIds = SitesManagerApi::getInstance()->getAllSitesId();
 
         $model  = new Model();
-        $alerts = $model->getAlerts($siteIds);
+        $alerts = $model->getAlerts($siteIds, false);
 
         $siteIdsHavingAlerts = array();
         foreach ($alerts as $alert) {
