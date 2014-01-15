@@ -54,6 +54,7 @@ To define the condition you can select the conditions:
 
 ## Changelog
 
+* 0.1.0 First beta
 
 ## License
 
