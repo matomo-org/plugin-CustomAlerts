@@ -18,6 +18,7 @@ use Piwik\Common;
 use Piwik\Date;
 use Piwik\Period;
 use Piwik\Db;
+use Piwik\Piwik;
 use Piwik\Translate;
 
 /**
@@ -52,14 +53,28 @@ class Model
 			PRIMARY KEY ( idalert, idsite )
 		) DEFAULT CHARSET=utf8 ;";
 
-        $tableAlertLog = "CREATE TABLE " . Common::prefixTable('alert_log') . " (
+        $tableAlertLog = "CREATE TABLE " . Common::prefixTable('alert_triggered') . " (
+			`idtriggered` BIGINT unsigned NOT NULL AUTO_INCREMENT,
 			`idalert` INT( 11 ) NOT NULL ,
 			`idsite` INT( 11 ) NOT NULL ,
 			`ts_triggered` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
 			`ts_last_sent` timestamp NULL DEFAULT NULL,
 			`value_old` DECIMAL (20,3) DEFAULT NULL,
 			`value_new` DECIMAL (20,3) DEFAULT NULL,
-			KEY `ts_triggered` (`ts_triggered`)
+            `name` VARCHAR(100) NOT NULL ,
+			`login` VARCHAR(100) NOT NULL ,
+			`period` VARCHAR(5) NOT NULL ,
+			`report` VARCHAR(150) NOT NULL ,
+			`report_condition` VARCHAR(50) ,
+			`report_matched` VARCHAR(1000) ,
+			`metric` VARCHAR(150) NOT NULL ,
+			`metric_condition` VARCHAR(50) NOT NULL ,
+			`metric_matched` FLOAT NOT NULL ,
+			`compared_to` TINYINT NOT NULL DEFAULT 1 ,
+			`email_me` BOOLEAN NOT NULL ,
+			`additional_emails` TEXT DEFAULT '' ,
+			`phone_numbers` TEXT DEFAULT '',
+			PRIMARY KEY (idtriggered)
 		)";
 
         try {
@@ -77,7 +92,7 @@ class Model
 
     public static function uninstall()
     {
-        $tables = array('alert', 'alert_log', 'alert_site');
+        $tables = array('alert', 'alert_triggered', 'alert_site');
         foreach ($tables as $table) {
             $sql = "DROP TABLE IF EXISTS " . Common::prefixTable($table);
             Db::exec($sql);
@@ -158,8 +173,7 @@ class Model
 
         $db  = Db::get();
 		$sql = $this->getTriggeredAlertsSelectPart()
-             . " WHERE pal.idsite IN (" . implode(',' , $idSites) . ")"
-             . " AND pa.idalert IN (" . $this->getInnerSiteQuery($idSites) . ")"
+             . " WHERE idsite IN (" . implode(',' , $idSites) . ")"
              . " AND login = ?";
         $values = array($login);
 
@@ -171,31 +185,7 @@ class Model
 
     private function getTriggeredAlertsSelectPart()
     {
-        return "SELECT pa.idalert AS idalert,
-				pal.idsite AS idsite,
-				pal.ts_triggered AS ts_triggered,
-				pal.ts_last_sent AS ts_last_sent,
-				pa.name AS alert_name,
-				pa.additional_emails AS additional_emails,
-				pa.phone_numbers AS phone_numbers,
-				pa.email_me AS email_me,
-				pa.compared_to AS compared_to,
-				ps.name AS site_name,
-				login,
-				period,
-				report,
-				report_condition,
-				report_matched,
-				metric,
-				metric_condition,
-				metric_matched,
-				value_new,
-				value_old
-			FROM   ". Common::prefixTable('alert_log') ." pal
-				JOIN ". Common::prefixTable('alert') ." pa
-				ON pal.idalert = pa.idalert
-				JOIN ". Common::prefixTable('site') ." ps
-				ON pal.idsite = ps.idsite";
+        return "SELECT * FROM   ". Common::prefixTable('alert_triggered');
     }
 
     public function getAllAlerts()
@@ -327,39 +317,45 @@ class Model
 	{
         $db = Db::get();
         $db->query("DELETE FROM " . Common::prefixTable("alert") . " WHERE idalert = ?", array($idAlert));
-        $db->query("DELETE FROM " . Common::prefixTable("alert_log") . " WHERE idalert = ?", array($idAlert));
+        $db->query("DELETE FROM " . Common::prefixTable("alert_triggered") . " WHERE idalert = ?", array($idAlert));
         $this->removeAllSites($idAlert);
     }
 
     public function triggerAlert($idAlert, $idSite, $valueNew, $valueOld)
     {
+        $alert      = $this->getAlert($idAlert);
+
+        $keysToKeep = array('idalert', 'name', 'login', 'period', 'metric', 'metric_condition', 'metric_matched', 'report', 'report_condition', 'report_matched', 'compared_to', 'email_me', 'additional_emails', 'phone_numbers');
+
+        $triggeredAlert = array();
+        foreach ($keysToKeep as $key) {
+            $triggeredAlert[$key] = $alert[$key];
+        }
+
+        $triggeredAlert['ts_triggered'] = Date::now()->getDatetime();
+        $triggeredAlert['value_new'] = $valueNew;
+        $triggeredAlert['value_old'] = $valueOld;
+        $triggeredAlert['idsite']    = $idSite;
+        $triggeredAlert['additional_emails'] = json_encode($triggeredAlert['additional_emails']);
+        $triggeredAlert['phone_numbers'] = json_encode($triggeredAlert['phone_numbers']);
+
         $db = Db::get();
         $db->insert(
-            Common::prefixTable('alert_log'),
-            array(
-                'idalert'      => intval($idAlert),
-                'idsite'       => intval($idSite),
-                'ts_triggered' => Date::now()->getDatetime(),
-                'value_new'    => $valueNew,
-                'value_old'    => $valueOld,
-            )
+            Common::prefixTable('alert_triggered'),
+            $triggeredAlert
         );
     }
 
-    public function markTriggeredAlertAsSent($triggeredAlert, $timestamp)
+    public function markTriggeredAlertAsSent($idTriggered, $timestamp)
     {
-        $idAlert     = $triggeredAlert['idalert'];
-        $idSite      = $triggeredAlert['idsite'];
-        $tsTriggered = Date::factory($triggeredAlert['ts_triggered'])->getDatetime();
-
         $log = array(
             'ts_last_sent' => Date::factory($timestamp)->getDatetime()
         );
 
-        $where = sprintf("idalert = %d AND idsite = %d AND ts_triggered = '%s'", $idAlert, $idSite, $tsTriggered);
+        $where = sprintf("idtriggered = %d", $idTriggered);
 
         $db = Db::get();
-        $db->update(Common::prefixTable('alert_log'), $log, $where);
+        $db->update(Common::prefixTable('alert_triggered'), $log, $where);
     }
 
     private function getDefinedSiteIds($idAlert)

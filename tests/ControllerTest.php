@@ -192,9 +192,8 @@ FORMATTED;
         return array(
             'idalert' => $id,
             'idsite' => $idSite,
-            'alert_name' => $name,
+            'name' => $name,
             'period' => $period,
-            'site_name' => $siteName,
             'login' => $login,
             'report' => $report,
             'report_condition' => $reportCondition,

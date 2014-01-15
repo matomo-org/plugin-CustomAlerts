@@ -374,12 +374,12 @@ class ApiTest extends BaseTest
         unset($triggeredAlerts[0]['ts_triggered']);
 
         $expected = array(
+            'idtriggered' => 1,
             'idalert' => 2,
             'idsite' => 1,
             'ts_last_sent' => null,
-            'alert_name' => 'Initial2',
+            'name' => 'Initial2',
             'period' => 'week',
-            'site_name' => 'Piwik test',
             'login' => 'superUserLogin',
             'report' => 'MultiSites_getOne',
             'report_condition' => 'matches_exactly',

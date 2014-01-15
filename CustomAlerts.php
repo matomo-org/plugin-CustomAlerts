@@ -57,7 +57,7 @@ class CustomAlerts extends \Piwik\Plugin
         }
 
         if ($action == 'formatAlerts') {
-            throw new \Exception('Not directly callable');
+            throw new \Exception('This action does not exist');
         }
 
         $this->checkPermission();
@@ -125,6 +125,8 @@ class CustomAlerts extends \Piwik\Plugin
             if (false !== $key) {
                 unset($alert['id_sites'][$key]);
                 $model->setSiteIds($alert['idalert'], array_values($alert['id_sites']));
+
+                // TODO also delete logs
             }
         }
     }

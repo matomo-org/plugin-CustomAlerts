@@ -188,11 +188,11 @@ t your custom alert settings, please sign in and access the Alerts page.=
     private function buildAlert($id, $name, $period = 'week', $idSite = 1, $siteName = 'Piwik test', $login = 'superUserLogin', $metric = 'nb_visits', $metricCondition = 'decrease_more_than', $metricMatched = 5000, $report = 'MultiSites_getOne', $reportCondition = 'matches_exactly', $reportMatched = 'Piwik')
     {
         return array(
+            'idtriggered' => 1,
             'idalert' => $id,
             'idsite' => $idSite,
-            'alert_name' => $name,
+            'name' => $name,
             'period' => $period,
-            'site_name' => $siteName,
             'login' => $login,
             'report' => $report,
             'report_condition' => $reportCondition,

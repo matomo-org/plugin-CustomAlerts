@@ -113,7 +113,7 @@ class Notifier extends \Piwik\Plugin
         $timestamp = Date::now()->getTimestamp();
 
         $model = new Model();
-        $model->markTriggeredAlertAsSent($triggeredAlert, $timestamp);
+        $model->markTriggeredAlertAsSent($triggeredAlert['idtriggered'], $timestamp);
     }
 
     protected function getEmailAddressFromLogin($login)

@@ -8,10 +8,8 @@
 
 namespace Piwik\Plugins\CustomAlerts\tests;
 
-use Piwik\Access;
 use Piwik\Common;
 use Piwik\Db;
-use Piwik\Piwik;
 use Piwik\Plugins\CustomAlerts\Model;
 use Piwik\Translate;
 
@@ -20,7 +18,7 @@ use Piwik\Translate;
  * @group ModelTest
  * @group Database
  */
-class ModelTest extends BaseTEst
+class ModelTest extends BaseTest
 {
 
     public function setUp()
@@ -37,7 +35,7 @@ class ModelTest extends BaseTEst
 
     public function test_install_ShouldNotFailAndActuallyCreateTheDatabases()
     {
-        $this->assertContainTables(array('alert', 'alert_site', 'alert_log'));
+        $this->assertContainTables(array('alert', 'alert_site', 'alert_triggered'));
 
         $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert'));
         $this->assertCount(14, $columns);
@@ -45,15 +43,15 @@ class ModelTest extends BaseTEst
         $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert_site'));
         $this->assertCount(2, $columns);
 
-        $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert_log'));
-        $this->assertCount(6, $columns);
+        $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert_triggered'));
+        $this->assertCount(20, $columns);
     }
 
     public function test_uninstall_ShouldNotFailAndRemovesAllAlertTables()
     {
         Model::uninstall();
 
-        $this->assertNotContainTables(array('alert', 'alert_site', 'alert_log'));
+        $this->assertNotContainTables(array('alert', 'alert_site', 'alert_triggered'));
     }
 
     public function test_addAlert_ShouldCreateANewAlert()
@@ -174,12 +172,12 @@ class ModelTest extends BaseTEst
         unset($triggeredAlerts[0]['ts_triggered']);
 
         $expected = array(
+            'idtriggered' => 1,
             'idalert' => 2,
             'idsite' => 1,
             'ts_last_sent' => null,
-            'alert_name' => 'Initial2',
+            'name' => 'Initial2',
             'period' => 'week',
-            'site_name' => 'Piwik test',
             'login' => 'superUserLogin',
             'report' => 'MultiSites_getOne',
             'report_condition' => 'matches_exactly',
@@ -197,6 +195,19 @@ class ModelTest extends BaseTEst
         );
 
         $this->assertEquals(array($expected), $triggeredAlerts);
+    }
+
+    public function test_triggerAlert_ShouldIncreaseId()
+    {
+        $this->model->triggerAlert(2, 1, 99, 48.519);
+        $this->model->triggerAlert(2, 1, 99, 48.519);
+
+        $triggeredAlerts = $this->model->getTriggeredAlertsForPeriod('week', 'today', 'superUserLogin');
+
+        $this->assertCount(2, $triggeredAlerts);
+
+        $this->assertEquals(1, $triggeredAlerts[0]['idtriggered']);
+        $this->assertEquals(2, $triggeredAlerts[1]['idtriggered']);
     }
 
     public function test_getTriggeredAlerts_ShouldReturnAllThatMatchesLoginAndIdSite()
@@ -245,21 +256,17 @@ class ModelTest extends BaseTEst
     public function test_markTriggeredAlertAsSent_shouldSetTsLastSent()
     {
         $this->model->triggerAlert(1, 1, 99, 48);
-        $triggeredAlerts = $this->model->getTriggeredAlertsForPeriod('day', 'today', false);
-
-        $this->model->markTriggeredAlertAsSent($triggeredAlerts[0], 1389301798);
+        $this->model->markTriggeredAlertAsSent(1, 1389301798);
 
         // verify
-        $triggeredAlerts = $this->model->getTriggeredAlertsForPeriod('day', 'today', false);
+        $triggeredAlerts = $this->model->getTriggeredAlertsForPeriod('day', 'today');
         $this->assertEquals('2014-01-09 21:09:58', $triggeredAlerts[0]['ts_last_sent']);
     }
 
     public function test_markTriggeredAlertAsSent_shouldNotSetTsLastSent_IfSiteIdDoesNotMatch()
     {
         $this->model->triggerAlert(1, 1, 99, 48);
-        $triggeredAlerts = $this->model->getTriggeredAlertsForPeriod('day', 'today');
-        $triggeredAlerts[0]['idsite'] = 2;
-        $this->model->markTriggeredAlertAsSent($triggeredAlerts[0], 1389301798);
+        $this->model->markTriggeredAlertAsSent(3, 1389301798);
 
         // verify
         $triggeredAlerts = $this->model->getTriggeredAlertsForPeriod('day', 'today');
