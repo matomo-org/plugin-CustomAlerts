@@ -10,6 +10,8 @@ Alerts are a great way to get notified of changes on your website. Want to know 
 
 The Alert log will help you to better understand the success of your website. You can use it to analyze how often your website hit more than 10000 visits per day or on how many days a product was sold more than 50 times.
 
+This plugin was [crowdfunded with the support](http://crowdfunding.piwik.org/custom-alerts-plugin/) of 37 Piwik community members!
+
 ## Installation
 
 Install it via Piwik Marketplace
