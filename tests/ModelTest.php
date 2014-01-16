@@ -9,6 +9,7 @@
 namespace Piwik\Plugins\CustomAlerts\tests;
 
 use Piwik\Common;
+use Piwik\Date;
 use Piwik\Db;
 use Piwik\Plugins\CustomAlerts\Model;
 use Piwik\Translate;
@@ -163,7 +164,7 @@ class ModelTest extends BaseTest
 
     public function test_triggerAlert_getTriggeredAlertsForPeriod_ShouldMarkAlertAsTriggeredForGivenWebsite()
     {
-        $this->model->triggerAlert(2, 1, 99, 48.519);
+        $this->model->triggerAlert(2, 1, 99, 48.519, Date::now()->getDatetime());
         $triggeredAlerts = $this->model->getTriggeredAlertsForPeriod('week', 'today', 'superUserLogin');
 
         $this->assertCount(1, $triggeredAlerts);
@@ -199,8 +200,8 @@ class ModelTest extends BaseTest
 
     public function test_triggerAlert_ShouldIncreaseId()
     {
-        $this->model->triggerAlert(2, 1, 99, 48.519);
-        $this->model->triggerAlert(2, 1, 99, 48.519);
+        $this->model->triggerAlert(2, 1, 99, 48.519, Date::now()->getDatetime());
+        $this->model->triggerAlert(2, 1, 99, 48.519, Date::now()->getDatetime());
 
         $triggeredAlerts = $this->model->getTriggeredAlertsForPeriod('week', 'today', 'superUserLogin');
 
@@ -214,7 +215,7 @@ class ModelTest extends BaseTest
     {
         $idSite = 1;
 
-        $this->model->triggerAlert(2, $idSite, 99, 48);
+        $this->model->triggerAlert(2, $idSite, 99, 48, Date::now()->getDatetime());
 
         $triggeredAlerts = $this->model->getTriggeredAlerts(array($idSite), 'superUserLogin');
         $this->assertCount(1, $triggeredAlerts);
@@ -231,7 +232,7 @@ class ModelTest extends BaseTest
 
     public function test_getTriggeredAlertsForPeriod_ShouldReturnAnAlertOnlyIfPeriodMatches()
     {
-        $this->model->triggerAlert(2, 1, 99, 48);
+        $this->model->triggerAlert(2, 1, 99, 48, Date::now()->getDatetime());
         $triggeredAlerts = $this->model->getTriggeredAlertsForPeriod('day', 'today');
 
         $this->assertEquals(array(), $triggeredAlerts);
@@ -239,7 +240,7 @@ class ModelTest extends BaseTest
 
     public function test_getTriggeredAlertsForPeriod_ShouldReturnAnAlertOnlyIfDateMatches()
     {
-        $this->model->triggerAlert(1, 1, 99, 48);
+        $this->model->triggerAlert(1, 1, 99, 48, Date::now()->getDatetime());
         $triggeredAlerts = $this->model->getTriggeredAlertsForPeriod('day', 'yesterday');
 
         $this->assertEquals(array(), $triggeredAlerts);
@@ -247,7 +248,7 @@ class ModelTest extends BaseTest
 
     public function test_getTriggeredAlertsForPeriod_ShouldReturnAllAlertsThatMatchesDateAndPeriod()
     {
-        $this->model->triggerAlert(1, 1, 99, 48);
+        $this->model->triggerAlert(1, 1, 99, 48, Date::now()->getDatetime());
         $triggeredAlerts = $this->model->getTriggeredAlertsForPeriod('day', 'today');
 
         $this->assertCount(1, $triggeredAlerts);
@@ -255,7 +256,7 @@ class ModelTest extends BaseTest
 
     public function test_markTriggeredAlertAsSent_shouldSetTsLastSent()
     {
-        $this->model->triggerAlert(1, 1, 99, 48);
+        $this->model->triggerAlert(1, 1, 99, 48, Date::now()->getDatetime());
         $this->model->markTriggeredAlertAsSent(1, 1389301798);
 
         // verify
@@ -265,7 +266,7 @@ class ModelTest extends BaseTest
 
     public function test_markTriggeredAlertAsSent_shouldNotSetTsLastSent_IfSiteIdDoesNotMatch()
     {
-        $this->model->triggerAlert(1, 1, 99, 48);
+        $this->model->triggerAlert(1, 1, 99, 48, Date::now()->getDatetime());
         $this->model->markTriggeredAlertAsSent(3, 1389301798);
 
         // verify
@@ -275,10 +276,10 @@ class ModelTest extends BaseTest
 
     public function test_deleteTriggeredAlertsForSite()
     {
-        $this->model->triggerAlert(1, 1, 99, 48);
-        $this->model->triggerAlert(1, 2, 99, 48);
-        $this->model->triggerAlert(1, 3, 99, 48);
-        $this->model->triggerAlert(1, 2, 99, 48);
+        $this->model->triggerAlert(1, 1, 99, 48, Date::now()->getDatetime());
+        $this->model->triggerAlert(1, 2, 99, 48, Date::now()->getDatetime());
+        $this->model->triggerAlert(1, 3, 99, 48, Date::now()->getDatetime());
+        $this->model->triggerAlert(1, 2, 99, 48, Date::now()->getDatetime());
 
         $alerts = $this->model->getTriggeredAlerts(array(1, 2, 3), 'superUserLogin');
         $this->assertCount(4, $alerts);

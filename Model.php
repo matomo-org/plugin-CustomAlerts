@@ -321,7 +321,7 @@ class Model
         $this->removeAllSites($idAlert);
     }
 
-    public function triggerAlert($idAlert, $idSite, $valueNew, $valueOld)
+    public function triggerAlert($idAlert, $idSite, $valueNew, $valueOld, $datetime)
     {
         $alert      = $this->getAlert($idAlert);
 
@@ -332,7 +332,7 @@ class Model
             $triggeredAlert[$key] = $alert[$key];
         }
 
-        $triggeredAlert['ts_triggered'] = Date::now()->getDatetime();
+        $triggeredAlert['ts_triggered'] = $datetime;
         $triggeredAlert['value_new'] = $valueNew;
         $triggeredAlert['value_old'] = $valueOld;
         $triggeredAlert['idsite']    = $idSite;

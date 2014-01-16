@@ -8,6 +8,7 @@
 
 namespace Piwik\Plugins\CustomAlerts\tests;
 
+use Piwik\Date;
 use Piwik\Db;
 use Piwik\Translate;
 
@@ -365,7 +366,7 @@ class ApiTest extends BaseTest
     {
         $this->setSuperUser();
 
-        $this->model->triggerAlert(2, 1, 94, 48);
+        $this->model->triggerAlert(2, 1, 94, 48, Date::now()->getDatetime());
         $triggeredAlerts = $this->api->getTriggeredAlerts(array(1));
 
         $this->assertCount(1, $triggeredAlerts);
@@ -414,7 +415,7 @@ class ApiTest extends BaseTest
         $idSite = 1;
 
         $this->setSuperUser();
-        $this->model->triggerAlert(2, $idSite, 99, 48);
+        $this->model->triggerAlert(2, $idSite, 99, 48, Date::now()->getDatetime());
 
         $triggeredAlerts = $this->api->getTriggeredAlerts(array($idSite));
         $this->assertCount(1, $triggeredAlerts);

@@ -299,7 +299,7 @@ class Processor
 
     protected function triggerAlert($alert, $idSite, $valueNew, $valueOld)
     {
-        $this->getModel()->triggerAlert($alert['idalert'], $idSite, $valueNew, $valueOld);
+        $this->getModel()->triggerAlert($alert['idalert'], $idSite, $valueNew, $valueOld, Date::now()->getDatetime());
     }
 
     private function getAllAlerts($period)

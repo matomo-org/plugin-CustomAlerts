@@ -9,6 +9,7 @@
 namespace Piwik\Plugins\CustomAlerts\tests;
 
 use Piwik\Access;
+use Piwik\Date;
 use Piwik\Db;
 use Piwik\Piwik;
 use Piwik\Plugins\CustomAlerts\CustomAlerts;
@@ -83,10 +84,10 @@ class CustomAlertsTest extends BaseTest
         $this->createAlert('Initial5', array(), array(2));
         $this->createAlert('Initial6', array(), array(2));
 
-        $this->model->triggerAlert(1, 1, 99, 48);
-        $this->model->triggerAlert(1, 2, 99, 48);
-        $this->model->triggerAlert(2, 3, 99, 48);
-        $this->model->triggerAlert(3, 2, 99, 48);
+        $this->model->triggerAlert(1, 1, 99, 48, Date::now()->getDatetime());
+        $this->model->triggerAlert(1, 2, 99, 48, Date::now()->getDatetime());
+        $this->model->triggerAlert(2, 3, 99, 48, Date::now()->getDatetime());
+        $this->model->triggerAlert(3, 2, 99, 48, Date::now()->getDatetime());
 
         $alerts = $this->model->getTriggeredAlerts(array(1, 2, 3), 'superUserLogin');
         $this->assertCount(4, $alerts);
