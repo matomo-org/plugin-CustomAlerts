@@ -1,9 +1,9 @@
 {
     "name": "CustomAlerts",
     "description": "Alerts are a great way to get notified of changes on your website. This is a beta version.",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "require": {
-        "piwik": ">=2.0.4"
+        "piwik": ">=2.0.4-b1"
     },
     "authors": [
         {
