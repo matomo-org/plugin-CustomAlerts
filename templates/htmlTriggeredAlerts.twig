@@ -15,6 +15,7 @@
     </tr>
     </thead>
     <tbody>
+{% if triggeredAlerts|length %}
 {% for alert in triggeredAlerts %}
     <tr>
         <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="{{ piwikUrl }}{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert, 'idSite': alert.idsite, 'period': alert.period, 'date': 'yesterday', 'token_auth': ''})|raw }}">{{ alert.name }}</a></td>
@@ -29,5 +30,14 @@
     </tr>
 
 {% endfor %}
+{% else %}
+    <tr>
+        <td colspan="{% if extended %}7{% else %}3{% endif %}">
+            <br/>
+            {{ 'CustomAlerts_NoTriggeredAlerts'|translate }}
+            <br/><br/>
+        </td>
+    </tr>
+{% endif %}
     </tbody>
 </table>
