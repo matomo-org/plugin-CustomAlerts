@@ -187,7 +187,7 @@ class Controller extends \Piwik\Plugin\Controller
     {
         $idSite = $this->findSiteId($alert);
 
-        if ($idSite) {
+        if (!empty($idSite)) {
 
             return Site::getNameFor($idSite);
         }
@@ -199,13 +199,15 @@ class Controller extends \Piwik\Plugin\Controller
             return;
         }
 
+        // triggered alert
+        if (array_key_exists('idsite', $alert)) {
+            return $alert['idsite'];
+        }
+
+        // regular alert
         if (array_key_exists('id_sites', $alert) && !empty($alert['id_sites'])) {
             list($idSite) = $alert['id_sites'];
             return $idSite;
-        }
-
-        if (array_key_exists('idsite', $alert)) {
-            return $alert['idsite'];
         }
     }
 
