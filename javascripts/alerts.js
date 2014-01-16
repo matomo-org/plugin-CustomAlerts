@@ -196,6 +196,7 @@ var CustomAlerts = (function($) {
         var isPercentageCondition = condition && 0 === condition.indexOf('percentage_');
         var isPercentageMetric    = metric && -1 !== metric.indexOf('_rate');
         var isSecondsMetric = metric && -1 !== metric.indexOf('_time_');
+        var isComparedToMetric = condition && -1 !== condition.indexOf('_more_than');
 
         if (isPercentageCondition || isPercentageMetric) {
             $('.metricValueDescription').show();
@@ -206,6 +207,13 @@ var CustomAlerts = (function($) {
         } else {
             $('.metricValueDescription').hide();
         }
+
+        if (isComparedToMetric) {
+            $('.comparedToField').show();
+        } else {
+            $('.comparedToField').hide();
+        }
+
     }
 
     function deleteAlert(alertId)
