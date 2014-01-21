@@ -1,7 +1,7 @@
 {
     "name": "CustomAlerts",
     "description": "Alerts are a great way to get notified of changes on your website. This is a beta version.",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "require": {
         "piwik": ">=2.0.4-b3"
     },
