@@ -14,6 +14,7 @@
 namespace Piwik\Plugins\CustomAlerts;
 
 use Piwik\API\Request as ApiRequest;
+use Piwik\Common;
 use Piwik\DataTable;
 use Piwik\Date;
 use Piwik\Plugins\API\ProcessedReport;
@@ -213,6 +214,7 @@ class Processor
     {
         $invert = false;
 
+        $value  = Common::unsanitizeInputValue($value);
         if ('matches_regex' != $condition && 'does_not_match_regex' != $condition) {
             $value = str_replace(array('?', '+', '*'), array('\?', '\+', '\*'), $value);
         }

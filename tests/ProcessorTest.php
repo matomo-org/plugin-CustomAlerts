@@ -105,19 +105,24 @@ class ProcessorTest extends BaseTest
         $t->doTrackPageView('incredible title! <>,;');
 
         $t->setForceVisitDateTime($date->addHour(.2)->getDatetime());
+        $t->setUrl('http://example.org/dir/file/xyz.php?foo=bar&foo2=bar');
+        $t->setGenerationTime(231);
+        $t->doTrackPageView('incredible title! <>,;');
+
+        $t->setForceVisitDateTime($date->addHour(.3)->getDatetime());
         $t->setUrl('http://example.org/dir/file.php?foo=bar&foo2=bar');
         $t->setGenerationTime(147);
         $t->doTrackPageView('incredible title! <>,;');
 
         // for some reasons @dataProvider results in an "Mysql::getProfiler() undefined method" error
         $assertions = array(
-            array('nb_hits', 'foo', 2),
-            array('nb_visits', 'foo', 1),
-            array('nb_hits', 'i', 3),
-            array('nb_hits', 'foo2=bar', 2),
-            array('nb_hits', '/', 2),
-            array('nb_hits', 'foo=bar&foo2=bar', 2),
-            array('nb_hits', 'php?foo=bar&foo2=bar', 2),
+            array('nb_hits', 'foo', 3),
+            array('nb_visits', 'foo', 2),
+            array('nb_hits', 'i', 4),
+            array('nb_hits', 'foo2=bar', 3),
+            array('nb_hits', '/', 3),
+            array('nb_hits', 'foo=bar&foo2=bar', 3),
+            array('nb_hits', 'php?foo=bar&foo2=bar', 3),
             array('nb_hits', 'file.php?foo=bar&foo2=bar', 2),
             array('nb_hits', 'dir/file.php?foo=bar&foo2=bar', 2),
             array('avg_time_generation', 'dir/file.php?foo=bar&foo2=bar', 0.135),
@@ -136,7 +141,7 @@ class ProcessorTest extends BaseTest
 
             $value = $this->processor->getValueForAlertInPast($alert, $this->idSite, 0);
 
-            $this->assertEquals($assert[2], $value, $assert[0] . ':' . $assert[1] . ' should return value ' . $assert[2]);
+            $this->assertEquals($assert[2], $value, $assert[0] . ':' . $assert[1] . ' should return value ' . $assert[2] . ' but returns ' . $value);
         }
     }
 
