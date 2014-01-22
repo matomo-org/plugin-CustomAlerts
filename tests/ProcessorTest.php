@@ -109,6 +109,11 @@ class ProcessorTest extends BaseTest
         $t->setGenerationTime(231);
         $t->doTrackPageView('incredible title! <>,;');
 
+        $t->setForceVisitDateTime($date->addHour(.2)->getDatetime());
+        $t->setUrl('http://example.org/what-is-piwik');
+        $t->setGenerationTime(231);
+        $t->doTrackPageView('incredible title! <>,;');
+
         $t->setForceVisitDateTime($date->addHour(.3)->getDatetime());
         $t->setUrl('http://example.org/dir/file.php?foo=bar&foo2=bar');
         $t->setGenerationTime(147);
@@ -116,9 +121,12 @@ class ProcessorTest extends BaseTest
 
         // for some reasons @dataProvider results in an "Mysql::getProfiler() undefined method" error
         $assertions = array(
+            array('nb_hits', 'what-is-piwik', 1),
+            // label does not start with leading slash
+            array('nb_hits', '/what-is-piwik', null),
             array('nb_hits', 'foo', 3),
             array('nb_visits', 'foo', 2),
-            array('nb_hits', 'i', 4),
+            array('nb_hits', 'i', 5),
             array('nb_hits', 'foo2=bar', 3),
             array('nb_hits', '/', 3),
             array('nb_hits', 'foo=bar&foo2=bar', 3),
