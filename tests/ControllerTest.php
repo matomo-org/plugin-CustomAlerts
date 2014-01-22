@@ -135,21 +135,16 @@ FORMATTED;
     {
         $timestamp = 1389824417;
         $alerts = array(
-            array('idsite' => 1, 'ts_triggered' => $timestamp, 'metric' => 'nb_visits', 'report' => 'MultiSites_getAll', 'report_condition' => 'matches_any', 'value_old' => '228.001', 'value_new' => '1.0'),
-            array('idsite' => 1, 'ts_triggered' => $timestamp, 'metric' => 'nb_visits', 'report' => 'NotExistingModule_Action', 'report_condition' => 'matches_exactly', 'value_old' => '228.000', 'value_new' => '1.0'),
-            array('idsite' => 1, 'ts_triggered' => $timestamp, 'metric' => 'bounce_rate', 'report' => 'Actions_getPageUrls', 'report_condition' => 'matches_exactly', 'value_old' => '228.999', 'value_new' => '1.0'),
-            array('idsite' => 1, 'ts_triggered' => $timestamp, 'metric' => 'not_valid', 'report' => 'Actions_getPageUrls', 'report_condition' => 'contains', 'value_old' => '228.001', 'value_new' => '1.01'),
-            // no dimension
-            array('idsite' => 1, 'ts_triggered' => $timestamp, 'metric' => 'nb_visits', 'report' => 'VisitsSummary_get', 'report_condition' => 'matches_any', 'value_old' => '228.001', 'value_new' => '10')
+            array('idsite' => 1, 'period' => 'day', 'ts_triggered' => $timestamp, 'metric' => 'nb_visits', 'report' => 'MultiSites_getAll', 'report_condition' => 'matches_any', 'value_old' => '228.001', 'value_new' => '1.0'),
+            array('idsite' => 1, 'period' => 'week', 'ts_triggered' => $timestamp, 'metric' => 'nb_visits', 'report' => 'NotExistingModule_Action', 'report_condition' => 'matches_exactly', 'value_old' => '228.000', 'value_new' => '1.0'),
+            array('idsite' => 1, 'period' => 'month', 'ts_triggered' => $timestamp, 'metric' => 'bounce_rate', 'report' => 'Actions_getPageUrls', 'report_condition' => 'matches_exactly', 'value_old' => '228.999', 'value_new' => '1.0'),
+            array('idsite' => 1, 'period' => 'day', 'ts_triggered' => $timestamp, 'metric' => 'not_valid', 'report' => 'Actions_getPageUrls', 'report_condition' => 'contains', 'value_old' => '228.001', 'value_new' => '1.01'),
+            // no dimension ,
+            array('idsite' => 1, 'period' => 'day', 'ts_triggered' => $timestamp, 'metric' => 'nb_visits', 'report' => 'VisitsSummary_get', 'report_condition' => 'matches_any', 'value_old' => '228.001', 'value_new' => '10')
         );
 
         $enriched = $this->controller->enrichTriggeredAlerts($alerts);
 
-        for ($index = 0; $index < count($enriched); $index++) {
-            $this->assertEquals($timestamp, $enriched[$index]['ts_triggered']->getTimestamp());
-            unset($enriched[$index]['ts_triggered']);
-            unset($alerts[$index]['ts_triggered']);
-        }
 
         $alerts[0]['reportName']   = 'All Websites dashboard';
         $alerts[0]['reportMetric'] = 'Visits';
@@ -158,6 +153,7 @@ FORMATTED;
         $alerts[0]['value_old']    = '228.001';
         $alerts[0]['value_new']    = 1;
         $alerts[0]['siteName']     = 'Piwik test';
+        $alerts[0]['ts_triggered'] = 'Tue 14 Jan';
         $this->assertInternalType('int', $alerts[0]['value_new']);
         $alerts[1]['reportName']   = null;
         $alerts[1]['reportMetric'] = null;
@@ -166,6 +162,7 @@ FORMATTED;
         $alerts[1]['value_old']    = 228;
         $alerts[1]['value_new']    = 1;
         $alerts[1]['siteName']     = 'Piwik test';
+        $alerts[1]['ts_triggered'] = '6 Jan - 12 Jan 14';
         $this->assertInternalType('int', $alerts[1]['value_old']);
         $this->assertInternalType('int', $alerts[1]['value_new']);
         $alerts[2]['reportName']   = 'Page URLs';
@@ -175,6 +172,7 @@ FORMATTED;
         $alerts[2]['value_old']    = '228.999';
         $alerts[2]['value_new']    = '1';
         $alerts[2]['siteName']     = 'Piwik test';
+        $alerts[2]['ts_triggered'] = 'Dec 2013';
         $alerts[3]['reportName']   = 'Page URLs';
         $alerts[3]['reportMetric'] = null;
         $alerts[3]['dimension']    = 'Page URL';
@@ -182,6 +180,7 @@ FORMATTED;
         $alerts[3]['value_old']    = '228.001';
         $alerts[3]['value_new']    = '1.01';
         $alerts[3]['siteName']     = 'Piwik test';
+        $alerts[3]['ts_triggered'] = 'Tue 14 Jan';
         $alerts[4]['reportName']   = 'Visits Summary';
         $alerts[4]['reportMetric'] = 'Visits';
         $alerts[4]['dimension']    = null;
@@ -189,6 +188,7 @@ FORMATTED;
         $alerts[4]['value_old']    = '228.001';
         $alerts[4]['value_new']    = 10;
         $alerts[4]['siteName']     = 'Piwik test';
+        $alerts[4]['ts_triggered'] = 'Tue 14 Jan';
         $this->assertInternalType('int', $alerts[4]['value_new']);
     
         $this->assertEquals($alerts, $enriched);

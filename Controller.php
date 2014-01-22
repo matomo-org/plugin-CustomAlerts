@@ -227,11 +227,15 @@ class Controller extends \Piwik\Plugin\Controller
             $report = $alert['report'];
 
             if (!array_key_exists($idSite, $cached)) {
-                $cached[$idSite] = array('report' => array(), 'metric' => array(), 'siteName' => '');
+                $cached[$idSite] = array('report' => array(), 'metric' => array(), 'siteName' => '', 'siteTimezone' => null);
             }
 
             if (empty($cached[$idSite]['siteName'])) {
                 $cached[$idSite]['siteName'] = $this->findSiteName($alert);
+            }
+
+            if (empty($cached[$idSite]['siteTimezone']) && !empty($cached[$idSite]['siteName'])) {
+                $cached[$idSite]['siteTimezone'] = Site::getTimezoneFor($idSite);
             }
 
             if (!array_key_exists($report, $cached[$idSite]['report'])) {
@@ -248,18 +252,19 @@ class Controller extends \Piwik\Plugin\Controller
             $idSite = $alert['idsite'];
             $metric = $alert['metric'];
             $report = $alert['report'];
+            $cachedSite = $cached[$idSite];
 
             $alert['value_old']    = (int) $alert['value_old'] == $alert['value_old'] ? (int) $alert['value_old'] : $alert['value_old'];
             $alert['value_new']    = (int) $alert['value_new'] == $alert['value_new'] ? (int) $alert['value_new'] : $alert['value_new'];
             $alert['reportName']   = null;
             $alert['dimension']    = null;
-            $alert['reportMetric'] = !empty($cached[$idSite]['metric'][$report][$metric]) ? $cached[$idSite]['metric'][$report][$metric] : null;
+            $alert['reportMetric'] = !empty($cachedSite['metric'][$report][$metric]) ? $cachedSite['metric'][$report][$metric] : null;
             $alert['reportConditionName'] = null;
             $alert['siteName']     = $cached[$idSite]['siteName'];
-            $alert['ts_triggered'] = Date::factory($alert['ts_triggered']);
+            $alert['ts_triggered'] = $this->getPrettyDateForSite($alert['ts_triggered'], $alert['period'], $cachedSite['siteTimezone']);
 
-            if (!empty($cached[$idSite]['report'][$report])) {
-                $reportMetadata = $cached[$idSite]['report'][$report];
+            if (!empty($cachedSite['report'][$report])) {
+                $reportMetadata = $cachedSite['report'][$report];
 
                 $alert['reportName'] = $reportMetadata['name'];
                 $alert['dimension']  = !empty($reportMetadata['dimension']) ? $reportMetadata['dimension'] : null;
@@ -272,4 +277,15 @@ class Controller extends \Piwik\Plugin\Controller
         return $triggeredAlerts;
     }
 
+    private function getPrettyDateForSite($datetime, $period, $timezone)
+    {
+        $date = Date::factory($datetime, $timezone);
+        // we ran the alerts for the period before...
+        $date = $date->subPeriod(1, $period);
+
+        $period     = Period::factory($period, $date);
+        $prettyDate = $period->getLocalizedShortString();
+
+        return $prettyDate;
+    }
 }
