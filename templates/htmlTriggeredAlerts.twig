@@ -18,7 +18,7 @@
 {% if triggeredAlerts|length %}
 {% for alert in triggeredAlerts %}
     <tr>
-        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="{{ piwikUrl }}{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert, 'idSite': alert.idsite, 'period': alert.period, 'date': 'yesterday', 'token_auth': ''})|raw }}">{{ alert.name }}</a></td>
+        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="{{ piwikUrl }}{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert, 'idSite': alert.idsite, 'period': alert.period, 'date': 'yesterday', 'token_auth': false, 'convertToUnicode': false, 'format': false, 'method': false, 'trigger': false})|raw }}">{{ alert.name }}</a></td>
         {% if extended %}
             <td style="white-space: nowrap;">{{ alert.ts_triggered }}</td>
             <td>{{ alert.period|capitalize }}</td>
