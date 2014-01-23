@@ -62,10 +62,11 @@ class API extends \Piwik\Plugin\API
      * Returns the Alerts that are defined on the idSites given.
      *
      * @param array $idSites
+     * @param bool  $ifSuperUserReturnAllAlerts
      *
      * @return array
      */
-	public function getAlerts($idSites)
+	public function getAlerts($idSites, $ifSuperUserReturnAllAlerts = false)
 	{
         if (empty($idSites)) {
             return array();
@@ -74,7 +75,12 @@ class API extends \Piwik\Plugin\API
         $idSites = Site::getIdSitesFromIdSitesString($idSites);
         Piwik::checkUserHasViewAccess($idSites);
 
-        $login  = Piwik::getCurrentUserLogin();
+        if (Piwik::isUserIsSuperUser() && $ifSuperUserReturnAllAlerts) {
+            $login = false;
+        } else {
+            $login = Piwik::getCurrentUserLogin();
+        }
+
         $alerts = $this->getModel()->getAlerts($idSites, $login);
 
         return $alerts;

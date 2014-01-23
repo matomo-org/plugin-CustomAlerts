@@ -268,6 +268,33 @@ class ApiTest extends BaseTest
         $this->assertCount(3, $alerts);
     }
 
+    public function test_getAlerts_shouldReturnAllAlertsIfSuperUserAndReturnAllFlagIsEnabled()
+    {
+        $siteIds = array($this->idSite2, $this->idSite);
+
+        $this->setSuperUser();
+        \FakeAccess::$identity    = 'AnyLogin';
+        \FakeAccess::$idSitesView = $siteIds;
+
+        $alerts = $this->api->getAlerts($siteIds, true);
+        $this->assertCount(3, $alerts);
+
+        $alerts = $this->api->getAlerts($siteIds, false);
+        $this->assertCount(0, $alerts);
+    }
+
+    public function test_getAlerts_shouldNotReturnAllAlertsIfReturnAllFlagIsEnabledButUserIsNotSuperUser()
+    {
+        $siteIds = array($this->idSite2, $this->idSite);
+
+        $this->setUser();
+        \FakeAccess::$identity    = 'AnyLogin';
+        \FakeAccess::$idSitesView = $siteIds;
+
+        $alerts = $this->api->getAlerts($siteIds, true);
+        $this->assertCount(0, $alerts);
+    }
+
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage checkUserHasViewAccess Fake exception
