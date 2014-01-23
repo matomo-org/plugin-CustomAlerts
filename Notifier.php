@@ -215,7 +215,7 @@ class Notifier extends \Piwik\Plugin
 
     protected function getToday()
     {
-        return Date::today();
+        return Date::now();
     }
 
     protected function getPrettyDateForSite($period, $idSite)
