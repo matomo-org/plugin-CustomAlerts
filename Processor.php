@@ -286,7 +286,8 @@ class Processor
             'period' => $alert['period'],
             'date'   => $date,
             'flat'   => 1,
-            'disable_queued_filters' => 1
+            'disable_queued_filters' => 1,
+            'filter_limit' => -1
         );
 
         if (!empty($report['parameters'])) {
