@@ -58,7 +58,7 @@ class BaseTest extends \DatabaseTestCase
     {
         $pseudoMockAccess = new \FakeAccess();
         \FakeAccess::setIdSitesAdmin(array(1, 2));
-        \FakeAccess::$superUser = true;
+        \FakeAccess::setSuperUser(true);
         \FakeAccess::$identity = 'superUserLogin';
         Access::setSingletonInstance($pseudoMockAccess);
     }
