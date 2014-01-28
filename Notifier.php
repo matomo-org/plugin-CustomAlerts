@@ -219,7 +219,7 @@ class Notifier extends \Piwik\Plugin
         $timezone = Site::getTimezoneFor($idSite);
 
         $date = $this->getToday();
-        $date = $date->setTimezone($timezone);
+        $date = Date::factory($date->getDatetime(), $timezone);
         // we ran the alerts for the period before...
         $date = $date->subPeriod(1, $period);
 
