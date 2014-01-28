@@ -72,6 +72,8 @@ var CustomAlerts = (function($) {
             method: 'API.getProcessedReport',
             date: 'yesterday',
             period: 'month',
+            disable_queued_filters: 1,
+            flat: 1,
             showColumns: metric,
             apiModule: apiModule,
             apiAction: apiAction,
