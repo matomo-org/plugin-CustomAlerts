@@ -41,7 +41,7 @@ class Model
 			`metric` VARCHAR(150) NOT NULL ,
 			`metric_condition` VARCHAR(50) NOT NULL ,
 			`metric_matched` FLOAT NOT NULL ,
-			`compared_to` TINYINT NOT NULL DEFAULT 1 ,
+			`compared_to` SMALLINT NOT NULL DEFAULT 1 ,
 			`email_me` BOOLEAN NOT NULL ,
 			`additional_emails` TEXT DEFAULT '' ,
 			`phone_numbers` TEXT DEFAULT ''
@@ -70,7 +70,7 @@ class Model
 			`metric` VARCHAR(150) NOT NULL ,
 			`metric_condition` VARCHAR(50) NOT NULL ,
 			`metric_matched` FLOAT NOT NULL ,
-			`compared_to` TINYINT NOT NULL DEFAULT 1 ,
+			`compared_to` SMALLINT NOT NULL DEFAULT 1 ,
 			`email_me` BOOLEAN NOT NULL ,
 			`additional_emails` TEXT DEFAULT '' ,
 			`phone_numbers` TEXT DEFAULT '',
