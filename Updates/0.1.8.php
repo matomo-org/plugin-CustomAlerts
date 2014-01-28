@@ -24,8 +24,8 @@ class Updates_0_1_8 extends Updates
     static function getSql($schema = 'Myisam')
     {
         return array(
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` CHANGE `compared_to` `compared_to` SMALLINT( 4 ) NOT NULL DEFAULT 1" => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert') . "` CHANGE `compared_to` `compared_to` SMALLINT( 4 ) NOT NULL DEFAULT 1" => 1060,
+            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` CHANGE `compared_to` `compared_to` SMALLINT( 4 ) UNSIGNED NOT NULL DEFAULT 1" => 1060,
+            "ALTER TABLE `" . Common::prefixTable('alert') . "` CHANGE `compared_to` `compared_to` SMALLINT( 4 ) UNSIGNED NOT NULL DEFAULT 1" => 1060,
         );
     }
 
