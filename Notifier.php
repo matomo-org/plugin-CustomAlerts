@@ -122,10 +122,6 @@ class Notifier extends \Piwik\Plugin
             return '';
         }
 
-        if ($login == Piwik::getSuperUserLogin()) {
-            return Piwik::getSuperUserEmail();
-        }
-
         $user = UsersManagerApi::getInstance()->getUser($login);
 
         if (empty($user) || empty($user['email'])) {
