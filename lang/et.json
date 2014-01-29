@@ -1,0 +1,19 @@
+{
+    "CustomAlerts": {
+        "Alert": "Märguanne",
+        "AlertCondition": "Märguande tingimus",
+        "AlertMeWhen": "Anna mulle märku kui",
+        "AlertName": "Märguande nimi",
+        "Alerts": "Märguanded",
+        "Condition": "Tingimus",
+        "CreateNewAlert": "Loo uus märguanne",
+        "EditAlert": "Muuda märguannet",
+        "OperationContains": "sisaldab",
+        "OperationDoesNotContain": "ei sisalda",
+        "OperationIs": "on",
+        "OperationIsNot": "ei ole",
+        "SmsAlertFromName": "Uus märguanne",
+        "StartsWith": "algab kui",
+        "When": "kui"
+    }
+}
