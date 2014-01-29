@@ -74,6 +74,7 @@ var CustomAlerts = (function($) {
             period: 'month',
             disable_queued_filters: 1,
             flat: 1,
+            filter_limit: -1,
             showColumns: metric,
             apiModule: apiModule,
             apiAction: apiAction,
