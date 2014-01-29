@@ -35,11 +35,6 @@ class CustomProcessor extends Processor {
     {
         return parent::shouldBeTriggered($alert, $metricOne, $metricTwo);
     }
-
-    public function getValueForAlertInPast($alert, $idSite, $subPeriodN)
-    {
-        return parent::getValueForAlertInPast($alert, $idSite, $subPeriodN);
-    }
 }
 
 /**
@@ -133,6 +128,7 @@ class ProcessorTest extends BaseTest
             array('nb_hits', 'php?foo=bar&foo2=bar', 3),
             array('nb_hits', 'file.php?foo=bar&foo2=bar', 2),
             array('nb_hits', 'dir/file.php?foo=bar&foo2=bar', 2),
+            array('nb_hits', 'dir', 3),
             array('avg_time_generation', 'dir/file.php?foo=bar&foo2=bar', 0.135),
             array('avg_time_on_page', 'dir/file.php?foo=bar&foo2=bar', 360),
             array('bounce_rate', 'php?foo=bar', 0)

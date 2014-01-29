@@ -59,6 +59,33 @@ class API extends \Piwik\Plugin\API
     }
 
     /**
+     * Calculates the alert value for each site for the given days/weeks/months in past. If the period of the alert is
+     * weeks and subPeriodN is "7" it will return the value for the week 7 weeks ago. Set subPeriodN to "0" to test the
+     * current day/week/month.
+     *
+     * @param int $idAlert
+     * @param int $subPeriodN
+     *
+     * @return array
+     */
+    public function getValuesForAlertInPast($idAlert, $subPeriodN)
+    {
+        $alert = $this->getAlert($idAlert);
+
+        $processor = new Processor();
+
+        $values = array();
+        foreach ($alert['id_sites'] as $idSite) {
+            $values[] = array(
+                'idSite' => (int) $idSite,
+                'value'  => $processor->getValueForAlertInPast($alert, $idSite, (int) $subPeriodN)
+            );
+        }
+
+        return $values;
+    }
+
+    /**
      * Returns the Alerts that are defined on the idSites given.
      *
      * @param array $idSites

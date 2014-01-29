@@ -272,12 +272,18 @@ class Processor
      *
      * @return array
      */
-    protected function getValueForAlertInPast($alert, $idSite, $subPeriodN)
+    public function getValueForAlertInPast($alert, $idSite, $subPeriodN)
     {
         $processedReport = new ProcessedReport();
         $report = $processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
 
-        $date = Date::today()->subPeriod($subPeriodN, $alert['period'])->toString();
+        $date = Date::today();
+
+        if ($subPeriodN) {
+            $date = $date->subPeriod($subPeriodN, $alert['period']);
+        }
+
+        $date = $date->toString();
 
         $params = array(
             'method' => $report['module'] . '.' . $report['action'],

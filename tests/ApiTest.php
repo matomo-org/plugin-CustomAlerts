@@ -354,6 +354,50 @@ class ApiTest extends BaseTest
         $this->assertIsAlert(2, 'Initial2', 'week', array($this->idSite, $this->idSite2));
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_AlertDoesNotExist
+     */
+    public function test_getValuesForAlertInPast_ShouldFail_IfInvalidIdProvided()
+    {
+        $this->setSuperUser();
+
+        $this->api->getValuesForAlertInPast(9999, 1);
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_AccessException
+     */
+    public function test_getValuesForAlertInPast_ShouldFail_IfNotOwnerOfAlert()
+    {
+        $this->api->getValuesForAlertInPast(2, 1);
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage CustomAlerts_AccessException
+     */
+    public function test_getValuesForAlertInPast_ShouldFail_IfNotOwnerOfAlertEventIfUserIsSuperUser()
+    {
+        $this->setSuperUser();
+        \FakeAccess::$identity = 'test';
+        $this->api->getValuesForAlertInPast(2, 1);
+    }
+
+    public function test_getValuesForAlertInPast_ShouldReturnAValueForAllSites()
+    {
+        $this->setSuperUser();
+        $values = $this->api->getValuesForAlertInPast(2, 0);
+
+        $expected = array(
+            array('idSite' => $this->idSite, 'value'  => null),
+            array('idSite' => $this->idSite2, 'value' => null),
+        );
+        
+        $this->assertEquals($expected, $values);
+    }
+
     public function test_deleteAlert_ShouldRemoveAlert()
     {
         $this->setSuperUser();
