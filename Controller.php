@@ -145,11 +145,6 @@ class Controller extends \Piwik\Plugin\Controller
         $view->supportsSMS        = $this->supportsSms();
     }
 
-    private function getSitesWithAtLeastViewAccess()
-    {
-        return SitesManagerApi::getInstance()->getSitesWithAtLeastViewAccess();
-    }
-
     private function areRequirementsMet()
     {
         return PluginManager::getInstance()->isPluginActivated('ScheduledReports');

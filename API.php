@@ -102,7 +102,7 @@ class API extends \Piwik\Plugin\API
         $idSites = Site::getIdSitesFromIdSitesString($idSites);
         Piwik::checkUserHasViewAccess($idSites);
 
-        if (Piwik::isUserIsSuperUser() && $ifSuperUserReturnAllAlerts) {
+        if (Piwik::hasUserSuperUserAccess() && $ifSuperUserReturnAllAlerts) {
             $login = false;
         } else {
             $login = Piwik::getCurrentUserLogin();
