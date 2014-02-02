@@ -31,8 +31,10 @@ class Notifier extends \Piwik\Plugin
 {
     protected function getTriggeredAlerts($period, $idSite)
     {
+        $now    = $this->getToday()->getDatetime();
+
         $model  = new Model();
-        $alerts = $model->getTriggeredAlertsForPeriod($period, $this->getToday(), false);
+        $alerts = $model->getTriggeredAlertsForPeriod($period, $now, false);
 
         return array_filter($alerts, function ($alert) use ($idSite) {
             return $alert['idsite'] == $idSite && empty($alert['ts_last_sent']);
@@ -110,7 +112,7 @@ class Notifier extends \Piwik\Plugin
 
     protected function markAlertAsSent($triggeredAlert)
     {
-        $timestamp = Date::now()->getTimestamp();
+        $timestamp = Date::now()->getDatetime();
 
         $model = new Model();
         $model->markTriggeredAlertAsSent($triggeredAlert['idtriggered'], $timestamp);

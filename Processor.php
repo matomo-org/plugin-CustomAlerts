@@ -90,7 +90,6 @@ class Processor
 
         $valueNew = $this->getValueForAlertInPast($alert, $idSite, 1);
 
-        // Do we have data? stop otherwise.
         if (is_null($valueNew)) {
             $valueNew = 0;
         }
@@ -266,7 +265,7 @@ class Processor
         $dataTable->filter('Pattern', array('label', $pattern, $invert));
     }
 
-    protected function getDateForAlertInPast($idSite, $period, $subPeriodN)
+    private function getDateForAlertInPast($idSite, $period, $subPeriodN)
     {
         $timezone = Site::getTimezoneFor($idSite);
         $date     = Date::now();
