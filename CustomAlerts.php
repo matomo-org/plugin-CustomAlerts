@@ -17,6 +17,7 @@ use Piwik\Menu\MenuTop;
 use Piwik\ScheduledTask;
 use Piwik\ScheduledTime;
 use Piwik\Plugins\SitesManager\API as SitesManagerApi;
+use Piwik\Site;
 
 /**
  *
@@ -191,12 +192,15 @@ class CustomAlerts extends \Piwik\Plugin
     {
         $siteIds = $this->getSiteIdsHavingAlerts();
 
-        foreach ($siteIds as $siteId) {
+        foreach ($siteIds as $idSite) {
+            $scheduledTime = ScheduledTime::getScheduledTimeForPeriod($period);
+            $scheduledTime->setTimezone(Site::getTimezoneFor($idSite));
+
             $tasks[] = new ScheduledTask (
                 $this,
                 $methodName,
-                $siteId,
-                ScheduledTime::getScheduledTimeForSite($siteId, $period)
+                $idSite,
+                $scheduledTime
             );
         }
     }
