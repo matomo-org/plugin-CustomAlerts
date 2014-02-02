@@ -18,6 +18,7 @@ use Piwik\Common;
 use Piwik\DataTable;
 use Piwik\Date;
 use Piwik\Plugins\API\ProcessedReport;
+use Piwik\Site;
 
 /**
  *
@@ -265,6 +266,19 @@ class Processor
         $dataTable->filter('Pattern', array('label', $pattern, $invert));
     }
 
+    protected function getDateForAlertInPast($idSite, $period, $subPeriodN)
+    {
+        $timezone = Site::getTimezoneFor($idSite);
+        $date     = Date::now();
+        $date     = Date::factory($date->getDatetime(), $timezone);
+
+        if ($subPeriodN) {
+            $date = $date->subPeriod($subPeriodN, $period);
+        }
+
+        return $date->toString();
+    }
+
     /**
      * @param  array  $alert
      * @param  int    $idSite
@@ -277,20 +291,14 @@ class Processor
         $processedReport = new ProcessedReport();
         $report = $processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
 
-        $date = Date::today();
-
-        if ($subPeriodN) {
-            $date = $date->subPeriod($subPeriodN, $alert['period']);
-        }
-
-        $date = $date->toString();
+        $dateInPast = $this->getDateForAlertInPast($idSite, $alert['period'], $subPeriodN);
 
         $params = array(
             'method' => $report['module'] . '.' . $report['action'],
             'format' => 'original',
             'idSite' => $idSite,
             'period' => $alert['period'],
-            'date'   => $date,
+            'date'   => $dateInPast,
             'flat'   => 1,
             'disable_queued_filters' => 1,
             'filter_limit' => -1
