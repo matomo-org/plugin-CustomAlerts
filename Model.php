@@ -57,7 +57,7 @@ class Model
 			`idtriggered` BIGINT unsigned NOT NULL AUTO_INCREMENT,
 			`idalert` INT( 11 ) NOT NULL ,
 			`idsite` INT( 11 ) NOT NULL ,
-			`ts_triggered` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+			`ts_triggered` timestamp NOT NULL default CURRENT_TIMESTAMP,
 			`ts_last_sent` timestamp NULL DEFAULT NULL,
 			`value_old` DECIMAL (20,3) DEFAULT NULL,
 			`value_new` DECIMAL (20,3) DEFAULT NULL,
@@ -333,6 +333,7 @@ class Model
         }
 
         $triggeredAlert['ts_triggered'] = $datetime;
+        $triggeredAlert['ts_last_sent'] = null;
         $triggeredAlert['value_new'] = $valueNew;
         $triggeredAlert['value_old'] = $valueOld;
         $triggeredAlert['idsite']    = $idSite;

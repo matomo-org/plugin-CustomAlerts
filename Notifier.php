@@ -51,10 +51,6 @@ class Notifier extends \Piwik\Plugin
 	{
 		$triggeredAlerts = $this->getTriggeredAlerts($period, $idSite);
 
-        foreach($triggeredAlerts as $triggeredAlert) {
-            $this->markAlertAsSent($triggeredAlert);
-        }
-
         $alertsPerEmail = $this->groupAlertsPerEmailRecipient($triggeredAlerts);
         foreach ($alertsPerEmail as $email => $alerts) {
             $this->sendAlertsPerEmailToRecipient($alerts, new Mail(), $email, $period, $idSite);
@@ -64,7 +60,11 @@ class Notifier extends \Piwik\Plugin
         foreach ($alertsPerSms as $phoneNumber => $alerts) {
             $this->sendAlertsPerSmsToRecipient($alerts, APIMobileMessaging::getInstance(), $phoneNumber);
         }
-	}
+
+        foreach($triggeredAlerts as $triggeredAlert) {
+            $this->markAlertAsSent($triggeredAlert);
+        }
+    }
 
     private function groupAlertsPerSmsRecipient($triggeredAlerts)
     {
