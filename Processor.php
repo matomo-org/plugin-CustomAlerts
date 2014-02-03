@@ -308,10 +308,11 @@ class Processor
 
         $request = new ApiRequest($params);
         $table   = $request->process();
+        $value   = $this->aggregateToOneValue($table, $alert['metric'], $alert['report_condition'], $alert['report_matched']);
 
         DataTable\Manager::getInstance()->deleteAll($subtableId);
 
-        return $this->aggregateToOneValue($table, $alert['metric'], $alert['report_condition'], $alert['report_matched']);
+        return $value;
     }
 
     protected function triggerAlert($alert, $idSite, $valueNew, $valueOld)
