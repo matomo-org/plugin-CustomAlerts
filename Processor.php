@@ -304,8 +304,12 @@ class Processor
             $params = array_merge($params, $report['parameters']);
         }
 
+        $subtableId = DataTable\Manager::getInstance()->getMostRecentTableId();
+
         $request = new ApiRequest($params);
         $table   = $request->process();
+
+        DataTable\Manager::getInstance()->deleteAll($subtableId);
 
         return $this->aggregateToOneValue($table, $alert['metric'], $alert['report_condition'], $alert['report_matched']);
     }
