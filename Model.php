@@ -14,6 +14,7 @@ namespace Piwik\Plugins\CustomAlerts;
 use Exception;
 use Piwik\Common;
 use Piwik\Date;
+use Piwik\DbHelper;
 use Piwik\Period;
 use Piwik\Db;
 use Piwik\Piwik;
@@ -27,64 +28,52 @@ class Model
 
     public static function install()
     {
-        $tableAlert = "CREATE TABLE " . Common::prefixTable('alert') . " (
-			`idalert` INT NOT NULL PRIMARY KEY ,
-			`name` VARCHAR(100) NOT NULL ,
-			`login` VARCHAR(100) NOT NULL ,
-			`period` VARCHAR(5) NOT NULL ,
-			`report` VARCHAR(150) NOT NULL ,
-			`report_condition` VARCHAR(50) ,
-			`report_matched` VARCHAR(255) ,
-			`metric` VARCHAR(150) NOT NULL ,
-			`metric_condition` VARCHAR(50) NOT NULL ,
-			`metric_matched` FLOAT NOT NULL ,
-			`compared_to` SMALLINT (4) UNSIGNED NOT NULL DEFAULT 1 ,
-			`email_me` BOOLEAN NOT NULL ,
-			`additional_emails` TEXT DEFAULT '' ,
-			`phone_numbers` TEXT DEFAULT ''
-		) DEFAULT CHARSET=utf8 ;";
+        $tableAlert = "`idalert` INT NOT NULL PRIMARY KEY ,
+                       `name` VARCHAR(100) NOT NULL ,
+                       `login` VARCHAR(100) NOT NULL ,
+                       `period` VARCHAR(5) NOT NULL ,
+                       `report` VARCHAR(150) NOT NULL ,
+                       `report_condition` VARCHAR(50) ,
+                       `report_matched` VARCHAR(255) ,
+                       `metric` VARCHAR(150) NOT NULL ,
+                       `metric_condition` VARCHAR(50) NOT NULL ,
+                       `metric_matched` FLOAT NOT NULL ,
+                       `compared_to` SMALLINT (4) UNSIGNED NOT NULL DEFAULT 1 ,
+                       `email_me` BOOLEAN NOT NULL ,
+                       `additional_emails` TEXT DEFAULT '' ,
+                       `phone_numbers` TEXT DEFAULT ''";
 
-        $tableAlertSite = "CREATE TABLE " . Common::prefixTable('alert_site') . "(
-			`idalert` INT( 11 ) NOT NULL ,
-			`idsite` INT( 11 ) NOT NULL ,
-			PRIMARY KEY ( idalert, idsite )
-		) DEFAULT CHARSET=utf8 ;";
+        DbHelper::createTable('alert', $tableAlert);
 
-        $tableAlertLog = "CREATE TABLE " . Common::prefixTable('alert_triggered') . " (
-			`idtriggered` BIGINT unsigned NOT NULL AUTO_INCREMENT,
-			`idalert` INT( 11 ) NOT NULL ,
-			`idsite` INT( 11 ) NOT NULL ,
-			`ts_triggered` timestamp NOT NULL default CURRENT_TIMESTAMP,
-			`ts_last_sent` timestamp NULL DEFAULT NULL,
-			`value_old` DECIMAL (20,3) DEFAULT NULL,
-			`value_new` DECIMAL (20,3) DEFAULT NULL,
-            `name` VARCHAR(100) NOT NULL ,
-			`login` VARCHAR(100) NOT NULL ,
-			`period` VARCHAR(5) NOT NULL ,
-			`report` VARCHAR(150) NOT NULL ,
-			`report_condition` VARCHAR(50) ,
-			`report_matched` VARCHAR(1000) ,
-			`metric` VARCHAR(150) NOT NULL ,
-			`metric_condition` VARCHAR(50) NOT NULL ,
-			`metric_matched` FLOAT NOT NULL ,
-			`compared_to` SMALLINT NOT NULL DEFAULT 1 ,
-			`email_me` BOOLEAN NOT NULL ,
-			`additional_emails` TEXT DEFAULT '' ,
-			`phone_numbers` TEXT DEFAULT '',
-			PRIMARY KEY (idtriggered)
-		)";
+        $tableAlertSite = "`idalert` INT( 11 ) NOT NULL ,
+                           `idsite` INT( 11 ) NOT NULL ,
+                           PRIMARY KEY ( idalert, idsite )";
 
-        try {
-            Db::exec($tableAlert);
-            Db::exec($tableAlertLog);
-            Db::exec($tableAlertSite);
-        } catch (Exception $e) {
-            // mysql code error 1050:table already exists
-            // see bug #153 http://dev.piwik.org/trac/ticket/153
-            if (!Db::get()->isErrNo($e, '1050')) {
-                throw $e;
-            }
-        }
+        DbHelper::createTable('alert_site', $tableAlertSite);
+
+        $tableAlertLog = "`idtriggered` BIGINT unsigned NOT NULL AUTO_INCREMENT,
+			              `idalert` INT( 11 ) NOT NULL ,
+			              `idsite` INT( 11 ) NOT NULL ,
+			              `ts_triggered` timestamp NOT NULL default CURRENT_TIMESTAMP,
+			              `ts_last_sent` timestamp NULL DEFAULT NULL,
+			              `value_old` DECIMAL (20,3) DEFAULT NULL,
+			              `value_new` DECIMAL (20,3) DEFAULT NULL,
+                          `name` VARCHAR(100) NOT NULL ,
+			              `login` VARCHAR(100) NOT NULL ,
+			              `period` VARCHAR(5) NOT NULL ,
+			              `report` VARCHAR(150) NOT NULL ,
+			              `report_condition` VARCHAR(50) ,
+			              `report_matched` VARCHAR(1000) ,
+			              `metric` VARCHAR(150) NOT NULL ,
+			              `metric_condition` VARCHAR(50) NOT NULL ,
+			              `metric_matched` FLOAT NOT NULL ,
+			              `compared_to` SMALLINT NOT NULL DEFAULT 1 ,
+			              `email_me` BOOLEAN NOT NULL ,
+			              `additional_emails` TEXT DEFAULT '' ,
+			              `phone_numbers` TEXT DEFAULT '',
+			              PRIMARY KEY (idtriggered)";
+
+        DbHelper::createTable('alert_triggered', $tableAlertLog);
     }
 
     public static function uninstall()
