@@ -18,7 +18,7 @@ use Piwik\Updates;
  */
 class Updates_0_0_8 extends Updates
 {
-    static function getSql($schema = 'Myisam')
+    static function getSql()
     {
         return array(
             "RENAME TABLE `" . Common::prefixTable('alert_log') . "` TO `" . Common::prefixTable('alert_triggered') . "`" => 1060,

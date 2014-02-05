@@ -18,7 +18,7 @@ use Piwik\Updates;
  */
 class Updates_0_1_10 extends Updates
 {
-    static function getSql($schema = 'Myisam')
+    static function getSql()
     {
         return array(
             "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` CHANGE `ts_triggered` `ts_triggered` timestamp NOT NULL default CURRENT_TIMESTAMP" => 1060,

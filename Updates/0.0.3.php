@@ -18,7 +18,7 @@ use Piwik\Updates;
  */
 class Updates_0_0_3 extends Updates
 {
-    static function getSql($schema = 'Myisam')
+    static function getSql()
     {
         return array(
             "ALTER TABLE `" . Common::prefixTable('alert_log') . "` ADD `value_old` BIGINT unsigned DEFAULT NULL AFTER `ts_triggered` " => 1060,

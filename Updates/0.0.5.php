@@ -18,7 +18,7 @@ use Piwik\Updates;
  */
 class Updates_0_0_5 extends Updates
 {
-    static function getSql($schema = 'Myisam')
+    static function getSql()
     {
         return array(
             "ALTER TABLE `" . Common::prefixTable('alert') . "` ADD `compared_to` TINYINT NOT NULL DEFAULT 1 AFTER `metric_matched` " => 1060

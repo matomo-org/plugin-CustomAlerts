@@ -18,7 +18,7 @@ use Piwik\Updates;
  */
 class Updates_0_0_7 extends Updates
 {
-    static function getSql($schema = 'Myisam')
+    static function getSql()
     {
         return array(
             "ALTER TABLE `" . Common::prefixTable('alert_log') . "` CHANGE `value_old` `value_old` DECIMAL (20,3) DEFAULT NULL" => 1060,
