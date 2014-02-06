@@ -134,9 +134,21 @@ class Processor
         return true;
     }
 
+    private function needsBothValuesToTrigger($alert)
+    {
+        $comparisons = array(
+            'decrease_more_than',
+            'increase_more_than',
+            'percentage_decrease_more_than',
+            'percentage_increase_more_than'
+        );
+
+        return in_array($alert['metric_condition'], $comparisons);
+    }
+
     protected function shouldBeTriggered($alert, $valueNew, $valueOld)
     {
-        if (empty($valueOld) && empty($valueNew)) {
+        if ($this->needsBothValuesToTrigger($alert) && empty($valueOld) && empty($valueNew)) {
             return false;
         }
 

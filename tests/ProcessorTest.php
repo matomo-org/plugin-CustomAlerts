@@ -257,6 +257,8 @@ class ProcessorTest extends BaseTest
         $this->assertShouldBeTriggered('less_than', 20, 10, null);
         $this->assertShouldBeTriggered('less_than', 20, 10, 15);
         $this->assertShouldBeTriggered('less_than', 20, 10, 30);
+        $this->assertShouldBeTriggered('less_than', 20, 0, 0);
+        $this->assertShouldBeTriggered('less_than', 20, null, null);
 
         $this->assertShouldNotBeTriggered('less_than', 20, 30, null);
         $this->assertShouldNotBeTriggered('less_than', 20, 30, 30);
