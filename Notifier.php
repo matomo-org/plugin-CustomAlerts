@@ -34,7 +34,7 @@ class Notifier extends \Piwik\Plugin
         $alerts = $model->getTriggeredAlertsForPeriod($period, $now, false);
 
         return array_filter($alerts, function ($alert) use ($idSite) {
-            return $alert['idsite'] == $idSite && empty($alert['ts_last_sent']);
+            return $idSite && (int) $alert['idsite'] === (int) $idSite && empty($alert['ts_last_sent']);
         });
     }
 
