@@ -1,0 +1,25 @@
+{
+    "CustomAlerts": {
+        "Alert": "Notifiera",
+        "AlertMeWhen": "Notifiera mig när",
+        "ApplyTo": "Ansök om",
+        "ComparedToThe": "Jämfört med",
+        "CreateNewAlert": "Skapa ny Notifiering",
+        "DayComparedToPreviousWeek": "Samma dag förgående vecka",
+        "DecreasesMoreThan": "Minskar med mer än",
+        "DoesNotStartWith": "Börjar inte med",
+        "EndsWith": "Slutar med",
+        "InvalidComparableDate": "Ogiltigt jämförbart datum!",
+        "InvalidMetricValue": "Värdet måste vara numeriskt",
+        "InvalidReport": "Ogiltig rapport!",
+        "IsGreaterThan": "Är större än",
+        "MailEnd": "Glad analysering!",
+        "MatchesAnyExpression": "Matchar någon",
+        "MonthComparedToPreviousMonth": "Förgående månad",
+        "NoAlertsDefined": "Du har inte skapat några notifieringar, skapa en nu!",
+        "OperationContains": "Innehåller",
+        "OperationIs": "är",
+        "ThisAppliesTo": "Det här läggs till på rapporten",
+        "WeekComparedToPreviousWeek": "Förgående vecka"
+    }
+}
