@@ -8,9 +8,14 @@ var CustomAlerts = (function($) {
         return $("#period").val();
     }
 
+    function getSiteId()
+    {
+        return $('[name=idSite]').attr('siteid');
+    }
+
     function updateFormValues(siteId) {
         if (!siteId || !$.isNumeric(siteId)) {
-            siteId = $('[name=idSite]').val();
+            siteId = getSiteId();
         }
 
         reportValuesAutoComplete = null;
@@ -78,7 +83,7 @@ var CustomAlerts = (function($) {
             showColumns: metric,
             apiModule: apiModule,
             apiAction: apiAction,
-            idSite: $('[name=idSite]').val(),
+            idSite: getSiteId(),
             format: 'JSON'
         }, 'GET');
         ajaxRequest.setCallback(function(data) {
@@ -248,8 +253,8 @@ var CustomAlerts = (function($) {
         $('.alerts #reportCondition').change(updateReportCondition)
         $('.alerts #metricCondition').change(updateMetricCondition)
 
-        var currentSiteId = $('[name=idSite]').val();
-        $('.sites_autocomplete').bind('piwik:siteSelected', function (e, site) {
+        var currentSiteId = getSiteId();
+        $('#alertReportSiteSelector').bind('change', function (e, site) {
             if (site.id != currentSiteId) {
                 currentSiteId = site.id;
                 updateFormValues(site.id);
@@ -291,7 +296,7 @@ var CustomAlerts = (function($) {
             apiParameters.reportUniqueId = $('#report').find('option:selected').val();
             apiParameters.reportCondition = $('#reportCondition').find('option:selected').val();
             apiParameters.reportValue  = $('#reportValue').val();
-            apiParameters.idSites = [$('[name=idSite]').val()];
+            apiParameters.idSites = [getSiteId()];
             apiParameters.comparedTo = $('[name=compared_to]:not([data-inactive])').val();
 
             return apiParameters;

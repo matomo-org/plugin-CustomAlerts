@@ -27,15 +27,16 @@
             <tr>
                 <td class="first"><label for="applyTo">{{ 'CustomAlerts_ApplyTo'|translate }}</label></td>
                 <td>
-                    {% include "@CoreHome/_siteSelect.twig" with {
-                        'siteName':currentSiteName,
-                        'idSite':currentSiteId,
-                        'switchSiteOnSelect':false,
-                        'showAllSitesItem':false,
-                        'showSelectedSite':true,
-                        'siteSelectorId': 'alertReportSiteSelector',
-                        'inputName': 'idSite'
-                    } %}
+
+                    <div piwik-siteselector
+                         class="sites_autocomplete"
+                         siteid="{{ currentSiteId }}"
+                         sitename="{{ currentSiteName }}"
+                         switch-site-on-select="false"
+                         show-all-sites-item="false"
+                         show-selected-site="true"
+                         name="idSite"
+                         id="alertReportSiteSelector"></div>
                 </td>
             </tr>
             <tr>
