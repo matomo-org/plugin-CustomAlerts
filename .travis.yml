@@ -12,15 +12,15 @@ script: ./travis.sh
 
 install:
   - TEST_PIWIK_VERSION=$(wget builds.piwik.org/LATEST_BETA -q -O -)
-  - echo $TEST_PIWIK_VERSION
   - TEST_PIWIK_VERSION=`echo $TEST_PIWIK_VERSION | tr -d ' ' | tr -d '\n'`
   - mkdir CustomAlerts
   - cp -R !(CustomAlerts) CustomAlerts
+  - cp -R .git/ CustomAlerts/
   - git clone https://github.com/piwik/piwik.git piwik
   - cd piwik
   - git checkout "$TEST_PIWIK_VERSION"
   - git submodule init
-  - git submodule update
+  - git submodule update || true
   - composer install
   - rm -rf plugins/CustomAlerts
   - cd ../
