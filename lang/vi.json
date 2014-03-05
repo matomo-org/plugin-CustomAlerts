@@ -1,0 +1,6 @@
+{
+    "CustomAlerts": {
+        "Condition": "Điều kiện",
+        "DayComparedToPreviousDay": "Ngày trước đó"
+    }
+}
