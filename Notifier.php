@@ -172,6 +172,7 @@ class Notifier extends \Piwik\Plugin
         $prettyDate  = $this->getPrettyDateForSite($period, $idSite);
         $websiteName = Site::getNameFor($idSite);
 
+        $mail->setDefaultFromPiwik();
         $mail->addTo($recipient);
         $mail->setSubject(Piwik::translate('CustomAlerts_MailAlertSubject', array($websiteName, $prettyDate)));
 
