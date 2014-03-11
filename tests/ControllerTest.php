@@ -8,10 +8,9 @@
 
 namespace Piwik\Plugins\CustomAlerts\tests;
 
-use Piwik\Common;
 use Piwik\Plugin;
+use Piwik\SettingsPiwik;
 use Piwik\Translate;
-use Piwik\Url;
 use Piwik\Plugins\CustomAlerts\Controller;
 
 class CustomController extends Controller
@@ -51,7 +50,7 @@ class ControllerTest extends BaseTest
     {
         $alerts = $this->getTriggeredAlerts();
 
-        $host = Common::sanitizeInputValue(Url::getCurrentUrlWithoutFileName());
+        $host = SettingsPiwik::getPiwikUrl();
 
         $expected = <<<FORMATTED
 MyName1 has been triggered as the metric Visits in report Single Website dashboard decreased more than 5000 from 228.128 to 4493.
@@ -95,7 +94,7 @@ FORMATTED;
     {
         $alerts = $this->getTriggeredAlerts();
 
-        $host = Common::sanitizeInputValue(Url::getCurrentUrlWithoutFileName());
+        $host = SettingsPiwik::getPiwikUrl();
 
         $rendered = $this->controller->formatAlerts($alerts, 'html');
 
