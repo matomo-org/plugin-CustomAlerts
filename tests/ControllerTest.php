@@ -48,6 +48,7 @@ class ControllerTest extends BaseTest
 
     public function test_formatAlerts_asText()
     {
+        SettingsPiwik::$piwikUrlCache = 'http://localhost';
         $alerts = $this->getTriggeredAlerts();
 
         $host = SettingsPiwik::getPiwikUrl();
@@ -65,6 +66,7 @@ FORMATTED;
         $rendered = $this->controller->formatAlerts($alerts, 'text');
 
         $this->assertEquals($expected, $rendered);
+        SettingsPiwik::$piwikUrlCache = null;
     }
 
     public function test_formatAlerts_asSms()
@@ -92,6 +94,8 @@ FORMATTED;
 
     public function test_formatAlerts_asHtml()
     {
+        SettingsPiwik::$piwikUrlCache = 'http://localhost';
+
         $alerts = $this->getTriggeredAlerts();
 
         $host = SettingsPiwik::getPiwikUrl();
@@ -128,6 +132,8 @@ FORMATTED;
 FORMATTED;
 
         $this->assertEquals($expected, $rendered);
+
+        SettingsPiwik::$piwikUrlCache = null;
     }
 
     public function test_enrichTriggeredAlerts_shouldEnrichAlerts_IfReportExistsAndMetricIsValid()
