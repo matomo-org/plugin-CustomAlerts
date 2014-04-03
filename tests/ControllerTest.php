@@ -65,8 +65,9 @@ FORMATTED;
 
         $rendered = $this->controller->formatAlerts($alerts, 'text');
 
-        $this->assertEquals($expected, $rendered);
         SettingsPiwik::$piwikUrlCache = null;
+
+        $this->assertEquals($expected, $rendered);
     }
 
     public function test_formatAlerts_asSms()
@@ -131,9 +132,10 @@ FORMATTED;
 </table>
 FORMATTED;
 
+        SettingsPiwik::$piwikUrlCache = null;
+
         $this->assertEquals($expected, $rendered);
 
-        SettingsPiwik::$piwikUrlCache = null;
     }
 
     public function test_enrichTriggeredAlerts_shouldEnrichAlerts_IfReportExistsAndMetricIsValid()
