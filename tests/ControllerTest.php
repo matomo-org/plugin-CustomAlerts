@@ -48,7 +48,6 @@ class ControllerTest extends BaseTest
 
     public function test_formatAlerts_asText()
     {
-        SettingsPiwik::$piwikUrlCache = 'http://localhost';
         $alerts = $this->getTriggeredAlerts();
 
         $host = SettingsPiwik::getPiwikUrl();
@@ -64,8 +63,6 @@ MyName2 has been triggered as the metric Visits in report Single Website dashboa
 FORMATTED;
 
         $rendered = $this->controller->formatAlerts($alerts, 'text');
-
-        SettingsPiwik::$piwikUrlCache = null;
 
         $this->assertEquals($expected, $rendered);
     }
@@ -95,8 +92,6 @@ FORMATTED;
 
     public function test_formatAlerts_asHtml()
     {
-        SettingsPiwik::$piwikUrlCache = 'http://localhost';
-
         $alerts = $this->getTriggeredAlerts();
 
         $host = SettingsPiwik::getPiwikUrl();
@@ -131,8 +126,6 @@ FORMATTED;
     </tbody>
 </table>
 FORMATTED;
-
-        SettingsPiwik::$piwikUrlCache = null;
 
         $this->assertEquals($expected, $rendered);
 
