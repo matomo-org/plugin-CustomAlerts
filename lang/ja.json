@@ -1,0 +1,6 @@
+{
+    "CustomAlerts": {
+        "ApplyTo": "適用する",
+        "InvalidMetricValue": "値は数値にする必要があります"
+    }
+}

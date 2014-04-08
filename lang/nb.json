@@ -1,0 +1,10 @@
+{
+    "CustomAlerts": {
+        "DayComparedToPreviousDay": "forrige dag",
+        "MonthComparedToPreviousMonth": "forrige måned",
+        "OperationContains": "inneholder",
+        "OperationIs": "er",
+        "OperationIsNot": "er ikke",
+        "When": "når"
+    }
+}
