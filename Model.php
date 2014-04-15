@@ -78,11 +78,11 @@ class Model
 
     public static function uninstall()
     {
-        $tables = array('alert', 'alert_triggered', 'alert_site');
-        foreach ($tables as $table) {
-            $sql = "DROP TABLE IF EXISTS " . Common::prefixTable($table);
-            Db::exec($sql);
-        }
+        Db::dropTables(array(
+            Common::prefixTable('alert'),
+            Common::prefixTable('alert_triggered'),
+            Common::prefixTable('alert_site')
+        ));
     }
 
     /**
