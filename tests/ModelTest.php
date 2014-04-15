@@ -53,6 +53,8 @@ class ModelTest extends BaseTest
         Model::uninstall();
 
         $this->assertNotContainTables(array('alert', 'alert_site', 'alert_triggered'));
+
+        Model::install();
     }
 
     public function test_addAlert_ShouldCreateANewAlert()
