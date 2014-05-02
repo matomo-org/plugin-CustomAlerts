@@ -135,7 +135,7 @@ class Model
 	public function getTriggeredAlertsForPeriod($period, $date)
 	{
 		$piwikDate = Date::factory($date);
-		$date      = Period::factory($period, $piwikDate);
+		$date      = Period\Factory::build($period, $piwikDate);
 
         $db  = Db::get();
 		$sql = $this->getTriggeredAlertsSelectPart()

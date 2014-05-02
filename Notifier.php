@@ -224,7 +224,7 @@ class Notifier extends \Piwik\Plugin
         $date = $date->subPeriod(1, $period);
 
         // also make sure if period is month to display "2014-01" and not "2014-01-31"
-        $period     = Period::factory($period, $date);
+        $period     = Period\Factory::build($period, $date);
         $prettyDate = $period->getLocalizedLongString();
 
         return $prettyDate;

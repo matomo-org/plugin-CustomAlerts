@@ -275,7 +275,7 @@ class Controller extends \Piwik\Plugin\Controller
         // we ran the alerts for the period before...
         $date = $date->subPeriod(1, $period);
 
-        $period     = Period::factory($period, $date);
+        $period     = Period\Factory::build($period, $date);
         $prettyDate = $period->getLocalizedShortString();
 
         return $prettyDate;
