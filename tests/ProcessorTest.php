@@ -9,8 +9,8 @@
 namespace Piwik\Plugins\CustomAlerts\tests;
 
 use Piwik\Common;
-use Piwik\DataTable\Row;
 use Piwik\DataTable;
+use Piwik\DataTable\Row;
 use Piwik\Date;
 use Piwik\Plugins\Actions;
 use Piwik\Plugins\CustomAlerts\Processor;
