@@ -9,9 +9,9 @@
 namespace Piwik\Plugins\CustomAlerts\tests;
 
 use Piwik\Plugin;
+use Piwik\Plugins\CustomAlerts\Controller;
 use Piwik\SettingsPiwik;
 use Piwik\Translate;
-use Piwik\Plugins\CustomAlerts\Controller;
 
 class CustomController extends Controller
 {

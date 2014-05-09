@@ -10,8 +10,8 @@ namespace Piwik\Plugins\CustomAlerts\tests;
 
 use Piwik\Access;
 use Piwik\Db;
-use Piwik\Plugins\CustomAlerts\Model;
 use Piwik\Plugins\CustomAlerts\API;
+use Piwik\Plugins\CustomAlerts\Model;
 use Piwik\Translate;
 
 /**

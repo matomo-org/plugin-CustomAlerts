@@ -11,12 +11,12 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
+use Exception;
 use Piwik\Common;
 use Piwik\Piwik;
+use Piwik\Plugins\MobileMessaging\API as APIMobileMessaging;
 use Piwik\Site;
 use Piwik\Translate;
-use Piwik\Plugins\MobileMessaging\API as APIMobileMessaging;
-use Exception;
 
 /**
  *

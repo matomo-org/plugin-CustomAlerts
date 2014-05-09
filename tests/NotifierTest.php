@@ -8,13 +8,11 @@
 
 namespace Piwik\Plugins\CustomAlerts\tests;
 
-use Piwik\Common;
 use Piwik\Date;
 use Piwik\Mail;
 use Piwik\Plugin;
 use Piwik\Plugins\CustomAlerts\Notifier;
 use Piwik\Translate;
-use Piwik\Url;
 
 class CustomNotifier extends Notifier
 {
