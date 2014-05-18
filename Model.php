@@ -38,7 +38,7 @@ class Model
                        `metric_condition` VARCHAR(50) NOT NULL ,
                        `metric_matched` FLOAT NOT NULL ,
                        `compared_to` SMALLINT (4) UNSIGNED NOT NULL DEFAULT 1 ,
-                       `email_me` BOOLEAN NOT NULL ,
+                       `email_me` BOOLEAN NOT NULL DEFAULT '0',
                        `additional_emails` TEXT ,
                        `phone_numbers` TEXT ";
 
@@ -67,7 +67,7 @@ class Model
 			              `metric_condition` VARCHAR(50) NOT NULL ,
 			              `metric_matched` FLOAT NOT NULL ,
 			              `compared_to` SMALLINT NOT NULL DEFAULT 1 ,
-			              `email_me` BOOLEAN NOT NULL ,
+			              `email_me` BOOLEAN NOT NULL  DEFAULT '0',
 			              `additional_emails` TEXT ,
 			              `phone_numbers` TEXT ,
 			              PRIMARY KEY (idtriggered)";
