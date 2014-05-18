@@ -210,7 +210,7 @@ FORMATTED;
             'metric_matched' => $metricMatched,
             'additional_emails' => array('test5@example.com'),
             'phone_numbers' => array('+1234567890', '232'),
-            'email_me' => true,
+            'email_me' => 1,
             'value_new' => '4493.000',
             'value_old' => '228.128',
             'ts_triggered' => time()

@@ -463,7 +463,7 @@ class ApiTest extends BaseTest
             'value_old' => 48,
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers' => array(),
-            'email_me' => false,
+            'email_me' => 0,
             'compared_to' => 1,
             'id_sites' => array(1, 2)
         );

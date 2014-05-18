@@ -391,7 +391,7 @@ class Model
         foreach ($alerts as &$alert) {
             $alert['additional_emails'] = json_decode($alert['additional_emails']);
             $alert['phone_numbers']     = json_decode($alert['phone_numbers']);
-            $alert['email_me']          = (bool) $alert['email_me'];
+            $alert['email_me']          = (int) $alert['email_me'];
             $alert['compared_to']       = (int) $alert['compared_to'];
             $alert['id_sites']          = $this->getDefinedSiteIds($alert['idalert']);
         }
