@@ -39,8 +39,8 @@ class Model
                        `metric_matched` FLOAT NOT NULL ,
                        `compared_to` SMALLINT (4) UNSIGNED NOT NULL DEFAULT 1 ,
                        `email_me` BOOLEAN NOT NULL ,
-                       `additional_emails` TEXT DEFAULT '' ,
-                       `phone_numbers` TEXT DEFAULT ''";
+                       `additional_emails` TEXT ,
+                       `phone_numbers` TEXT ";
 
         DbHelper::createTable('alert', $tableAlert);
 
@@ -68,8 +68,8 @@ class Model
 			              `metric_matched` FLOAT NOT NULL ,
 			              `compared_to` SMALLINT NOT NULL DEFAULT 1 ,
 			              `email_me` BOOLEAN NOT NULL ,
-			              `additional_emails` TEXT DEFAULT '' ,
-			              `phone_numbers` TEXT DEFAULT '',
+			              `additional_emails` TEXT ,
+			              `phone_numbers` TEXT ,
 			              PRIMARY KEY (idtriggered)";
 
         DbHelper::createTable('alert_triggered', $tableAlertLog);
