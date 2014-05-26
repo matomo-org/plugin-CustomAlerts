@@ -28,7 +28,6 @@ class CustomAlerts extends \Piwik\Plugin
 	public function getListHooksRegistered()
 	{
 		return array(
-		    'Menu.Top.addItems'                 => 'addTopMenu',
 		    'TaskScheduler.getScheduledTasks'   => 'getScheduledTasks',
 		    'MobileMessaging.deletePhoneNumber' => 'removePhoneNumberFromAllAlerts',
 		    'AssetManager.getJavaScriptFiles'   => 'getJavaScriptFiles',
@@ -85,13 +84,6 @@ class CustomAlerts extends \Piwik\Plugin
 	{
 		$cssFiles[] = "plugins/CustomAlerts/stylesheets/alerts.less";
 	}
-
-    public function addTopMenu()
-    {
-        $title = Piwik::translate('CustomAlerts_Alerts');
-
-        MenuTop::addEntry($title, array('module' => 'CustomAlerts', 'action' => 'index'), !Piwik::isUserIsAnonymous(), 9);
-    }
 
     public function getScheduledTasks(&$tasks)
     {
