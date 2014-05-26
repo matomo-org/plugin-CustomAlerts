@@ -8,13 +8,11 @@
 
 namespace Piwik\Plugins\CustomAlerts\tests;
 
-use Piwik\Common;
 use Piwik\Date;
 use Piwik\Mail;
 use Piwik\Plugin;
 use Piwik\Plugins\CustomAlerts\Notifier;
 use Piwik\Translate;
-use Piwik\Url;
 
 class CustomNotifier extends Notifier
 {
@@ -202,7 +200,7 @@ t your custom alert settings, please sign in and access the Alerts page.=
             'metric_matched' => $metricMatched,
             'additional_emails' => array('test5@example.com'),
             'phone_numbers' => array('+1234567890', '232'),
-            'email_me' => true,
+            'email_me' => 1,
             'value_new' => '4493.000',
             'value_old' => '228.128',
             'ts_triggered' => time()

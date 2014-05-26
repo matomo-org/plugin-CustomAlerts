@@ -11,12 +11,12 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
-use Piwik\Piwik;
 use Piwik\Db;
 use Piwik\Menu\MenuTop;
+use Piwik\Piwik;
+use Piwik\Plugins\SitesManager\API as SitesManagerApi;
 use Piwik\ScheduledTask;
 use Piwik\ScheduledTime;
-use Piwik\Plugins\SitesManager\API as SitesManagerApi;
 use Piwik\Site;
 
 /**

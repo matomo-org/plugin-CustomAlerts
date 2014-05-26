@@ -15,12 +15,13 @@ use Piwik\Updates;
 
 /**
  */
-class Updates_0_1_10 extends Updates
+class Updates_0_1_17 extends Updates
 {
     static function getSql()
     {
         return array(
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` CHANGE `ts_triggered` `ts_triggered` timestamp NOT NULL default CURRENT_TIMESTAMP" => 1060,
+            "ALTER TABLE `" . Common::prefixTable('alert') . "` CHANGE `email_me` `email_me` BOOLEAN NOT NULL DEFAULT '0'" => 1060,
+            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` CHANGE `email_me` `email_me` BOOLEAN NOT NULL DEFAULT '0'" => 1060,
         );
     }
 

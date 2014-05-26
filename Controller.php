@@ -10,16 +10,16 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
+use Piwik\Common;
 use Piwik\Date;
+use Piwik\Db;
+use Piwik\Period;
 use Piwik\Piwik;
+use Piwik\Plugin\Manager as PluginManager;
 use Piwik\Plugins\API\ProcessedReport;
+use Piwik\Plugins\SitesManager\API as SitesManagerApi;
 use Piwik\Site;
 use Piwik\View;
-use Piwik\Common;
-use Piwik\Plugin\Manager as PluginManager;
-use Piwik\Plugins\SitesManager\API as SitesManagerApi;
-use Piwik\Period;
-use Piwik\Db;
 
 /**
   *
@@ -275,7 +275,7 @@ class Controller extends \Piwik\Plugin\Controller
         // we ran the alerts for the period before...
         $date = $date->subPeriod(1, $period);
 
-        $period     = Period::factory($period, $date);
+        $period     = Period\Factory::build($period, $date);
         $prettyDate = $period->getLocalizedShortString();
 
         return $prettyDate;

@@ -10,7 +10,6 @@
 namespace Piwik\Plugins\CustomAlerts;
 
 use Piwik\Common;
-use Piwik\Site;
 use Piwik\Updater;
 use Piwik\Updates;
 

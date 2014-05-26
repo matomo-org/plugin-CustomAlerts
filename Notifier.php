@@ -11,15 +11,15 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
+use Piwik\Date;
 use Piwik\Mail;
 use Piwik\Period;
 use Piwik\Piwik;
-use Piwik\Date;
 use Piwik\Plugin\Manager as PluginManager;
 use Piwik\Plugins\MobileMessaging\API as APIMobileMessaging;
+use Piwik\Plugins\UsersManager\API as UsersManagerApi;
 use Piwik\Site;
 use Piwik\View;
-use Piwik\Plugins\UsersManager\API as UsersManagerApi;
 
 /**
  *
@@ -224,7 +224,7 @@ class Notifier extends \Piwik\Plugin
         $date = $date->subPeriod(1, $period);
 
         // also make sure if period is month to display "2014-01" and not "2014-01-31"
-        $period     = Period::factory($period, $date);
+        $period     = Period\Factory::build($period, $date);
         $prettyDate = $period->getLocalizedLongString();
 
         return $prettyDate;

@@ -14,10 +14,9 @@ namespace Piwik\Plugins\CustomAlerts;
 use Exception;
 use Piwik\Common;
 use Piwik\Date;
+use Piwik\Db;
 use Piwik\DbHelper;
 use Piwik\Period;
-use Piwik\Db;
-use Piwik\Piwik;
 use Piwik\Translate;
 
 /**
@@ -39,9 +38,9 @@ class Model
                        `metric_condition` VARCHAR(50) NOT NULL ,
                        `metric_matched` FLOAT NOT NULL ,
                        `compared_to` SMALLINT (4) UNSIGNED NOT NULL DEFAULT 1 ,
-                       `email_me` BOOLEAN NOT NULL ,
-                       `additional_emails` TEXT DEFAULT '' ,
-                       `phone_numbers` TEXT DEFAULT ''";
+                       `email_me` BOOLEAN NOT NULL DEFAULT '0',
+                       `additional_emails` TEXT ,
+                       `phone_numbers` TEXT ";
 
         DbHelper::createTable('alert', $tableAlert);
 
@@ -68,9 +67,9 @@ class Model
 			              `metric_condition` VARCHAR(50) NOT NULL ,
 			              `metric_matched` FLOAT NOT NULL ,
 			              `compared_to` SMALLINT NOT NULL DEFAULT 1 ,
-			              `email_me` BOOLEAN NOT NULL ,
-			              `additional_emails` TEXT DEFAULT '' ,
-			              `phone_numbers` TEXT DEFAULT '',
+			              `email_me` BOOLEAN NOT NULL  DEFAULT '0',
+			              `additional_emails` TEXT ,
+			              `phone_numbers` TEXT ,
 			              PRIMARY KEY (idtriggered)";
 
         DbHelper::createTable('alert_triggered', $tableAlertLog);
@@ -135,7 +134,7 @@ class Model
 	public function getTriggeredAlertsForPeriod($period, $date)
 	{
 		$piwikDate = Date::factory($date);
-		$date      = Period::factory($period, $piwikDate);
+		$date      = Period\Factory::build($period, $piwikDate);
 
         $db  = Db::get();
 		$sql = $this->getTriggeredAlertsSelectPart()
@@ -392,7 +391,7 @@ class Model
         foreach ($alerts as &$alert) {
             $alert['additional_emails'] = json_decode($alert['additional_emails']);
             $alert['phone_numbers']     = json_decode($alert['phone_numbers']);
-            $alert['email_me']          = (bool) $alert['email_me'];
+            $alert['email_me']          = (int) $alert['email_me'];
             $alert['compared_to']       = (int) $alert['compared_to'];
             $alert['id_sites']          = $this->getDefinedSiteIds($alert['idalert']);
         }

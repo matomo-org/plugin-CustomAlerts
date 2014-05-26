@@ -193,7 +193,7 @@ class ModelTest extends BaseTest
             'value_old' => 48.519,
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers' => array('0123456789'),
-            'email_me' => false,
+            'email_me' => 0,
             'id_sites' => array(1, 2)
         );
 
