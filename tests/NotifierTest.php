@@ -62,7 +62,7 @@ class NotifierTest extends BaseTest
 
         // make sure templates will be found
         Plugin\Manager::getInstance()->loadPlugin('CustomAlerts');
-        Plugin\Manager::getInstance()->loadPlugin('Zeitgeist');
+        Plugin\Manager::getInstance()->loadPlugin('Morpheus');
 
         Translate::reloadLanguage('en');
 
