@@ -12,12 +12,8 @@
 namespace Piwik\Plugins\CustomAlerts;
 
 use Piwik\Db;
-use Piwik\Menu\MenuTop;
 use Piwik\Piwik;
 use Piwik\Plugins\SitesManager\API as SitesManagerApi;
-use Piwik\ScheduledTask;
-use Piwik\ScheduledTime;
-use Piwik\Site;
 
 /**
  *
@@ -28,7 +24,6 @@ class CustomAlerts extends \Piwik\Plugin
 	public function getListHooksRegistered()
 	{
 		return array(
-		    'TaskScheduler.getScheduledTasks'   => 'getScheduledTasks',
 		    'MobileMessaging.deletePhoneNumber' => 'removePhoneNumberFromAllAlerts',
 		    'AssetManager.getJavaScriptFiles'   => 'getJavaScriptFiles',
 		    'AssetManager.getStylesheetFiles'   => 'getStylesheetFiles',
@@ -84,13 +79,6 @@ class CustomAlerts extends \Piwik\Plugin
 	{
 		$cssFiles[] = "plugins/CustomAlerts/stylesheets/alerts.less";
 	}
-
-    public function getScheduledTasks(&$tasks)
-    {
-        $this->scheduleTask($tasks, 'runAlertsDaily', 'day');
-        $this->scheduleTask($tasks, 'runAlertsWeekly', 'week');
-        $this->scheduleTask($tasks, 'runAlertsMonthly', 'month');
-    }
 
     public function deleteAlertsForLogin($userLogin)
     {
@@ -154,46 +142,6 @@ class CustomAlerts extends \Piwik\Plugin
                     $alert['report_matched']
                 );
             }
-        }
-    }
-
-    public function runAlertsDaily($idSite)
-    {
-        $this->runAlerts('day', $idSite);
-    }
-
-    public function runAlertsWeekly($idSite)
-    {
-        $this->runAlerts('week', $idSite);
-    }
-
-    public function runAlertsMonthly($idSite)
-    {
-        $this->runAlerts('month', $idSite);
-    }
-
-    private function runAlerts($period, $idSite)
-    {
-        $processor = new Processor();
-        $processor->processAlerts($period, (int) $idSite);
-        $notifier  = new Notifier();
-        $notifier->sendNewAlerts($period, (int) $idSite);
-    }
-
-    private function scheduleTask(&$tasks, $methodName, $period)
-    {
-        $siteIds = $this->getSiteIdsHavingAlerts();
-
-        foreach ($siteIds as $idSite) {
-            $scheduledTime = ScheduledTime::getScheduledTimeForPeriod($period);
-            $scheduledTime->setTimezone(Site::getTimezoneFor($idSite));
-
-            $tasks[] = new ScheduledTask (
-                $this,
-                $methodName,
-                $idSite,
-                $scheduledTime
-            );
         }
     }
 
