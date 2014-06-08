@@ -40,3 +40,6 @@ before_script:
 
 after_script:
   - cat /var/log/nginx/error.log
+
+notifications:
+  slack: piwik:3HWhNh21qPfDACQXTrJOb0mW
