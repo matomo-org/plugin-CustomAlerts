@@ -38,21 +38,12 @@ class BaseTest extends \DatabaseTestCase
     {
         parent::setUp();
 
-        Model::install();
-
         $this->api   = API::getInstance();
         $this->model = new Model();
 
         $this->setSuperUser();
         $this->idSite  = Fixture::createWebsite('2012-08-09 11:22:33');
         $this->idSite2 = Fixture::createWebsite('2012-08-10 11:22:33');
-    }
-
-    public function tearDown()
-    {
-        Model::uninstall();
-
-        parent::tearDown();
     }
 
     protected function setSuperUser()

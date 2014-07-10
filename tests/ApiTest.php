@@ -565,6 +565,4 @@ class ApiTest extends BaseTest
 
         $this->assertEquals($expected, $alert);
     }
-
-
 }
