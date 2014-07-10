@@ -15,6 +15,7 @@ use Piwik\Date;
 use Piwik\Plugins\Actions;
 use Piwik\Plugins\CustomAlerts\Processor;
 use Piwik\Translate;
+use Piwik\Tests\Fixture;
 
 class CustomProcessor extends Processor {
     public function filterDataTable($dataTable, $condition, $value) {
@@ -87,7 +88,7 @@ class ProcessorTest extends BaseTest
     {
         $date = Date::today()->addHour(10);
 
-        $t = \Test_Piwik_BaseFixture::getTracker($this->idSite, $date->getDatetime(), $defaultInit = true, $useThirdPartyCookie = 1);
+        $t = Fixture::getTracker($this->idSite, $date->getDatetime(), $defaultInit = true, $useThirdPartyCookie = 1);
 
         $t->setUrlReferrer('http://www.google.com.vn/url?sa=t&rct=j&q=%3C%3E%26%5C%22the%20pdo%20extension%20is%20required%20for%20this%20adapter%20but%20the%20extension%20is%20not%20loaded&source=web&cd=4&ved=0FjAD&url=http%3A%2F%2Fforum.piwik.org%2Fread.php%3F2%2C1011&ei=y-HHAQ&usg=AFQjCN2-nt5_GgDeg&cad=rja');
         $t->setUrl('http://example.org/%C3%A9%C3%A9%C3%A9%22%27...%20%3Cthis%20is%20cool%3E!');

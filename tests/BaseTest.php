@@ -13,6 +13,7 @@ use Piwik\Db;
 use Piwik\Plugins\CustomAlerts\API;
 use Piwik\Plugins\CustomAlerts\Model;
 use Piwik\Translate;
+use Piwik\Tests\Fixture;
 
 /**
  * @group CustomAlerts
@@ -43,8 +44,8 @@ class BaseTest extends \DatabaseTestCase
         $this->model = new Model();
 
         $this->setSuperUser();
-        $this->idSite  = \Test_Piwik_BaseFixture::createWebsite('2012-08-09 11:22:33');
-        $this->idSite2 = \Test_Piwik_BaseFixture::createWebsite('2012-08-10 11:22:33');
+        $this->idSite  = Fixture::createWebsite('2012-08-09 11:22:33');
+        $this->idSite2 = Fixture::createWebsite('2012-08-10 11:22:33');
     }
 
     public function tearDown()
