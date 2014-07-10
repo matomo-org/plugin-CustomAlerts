@@ -8,11 +8,12 @@
 
 use Piwik\Piwik;
 use Piwik\Plugins\CustomAlerts\Model;
+use Piwik\Tests\Fixture;
 
 /**
  * Tracks custom events
  */
-class Test_Piwik_Fixture_CustomAlerts extends Test_Piwik_BaseFixture
+class Test_Piwik_Fixture_CustomAlerts extends Fixture
 {
     public $dateTime = '2010-01-03 11:22:33';
     public $idSite = 1;
