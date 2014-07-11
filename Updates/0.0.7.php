@@ -20,8 +20,8 @@ class Updates_0_0_7 extends Updates
     static function getSql()
     {
         return array(
-            "ALTER TABLE `" . Common::prefixTable('alert_log') . "` CHANGE `value_old` `value_old` DECIMAL (20,3) DEFAULT NULL" => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert_log') . "` CHANGE `value_new` `value_new` DECIMAL (20,3) DEFAULT NULL" => 1060
+            "ALTER TABLE `" . Common::prefixTable('alert_log') . "` CHANGE `value_old` `value_old` DECIMAL (20,3) DEFAULT NULL" => array(1060, 1146),
+            "ALTER TABLE `" . Common::prefixTable('alert_log') . "` CHANGE `value_new` `value_new` DECIMAL (20,3) DEFAULT NULL" => array(1060, 1146)
         );
     }
 

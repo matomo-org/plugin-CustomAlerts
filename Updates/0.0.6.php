@@ -20,7 +20,7 @@ class Updates_0_0_6 extends Updates
     static function getSql()
     {
         return array(
-            "ALTER TABLE `" . Common::prefixTable('alert_log') . "` ADD `ts_last_sent` timestamp NULL DEFAULT NULL AFTER `ts_triggered` " => 1060
+            "ALTER TABLE `" . Common::prefixTable('alert_log') . "` ADD `ts_last_sent` timestamp NULL DEFAULT NULL AFTER `ts_triggered` " => array(1060, 1146)
         );
     }
 

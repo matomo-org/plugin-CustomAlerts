@@ -20,7 +20,7 @@ class Updates_0_0_4 extends Updates
     static function getSql()
     {
         return array(
-            "ALTER TABLE `" . Common::prefixTable('alert') . "` DROP COLUMN `deleted` " => 1060
+            "ALTER TABLE `" . Common::prefixTable('alert') . "` DROP COLUMN `deleted` " => array(1060, 1091)
         );
     }
 

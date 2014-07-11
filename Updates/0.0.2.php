@@ -20,7 +20,7 @@ class Updates_0_0_2 extends Updates
     static function getSql()
     {
         return array(
-            "ALTER TABLE `" . Common::prefixTable('alert') . "` CHANGE `enable_mail` `email_me` BOOLEAN NOT NULL" => 1060,
+            "ALTER TABLE `" . Common::prefixTable('alert') . "` CHANGE `enable_mail` `email_me` BOOLEAN NOT NULL" => array(1060, 1054),
             "ALTER TABLE `" . Common::prefixTable('alert') . "` ADD `additional_emails` TEXT DEFAULT '' AFTER `email_me` " => 1060,
             "ALTER TABLE `" . Common::prefixTable('alert') . "` ADD `phone_numbers` TEXT DEFAULT '' AFTER `additional_emails` " => 1060,
         );

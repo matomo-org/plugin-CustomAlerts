@@ -20,7 +20,7 @@ class Updates_0_0_8 extends Updates
     static function getSql()
     {
         return array(
-            "RENAME TABLE `" . Common::prefixTable('alert_log') . "` TO `" . Common::prefixTable('alert_triggered') . "`" => 1060,
+            "RENAME TABLE `" . Common::prefixTable('alert_log') . "` TO `" . Common::prefixTable('alert_triggered') . "`" => array(1060, 1146, 1050),
             "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `name` VARCHAR(100) NOT NULL AFTER `value_new` " => 1060,
             "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `login` VARCHAR(100) NOT NULL AFTER `name` " => 1060,
             "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `period` VARCHAR(5) NOT NULL AFTER `login` " => 1060,
@@ -35,7 +35,7 @@ class Updates_0_0_8 extends Updates
             "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `additional_emails` TEXT DEFAULT '' AFTER `email_me` " => 1060,
             "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `phone_numbers` TEXT DEFAULT '' AFTER `additional_emails` " => 1060,
             "DELETE FROM `" . Common::prefixTable('alert_triggered') . "`" => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` DROP KEY `ts_triggered` " => 1060,
+            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` DROP KEY `ts_triggered` " => array(1060, 1091),
             "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `idtriggered` BIGINT unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT FIRST " => 1060
         );
     }
