@@ -1,10 +1,16 @@
 {
     "CustomAlerts": {
         "DayComparedToPreviousDay": "forrige dag",
+        "EndsWith": "ender med",
+        "IsGreaterThan": "er større enn",
+        "IsLessThan": "er mindre enn",
         "MonthComparedToPreviousMonth": "forrige måned",
         "OperationContains": "inneholder",
+        "OperationDoesNotContain": "inneholder ikke",
         "OperationIs": "er",
         "OperationIsNot": "er ikke",
+        "StartsWith": "starter med",
+        "WeekComparedToPreviousWeek": "forrige uke",
         "When": "når"
     }
 }

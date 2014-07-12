@@ -1,6 +1,17 @@
 {
     "CustomAlerts": {
+        "Alert": "通知",
+        "AlertCondition": "通知の条件",
+        "AlertMeWhen": "次の場合に通知",
+        "AlertName": "通知の名称",
+        "Alerts": "通知",
         "ApplyTo": "適用する",
-        "InvalidMetricValue": "値は数値にする必要があります"
+        "Condition": "条件",
+        "CreateNewAlert": "新しい通知を作成",
+        "EditAlert": "通知の編集",
+        "InvalidMetricValue": "値は数値にする必要があります",
+        "MailEnd": "ハッピーな解析を！",
+        "MonthComparedToPreviousMonth": "前の月",
+        "SmsAlertFromName": "新しい通知"
     }
 }

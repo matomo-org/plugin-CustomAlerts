@@ -49,6 +49,7 @@
         "ParmeterIsTooLong": "%s е твърде дълго. Максимално %d символи са разрешени.",
         "PercentageDecreasesMoreThan": "% намалява повече, отколкото",
         "PercentageIncreasesMoreThan": "% се увеличава повече, отколкото",
+        "SmsAlertContent": "%1$s беше отчетен за сайт %4$s като резултат %2$s в отчет %3$s %5$s.",
         "SmsAlertFromName": "Ново известие",
         "StartsWith": "започва с",
         "ThisAppliesTo": "Това се прилага за",

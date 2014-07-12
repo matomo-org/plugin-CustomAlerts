@@ -59,6 +59,12 @@
         "StartsWith": "empieza con",
         "ThisAppliesTo": "Esto se aplica al informe",
         "ValueDecreasedMoreThan": "disminuido con más de %1$s de %2$s a %3$s",
-        "ValueIncreasedMoreThan": "aumentado con más de %1$s de %2$s a %3$s"
+        "ValueIncreasedMoreThan": "aumentado con más de %1$s de %2$s a %3$s",
+        "ValueIsGreaterThan": "es %2$s que es mayor que %1$s",
+        "ValueIsLessThan": "es %2$s que es menos que %1$s",
+        "ValuePercentageDecreasedMoreThan": "disminuido más de %1$s% de %2$s a %3$s",
+        "ValuePercentageIncreasedMoreThan": "aumentado más %1$s% de %2$s a %3$s",
+        "WeekComparedToPreviousWeek": "semana anterior",
+        "When": "cuando"
     }
 }
