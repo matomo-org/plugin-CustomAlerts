@@ -19,7 +19,7 @@ use Piwik\Tests\Fixture;
  * @group CustomAlerts
  * @group Database
  */
-class BaseTest extends \DatabaseTestCase
+abstract class BaseTest extends \DatabaseTestCase
 {
     /**
      * @var \Piwik\Plugins\CustomAlerts\API
@@ -63,5 +63,4 @@ class BaseTest extends \DatabaseTestCase
         \FakeAccess::$identity = 'aUser';
         Access::setSingletonInstance($pseudoMockAccess);
     }
-
 }
