@@ -123,7 +123,7 @@ class ApiTest extends BaseTest
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage (inv+34i32s?y)
+     * @expectedExceptionMessage UsersManager_ExceptionInvalidEmail (inv+34i32s?y)
      */
     public function test_addAlert_ShouldFail_IfInvalidEmail()
     {
@@ -207,7 +207,7 @@ class ApiTest extends BaseTest
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage (inv+34i32s?y)
+     * @expectedExceptionMessage UsersManager_ExceptionInvalidEmail (inv+34i32s?y)
      */
     public function test_editAlert_ShouldFail_IfInvalidEmail()
     {
