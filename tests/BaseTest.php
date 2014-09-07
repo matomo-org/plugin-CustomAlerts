@@ -63,4 +63,13 @@ abstract class BaseTest extends \DatabaseTestCase
         \FakeAccess::$identity = 'aUser';
         Access::setSingletonInstance($pseudoMockAccess);
     }
+
+    /**
+     * Create a test case
+     * (prevent issue: https://travis-ci.org/piwik/piwik/jobs/34659383 )
+     */
+    public function testTrue()
+    {
+        $this->assertTrue(true);
+    }
 }
