@@ -33,6 +33,7 @@
         "InvalidReportCondition": "Bericht-Bedingung ist kein gültiger Wert.",
         "IsGreaterThan": "ist größer als",
         "IsLessThan": "ist kleiner als",
+        "MailAlertContent": "%1$s wurde registriert als %2$s im Report %3$s %4$s.",
         "MailEnd": "Viel Spaß beim Analysieren!",
         "MailText": "Die ausgelösten Benachrichtigungen sind in der Tabelle unten aufgelistet. Um Ihre benutzerdefinierten Benachrichtigungen anzupassen melden Sie sich bitte an und rufen die Benachrichtigungen Seite auf.",
         "ManageAlerts": "Benutzerdefinierte Benachrichtigungen verwalten",
@@ -55,8 +56,12 @@
         "SmsAlertFromName": "Neue Benachrichtigung",
         "StartsWith": "beginnt mit",
         "ThisAppliesTo": "Wird angewendet auf",
+        "ValueDecreasedMoreThan": "verminderte sich um mehr als %1$s von %2$s zu %3$s",
+        "ValueIncreasedMoreThan": "erhöhte sich um mehr als %1$s von %2$s zu %3$s",
         "ValueIsGreaterThan": "entspricht %2$s, was größer ist als %1$s.",
         "ValueIsLessThan": "entspricht %2$s, was kleiner ist als %1$s.",
+        "ValuePercentageDecreasedMoreThan": "erhöhte sich um mehr als %1$s% von %2$s zu %3$s",
+        "ValuePercentageIncreasedMoreThan": "erhöhte sich um mehr als %1$s% von %2$s zu %3$s",
         "WeekComparedToPreviousWeek": "vorherige Woche",
         "When": "sobald"
     }

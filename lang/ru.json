@@ -1,0 +1,33 @@
+{
+    "CustomAlerts": {
+        "AccessException": "Вы не владелец оповещения с ID %d",
+        "AlertDoesNotExist": "Оповещение с ID %d не существует!",
+        "AlertMeWhen": "Оповестить меня, если",
+        "AlertName": "Имя оповещения",
+        "ApplyTo": "Применить к",
+        "AreYouSureDeleteAlert": "Вы уверены что хотите удалить это оповещение?",
+        "CancelAndReturnToAlerts": "Отменить и %sreturn to the list of alerts%s",
+        "ComparedToThe": "сравнить с",
+        "CreateNewAlert": "Создать новое оповещение",
+        "DayComparedToPreviousDay": "предыдущий день",
+        "DayComparedToPreviousWeek": "Тот же день неделей раньше",
+        "DayComparedToPreviousYear": "тот же день годом раньше",
+        "DecreasesMoreThan": "уменьшается более чем",
+        "DoesNotMatchRegularExpression": "не соответствует регулярному выражению",
+        "EditAlert": "Редактировать оповещение",
+        "InvalidComparableDate": "Неверная сопоставимая дата!",
+        "InvalidMetric": "Учитываемая метрика не доступна для данного отчета!",
+        "InvalidMetricValue": "Значение должно состоять из цифер",
+        "InvalidPeriod": "Неверный период!",
+        "InvalidReport": "Неверный отчет!",
+        "IsGreaterThan": "больше чем",
+        "IsLessThan": "меньше чем",
+        "MailEnd": "Удачного анализа!",
+        "MonthComparedToPreviousMonth": "предыдущий месяц",
+        "MonthComparedToPreviousYear": "этот же месяц годом раньше",
+        "OperationContains": "содержит",
+        "OperationDoesNotContain": "не содержит",
+        "WeekComparedToPreviousWeek": "предыдущая неделя",
+        "When": "когда"
+    }
+}
