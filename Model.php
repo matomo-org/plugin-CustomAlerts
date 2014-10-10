@@ -136,7 +136,7 @@ class Model
 		$piwikDate = Date::factory($date);
 		$date      = Period\Factory::build($period, $piwikDate);
 
-        $db  = Db::get();
+        $db  = $this->getDb();
 		$sql = $this->getTriggeredAlertsSelectPart()
                . " WHERE  period = ? AND ts_triggered BETWEEN ? AND ?";
 
@@ -156,7 +156,7 @@ class Model
 	{
         $idSites = array_map('intval', $idSites);
 
-        $db  = Db::get();
+        $db  = $this->getDb();
 		$sql = $this->getTriggeredAlertsSelectPart()
              . " WHERE idsite IN (" . implode(',' , $idSites) . ")"
              . " AND login = ?";
@@ -236,7 +236,7 @@ class Model
             'report_matched'   => $reportValue
 		);
 
-        $db = Db::get();
+        $db = $this->getDb();
 		$db->insert(Common::prefixTable('alert'), $newAlert);
 
         $this->setSiteIds($idAlert, $idSites);
@@ -283,7 +283,7 @@ class Model
             'report_matched'   => $reportValue
 		);
 
-        $db = Db::get();
+        $db = $this->getDb();
 		$db->update(Common::prefixTable('alert'), $alert, "idalert = " . intval($idAlert));
 
         $this->setSiteIds($idAlert, $idSites);
@@ -300,7 +300,7 @@ class Model
      */
 	public function deleteAlert($idAlert)
 	{
-        $db = Db::get();
+        $db = $this->getDb();
         $db->query("DELETE FROM " . Common::prefixTable("alert") . " WHERE idalert = ?", array($idAlert));
         $db->query("DELETE FROM " . Common::prefixTable("alert_triggered") . " WHERE idalert = ?", array($idAlert));
         $this->removeAllSites($idAlert);
@@ -325,7 +325,7 @@ class Model
         $triggeredAlert['additional_emails'] = json_encode($triggeredAlert['additional_emails']);
         $triggeredAlert['phone_numbers'] = json_encode($triggeredAlert['phone_numbers']);
 
-        $db = Db::get();
+        $db = $this->getDb();
         $db->insert(
             Common::prefixTable('alert_triggered'),
             $triggeredAlert
@@ -340,7 +340,7 @@ class Model
 
         $where = sprintf("idtriggered = %d", $idTriggered);
 
-        $db = Db::get();
+        $db = $this->getDb();
         $db->update(Common::prefixTable('alert_triggered'), $log, $where);
     }
 
@@ -348,7 +348,7 @@ class Model
     {
         $this->removeAllSites($idAlert);
 
-        $db = Db::get();
+        $db = $this->getDb();
         foreach ($idSites as $idSite) {
             $db->insert(Common::prefixTable('alert_site'), array(
                 'idalert' => intval($idAlert),
@@ -359,7 +359,7 @@ class Model
 
     public function deleteTriggeredAlertsForSite($idSite)
     {
-        Db::get()->query("DELETE FROM " . Common::prefixTable("alert_triggered") . " WHERE idsite = ?", $idSite);
+        $this->getDb()->query("DELETE FROM " . Common::prefixTable("alert_triggered") . " WHERE idsite = ?", $idSite);
     }
 
     private function getDefinedSiteIds($idAlert)
@@ -401,7 +401,7 @@ class Model
 
     private function removeAllSites($idAlert)
     {
-        Db::get()->query("DELETE FROM " . Common::prefixTable("alert_site") . " WHERE idalert = ?", $idAlert);
+        $this->getDb()->query("DELETE FROM " . Common::prefixTable("alert_site") . " WHERE idalert = ?", $idAlert);
     }
 
     /**
@@ -416,6 +416,11 @@ class Model
                         . " WHERE idsite IN (" . implode(",", $idSites) . ")";
 
         return $innerSiteQuery;
+    }
+
+    private function getDb()
+    {
+        return Db::get();
     }
 
 }

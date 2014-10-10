@@ -6,15 +6,15 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
 
-namespace Piwik\Plugins\CustomAlerts\tests;
+namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
 use Piwik\Plugins\CustomAlerts\Validator;
 use Piwik\Translate;
 
 /**
  * @group CustomAlerts
- * @group ModelTest
- * @group Database
+ * @group ValidatorTest
+ * @group Plugins
  */
 class ValidatorTest extends BaseTest
 {

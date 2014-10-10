@@ -6,7 +6,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
 
-namespace Piwik\Plugins\CustomAlerts\tests;
+namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
 use Piwik\Date;
 use Piwik\Mail;
@@ -47,7 +47,7 @@ class CustomNotifier extends Notifier
 /**
  * @group CustomAlerts
  * @group NotifierTest
- * @group Database
+ * @group Plugins
  */
 class NotifierTest extends BaseTest
 {
@@ -116,7 +116,7 @@ t your custom alert settings, please sign in and access the Alerts page.=
     public function test_sendNewAlerts()
     {
         $methods = array('sendAlertsPerEmailToRecipient', 'sendAlertsPerSmsToRecipient', 'markAlertAsSent');
-        $mock    = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomNotifier', $methods);
+        $mock    = $this->getMock('Piwik\Plugins\CustomAlerts\tests\Integration\CustomNotifier', $methods);
 
         $alerts = array(
             $this->buildAlert(1, 'Alert1', 'week', 4, 'Test', 'login1'),

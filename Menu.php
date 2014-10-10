@@ -15,12 +15,10 @@ class Menu extends \Piwik\Plugin\Menu
 {
     public function configureUserMenu(MenuUser $menu)
     {
-        $menu->add(
-            'CoreAdminHome_MenuManage',
-            'CustomAlerts_Alerts',
-            array('module' => 'CustomAlerts', 'action' => 'index'),
-            !Piwik::isUserIsAnonymous(),
-            $order = 9);
+        if (!Piwik::isUserIsAnonymous()) {
+            $menu->addManageItem('CustomAlerts_Alerts', $this->urlForAction('index'), $order = 9);
+        }
+
     }
 
 }

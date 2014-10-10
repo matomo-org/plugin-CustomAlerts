@@ -8,7 +8,7 @@
 
 use Piwik\Piwik;
 use Piwik\Plugins\CustomAlerts\Model;
-use Piwik\Tests\Fixture;
+use Piwik\Tests\Impl\Fixture;
 
 /**
  * Tracks custom events

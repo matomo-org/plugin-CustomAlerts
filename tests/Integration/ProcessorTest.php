@@ -6,7 +6,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
 
-namespace Piwik\Plugins\CustomAlerts\tests;
+namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
 use Piwik\Common;
 use Piwik\DataTable\Row;
@@ -41,7 +41,7 @@ class CustomProcessor extends Processor {
 /**
  * @group CustomAlerts
  * @group ProcessorTest
- * @group Unit
+ * @group Plugins
  */
 class ProcessorTest extends BaseTest
 {
@@ -322,7 +322,7 @@ class ProcessorTest extends BaseTest
         $alert = $this->buildAlert();
 
         $methods = array('getValueForAlertInPast', 'triggerAlert');
-        $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomProcessor', $methods);
+        $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\Integration\CustomProcessor', $methods);
 
         $idSite = 1;
         $processorMock->expects($this->at(0))
@@ -343,7 +343,7 @@ class ProcessorTest extends BaseTest
         $processorMock->processAlert($alert, $idSite);
 
         $idSite = 2;
-        $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomProcessor', $methods);
+        $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\Integration\CustomProcessor', $methods);
         $processorMock->expects($this->at(0))
                       ->method('getValueForAlertInPast')
                       ->with($this->equalTo($alert), $this->equalTo($idSite), $this->equalTo(1))
@@ -397,7 +397,7 @@ class ProcessorTest extends BaseTest
         $alert = $this->buildAlert(array(1), 'MultiSites_getAll', 'nb_visits', '5', 'day', $comparedTo = 7);
 
         $methods = array('getValueForAlertInPast', 'triggerAlert');
-        $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomProcessor', $methods);
+        $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\Integration\CustomProcessor', $methods);
         $processorMock->expects($this->at(0))
                       ->method('getValueForAlertInPast')
                       ->with($this->equalTo($alert), $this->equalTo(1), $this->equalTo(1))
@@ -487,7 +487,7 @@ class ProcessorTest extends BaseTest
     private function assertProcessNotRun($alert, $idSites)
     {
         $methods = array('getValueForAlertInPast', 'triggerAlert');
-        $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\CustomProcessor', $methods);
+        $processorMock = $this->getMock('Piwik\Plugins\CustomAlerts\tests\Integration\CustomProcessor', $methods);
 
         $processorMock->expects($this->never())
                       ->method('getValueForAlertInPast');

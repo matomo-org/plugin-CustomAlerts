@@ -6,20 +6,21 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
 
-namespace Piwik\Plugins\CustomAlerts\tests;
+namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
 use Piwik\Access;
 use Piwik\Db;
 use Piwik\Plugins\CustomAlerts\API;
 use Piwik\Plugins\CustomAlerts\Model;
+use Piwik\Tests\Impl\IntegrationTestCase;
 use Piwik\Translate;
-use Piwik\Tests\Fixture;
+use Piwik\Tests\Impl\Fixture;
 
 /**
  * @group CustomAlerts
- * @group Database
+ * @group Plugins
  */
-abstract class BaseTest extends \DatabaseTestCase
+abstract class BaseTest extends IntegrationTestCase
 {
     /**
      * @var \Piwik\Plugins\CustomAlerts\API

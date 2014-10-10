@@ -6,7 +6,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
 
-namespace Piwik\Plugins\CustomAlerts\tests;
+namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
 use Piwik\Plugin;
 use Piwik\Plugins\CustomAlerts\Controller;
@@ -23,8 +23,8 @@ class CustomController extends Controller
 
 /**
  * @group CustomAlerts
- * @group NotifierTest
- * @group Database
+ * @group ControllerTest
+ * @group Plugins
  */
 class ControllerTest extends BaseTest
 {

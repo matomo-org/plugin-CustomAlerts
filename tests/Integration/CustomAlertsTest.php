@@ -6,7 +6,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
 
-namespace Piwik\Plugins\CustomAlerts\tests;
+namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
 use Piwik\Date;
 use Piwik\Db;
@@ -17,7 +17,7 @@ use Piwik\Translate;
 /**
  * @group CustomAlerts
  * @group CustomAlertsTest
- * @group Database
+ * @group Plugins
  */
 class CustomAlertsTest extends BaseTest
 {
