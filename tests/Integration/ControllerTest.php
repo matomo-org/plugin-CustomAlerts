@@ -8,6 +8,8 @@
 
 namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
+use Piwik\Cache\PluginAwareStaticCache;
+use Piwik\Cache\StaticCache;
 use Piwik\Plugin;
 use Piwik\Plugins\CustomAlerts\Controller;
 use Piwik\SettingsPiwik;
@@ -41,6 +43,7 @@ class ControllerTest extends BaseTest
         Plugin\Manager::getInstance()->loadPlugin('CustomAlerts');
         Plugin\Manager::getInstance()->loadPlugin('Morpheus');
 
+        PluginAwareStaticCache::clearAll();
         Translate::reloadLanguage('en');
 
         $this->controller = new CustomController();
