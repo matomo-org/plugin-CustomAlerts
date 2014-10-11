@@ -12,9 +12,12 @@ php:
 
 # Separate different test suites
 env:
+  global:
+    - PLUGIN_NAME=CustomAlerts
+    - PIWIK_ROOT_DIR=$TRAVIS_BUILD_DIR/piwik
   matrix:
-    - TEST_SUITE=CoreTests MYSQL_ADAPTER=PDO_MYSQL
     - TEST_SUITE=PluginTests MYSQL_ADAPTER=PDO_MYSQL
+    - TEST_SUITE=PluginTests MYSQL_ADAPTER=PDO_MYSQL TEST_AGAINST_CORE=latest_stable
 
 matrix:
   exclude:
@@ -136,6 +139,3 @@ after_script:
 
 after_success:
   - cd $PIWIK_ROOT_DIR
-
-notifications:
-  slack: piwik:3HWhNh21qPfDACQXTrJOb0mW
