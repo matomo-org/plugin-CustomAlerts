@@ -74,7 +74,7 @@ install:
   - ./tests/travis/checkout_dependent_plugins.sh
 
 before_script:
-  - if [ -z "$TEST_SUITE" ];
+  - if ([ -z "$TEST_SUITE" ] || [ -n "$PLUGIN_NAME" ]);
     then composer require satooshi/php-coveralls dev-master;
     fi
 
@@ -124,7 +124,7 @@ after_script:
   # change directory back to root travis dir
   - cd $PIWIK_ROOT_DIR
 
-  - if [ -z "$TEST_SUITE" ];
+  - if ([ -z "$TEST_SUITE" ] || [ -n "$PLUGIN_NAME" ]);
     then php vendor/bin/coveralls -v;
     fi
 
