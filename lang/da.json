@@ -58,6 +58,8 @@
         "SmsAlertFromName": "Ny notifikation",
         "StartsWith": "begynder med",
         "ThisAppliesTo": "Gælder for rapport",
+        "ValueDecreasedMoreThan": "faldet mere end %1$s fra %2$s til %3$s",
+        "ValueIncreasedMoreThan": "steget mere end %1$s fra %2$s til %3$s",
         "ValueIsGreaterThan": "er %2$s, hvilket er større end %1$s",
         "ValueIsLessThan": "er %2$s, hvilket er mindre end %1$s",
         "ValuePercentageDecreasedMoreThan": "faldet mere end %1$s% fra %2$s til %3$s",

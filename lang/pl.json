@@ -31,6 +31,7 @@
         "InvalidReportCondition": "Zgłoszony warunek nie jest prawidłową wartością",
         "IsGreaterThan": "jest większe niż",
         "IsLessThan": "jest mniej niż",
+        "MailAlertSubject": "Nowy alarm na stronie %1$s [%2$s]",
         "MailEnd": "Powodzenia!",
         "MailText": "Wyzwalane alarmy są wymienione w poniższej tabeli. Aby ustawić niestandardowe ustawienia alarmów należy zalogować się i uzyskać dostęp do strony ALarmy.",
         "ManageAlerts": "Zarządzaj niestandardowymi alarmami",
@@ -52,7 +53,11 @@
         "SmsAlertFromName": "Nowy alarm",
         "StartsWith": "rozpoczynające się od",
         "ThisAppliesTo": "Dotyczy to raportu",
+        "ValueIncreasedMoreThan": "wzrosła więcej niż %1$s od %2$s do %3$s",
+        "ValueIsGreaterThan": "%2$s, który jest większy niż %1$s",
         "ValueIsLessThan": "jest %2$s co jest mniejsze niż %1$s",
+        "ValuePercentageDecreasedMoreThan": "spadły więcej niż %1$s% z %2$s do %3$s",
+        "ValuePercentageIncreasedMoreThan": "wzrosła ponad %1$s% z %2$s do %3$s",
         "WeekComparedToPreviousWeek": "poprzedni tydzień",
         "When": "kiedy"
     }
