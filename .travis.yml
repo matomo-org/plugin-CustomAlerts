@@ -2,11 +2,8 @@
 
 language: php
 
-# We want to test against PHP 5.3.3/5.4/5.5
 php:
   - 5.6
-  - 5.5
-  - 5.4
   - 5.3.3
 #  - hhvm
 
@@ -68,7 +65,7 @@ install:
     fi
 
   # make sure travis test scripts are always latest (so in older releases/branches, the latest scripts will still be used)
-  - git checkout master -- ./tests/travis ./plugins/CoreConsole
+  - git checkout master -- ./tests/travis ./plugins/TestRunner
 
   # clone dependent repos
   - ./tests/travis/checkout_dependent_plugins.sh
@@ -76,6 +73,8 @@ install:
 before_script:
   - if ([ -z "$TEST_SUITE" ] || [ -n "$PLUGIN_NAME" ]);
     then composer require satooshi/php-coveralls dev-master;
+    else
+    phpenv config-rm xdebug.ini;
     fi
 
   - ./tests/travis/configure_git.sh
