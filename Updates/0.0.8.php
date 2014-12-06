@@ -32,8 +32,8 @@ class Updates_0_0_8 extends Updates
             "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `metric_matched` FLOAT NOT NULL AFTER `metric_condition` " => 1060,
             "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `compared_to` TINYINT NOT NULL AFTER `metric_matched` " => 1060,
             "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `email_me` BOOLEAN NOT NULL AFTER `compared_to` " => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `additional_emails` TEXT DEFAULT '' AFTER `email_me` " => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `phone_numbers` TEXT DEFAULT '' AFTER `additional_emails` " => 1060,
+            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `additional_emails` TEXT AFTER `email_me` " => 1060,
+            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `phone_numbers` TEXT AFTER `additional_emails` " => 1060,
             "DELETE FROM `" . Common::prefixTable('alert_triggered') . "`" => 1060,
             "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` DROP KEY `ts_triggered` " => array(1060, 1091),
             "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `idtriggered` BIGINT unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT FIRST " => 1060
