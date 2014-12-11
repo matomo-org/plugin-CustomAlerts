@@ -145,6 +145,8 @@ class API extends \Piwik\Plugin\API
             $reportValue     = null;
         }
 
+        $metricValue = Common::forceDotAsSeparatorForDecimalPoint((float) $metricValue);
+
         return $this->getModel()->createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue);
 	}
 
@@ -186,6 +188,8 @@ class API extends \Piwik\Plugin\API
             $reportCondition = null;
             $reportValue     = null;
         }
+
+        $metricValue = Common::forceDotAsSeparatorForDecimalPoint((float) $metricValue);
 
         return $this->getModel()->updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue);
 	}

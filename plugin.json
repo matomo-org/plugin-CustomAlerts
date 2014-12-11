@@ -3,7 +3,7 @@
     "description": "Alerts are a great way to get notified of changes on your website. This is a beta version.",
     "version": "0.1.19",
     "require": {
-        "piwik": ">=2.8.0-b4"
+        "piwik": ">=2.9.0"
     },
     "authors": [
         {

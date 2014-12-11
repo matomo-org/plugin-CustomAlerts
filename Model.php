@@ -229,7 +229,7 @@ class Model
 			'phone_numbers'    => json_encode($phoneNumbers),
 			'metric'           => $metric,
 			'metric_condition' => $metricCondition,
-			'metric_matched'   => (float) $metricValue,
+			'metric_matched'   => $metricValue,
 			'report'           => $reportUniqueId,
             'compared_to'      => $comparedTo,
             'report_condition' => $reportCondition,
@@ -276,7 +276,7 @@ class Model
             'phone_numbers'    => json_encode($phoneNumbers),
 			'metric'           => $metric,
 			'metric_condition' => $metricCondition,
-			'metric_matched'   => (float) $metricValue,
+			'metric_matched'   => $metricValue,
 			'report'           => $reportUniqueId,
             'compared_to'      => $comparedTo,
             'report_condition' => $reportCondition,
@@ -317,6 +317,7 @@ class Model
             $triggeredAlert[$key] = $alert[$key];
         }
 
+        $triggeredAlert['metric_matched'] = Common::forceDotAsSeparatorForDecimalPoint($triggeredAlert['metric_matched']);
         $triggeredAlert['ts_triggered'] = $datetime;
         $triggeredAlert['ts_last_sent'] = null;
         $triggeredAlert['value_new'] = $valueNew;
