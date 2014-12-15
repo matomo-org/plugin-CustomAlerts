@@ -158,9 +158,11 @@ class Model
 
         $db  = $this->getDb();
 		$sql = $this->getTriggeredAlertsSelectPart()
-             . " WHERE idsite IN (" . implode(',' , $idSites) . ")"
+             . " WHERE idsite IN (" . Common::getSqlStringFieldsArray($idSites) . ")"
              . " AND login = ?";
-        $values = array($login);
+
+        $values = $idSites;
+        $values[] = $login;
 
 		$alerts = $db->fetchAll($sql, $values);
         $alerts = $this->completeAlerts($alerts);
