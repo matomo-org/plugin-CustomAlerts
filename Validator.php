@@ -12,6 +12,7 @@
 namespace Piwik\Plugins\CustomAlerts;
 
 use Exception;
+use Piwik\Common;
 use Piwik\Period;
 use Piwik\Piwik;
 use Piwik\Plugins\API\ProcessedReport;
@@ -66,7 +67,7 @@ class Validator
             throw new Exception(Piwik::translate("General_PleaseSpecifyValue", "name"));
         }
 
-        if (mb_strlen($name) > 100) {
+        if (Common::mb_strlen($name) > 100) {
             throw new Exception(Piwik::translate("CustomAlerts_ParmeterIsTooLong", array(Piwik::translate('General_Name'), 100)));
         }
     }
