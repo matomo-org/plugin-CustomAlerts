@@ -8,7 +8,7 @@
 
 namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
-use Piwik\Cache\Factory as CacheFactory;
+use Piwik\Cache as PiwikCache;
 use Piwik\Plugin;
 use Piwik\Plugins\CustomAlerts\Controller;
 use Piwik\SettingsPiwik;
@@ -45,7 +45,7 @@ class ControllerTest extends BaseTest
         if (class_exists('\Piwik\Cache\PluginAwareStaticCache')) {
             \Piwik\Cache\PluginAwareStaticCache::clearAll(); // TODO remove this one
         } else {
-            CacheFactory::buildMultiCache(null)->flushAll();
+            PiwikCache::flushAll();
         }
 
         Translate::reloadLanguage('en');
