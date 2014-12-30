@@ -9,7 +9,6 @@
 namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
 use Piwik\Plugins\CustomAlerts\Validator;
-use Piwik\Translate;
 
 /**
  * @group CustomAlerts
@@ -28,7 +27,6 @@ class ValidatorTest extends BaseTest
         parent::setUp();
 
         $this->validator = new Validator();
-        Translate::unloadEnglishTranslation();
     }
 
     /**

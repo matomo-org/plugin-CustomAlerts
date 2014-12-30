@@ -64,13 +64,20 @@ class NotifierTest extends BaseTest
         Plugin\Manager::getInstance()->loadPlugin('CustomAlerts');
         Plugin\Manager::getInstance()->loadPlugin('Morpheus');
 
-        Translate::reloadLanguage('en');
+        Translate::loadAllTranslations();
 
         \Piwik\Plugins\UsersManager\API::getInstance()->addUser('login1', 'p2kK2msAw1', 'test1@example.com');
         \Piwik\Plugins\UsersManager\API::getInstance()->addUser('login2', 'p2kK2msAw1', 'test2@example.com');
         \Piwik\Plugins\UsersManager\API::getInstance()->addUser('login3', 'p2kK2msAw1', 'test3@example.com');
 
         $this->notifier = new CustomNotifier();
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+
+        Translate::reset();
     }
 
     public function test_sendAlertsPerEmailToRecipient()

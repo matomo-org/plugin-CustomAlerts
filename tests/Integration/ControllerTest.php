@@ -48,9 +48,16 @@ class ControllerTest extends BaseTest
             PiwikCache::flushAll();
         }
 
-        Translate::reloadLanguage('en');
+        Translate::loadAllTranslations();
 
         $this->controller = new CustomController();
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+
+        Translate::reset();
     }
 
     public function test_formatAlerts_asText()

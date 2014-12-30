@@ -12,7 +12,6 @@ use Piwik\Common;
 use Piwik\Date;
 use Piwik\Db;
 use Piwik\Plugins\CustomAlerts\Model;
-use Piwik\Translate;
 
 /**
  * @group CustomAlerts
@@ -30,8 +29,6 @@ class ModelTest extends BaseTest
         $this->createAlert('Initial2', 'week', array($this->idSite,$this->idSite2));
         $this->createAlert('Initial3', 'month', array($this->idSite2));
         $this->setUser();
-
-        Translate::unloadEnglishTranslation();
     }
 
     public function test_install_ShouldNotFailAndActuallyCreateTheDatabases()
