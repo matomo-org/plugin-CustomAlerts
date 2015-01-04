@@ -7,11 +7,16 @@ php:
   - 5.3.3
 #  - hhvm
 
+services:
+  - redis-server
+
 # Separate different test suites
 env:
   global:
     - PLUGIN_NAME=CustomAlerts
     - PIWIK_ROOT_DIR=$TRAVIS_BUILD_DIR/piwik
+    - secure: "Kwg24EJP/yqZ2eY4XkNDT1rKi78hS2Z9rmovuk0h9+R6jfFAV3BGWf/nsSEmAbU3yC0ifpJg560jURrOmnjAL3q+ehJVtk3joGsfHrNFHzQ+042qSZlO8uC2yegvtCPMmhDM9QotmOgrRfqJ51HQ1F6NxcgyTtWer/ghrFD14QU="
+    - secure: "O4Y94yPmbvry1wAaU8bJpV7tZO8uwaCrZTMAe8QTAJHpMkmdKrDr5zD5jwWVEKCziXLqvZdqRk2OLoeM1so/8F2hrKycS/luvIzhbqOpvBrSFPnQfY4Ty6BTjrAy3j3k/c6rL0QLMHNFHb5uL3Ex+La6Y5RkcTCIbEwTjU7f/D4="
   matrix:
     - TEST_SUITE=PluginTests MYSQL_ADAPTER=PDO_MYSQL
     - TEST_SUITE=PluginTests MYSQL_ADAPTER=PDO_MYSQL TEST_AGAINST_CORE=latest_stable
@@ -36,7 +41,6 @@ install:
   - cp -R !($PLUGIN_NAME) $PLUGIN_NAME
   - cp -R .git/ $PLUGIN_NAME/
   - cp .travis.yml $PLUGIN_NAME
-
   # checkout piwik in the current directory
   - git clone https://github.com/piwik/piwik.git piwik
   - cd piwik
@@ -54,7 +58,6 @@ install:
   - git checkout "$TEST_AGAINST_PIWIK_BRANCH"
   - git submodule init
   - git submodule update || true
-
   # move plugin contents to folder in the plugins subdirectory
   - rm -rf plugins/$PLUGIN_NAME
   - mv ../$PLUGIN_NAME plugins
@@ -65,17 +68,21 @@ install:
     fi
 
   # make sure travis test scripts are always latest (so in older releases/branches, the latest scripts will still be used)
-  - git checkout master -- ./tests/travis ./plugins/TestRunner
-
+  - git checkout master -- ./tests/travis ./plugins/TestRunner || true
   # clone dependent repos
   - ./tests/travis/checkout_dependent_plugins.sh
 
 before_script:
+  - ./tests/travis/install_mysql_5.6.sh
+
   - if ([ -z "$TEST_SUITE" ] || [ -n "$PLUGIN_NAME" ]);
     then composer require satooshi/php-coveralls dev-master;
     else
     phpenv config-rm xdebug.ini;
     fi
+
+  # add always_populate_raw_post_data=-1 to php.ini
+  - echo "always_populate_raw_post_data=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
   - ./tests/travis/configure_git.sh
 
@@ -85,9 +92,8 @@ before_script:
 
   # configure mysql
   - mysql -e "SET GLOBAL sql_mode = 'NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES'" # Travis default
+  - mysql -e "SET GLOBAL wait_timeout = 3600" # try to avoid mysql has gone away errors
 
-  # Uncomment to enable sql_mode STRICT_TRANS_TABLES (new default in Mysql 5.6)
-  - mysql -e "SET GLOBAL sql_mode = 'NO_ENGINE_SUBSTITUTION'"
   - mysql -e "SELECT @@sql_mode;"
   - mysql -e "SHOW GLOBAL VARIABLES;"
 
