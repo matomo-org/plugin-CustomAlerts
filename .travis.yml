@@ -19,7 +19,7 @@ env:
     - secure: "O4Y94yPmbvry1wAaU8bJpV7tZO8uwaCrZTMAe8QTAJHpMkmdKrDr5zD5jwWVEKCziXLqvZdqRk2OLoeM1so/8F2hrKycS/luvIzhbqOpvBrSFPnQfY4Ty6BTjrAy3j3k/c6rL0QLMHNFHb5uL3Ex+La6Y5RkcTCIbEwTjU7f/D4="
   matrix:
     - TEST_SUITE=PluginTests MYSQL_ADAPTER=PDO_MYSQL
-    - TEST_SUITE=PluginTests MYSQL_ADAPTER=PDO_MYSQL TEST_AGAINST_CORE=latest_stable
+    - TEST_SUITE=PluginTests MYSQL_ADAPTER=PDO_MYSQL TEST_AGAINST_CORE=minimum_required_piwik
 
 matrix:
   exclude:
