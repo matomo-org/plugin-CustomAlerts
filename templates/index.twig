@@ -1,8 +1,8 @@
-{% extends 'dashboard.twig' %}
+{% extends 'user.twig' %}
 {% block content %}
 
-    <div class="centerLargeDiv">
-        <h2 piwik-enriched-headline>{{ 'CustomAlerts_ManageAlerts'|translate }}</h2>
+    <div class="alerts">
+        <h2 piwik-enriched-headline>{{ 'CustomAlerts_PersonalAlerts'|translate }}</h2>
 
         {% include "@CustomAlerts/list.twig" %}
     </div>

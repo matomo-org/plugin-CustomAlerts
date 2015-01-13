@@ -1,21 +1,18 @@
-{% extends 'dashboard.twig' %}
+{% extends 'user.twig' %}
 
 {% import '@CustomAlerts/macros.twig' as alertsMacro %}
 
 {% block content %}
 
-    <div class="centerLargeDiv">
+    <div class="alerts">
         <h2>{{ 'CustomAlerts_AlertsHistory'|translate }}</h2>
 
         <div class='entityListContainer'>
-            <div class="entityCancel">
-                <a class="entityCancelLink"
-                   href="{{ linkTo({'module': 'CustomAlerts', 'action': 'index'}) }}"
-                    >{{ 'CustomAlerts_ManageAlerts'|translate }}</a>
-            </div>
-
             {{ alertsFormatted|raw }}
         </div>
+
+        <br />
+        <a class="addrow" href="{{ linkTo({'module': 'CustomAlerts', 'action': 'index'}) }}"><img src='plugins/Morpheus/images/table.png'/> {{ 'CustomAlerts_PersonalAlerts'|translate }}</a>
 
         <br />
         <br />

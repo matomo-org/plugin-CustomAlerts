@@ -21,6 +21,7 @@
         "OperationContains": "contains",
         "OperationDoesNotContain": "does not contain",
         "ManageAlerts": "Manage Custom Alerts",
+        "PersonalAlerts": "Personal Custom Alerts",
         "AlertsHistory": "History of triggered alerts",
         "AlertCondition": "Alert Condition",
         "AlertDoesNotExist": "Alert with ID %d does not exist!",
