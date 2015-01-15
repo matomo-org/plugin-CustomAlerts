@@ -5,13 +5,7 @@
 
 {% else %}
 
-    <div class="entityCancel">
-        {% set backlink = linkTo({'module': 'CustomAlerts', 'action': 'index'}) %}
-        {{ 'CustomAlerts_CancelAndReturnToAlerts'|translate('<a class="entityCancelLink" href="' ~ backlink ~ '">', "</a>")|raw }}
-    </div>
-
     <form method="POST" onSubmit="return onSubmit(event);">
-        <h2>{{ 'CustomAlerts_ManageAlerts'|translate }}</h2>
         <table class="tableForm dataTable entityTable">
             <thead>
                 <tr class="first">
@@ -140,5 +134,10 @@
         </table>
 
         <input type="submit" value="{{ 'General_Save'|translate }}" name="submit" class="submit" />
+
+        <div class='entityCancel'>
+            {% set backlink = linkTo({'module': 'CustomAlerts', 'action': 'index'}) %}
+            {{ 'General_OrCancel'|translate("<a class='entityCancelLink' href='" ~ backlink ~ "'>","</a>")|raw }}
+        </div>
     </form>
 {% endif %}

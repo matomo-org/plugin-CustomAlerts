@@ -16,7 +16,7 @@ class Menu extends \Piwik\Plugin\Menu
     public function configureUserMenu(MenuUser $menu)
     {
         if (!Piwik::isUserIsAnonymous()) {
-            $menu->addManageItem('CustomAlerts_Alerts', $this->urlForAction('index'), $order = 9);
+            $menu->addPersonalItem('CustomAlerts_Alerts', $this->urlForAction('index'), $order = 9);
         }
 
     }
