@@ -10,6 +10,7 @@ namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
 use Piwik\Date;
 use Piwik\Db;
+use Piwik\Tests\Framework\Mock\FakeAccess;
 
 /**
  * @group CustomAlerts
@@ -255,12 +256,12 @@ class ApiTest extends BaseTest
     {
         $siteIds = array($this->idSite2, $this->idSite);
 
-        \FakeAccess::$idSitesView = $siteIds;
+        FakeAccess::$idSitesView = $siteIds;
 
         $alerts = $this->api->getAlerts($siteIds);
         $this->assertCount(0, $alerts);
 
-        \FakeAccess::$identity = 'superUserLogin';
+        FakeAccess::$identity = 'superUserLogin';
         $alerts = $this->api->getAlerts($siteIds);
         $this->assertCount(3, $alerts);
     }
@@ -270,8 +271,8 @@ class ApiTest extends BaseTest
         $siteIds = array($this->idSite2, $this->idSite);
 
         $this->setSuperUser();
-        \FakeAccess::$identity    = 'AnyLogin';
-        \FakeAccess::$idSitesView = $siteIds;
+        FakeAccess::$identity    = 'AnyLogin';
+        FakeAccess::$idSitesView = $siteIds;
 
         $alerts = $this->api->getAlerts($siteIds, true);
         $this->assertCount(3, $alerts);
@@ -285,8 +286,8 @@ class ApiTest extends BaseTest
         $siteIds = array($this->idSite2, $this->idSite);
 
         $this->setUser();
-        \FakeAccess::$identity    = 'AnyLogin';
-        \FakeAccess::$idSitesView = $siteIds;
+        FakeAccess::$identity    = 'AnyLogin';
+        FakeAccess::$idSitesView = $siteIds;
 
         $alerts = $this->api->getAlerts($siteIds, true);
         $this->assertCount(0, $alerts);
@@ -339,7 +340,7 @@ class ApiTest extends BaseTest
     public function test_getAlert_ShouldFail_IfNotOwnerOfAlertEventIfUserIsSuperUser()
     {
         $this->setSuperUser();
-        \FakeAccess::$identity = 'test';
+        FakeAccess::$identity = 'test';
         $this->api->getAlert(2);
     }
 
@@ -378,7 +379,7 @@ class ApiTest extends BaseTest
     public function test_getValuesForAlertInPast_ShouldFail_IfNotOwnerOfAlertEventIfUserIsSuperUser()
     {
         $this->setSuperUser();
-        \FakeAccess::$identity = 'test';
+        FakeAccess::$identity = 'test';
         $this->api->getValuesForAlertInPast(2, 1);
     }
 
@@ -425,7 +426,7 @@ class ApiTest extends BaseTest
     public function test_deleteAlert_ShouldFail_IfNotOwnerOfAlertEvenIfUserIsSuperuser()
     {
         $this->setSuperUser();
-        \FakeAccess::$identity = 'test';
+        FakeAccess::$identity = 'test';
 
         $this->api->deleteAlert(2);
     }
@@ -496,13 +497,13 @@ class ApiTest extends BaseTest
         $this->assertCount(0, $triggeredAlerts);
 
         // different login
-        \FakeAccess::$identity = 'differentLoginButStillSuperuser';
+        FakeAccess::$identity = 'differentLoginButStillSuperuser';
         $triggeredAlerts = $this->api->getTriggeredAlerts(array($idSite, 2));
         $this->assertCount(0, $triggeredAlerts);
 
         // different login
         $this->setUser();
-        \FakeAccess::$idSitesView = array(1);
+        FakeAccess::$idSitesView = array(1);
         $triggeredAlerts = $this->api->getTriggeredAlerts(array(1));
         $this->assertCount(0, $triggeredAlerts);
     }

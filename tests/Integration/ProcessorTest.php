@@ -14,8 +14,7 @@ use Piwik\DataTable;
 use Piwik\Date;
 use Piwik\Plugins\Actions;
 use Piwik\Plugins\CustomAlerts\Processor;
-use Piwik\Translate;
-use Piwik\Tests\Fixture;
+use Piwik\Tests\Framework\Fixture;
 
 class CustomProcessor extends Processor {
     public function filterDataTable($dataTable, $condition, $value) {

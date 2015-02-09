@@ -12,7 +12,6 @@ use Piwik\Date;
 use Piwik\Db;
 use Piwik\Piwik;
 use Piwik\Plugins\CustomAlerts\CustomAlerts;
-use Piwik\Translate;
 
 /**
  * @group CustomAlerts
