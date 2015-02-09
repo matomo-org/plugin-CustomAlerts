@@ -12,9 +12,9 @@ use Piwik\Access;
 use Piwik\Db;
 use Piwik\Plugins\CustomAlerts\API;
 use Piwik\Plugins\CustomAlerts\Model;
-use Piwik\Tests\Framework\TestCase\IntegrationTestCase;
-use Piwik\Translate;
+use Piwik\Tests\Framework\Mock\FakeAccess;
 use Piwik\Tests\Framework\Fixture;
+use Piwik\Tests\Framework\TestCase\IntegrationTestCase;
 
 /**
  * @group CustomAlerts
@@ -49,19 +49,19 @@ abstract class BaseTest extends IntegrationTestCase
 
     protected function setSuperUser()
     {
-        $pseudoMockAccess = new \FakeAccess();
-        \FakeAccess::setIdSitesAdmin(array(1, 2));
-        \FakeAccess::setSuperUserAccess(true);
-        \FakeAccess::$identity = 'superUserLogin';
+        $pseudoMockAccess = new FakeAccess();
+        FakeAccess::setIdSitesAdmin(array(1, 2));
+        FakeAccess::setSuperUserAccess(true);
+        FakeAccess::$identity = 'superUserLogin';
         Access::setSingletonInstance($pseudoMockAccess);
     }
 
     protected function setUser()
     {
-        $pseudoMockAccess = new \FakeAccess;
-        \FakeAccess::setSuperUserAccess(false);
-        \FakeAccess::$idSitesView = array(99);
-        \FakeAccess::$identity = 'aUser';
+        $pseudoMockAccess = new FakeAccess;
+        FakeAccess::setSuperUserAccess(false);
+        FakeAccess::$idSitesView = array(99);
+        FakeAccess::$identity = 'aUser';
         Access::setSingletonInstance($pseudoMockAccess);
     }
 
