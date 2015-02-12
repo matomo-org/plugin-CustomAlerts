@@ -25,6 +25,7 @@
         "EndsWith": "kończy się na",
         "IncreasesMoreThan": "wzrasta ponad",
         "InvalidComparableDate": "Nieprawidłowe porównywalne daty!",
+        "InvalidMetric": "Metryka jest nieaktywna dla danego raportu!",
         "InvalidMetricValue": "Wartość musi być numeryczna",
         "InvalidPeriod": "Podano nieprawidłowy okres!",
         "InvalidReport": "Nieprawidłowo podany raport",

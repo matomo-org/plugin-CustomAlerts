@@ -23,10 +23,12 @@
         "IsGreaterThan": "больше чем",
         "IsLessThan": "меньше чем",
         "MailEnd": "Удачного анализа!",
+        "MobileMessagingPluginNotActivated": "Плагин MobileMessaging необходим для отправки SMS-оповещений. Вы можете активировать его на %sстранице настройки плагина%s.",
         "MonthComparedToPreviousMonth": "предыдущий месяц",
         "MonthComparedToPreviousYear": "этот же месяц годом раньше",
         "OperationContains": "содержит",
         "OperationDoesNotContain": "не содержит",
+        "ScheduledReportsPluginNotActivated": "Плагин ScheduledReports необходим для создания или редактирования оповещений. Вы можете активировать его на %sстранице настройки плагина%s.",
         "WeekComparedToPreviousWeek": "предыдущая неделя",
         "When": "когда"
     }
