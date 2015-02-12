@@ -1,6 +1,6 @@
 {
     "name": "CustomAlerts",
-    "description": "Alerts are a great way to get notified of changes on your website or app. ",
+    "description": "Create custom Alerts to be notified of important changes on your website or app! ",
     "version": "0.1.19",
     "require": {
         "piwik": ">=2.11.0-b2"
