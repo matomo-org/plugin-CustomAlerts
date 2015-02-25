@@ -49,7 +49,6 @@
         "OperationIsNot": "nie jest",
         "PercentageDecreasesMoreThan": "% Zmniejsza się więcej niż",
         "PercentageIncreasesMoreThan": "% podwyż więcej niż",
-        "PluginDescription": "Wtyczki Alerty pozwalają zdefiniować alerty niestandardowe na każdym raporcie i metryki dostępne w Piwik.",
         "ScheduledReportsPluginNotActivated": "Wtyczka ScheduledReports jest niezbędna do stworzenia lub edytowania alarmów. Możesz ją aktywować poprzez przejście do %sustawień wtyczki%s.",
         "SmsAlertFromName": "Nowy alarm",
         "StartsWith": "rozpoczynające się od",

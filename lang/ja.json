@@ -52,7 +52,6 @@
         "ParmeterIsTooLong": "%s は長過ぎます。最大 %d 文字までが許可されています。",
         "PercentageDecreasesMoreThan": "以上に減少する %",
         "PercentageIncreasesMoreThan": "以上に増加する %",
-        "PluginDescription": "アラートのプラグインを使用すると、任意のレポートや Piwik で使用可能なメトリックにカスタムアラートを設定できます。",
         "ScheduledReportsPluginNotActivated": "アラートを作成または編集するには、ScheduledReports プラグインが必要です。%splugin settings page%s へアクセスし、有効にして下さい。",
         "SmsAlertContent": "%1$s は、レポート %3$s %5$s のメトリック %2$s としてウェブサイト %4$s のために引き起こされています。",
         "SmsAlertFromName": "新しい通知",

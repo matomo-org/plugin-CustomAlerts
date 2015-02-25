@@ -52,7 +52,6 @@
         "ParmeterIsTooLong": "%s es demasiado largo. Se permiten máximo %d caracteres.",
         "PercentageDecreasesMoreThan": "% disminuye con más de",
         "PercentageIncreasesMoreThan": "% aumenta con más de",
-        "PluginDescription": "El plugin de Alertas te permite definir alertas personalizadas en cualquier informe y métrica disponible en Piwik.",
         "ScheduledReportsPluginNotActivated": "Para crear o modificar alertas es necesario tener el plugin ScheduledReports. Puedes activarlo en la %spágina de configuración de los plugins%s.",
         "SmsAlertContent": "%1$s ha sido activado para la página web %4$s como la métrica %2$s en el informe %3$s %5$s.",
         "SmsAlertFromName": "Nueva alerta",

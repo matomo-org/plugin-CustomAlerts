@@ -52,7 +52,7 @@
         "PercentageDecreasesMoreThan": "% verringert sich um mehr als",
         "PercentageIncreasesMoreThan": "% erhöht sich um mehr als",
         "PersonalAlerts": "Persönliche individuelle Benachrichtigungen",
-        "PluginDescription": "Das Benachrichtigungen-Plugin bietet Ihnen die Möglichkeit, benutzerdefinierte Benachrichtigungen für nahezu alle in Piwik verfügbare Metriken erstellen.",
+        "PluginDescription": "Das Benachrichtigungs-Plugin lässt Sie frei definierbare Benachrichtigungen auf beliebige in Piwik verfügbare Berichte und Metriken festlegen.",
         "ScheduledReportsPluginNotActivated": "Das ScheduledReports-Plugin wird benötigt, um Benachrichtungen zu erstellen oder zu bearbeiten. Sie können es aktivieren, indem Sie die %sPlugin Einstellungen Seite%s besuchen.",
         "SmsAlertFromName": "Neue Benachrichtigung",
         "StartsWith": "beginnt mit",

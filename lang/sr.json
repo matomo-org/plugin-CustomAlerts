@@ -52,7 +52,6 @@
         "ParmeterIsTooLong": "%s je predugačko. Dozvoljeno je maksimalno %d znakova.",
         "PercentageDecreasesMoreThan": "% se smanji više od",
         "PercentageIncreasesMoreThan": "% se poveća više od",
-        "PluginDescription": "Dodatak Upozorenja vam omogućuje da definišete upozorenja na bilo kom Piwik izveštaju i metričkoj vrednosti.",
         "ScheduledReportsPluginNotActivated": "Dodatak Zakazani izveštaji je neophodan kako bi se kreirala ili menjala upozorenja. Možete da ga aktivirate na stranici %spodešavanja dodataka%s.",
         "SmsAlertContent": "%1$s je pokrenut za sajt %4$s kao metrika %2$s u izveštaju %3$s %5$s.",
         "SmsAlertFromName": "Novo upozorenje",

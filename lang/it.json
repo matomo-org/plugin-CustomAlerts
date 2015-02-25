@@ -53,7 +53,7 @@
         "PercentageDecreasesMoreThan": "% diminuisce di più di",
         "PercentageIncreasesMoreThan": "% aumenta di più di",
         "PersonalAlerts": "Avvisi Personalizzati Individuali",
-        "PluginDescription": "Il plugin Avvisi ti consente di definire degli Avvisi personalizzati su quasi tutte le metriche disponibili in Piwik.",
+        "PluginDescription": "Il plugin Avvisi ti permette di definire degli avvisi personalizzati sui report e le metriche disponibili in Piwik.",
         "ScheduledReportsPluginNotActivated": "Per creare o modificare gli avvisi è richiesto il plugin ScheduledReports. Puoi attivarlo accedendo alla %spagina impostazioni plugin%s.",
         "SmsAlertContent": "%1$s è stato attivato per il sito %4$s come metrica %2$s nel report %3$s %5$s.",
         "SmsAlertFromName": "Nuovo Avviso",

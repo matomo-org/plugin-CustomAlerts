@@ -1,6 +1,7 @@
 {
     "CustomAlerts": {
         "DayComparedToPreviousDay": "forrige dag",
+        "DayComparedToPreviousWeek": "samme dag i forrige uke",
         "EndsWith": "ender med",
         "IsGreaterThan": "er større enn",
         "IsLessThan": "er mindre enn",

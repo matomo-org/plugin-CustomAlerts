@@ -52,7 +52,6 @@
         "ParmeterIsTooLong": "%s este prea lung. Maxim %d caractere sunt permise.",
         "PercentageDecreasesMoreThan": "% scade mai mult decat",
         "PercentageIncreasesMoreThan": "% creste mai mult decat",
-        "PluginDescription": "Pluginul Alerte va permite sa creati alerte customizate pentru orice raport si parametru disponibile in Piwik.",
         "ScheduledReportsPluginNotActivated": "Pluginul RapoarteProgramate este obligatoriu pentru a putea crea sau edita alerte. Puteti sa il activati accesand %spagina cu setari a pluginului%s.",
         "SmsAlertContent": "%1$s a fost declansat pentru siteul %4$s ca parametrul %2$s in raportul %3$s %5$s.",
         "SmsAlertFromName": "Alerta Noua",

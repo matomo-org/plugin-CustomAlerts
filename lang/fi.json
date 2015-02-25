@@ -52,7 +52,6 @@
         "ParmeterIsTooLong": "%s on liian pitkä. Enintään %d merkkiä on sallittu.",
         "PercentageDecreasesMoreThan": "% laskee enemmän kuin",
         "PercentageIncreasesMoreThan": "% lisääntyy enemmän kuin",
-        "PluginDescription": "Muistutusten liitännäinen sallii sinun määrittää muistutuksia kaikille Piwikistä löytyville raporteille ja mittareille.",
         "ScheduledReportsPluginNotActivated": "AjastetutRaportit-liitännäinen on välttämätön, jotta voit luoda tai muokata hälytyksiä. Voit aktivoida sen sivulta %sliitännäisten asetukset%s.",
         "SmsAlertContent": "%1$s on lauennut verkkosivulla %4$s mittarilla %2$s raportissa %3$s %5$s.",
         "SmsAlertFromName": "Uusi muistutus",

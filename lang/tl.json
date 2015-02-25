@@ -52,7 +52,6 @@
         "ParmeterIsTooLong": "%s ay masyadong mahaba.",
         "PercentageDecreasesMoreThan": "% Pagbaba ng higit sa",
         "PercentageIncreasesMoreThan": "% Pagtaas ng higit sa",
-        "PluginDescription": "Ang plugin alerts Hinahayaan kang e-define ang mga custom alerts sa lahat ng mga ulat at panuka na available sa Piwik.",
         "ScheduledReportsPluginNotActivated": "Ang Scheduled Reports plugin ay kailangan upang makagawa at makapag edit ng mga alerts. Maaari mong e-activate ito sa pamamagitan ng pag access sa %s plugin settings page %s.",
         "SmsAlertContent": "%1$s ay na-trigger para sa website %4$s bilang sukatan %2$s sa ulat na %3$s%5$s.",
         "SmsAlertFromName": "Bagong Alerto",

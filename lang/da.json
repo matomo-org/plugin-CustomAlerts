@@ -52,7 +52,6 @@
         "ParmeterIsTooLong": "%s er for lang. Max %d tegn tilladt.",
         "PercentageDecreasesMoreThan": "% falder mere end",
         "PercentageIncreasesMoreThan": "% stiger mere end",
-        "PluginDescription": "Notifikations udvidelse lader dig definere tilpassede notifikationer om rapporter og målinger tilgængelige i Piwik.",
         "ScheduledReportsPluginNotActivated": "Planlagte rapporter udvidelsen er påkrævet for at oprette eller redigere notifikationer. Du kan aktivere den på %sindstillingssiden for udvidelsen%s.",
         "SmsAlertContent": "%1$s er blevet udløst for hjemmesiden %4$s som måling %2$s i rapport %3$s %5$s.",
         "SmsAlertFromName": "Ny notifikation",

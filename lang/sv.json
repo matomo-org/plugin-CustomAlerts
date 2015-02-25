@@ -52,7 +52,6 @@
         "ParmeterIsTooLong": "%s är för lång. Högst %d tecken är tillåtna.",
         "PercentageDecreasesMoreThan": "% minskar med mer än",
         "PercentageIncreasesMoreThan": "% ökar mer än",
-        "PluginDescription": "Pluginet för Varningar gör att du kan definiera alla rapporter och mätningar som finns tillgängliga i Piwik.",
         "ScheduledReportsPluginNotActivated": "Plugin för Schemalaggd Rapport behövs för att kunna skapa eller redigera nya påminnelser. Du kan aktivera det genom att ge det åtkomst på sidan för %splugin inställningar%s.",
         "SmsAlertContent": "%1$s har blivit triggad för webbsida %4$s, det har även %2$s i rapport %3$s %5$s.",
         "SmsAlertFromName": "Ny påminnelse",

@@ -52,7 +52,6 @@
         "ParmeterIsTooLong": "%s est trop long. Un maximum de %d caractères est autorisé.",
         "PercentageDecreasesMoreThan": "% diminue plus que",
         "PercentageIncreasesMoreThan": "% augmente plus que",
-        "PluginDescription": "Le module des alertes vous permettent de définir des alertes sur n'importe quel rapport ou métrique disponible sur Piwik.",
         "ScheduledReportsPluginNotActivated": "Le composant de rapports planifiés est requis pour créer ou modifier des alertes. Vous pouvez l'activer en accédant à %sla page de paramètres du composant%s.",
         "SmsAlertContent": "%1$s a été déclenchée pour le site %4$s car la métrique %2$s du rapport %3$s %5$s.",
         "SmsAlertFromName": "Nouvelle alerte",
