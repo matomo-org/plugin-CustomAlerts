@@ -16,7 +16,6 @@ use Piwik\Common;
 use Piwik\Piwik;
 use Piwik\Plugins\MobileMessaging\API as APIMobileMessaging;
 use Piwik\Site;
-use Piwik\Translate;
 
 /**
  *
@@ -26,10 +25,8 @@ class API extends \Piwik\Plugin\API
 {
     private $validator;
 
-    protected function __construct()
+    public function __construct()
     {
-        parent::__construct();
-
         $this->validator = new Validator();
     }
 
