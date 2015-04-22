@@ -1,17 +1,18 @@
 {
     "CustomAlerts": {
-        "DayComparedToPreviousDay": "forrige dag",
-        "DayComparedToPreviousWeek": "samme dag i forrige uke",
-        "EndsWith": "ender med",
-        "IsGreaterThan": "er større enn",
-        "IsLessThan": "er mindre enn",
-        "MonthComparedToPreviousMonth": "forrige måned",
-        "OperationContains": "inneholder",
-        "OperationDoesNotContain": "inneholder ikke",
         "OperationIs": "er",
         "OperationIsNot": "er ikke",
+        "OperationContains": "inneholder",
+        "OperationDoesNotContain": "inneholder ikke",
         "StartsWith": "starter med",
+        "EndsWith": "ender med",
+        "IsLessThan": "er mindre enn",
+        "IsGreaterThan": "er større enn",
+        "DayComparedToPreviousDay": "forrige dag",
+        "DayComparedToPreviousWeek": "samme dag i forrige uke",
+        "DayComparedToPreviousYear": "samme dag i foregående år",
         "WeekComparedToPreviousWeek": "forrige uke",
+        "MonthComparedToPreviousMonth": "forrige måned",
         "When": "når"
     }
 }

@@ -1,22 +1,22 @@
 {
     "CustomAlerts": {
         "Alert": "Alerta",
-        "AlertName": "Nome do alerta",
         "Alerts": "Alertas",
-        "Condition": "Condição",
         "CreateNewAlert": "Criar novo Alerta",
+        "SmsAlertFromName": "Novo Alerta",
+        "OperationContains": "contém",
+        "OperationDoesNotContain": "não contém",
+        "EditAlert": "Editar Alerta",
+        "AlertName": "Nome do alerta",
+        "Condition": "Condição",
+        "IsLessThan": "é menor que",
+        "IsGreaterThan": "é maior que",
         "DayComparedToPreviousDay": "dia anterior",
         "DayComparedToPreviousWeek": "mesmo dia da semana anterior",
         "DayComparedToPreviousYear": "mesmo dia do ano anterior",
-        "EditAlert": "Editar Alerta",
-        "IsGreaterThan": "é maior que",
-        "IsLessThan": "é menor que",
+        "WeekComparedToPreviousWeek": "semana anterior",
         "MonthComparedToPreviousMonth": "mês anterior",
         "MonthComparedToPreviousYear": "mesmo mês no ano anterior",
-        "OperationContains": "contém",
-        "OperationDoesNotContain": "não contém",
-        "SmsAlertFromName": "Novo Alerta",
-        "WeekComparedToPreviousWeek": "semana anterior",
         "When": "quando"
     }
 }
