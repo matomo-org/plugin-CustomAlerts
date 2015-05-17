@@ -299,6 +299,8 @@ class ApiTest extends BaseTest
      */
     public function test_getAlerts_shouldFail_IfUserDoesNotHaveAccessToWebsite()
     {
+        FakeAccess::clearAccess();
+
         $this->api->getAlerts(array($this->idSite));
     }
 

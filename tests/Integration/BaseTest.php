@@ -57,6 +57,7 @@ abstract class BaseTest extends IntegrationTestCase
     protected function setUser()
     {
         FakeAccess::setSuperUserAccess(false);
+        FakeAccess::$idSitesAdmin = array();
         FakeAccess::$idSitesView = array(99);
         FakeAccess::$identity = 'aUser';
     }
