@@ -2,6 +2,7 @@
     "CustomAlerts": {
         "Alert": "Upozorenje",
         "Alerts": "Upozorenja",
+        "PluginDescription": "Dodatak za upozorenja vam omogućuje da definišete upozorenja u bilo kom izveštaju ili metrici koji postoje u Piwik-u.",
         "CreateNewAlert": "Kreiranje novog upozorenja",
         "SmsAlertFromName": "Novo upozorenje",
         "SmsAlertContent": "%1$s je pokrenut za sajt %4$s kao metrika %2$s u izveštaju %3$s %5$s.",
@@ -20,6 +21,7 @@
         "OperationContains": "sadrži",
         "OperationDoesNotContain": "ne sadrži",
         "ManageAlerts": "Upravljanje vašim upozorenjima",
+        "PersonalAlerts": "Korisnički definisana upozorenja",
         "AlertsHistory": "Istorijat aktiviranih upozorenja",
         "AlertCondition": "Uslovi za upozorenje",
         "AlertDoesNotExist": "Upozorenje sa identifikatorom %d ne postoji!",
