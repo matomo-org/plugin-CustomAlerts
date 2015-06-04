@@ -49,20 +49,17 @@ abstract class BaseTest extends IntegrationTestCase
 
     protected function setSuperUser()
     {
-        $pseudoMockAccess = new FakeAccess();
         FakeAccess::setIdSitesAdmin(array(1, 2));
         FakeAccess::setSuperUserAccess(true);
         FakeAccess::$identity = 'superUserLogin';
-        Access::setSingletonInstance($pseudoMockAccess);
     }
 
     protected function setUser()
     {
-        $pseudoMockAccess = new FakeAccess;
         FakeAccess::setSuperUserAccess(false);
+        FakeAccess::$idSitesAdmin = array();
         FakeAccess::$idSitesView = array(99);
         FakeAccess::$identity = 'aUser';
-        Access::setSingletonInstance($pseudoMockAccess);
     }
 
     /**
@@ -72,5 +69,12 @@ abstract class BaseTest extends IntegrationTestCase
     public function testTrue()
     {
         $this->assertTrue(true);
+    }
+
+    public function provideContainerConfig()
+    {
+        return array(
+            'Piwik\Access' => new FakeAccess()
+        );
     }
 }
