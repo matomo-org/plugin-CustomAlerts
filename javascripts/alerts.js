@@ -97,7 +97,7 @@ var CustomAlerts = (function($) {
         ajaxRequest.setErrorCallback(function () {
             sendFeedback([]);
         });
-        ajaxRequest.send(false);
+        ajaxRequest.send();
     }
 
     function isBlockedReportApiMethod(apiMethodUniqueId) {
@@ -236,7 +236,7 @@ var CustomAlerts = (function($) {
                 format: 'JSON'
             }, 'GET');
             ajaxRequest.redirectOnSuccess();
-            ajaxRequest.send(false);
+            ajaxRequest.send();
         }
 
         piwikHelper.modalConfirm('#confirm', {yes: onDelete});
@@ -325,7 +325,7 @@ var CustomAlerts = (function($) {
             ajaxHandler.addParams(POSTparams, 'POST');
             ajaxHandler.addParams({period: period, module: 'API', method: method}, 'GET');
             ajaxHandler.redirectOnSuccess({module: 'CustomAlerts', action: 'index'});
-            ajaxHandler.send(true);
+            ajaxHandler.send();
         }
     };
 
