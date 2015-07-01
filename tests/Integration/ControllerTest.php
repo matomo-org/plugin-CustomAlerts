@@ -50,7 +50,8 @@ class ControllerTest extends BaseTest
 
         Translate::loadAllTranslations();
 
-        $this->controller = new CustomController();
+        $this->controller = self::$fixture->piwikEnvironment->getContainer()->get(
+            'Piwik\Plugins\CustomAlerts\tests\Integration\CustomController');
     }
 
     public function tearDown()

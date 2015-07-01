@@ -11,6 +11,7 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
+use Piwik\Container\StaticContainer;
 use Piwik\Date;
 use Piwik\Mail;
 use Piwik\Period;
@@ -145,7 +146,7 @@ class Notifier extends \Piwik\Plugin
             return;
         }
 
-        $controller = new Controller();
+        $controller = StaticContainer::get('Piwik\Plugins\CustomAlerts\Controller');
         $content = $controller->formatAlerts($alerts, 'sms');
         $subject = Piwik::translate('CustomAlerts_SmsAlertFromName');
 
@@ -176,7 +177,7 @@ class Notifier extends \Piwik\Plugin
         $mail->addTo($recipient);
         $mail->setSubject(Piwik::translate('CustomAlerts_MailAlertSubject', array($websiteName, $prettyDate)));
 
-        $controller = new Controller();
+        $controller = StaticContainer::get('Piwik\Plugins\CustomAlerts\Controller');
 
         $viewHtml = new View('@CustomAlerts/alertHtmlMail');
         $viewHtml->assign('triggeredAlerts', $controller->formatAlerts($alerts, 'html'));
