@@ -8,6 +8,7 @@
 
 namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
+use Piwik\Container\StaticContainer;
 use Piwik\Date;
 use Piwik\Mail;
 use Piwik\Plugin;
@@ -105,19 +106,19 @@ t your custom alert settings, please sign in and access the Alerts page.=
 
     public function test_sendAlertsPerEmailToRecipient_shouldUseDifferentSubjectDependingOnPeriod()
     {
-        $this->assertDateInSubject('day', 'Thursday 31 December 2009');
-        $this->assertDateInSubject('week', 'Week 21 December - 27 December 2009');
-        $this->assertDateInSubject('month', '2009, December');
+        $this->assertDateInSubject('day', 'New alert for website Piwik test [Thursday, December 31, 2009]');
+        $this->assertDateInSubject('week', "=?utf-8?Q?New=20alert=20for=20website=20Piwik=20test=20[Week=20?=\n =?utf-8?Q?December=2021=20=E2=80=93=2027,=202009]?=");
+        $this->assertDateInSubject('month', 'New alert for website Piwik test [December 2009]');
     }
 
-    private function assertDateInSubject($period, $expectedDate)
+    private function assertDateInSubject($period, $expectedSubject)
     {
         $alerts = $this->getTriggeredAlerts();
         Mail::setDefaultTransport(new \Zend_Mail_Transport_File());
 
         $mail = new Mail();
         $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com', $period, 1);
-        $this->assertEquals('New alert for website Piwik test [' . $expectedDate . ']', $mail->getSubject());
+        $this->assertEquals($expectedSubject, $mail->getSubject());
     }
 
     public function test_sendNewAlerts()
