@@ -2,6 +2,7 @@
     "CustomAlerts": {
         "Alert": "通知",
         "Alerts": "通知",
+        "PluginDescription": "アラートのプラグインを使用すると、任意のレポートと Piwik で利用可能なメトリックにカスタムアラートを定義できます。",
         "CreateNewAlert": "新しい通知を作成",
         "SmsAlertFromName": "新しい通知",
         "SmsAlertContent": "%1$s は、レポート %3$s %5$s のメトリック %2$s としてウェブサイト %4$s のために引き起こされています。",
@@ -20,6 +21,7 @@
         "OperationContains": "を含みます。",
         "OperationDoesNotContain": "を含みません。",
         "ManageAlerts": "カスタムアラートの管理",
+        "PersonalAlerts": "パーソナルカスタムアラート",
         "AlertsHistory": "これまでのアラート履歴",
         "AlertCondition": "通知の条件",
         "AlertDoesNotExist": "ID %d のアラートが存在しません!",

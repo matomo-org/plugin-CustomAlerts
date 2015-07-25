@@ -1,0 +1,9 @@
+{
+    "CustomAlerts": {
+        "Alert": "Signalas",
+        "Alerts": "Signalai",
+        "CreateNewAlert": "Sukurti naują signalą",
+        "SmsAlertFromName": "Naujas signalas",
+        "MailEnd": "Smagaus analizavimo!"
+    }
+}

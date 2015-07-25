@@ -1,0 +1,20 @@
+{
+    "CustomAlerts": {
+        "Alert": "चेतावनी",
+        "Alerts": "अलर्ट",
+        "PluginDescription": "अलर्ट प्लगइन आप किसी भी रिपोर्ट और Piwik में उपलब्ध मीट्रिक पर कस्टम अलर्ट परिभाषित करने देता है।",
+        "CreateNewAlert": "नया अलर्ट बनाएं",
+        "SmsAlertFromName": "नई चेतावनी",
+        "MailText": "ट्रिगर अलर्ट नीचे दी गई तालिका में सूचीबद्ध हैं। अपने कस्टम अलर्ट सेटिंग को समायोजित करने के लिए, में प्रवेश करें और अलर्ट पृष्ठ का उपयोग करें।",
+        "MailEnd": "हैप्पी विश्लेषण!",
+        "OperationIs": "है",
+        "OperationIsNot": "नहीं है",
+        "OperationContains": "युक्ति",
+        "OperationDoesNotContain": "शामिल नहीं है",
+        "DayComparedToPreviousDay": "पिछले दिन",
+        "DayComparedToPreviousWeek": "इससे पिछले सप्ताह में एक ही दिन",
+        "DayComparedToPreviousYear": "पिछले साल इसी दिन",
+        "MonthComparedToPreviousMonth": "पिछले महीने",
+        "MonthComparedToPreviousYear": "पिछले वर्ष के इसी माह"
+    }
+}
