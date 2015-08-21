@@ -12,7 +12,6 @@ use Piwik\Date;
 use Piwik\Mail;
 use Piwik\Plugin;
 use Piwik\Plugins\CustomAlerts\Notifier;
-use Piwik\Translate;
 
 class CustomNotifier extends Notifier
 {
@@ -64,20 +63,11 @@ class NotifierTest extends BaseTest
         Plugin\Manager::getInstance()->loadPlugin('CustomAlerts');
         Plugin\Manager::getInstance()->loadPlugin('Morpheus');
 
-        Translate::loadAllTranslations();
-
         \Piwik\Plugins\UsersManager\API::getInstance()->addUser('login1', 'p2kK2msAw1', 'test1@example.com');
         \Piwik\Plugins\UsersManager\API::getInstance()->addUser('login2', 'p2kK2msAw1', 'test2@example.com');
         \Piwik\Plugins\UsersManager\API::getInstance()->addUser('login3', 'p2kK2msAw1', 'test3@example.com');
 
         $this->notifier = new CustomNotifier();
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-
-        Translate::reset();
     }
 
     public function test_sendAlertsPerEmailToRecipient()
@@ -226,4 +216,10 @@ t your custom alert settings, please sign in and access the Alerts page.=
         return $alerts;
     }
 
+    public function provideContainerConfig()
+    {
+        return array_merge(parent::provideContainerConfig(), array(
+            'test.vars.loadRealTranslations' => true,
+        ));
+    }
 }

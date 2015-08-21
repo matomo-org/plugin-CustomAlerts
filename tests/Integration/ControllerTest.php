@@ -12,7 +12,6 @@ use Piwik\Cache as PiwikCache;
 use Piwik\Plugin;
 use Piwik\Plugins\CustomAlerts\Controller;
 use Piwik\SettingsPiwik;
-use Piwik\Translate;
 
 class CustomController extends Controller
 {
@@ -48,16 +47,7 @@ class ControllerTest extends BaseTest
             PiwikCache::flushAll();
         }
 
-        Translate::loadAllTranslations();
-
         $this->controller = new CustomController();
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-
-        Translate::reset();
     }
 
     public function test_formatAlerts_asText()
@@ -242,4 +232,10 @@ FORMATTED;
         );
     }
 
+    public function provideContainerConfig()
+    {
+        return array_merge(parent::provideContainerConfig(), array(
+            'test.vars.loadRealTranslations' => true,
+        ));
+    }
 }
