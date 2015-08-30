@@ -3,7 +3,7 @@
     "description": "Create custom Alerts to be notified of important changes on your website or app! ",
     "version": "0.1.20",
     "require": {
-        "piwik": ">=2.14.0"
+        "piwik": ">=2.17.0"
     },
     "authors": [
         {
