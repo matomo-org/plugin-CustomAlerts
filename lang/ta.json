@@ -1,0 +1,30 @@
+{
+    "CustomAlerts": {
+        "Alert": "எச்சரிக்கை \/ விழிப்பூட்டல்",
+        "Alerts": "எச்சரிக்கைகள் \/ விழிப்பூட்டல்கள்",
+        "CreateNewAlert": "புதிய விழிப்பூட்டலை உருவாக்குக",
+        "SmsAlertFromName": "புதிய விழிப்பூட்டல்",
+        "ManageAlerts": "அடிப்படை விழிப்பூட்டல்களை நிர்வகி",
+        "AlertCondition": "விழிப்பூட்டலுக்கான தேவை",
+        "EditAlert": "விழிப்பூட்டலை மாற்றியமை",
+        "InvalidPeriod": "பொருத்தமற்ற கால அளவு கொடுக்கப்பட்டுள்ளது!",
+        "InvalidMetricValue": "உள்ளீடு எண்களில் இருக்க வேண்டும்",
+        "InvalidReport": "பொருத்தமற்ற அறிக்கை கொடுக்கப்பட்டுள்ளது!",
+        "AlertName": "விழிப்பூட்டல் பெயர்",
+        "Condition": "கட்டளை",
+        "StartsWith": "இல் தொடங்குகிறது",
+        "EndsWith": "இல் முடிகிறது",
+        "IsLessThan": "ஐவிடச் சிறியது",
+        "IsGreaterThan": "ஐவிடப் பெரியது",
+        "NoAlertsDefined": "நீங்கள் எந்த விழிப்பூட்டலையும் உருவாக்கவில்லை! இப்போது ஒன்றை உருவாக்குங்கள்!",
+        "NoTriggeredAlerts": "தூண்டப்பட்ட விழிப்பூட்டல்கள் இப்போது வரை ஏதுமில்லை",
+        "InvalidReportCondition": "அறிக்கைக்கான கட்டளை பொருத்தமற்றதாக இருக்கிறது",
+        "DayComparedToPreviousDay": "நேற்று",
+        "DayComparedToPreviousWeek": "கடந்த வாரத்தில் இதே நாள்",
+        "DayComparedToPreviousYear": "கடந்த ஆண்டில் இதே நாள்",
+        "WeekComparedToPreviousWeek": "கடந்த வாரம்",
+        "MonthComparedToPreviousMonth": "கடந்த மாதம்",
+        "MonthComparedToPreviousYear": "கடந்த ஆண்டின் இதே மாதம்",
+        "When": "எப்பொழுது"
+    }
+}

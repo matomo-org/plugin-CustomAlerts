@@ -28,7 +28,7 @@
         "AccessException": "Sie sind nicht der Eigentümer der Benachrichtigung mit der ID %d",
         "EditAlert": "Benachrichtigung bearbeiten",
         "AreYouSureDeleteAlert": "Sind Sie sicher dass Sie diese Benachrichtigung löschen wollen?",
-        "InvalidPeriod": "Ungültiger Zeitbereich",
+        "InvalidPeriod": "Ungültiger Zeitraum",
         "InvalidMetricValue": "Numerischer Wert erwartet",
         "InvalidReport": "Ungültiger Bericht angegeben!",
         "InvalidComparableDate": "Ungültige zu vergleichende Daten!",
