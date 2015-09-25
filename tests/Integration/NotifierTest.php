@@ -107,7 +107,7 @@ t your custom alert settings, please sign in and access the Alerts page.=
     public function test_sendAlertsPerEmailToRecipient_shouldUseDifferentSubjectDependingOnPeriod()
     {
         $this->assertDateInSubject('day', 'New alert for website Piwik test [Thursday, December 31, 2009]');
-        $this->assertDateInSubject('week', "=?utf-8?Q?New=20alert=20for=20website=20Piwik=20test=20[Week=20?=\n =?utf-8?Q?December=2021=20=E2=80=93=2027,=202009]?=");
+        $this->assertDateInSubject('week', "=?utf-8?Q?New=20alert=20for=20website=20Piwik=20test=20[week=20?=\n =?utf-8?Q?December=2021=20=E2=80=93=2027,=202009]?=");
         $this->assertDateInSubject('month', 'New alert for website Piwik test [December 2009]');
     }
 
