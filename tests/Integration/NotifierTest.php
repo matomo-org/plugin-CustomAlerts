@@ -105,9 +105,9 @@ t your custom alert settings, please sign in and access the Alerts page.=
 
     public function test_sendAlertsPerEmailToRecipient_shouldUseDifferentSubjectDependingOnPeriod()
     {
-        $this->assertDateInSubject('day', 'Thursday 31 December 2009');
-        $this->assertDateInSubject('week', 'Week 21 December - 27 December 2009');
-        $this->assertDateInSubject('month', '2009, December');
+        $this->assertDateInSubject('week', 'Week December 21 – 27, 2009');
+        $this->assertDateInSubject('day', 'Thursday, December 31, 2009');
+        $this->assertDateInSubject('month', 'December 2009');
     }
 
     private function assertDateInSubject($period, $expectedDate)
@@ -117,7 +117,15 @@ t your custom alert settings, please sign in and access the Alerts page.=
 
         $mail = new Mail();
         $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com', $period, 1);
-        $this->assertEquals('New alert for website Piwik test [' . $expectedDate . ']', $mail->getSubject());
+
+        $expected = 'New alert for website Piwik test [' . $expectedDate . ']';
+        $expecteds = array(
+            $expected,
+            \Zend_Mime::encodeQuotedPrintableHeader($expected, 'utf-8')
+        );
+
+        $isExpected = in_array( $mail->getSubject(), $expecteds);
+        $this->assertTrue($isExpected , $mail->getSubject() . " not found in " . var_export($expecteds, true));
     }
 
     public function test_sendNewAlerts()
