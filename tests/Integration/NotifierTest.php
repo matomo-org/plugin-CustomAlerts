@@ -105,7 +105,7 @@ t your custom alert settings, please sign in and access the Alerts page.=
 
     public function test_sendAlertsPerEmailToRecipient_shouldUseDifferentSubjectDependingOnPeriod()
     {
-        $this->assertDateInSubject('week', 'Week December 21 – 27, 2009');
+        $this->assertDateInSubject('week', 'week December 21 – 27, 2009');
         $this->assertDateInSubject('day', 'Thursday, December 31, 2009');
         $this->assertDateInSubject('month', 'December 2009');
     }
