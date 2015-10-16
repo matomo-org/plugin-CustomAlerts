@@ -15,7 +15,7 @@ env:
   global:
     - PLUGIN_NAME=CustomAlerts
     - PIWIK_ROOT_DIR=$TRAVIS_BUILD_DIR/piwik
-    - PIWIK_LATEST_STABLE_TEST_TARGET=2.15.0-rc1
+    - PIWIK_LATEST_STABLE_TEST_TARGET=2.15.0-rc3
     - secure: "Kwg24EJP/yqZ2eY4XkNDT1rKi78hS2Z9rmovuk0h9+R6jfFAV3BGWf/nsSEmAbU3yC0ifpJg560jURrOmnjAL3q+ehJVtk3joGsfHrNFHzQ+042qSZlO8uC2yegvtCPMmhDM9QotmOgrRfqJ51HQ1F6NxcgyTtWer/ghrFD14QU="
     - secure: "O4Y94yPmbvry1wAaU8bJpV7tZO8uwaCrZTMAe8QTAJHpMkmdKrDr5zD5jwWVEKCziXLqvZdqRk2OLoeM1so/8F2hrKycS/luvIzhbqOpvBrSFPnQfY4Ty6BTjrAy3j3k/c6rL0QLMHNFHb5uL3Ex+La6Y5RkcTCIbEwTjU7f/D4="
   matrix:
