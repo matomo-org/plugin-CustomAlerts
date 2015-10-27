@@ -43,7 +43,7 @@ matrix:
     - php: 5.3.3
       env: TEST_SUITE=UITests MYSQL_ADAPTER=PDO_MYSQL TEST_AGAINST_PIWIK_BRANCH=$PIWIK_LATEST_STABLE_TEST_TARGET
 
-sudo: false
+sudo: required
 
 script: $PIWIK_ROOT_DIR/tests/travis/travis.sh
 
@@ -65,13 +65,12 @@ install:
 
   # make sure travis-scripts repo is latest for initial travis setup
   - '[ -d ./tests/travis/.git ] || sh -c "rm -rf ./tests/travis && git clone https://github.com/piwik/travis-scripts.git ./tests/travis"'
-  - cd ./tests/travis ; git checkout travis_sudo_false2 ; cd ../..
+  - cd ./tests/travis ; git checkout master ; cd ../..
 
-  - export GENERATE_TRAVIS_YML_COMMAND="php ./tests/travis/generator/main.php generate:travis-yml --plugin=\"CustomAlerts\" --sudo-false --verbose"
+  - export GENERATE_TRAVIS_YML_COMMAND="php ./tests/travis/generator/main.php generate:travis-yml --plugin=\"CustomAlerts\" --verbose"
   #- '[[ "$TRAVIS_JOB_NUMBER" != *.1 || "$TRAVIS_PULL_REQUEST" != "false" ]] || ./tests/travis/autoupdate_travis_yml.sh'
 
   - ./tests/travis/checkout_test_against_branch.sh
-  - cd ./tests/travis ; git checkout travis_sudo_false2 ; cd ../..
 
   - '[ "$PLUGIN_NAME" == "" ] || [ ! -f ./tests/travis/check_plugin_compatible_with_piwik.php ] || php ./tests/travis/check_plugin_compatible_with_piwik.php "$PLUGIN_NAME"'
 
