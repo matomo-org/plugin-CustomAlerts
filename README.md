@@ -56,7 +56,8 @@ To define the condition you can select the conditions:
 
 ## Changelog
 
-* 0.1.0 First beta
+* 0.1.21: Compatible with Piwik 2.15.0, fixed: alert number format can be wrong when using percentages 
+* 0.1.0: First beta
 
 ## License
 
