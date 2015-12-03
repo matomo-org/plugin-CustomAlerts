@@ -6,7 +6,6 @@
         "MailAlertSubject": "Nytt varsel for nettsted %1$s [%2$s]",
         "ValueIsLessThan": "er %2$s som er mindre enn %1$s",
         "ValueIsGreaterThan": "er %2$s som er større enn %1$s",
-        "ValuePercentageIncreasedMoreThan": "økte mer enn %1$s% fra %2$s til %3$s",
         "OperationIs": "er",
         "OperationIsNot": "er ikke",
         "OperationContains": "inneholder",

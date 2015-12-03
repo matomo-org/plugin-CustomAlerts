@@ -13,8 +13,6 @@
         "ValueIsGreaterThan": "este %2$s care este mai mare decat %1$s",
         "ValueDecreasedMoreThan": "a scazut cu mai mult decat %1$s de la %2$s pana la %3$s",
         "ValueIncreasedMoreThan": "a crescut cu mai mult de %1$s de la %2$s pana la %3$s",
-        "ValuePercentageDecreasedMoreThan": "a scazut cu mai mult de %1$s% de la %2$s pana la %3$s",
-        "ValuePercentageIncreasedMoreThan": "a crescut cu mai mult de %1$s% de la %2$s pana la %3$s",
         "OperationIs": "este",
         "OperationIsNot": "nu este",
         "OperationContains": "contine",

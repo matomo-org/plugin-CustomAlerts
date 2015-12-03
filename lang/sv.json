@@ -13,8 +13,6 @@
         "ValueIsGreaterThan": "är %2$s vilket är större än %1$s",
         "ValueDecreasedMoreThan": "minskade med mer än %1$s från %2$s till %3$s",
         "ValueIncreasedMoreThan": "Ökar med mer än %1$s från %2$s till %3$s",
-        "ValuePercentageDecreasedMoreThan": "Minskade med mer än %1$s% från %2$s till %3$s",
-        "ValuePercentageIncreasedMoreThan": "Ökade med mer än %1$s% från %2$s till %3$s",
         "OperationIs": "är",
         "OperationIsNot": "är ej",
         "OperationContains": "Innehåller",

@@ -14,8 +14,6 @@
         "ValueIsGreaterThan": "es %2$s que es mayor que %1$s",
         "ValueDecreasedMoreThan": "disminuido con más de %1$s de %2$s a %3$s",
         "ValueIncreasedMoreThan": "aumentado con más de %1$s de %2$s a %3$s",
-        "ValuePercentageDecreasedMoreThan": "disminuido más de %1$s% de %2$s a %3$s",
-        "ValuePercentageIncreasedMoreThan": "aumentado más %1$s% de %2$s a %3$s",
         "OperationIs": "es",
         "OperationIsNot": "no es",
         "OperationContains": "contiene",

@@ -14,8 +14,6 @@
         "ValueIsGreaterThan": "er %2$s, hvilket er større end %1$s",
         "ValueDecreasedMoreThan": "faldet mere end %1$s fra %2$s til %3$s",
         "ValueIncreasedMoreThan": "steget mere end %1$s fra %2$s til %3$s",
-        "ValuePercentageDecreasedMoreThan": "faldet mere end %1$s% fra %2$s til %3$s",
-        "ValuePercentageIncreasedMoreThan": "øget mere end %1$s% fra %2$s til %3$s",
         "OperationIs": "er",
         "OperationIsNot": "er ikke",
         "OperationContains": "indeholder",

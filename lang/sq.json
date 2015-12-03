@@ -1,6 +1,9 @@
 {
     "CustomAlerts": {
         "DayComparedToPreviousDay": "dita e mëparshme",
-        "DayComparedToPreviousWeek": "e njëjta ditë javën e kaluar"
+        "DayComparedToPreviousWeek": "e njëjta ditë javën e kaluar",
+        "DayComparedToPreviousYear": "e njëjta ditë vitin e kaluar",
+        "WeekComparedToPreviousWeek": "java e mëparshme",
+        "MonthComparedToPreviousMonth": "muaji i mëparshëm"
     }
 }

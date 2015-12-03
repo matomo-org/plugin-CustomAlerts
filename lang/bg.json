@@ -12,8 +12,6 @@
         "ValueIsGreaterThan": "е %2$s, което е повече от %1$s",
         "ValueDecreasedMoreThan": "е намаляла повече от %1$s, от %2$s до %3$s",
         "ValueIncreasedMoreThan": "е нараснала повече от %1$s, от %2$s до %3$s",
-        "ValuePercentageDecreasedMoreThan": "е намаляла повече от %1$s%, от %2$s до %3$s",
-        "ValuePercentageIncreasedMoreThan": "е нараснала повече от %1$s%, от %2$s до %3$s",
         "OperationIs": "е",
         "OperationIsNot": "не е",
         "OperationContains": "съдържа",

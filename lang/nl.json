@@ -14,8 +14,6 @@
         "ValueIsGreaterThan": "is %2$s wat groter is dan %1$s",
         "ValueDecreasedMoreThan": "afname meer dan %1$s van %2$s naar %3$s",
         "ValueIncreasedMoreThan": "toename meer dan %1$s van %2$s naar %3$s",
-        "ValuePercentageDecreasedMoreThan": "afname meer dan %1$s% van %2$s naar %3$s",
-        "ValuePercentageIncreasedMoreThan": "toename meer dan %1$s% van %2$s naar %3$s",
         "OperationIs": "is",
         "OperationIsNot": "is niet",
         "OperationContains": "bevat",

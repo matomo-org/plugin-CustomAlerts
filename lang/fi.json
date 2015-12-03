@@ -13,8 +13,6 @@
         "ValueIsGreaterThan": "on %2$s mikä on suurempi kuin %1$s",
         "ValueDecreasedMoreThan": "laski enemmän kuin %1$s, %2$s -> %3$s",
         "ValueIncreasedMoreThan": "lisääntyi enemmän kuin %1$s, %2$s -> %3$s",
-        "ValuePercentageDecreasedMoreThan": "laski enemmän kuin %1$s%, %2$s -> %3$s",
-        "ValuePercentageIncreasedMoreThan": "kasvoi enemmän kuin %1$s%, %2$s -> %3$s",
         "OperationIs": "on",
         "OperationIsNot": "ei ole",
         "OperationContains": "sisältää",

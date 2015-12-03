@@ -14,8 +14,6 @@
         "ValueIsGreaterThan": "je %2$s što je veće od %1$s",
         "ValueDecreasedMoreThan": "smanjo se više od %1$s od %2$s do %3$s",
         "ValueIncreasedMoreThan": "povećano za više od %1$s od %2$s do %3$s",
-        "ValuePercentageDecreasedMoreThan": "smanjio se za više od %1$s% od %2$s do %3$s",
-        "ValuePercentageIncreasedMoreThan": "povećano za više od %1$s% od %2$s do %3$s",
         "OperationIs": "je",
         "OperationIsNot": "nije",
         "OperationContains": "sadrži",

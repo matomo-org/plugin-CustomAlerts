@@ -13,8 +13,6 @@
         "ValueIsGreaterThan": "ay %2$s kung saan ay mas malaki kaysa %1$s.",
         "ValueDecreasedMoreThan": "bumaba ng mahigit %1$s mula %2$s hanggang %3$s",
         "ValueIncreasedMoreThan": "tumaas ng mahigit %1$s mula %2$s hanggang %3$s",
-        "ValuePercentageDecreasedMoreThan": "bumaba ng mahigit %1$s mula %2$s hanggang %3$s",
-        "ValuePercentageIncreasedMoreThan": "tumaas ng mahigit %1$s mula %2$s hanggang %3$s",
         "OperationIs": "ay",
         "OperationIsNot": "Ay hindi",
         "OperationContains": "naglalaman",

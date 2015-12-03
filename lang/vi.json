@@ -1,5 +1,11 @@
 {
     "CustomAlerts": {
+        "Alert": "Cảnh báo",
+        "Alerts": "Cảnh báo",
+        "PluginDescription": "Plugin Cảnh báo cho phép bạn định nghĩa các cảnh báo cho bất kỳ báo cáo hoặc dữ liệu nào.",
+        "CreateNewAlert": "Tạo cảnh báo mới",
+        "SmsAlertFromName": "Cảnh báo mới",
+        "MailAlertSubject": "Cảnh báo mới cho website %1$s [%2$s]",
         "Condition": "Điều kiện",
         "DayComparedToPreviousDay": "Ngày trước đó"
     }

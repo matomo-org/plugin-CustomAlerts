@@ -14,8 +14,6 @@
         "ValueIsGreaterThan": "は、 %1$s を超える %2$s です。",
         "ValueDecreasedMoreThan": "%2$s から %3$s まで %1$s 以上に減少します。",
         "ValueIncreasedMoreThan": "%2$s から %3$s まで %1$s 以上に増加します。",
-        "ValuePercentageDecreasedMoreThan": "%2$s から %3$s まで %1$s 以上に減少します。",
-        "ValuePercentageIncreasedMoreThan": "%2$s から %3$s まで %1$s 以上に増加します。",
         "OperationIs": "は",
         "OperationIsNot": "でない",
         "OperationContains": "を含みます。",
