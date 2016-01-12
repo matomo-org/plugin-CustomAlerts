@@ -18,7 +18,9 @@
   }
 
   .entityListContainer, .entityAddContainer {
-    width: 800px;
+    display: table-cell;
+    max-width: none !important;
+    min-width:800px;
   }
 
   .ui-autocomplete-loading {
@@ -44,8 +46,8 @@
   #reportValue,
   #metricValue {
     width: 80px;
-    min-height: 29px;
-    height: 30px;
+    border-radius: 0 !important;
+    padding: 12px 12px !important;
   }
 
   #reportValue {
@@ -53,7 +55,6 @@
   }
 
   .inlineSelect {
-    padding: 3px 3px 4px 3px;
     margin-bottom: 2px;
     border-radius: 0px;
     color: #666;
@@ -64,13 +65,14 @@
     -moz-appearance: none;
     appearance: none;
     cursor: pointer;
-    border: 1px solid #d4d4d4
+    border: 1px solid #d4d4d4;
+    padding: 12px 12px;
   }
 }
 
 @-moz-document url-prefix() {
   .alerts .inlineSelect {
-    padding: 6.5px 3px 3px;
+    padding: 10px 12px !important;
   }
 }
 
