@@ -52,7 +52,7 @@
         "PercentageIncreasesMoreThan": "% stiger mere end",
         "NoAlertsDefined": "Du har ikke oprettet nogen notifikationer endnu, vil du oprette en nu!",
         "NoTriggeredAlerts": "Der er endnu ingen udløste notifikationer",
-        "CancelAndReturnToAlerts": "Annuller og %svend tilbage til listen med notifikationer%s",
+        "CancelAndReturnToAlerts": "Annuller og %1$svend tilbage til listen med notifikationer%2$s",
         "InvalidReportCondition": "Rapport betingelse er ikke en gyldig værdi",
         "InvalidMetricCondition": "Målingsbetingelse er ikke en gyldig værdi",
         "DayComparedToPreviousDay": "forrige dag",
@@ -61,8 +61,8 @@
         "WeekComparedToPreviousWeek": "forrige uge",
         "MonthComparedToPreviousMonth": "forrige måned",
         "MonthComparedToPreviousYear": "samme måned i det foregående år",
-        "ScheduledReportsPluginNotActivated": "Planlagte rapporter udvidelsen er påkrævet for at oprette eller redigere notifikationer. Du kan aktivere den på %sindstillingssiden for udvidelsen%s.",
-        "MobileMessagingPluginNotActivated": "Mobil-besked programudvidelsen er nødvendig for at sende SMS-beskeder. Du kan aktivere den ved at gå til %sindstillinger for programudvidelser%s",
+        "ScheduledReportsPluginNotActivated": "Planlagte rapporter udvidelsen er påkrævet for at oprette eller redigere notifikationer. Du kan aktivere den på %1$sindstillingssiden for udvidelsen%2$s.",
+        "MobileMessagingPluginNotActivated": "Mobil-besked programudvidelsen er nødvendig for at sende SMS-beskeder. Du kan aktivere den ved at gå til %1$sindstillinger for programudvidelser%2$s",
         "When": "når",
         "ComparedToThe": "sammenlignet med"
     }

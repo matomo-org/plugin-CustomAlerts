@@ -52,7 +52,6 @@
         "PercentageIncreasesMoreThan": "以上に増加する %",
         "NoAlertsDefined": "まだアラートを作成していません。今すぐ作成してください!",
         "NoTriggeredAlerts": "まだ発生したアラートはありません。",
-        "CancelAndReturnToAlerts": "キャンセルして、%sreturn to the list of alerts%s",
         "InvalidReportCondition": "レポート条件が有効な値ではありません。",
         "InvalidMetricCondition": "メトリック条件が有効な値ではありません。",
         "DayComparedToPreviousDay": "前日",
@@ -61,8 +60,8 @@
         "WeekComparedToPreviousWeek": "前の週",
         "MonthComparedToPreviousMonth": "前の月",
         "MonthComparedToPreviousYear": "去年の同じ月",
-        "ScheduledReportsPluginNotActivated": "アラートを作成または編集するには、ScheduledReports プラグインが必要です。%splugin settings page%s へアクセスし、有効にして下さい。",
-        "MobileMessagingPluginNotActivated": "MobileMessaging プラグインは、 SMS アラートを送信する必要があります。 %splugin settings page%s にアクセスすることによって、それを有効化できます。",
+        "ScheduledReportsPluginNotActivated": "アラートを作成または編集するには、ScheduledReports プラグインが必要です。%1$splugin settings page%2$s へアクセスし、有効にして下さい。",
+        "MobileMessagingPluginNotActivated": "MobileMessaging プラグインは、 SMS アラートを送信する必要があります。 %1$splugin settings page%2$s にアクセスすることによって、それを有効化できます。",
         "When": "いつ",
         "ComparedToThe": "に比較して"
     }

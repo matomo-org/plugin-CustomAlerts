@@ -50,7 +50,7 @@
         "PercentageIncreasesMoreThan": "% Pagtaas ng higit sa",
         "NoAlertsDefined": "Hindi ka pa gumagawa ng kahit na anong alerto gumawa ng isa ngayon!",
         "NoTriggeredAlerts": "Wala pang na tri-trigger na mga alerts.",
-        "CancelAndReturnToAlerts": "Ikansela at ibalik ang %s sa listahan ng mga alerto %s",
+        "CancelAndReturnToAlerts": "Ikansela at ibalik ang %1$s sa listahan ng mga alerto %2$s",
         "InvalidReportCondition": "Kondisyon ng ulat ay walang valid value.",
         "InvalidMetricCondition": "Ang sukatan ng kondisyon ay walang valid value.",
         "DayComparedToPreviousDay": "nakaraang araw",
@@ -59,8 +59,8 @@
         "WeekComparedToPreviousWeek": "nakaraang linggo",
         "MonthComparedToPreviousMonth": "nakaraang buwan",
         "MonthComparedToPreviousYear": "Parehong buwan sa nakaraang taon",
-        "ScheduledReportsPluginNotActivated": "Ang Scheduled Reports plugin ay kailangan upang makagawa at makapag edit ng mga alerts. Maaari mong e-activate ito sa pamamagitan ng pag access sa %s plugin settings page %s.",
-        "MobileMessagingPluginNotActivated": "Ang MobileMessaging plugin ay kinakailangan na upang magpadala ng mga alerts sa SMS. Maaari mo itong i-activate sa pamamagitan ng pag-access sa %spahina ng plugin settings%s",
+        "ScheduledReportsPluginNotActivated": "Ang Scheduled Reports plugin ay kailangan upang makagawa at makapag edit ng mga alerts. Maaari mong e-activate ito sa pamamagitan ng pag access sa %1$s plugin settings page %2$s.",
+        "MobileMessagingPluginNotActivated": "Ang MobileMessaging plugin ay kinakailangan na upang magpadala ng mga alerts sa SMS. Maaari mo itong i-activate sa pamamagitan ng pag-access sa %1$spahina ng plugin settings%2$s.",
         "When": "kailan",
         "ComparedToThe": "kumpara sa"
     }

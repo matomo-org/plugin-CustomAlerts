@@ -54,7 +54,7 @@
         "PercentageIncreasesMoreThan": "% aumenta di più di",
         "NoAlertsDefined": "Non hai ancora creato alcun Avviso per questo sito, creane uno adesso!",
         "NoTriggeredAlerts": "Non ci sono ancora degli avvisi attivati",
-        "CancelAndReturnToAlerts": "Cancella e %sritorna all'elenco degli avvisi%s",
+        "CancelAndReturnToAlerts": "Cancella e %1$sritorna all'elenco degli avvisi%2$s",
         "InvalidReportCondition": "La condizione del report non ha un valore valido",
         "InvalidMetricCondition": "La condizione della metrica non ha un valore valido",
         "DayComparedToPreviousDay": "giorno precedente",
@@ -63,8 +63,8 @@
         "WeekComparedToPreviousWeek": "settimana precedente",
         "MonthComparedToPreviousMonth": "mese precedente",
         "MonthComparedToPreviousYear": "stesso mese dell'anno precedente",
-        "ScheduledReportsPluginNotActivated": "Per creare o modificare gli avvisi è richiesto il plugin ScheduledReports. Puoi attivarlo accedendo alla %spagina impostazioni plugin%s.",
-        "MobileMessagingPluginNotActivated": "Per inviare avvisi SMS è richiesto il plugin MobileMessaging. Puoi attivarlo accedendo alla %spagina impostazioni plugins%s.",
+        "ScheduledReportsPluginNotActivated": "Per creare o modificare gli avvisi è richiesto il plugin ScheduledReports. Puoi attivarlo accedendo alla %1$spagina impostazioni plugin%2$s.",
+        "MobileMessagingPluginNotActivated": "Per inviare avvisi SMS è richiesto il plugin MobileMessaging. Puoi attivarlo accedendo alla %1$spagina impostazioni plugins%2$s.",
         "When": "quando",
         "ComparedToThe": "confrontato con"
     }

@@ -54,7 +54,7 @@
         "PercentageIncreasesMoreThan": "% augmente plus que",
         "NoAlertsDefined": "Vous n'avez pas encore créé d'alerte, créez en une maintenant!",
         "NoTriggeredAlerts": "Il n'y a pas encore d'alerte déclenchée",
-        "CancelAndReturnToAlerts": "Annuler et %sretourner à la liste des alertes%s",
+        "CancelAndReturnToAlerts": "Annuler et %1$sretourner à la liste des alertes%2$s",
         "InvalidReportCondition": "La condition sur le rapport n'est pas valable",
         "InvalidMetricCondition": "La condition sur la métrique n'a pas une valeur valide",
         "DayComparedToPreviousDay": "jour précédent",
@@ -63,8 +63,8 @@
         "WeekComparedToPreviousWeek": "semaine précédente",
         "MonthComparedToPreviousMonth": "mois précédent",
         "MonthComparedToPreviousYear": "même mois de l'année précédente",
-        "ScheduledReportsPluginNotActivated": "Le composant de rapports planifiés est requis pour créer ou modifier des alertes. Vous pouvez l'activer en accédant à %sla page de paramètres du composant%s.",
-        "MobileMessagingPluginNotActivated": "Le composant de messagerie mobile est requis pour envoyer des alertes SMS. vous pouvez l'activer en accédant à %sla page de paramètres du composant%s.",
+        "ScheduledReportsPluginNotActivated": "Le composant de rapports planifiés est requis pour créer ou modifier des alertes. Vous pouvez l'activer en accédant à %1$sla page de paramètres du composant%2$s.",
+        "MobileMessagingPluginNotActivated": "Le composant de messagerie mobile est requis pour envoyer des alertes SMS. vous pouvez l'activer en accédant à %1$sla page de paramètres du composant%2$s.",
         "When": "quand",
         "ComparedToThe": "comparer à"
     }

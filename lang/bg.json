@@ -49,7 +49,7 @@
         "PercentageIncreasesMoreThan": "% се увеличава повече, отколкото",
         "NoAlertsDefined": "Няма създадени сигнали, създайте един сега!",
         "NoTriggeredAlerts": "Няма активни сигнали все още",
-        "CancelAndReturnToAlerts": "Отказване и %sвръщане към списъка с известия%s",
+        "CancelAndReturnToAlerts": "Отказване и %1$sвръщане към списъка с известия%2$s",
         "InvalidMetricCondition": "Зададената стойност не е валидна",
         "DayComparedToPreviousDay": "предишен ден",
         "DayComparedToPreviousWeek": "същия ден през предходната седмица",

@@ -54,7 +54,7 @@
         "PercentageIncreasesMoreThan": "% aumenta mais do que",
         "NoAlertsDefined": "Você ainda não criou nenhum alerta, crie um agora!",
         "NoTriggeredAlerts": "Ainda não há alertas disparados",
-        "CancelAndReturnToAlerts": "Cancelar e %svoltar para a lista de alertas%s",
+        "CancelAndReturnToAlerts": "Cancelar e %1$svoltar para a lista de alertas%2$s",
         "InvalidReportCondition": "A condição do relatório não é válida",
         "InvalidMetricCondition": "A condição para a métrica não é um valor válido",
         "DayComparedToPreviousDay": "dia anterior",
@@ -63,8 +63,8 @@
         "WeekComparedToPreviousWeek": "semana anterior",
         "MonthComparedToPreviousMonth": "mês anterior",
         "MonthComparedToPreviousYear": "mesmo mês no ano anterior",
-        "ScheduledReportsPluginNotActivated": "O plugin ScheduledReports é necessário para criar ou editar alertas. Você pode ativá-lo acessando a %spágina de configurações de plugin%s",
-        "MobileMessagingPluginNotActivated": "O plugin MobileMessaging é necessário para enviar alertas por SMS. Você pode ativá-lo acessando a %spágina de configurações de plugin%s",
+        "ScheduledReportsPluginNotActivated": "O plugin ScheduledReports é necessário para criar ou editar alertas. Você pode ativá-lo acessando a %1$spágina de configuração do plugin%2$s.",
+        "MobileMessagingPluginNotActivated": "O plugin MobileMessaging é necessário para enviar alertas por SMS. Você pode ativá-lo acessando a %1$spágina de configuração do plugin%2$s.",
         "When": "quando",
         "ComparedToThe": "comparado com"
     }

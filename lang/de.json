@@ -54,7 +54,7 @@
         "PercentageIncreasesMoreThan": "% erhöht sich um mehr als",
         "NoAlertsDefined": "Sie haben noch keine Benachrichtigungen für diese Seite erstellt, erstellen Sie jetzt eine!",
         "NoTriggeredAlerts": "Bisher wurden keine Benachrichtigungen ausgelöst.",
-        "CancelAndReturnToAlerts": "Abbrechen und %szur Liste der Benachrichtigungen zurückkehren%s",
+        "CancelAndReturnToAlerts": "Abbrechen und %1$szur Liste der Benachrichtigungen zurückkehren%2$s",
         "InvalidReportCondition": "Bericht-Bedingung ist kein gültiger Wert.",
         "InvalidMetricCondition": "Die gewählte Metrik ist kein gültiger Wert",
         "DayComparedToPreviousDay": "vorheriger Tag",
@@ -63,8 +63,8 @@
         "WeekComparedToPreviousWeek": "vorherige Woche",
         "MonthComparedToPreviousMonth": "vorheriger Monat",
         "MonthComparedToPreviousYear": "gleicher Monat im vorherigen Jahr",
-        "ScheduledReportsPluginNotActivated": "Das ScheduledReports-Plugin wird benötigt, um Benachrichtungen zu erstellen oder zu bearbeiten. Sie können es aktivieren, indem Sie die %sPlugin Einstellungen Seite%s besuchen.",
-        "MobileMessagingPluginNotActivated": "Das MobileMessaging-Plugin wird benötigt, um SMS Benachrichtigungen zu versenden. Sie können es aktivieren, indem Sie die %sPlugin Einstellungen Seite%s besuchen.",
+        "ScheduledReportsPluginNotActivated": "Das ScheduledReports-Plugin wird benötigt, um Benachrichtungen zu erstellen oder zu bearbeiten. Sie können es aktivieren, indem Sie die %1$sPlugin Einstellungen Seite%2$s besuchen.",
+        "MobileMessagingPluginNotActivated": "Das MobileMessaging-Plugin wird benötigt, um SMS Benachrichtigungen zu versenden. Sie können es aktivieren, indem Sie die %1$sPlugin Einstellungen Seite%2$s besuchen.",
         "When": "sobald",
         "ComparedToThe": "verglichen mit"
     }

@@ -51,7 +51,7 @@
         "PercentageIncreasesMoreThan": "% ökar mer än",
         "NoAlertsDefined": "Du har inte skapat några notifieringar, skapa en nu!",
         "NoTriggeredAlerts": "Det finns inga triddagde larm än",
-        "CancelAndReturnToAlerts": "Avbryt och %sgå tillbaka till listan för påminnelser%s",
+        "CancelAndReturnToAlerts": "Avbryt och %1$sgå tillbaka till listan för påminnelser%2$s",
         "InvalidReportCondition": "Rapporterade tillståndet är inget giltigt värde",
         "InvalidMetricCondition": "Mätningens tillstånd är inte ett validerat värde",
         "DayComparedToPreviousDay": "föregående dag",
@@ -60,8 +60,8 @@
         "WeekComparedToPreviousWeek": "Föregående vecka",
         "MonthComparedToPreviousMonth": "föregående månad",
         "MonthComparedToPreviousYear": "samma månad föregående år",
-        "ScheduledReportsPluginNotActivated": "Plugin för Schemalaggd Rapport behövs för att kunna skapa eller redigera nya påminnelser. Du kan aktivera det genom att ge det åtkomst på sidan för %splugin inställningar%s.",
-        "MobileMessagingPluginNotActivated": "Pluginet för MobilaMeddelande krävs för att skicka SMS påminnelser. Du kan aktivera detta på sidan för %splugin inställningar%s.",
+        "ScheduledReportsPluginNotActivated": "Plugin för Schemalaggd Rapport behövs för att kunna skapa eller redigera nya påminnelser. Du kan aktivera det genom att ge det åtkomst på sidan för %1$splugin inställningar%2$s.",
+        "MobileMessagingPluginNotActivated": "Pluginet för MobilaMeddelande krävs för att skicka SMS påminnelser. Du kan aktivera detta på sidan för %1$splugin inställningar%2$s.",
         "When": "när",
         "ComparedToThe": "Jämfört med"
     }

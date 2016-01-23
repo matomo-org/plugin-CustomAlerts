@@ -47,7 +47,7 @@
         "PercentageIncreasesMoreThan": "% podwyż więcej niż",
         "NoAlertsDefined": "Nie utworzono jeszcze żadnych alarmów, utworzyć je teraz?",
         "NoTriggeredAlerts": "Nie ma jeszcze wyzwalanych alarmów",
-        "CancelAndReturnToAlerts": "Anuluj i %spowróć do listy alarmów%s",
+        "CancelAndReturnToAlerts": "Anuluj i %1$spowróć do listy alarmów%2$s",
         "InvalidReportCondition": "Zgłoszony warunek nie jest prawidłową wartością",
         "DayComparedToPreviousDay": "poprzedniego dnia",
         "DayComparedToPreviousWeek": "tego samego dnia w poprzednim tygodniu",
@@ -55,8 +55,8 @@
         "WeekComparedToPreviousWeek": "poprzedni tydzień",
         "MonthComparedToPreviousMonth": "poprzedni miesiąc",
         "MonthComparedToPreviousYear": "ten sam miesiąc w poprzednim roku",
-        "ScheduledReportsPluginNotActivated": "Wtyczka ScheduledReports jest niezbędna do stworzenia lub edytowania alarmów. Możesz ją aktywować poprzez przejście do %sustawień wtyczki%s.",
-        "MobileMessagingPluginNotActivated": "Wtyczka MobileMessaging jest niezbędna do wysyłania alarmów SMS. Możesz ją aktywować poprzez przejście do %sustawień wtyczki%s.",
+        "ScheduledReportsPluginNotActivated": "Wtyczka ScheduledReports jest niezbędna do stworzenia lub edytowania alarmów. Możesz ją aktywować poprzez przejście do %1$sustawień wtyczki%2$s.",
+        "MobileMessagingPluginNotActivated": "Wtyczka MobileMessaging jest niezbędna do wysyłania alarmów SMS. Możesz ją aktywować poprzez przejście do %1$sustawień wtyczki%2$s.",
         "When": "kiedy",
         "ComparedToThe": "w stosunku do"
     }

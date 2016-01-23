@@ -30,7 +30,7 @@
         "IsGreaterThan": "on rohkem kui",
         "DecreasesMoreThan": "kahaneb rohkem kui",
         "IncreasesMoreThan": "suureneb rohkem kui",
-        "CancelAndReturnToAlerts": "Katkesta ja %snaase märguannete nimekirja%s",
+        "CancelAndReturnToAlerts": "Katkesta ja %1$snaase märguannete nimekirja%2$s",
         "DayComparedToPreviousDay": "eelmine päev",
         "DayComparedToPreviousWeek": "sama päev eelmisel nädalal",
         "DayComparedToPreviousYear": "sama päev eelmisel aastal",

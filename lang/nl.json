@@ -52,7 +52,7 @@
         "PercentageIncreasesMoreThan": "% toename meer dan",
         "NoAlertsDefined": "U heeft nog geen alarmen aangemaakt, maak er nu een!",
         "NoTriggeredAlerts": "Er zijn nog geen alarmen afgegaan",
-        "CancelAndReturnToAlerts": "Annuleren en %sterug naar lijst met alarmen%s",
+        "CancelAndReturnToAlerts": "Annuleren en %1$sterug naar lijst met alarmen%2$s",
         "InvalidReportCondition": "Rapport conditie heeft geen geldige waarde",
         "InvalidMetricCondition": "Metric conditie heeft geen geldige waarde",
         "DayComparedToPreviousDay": "vorige dag",
@@ -61,7 +61,7 @@
         "WeekComparedToPreviousWeek": "vorige week",
         "MonthComparedToPreviousMonth": "vorige maand",
         "MonthComparedToPreviousYear": "zelfde maand in het vorige jaar",
-        "ScheduledReportsPluginNotActivated": "De ScheduledReports plugin is modig om een Alert aan te maken of te wijzigen. Je kunt het activeren door naar de %splugin settings pagina%s te gaan.",
+        "ScheduledReportsPluginNotActivated": "De ScheduledReports plugin is modig om een Alert aan te maken of te wijzigen. Je kunt het activeren door naar de %1$splugin settings pagina%2$s te gaan.",
         "When": "wanneer",
         "ComparedToThe": "vergeleken met de"
     }

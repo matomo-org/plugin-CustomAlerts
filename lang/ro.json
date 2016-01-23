@@ -50,7 +50,7 @@
         "PercentageIncreasesMoreThan": "% creste mai mult decat",
         "NoAlertsDefined": "Nu ati creat inca nici o alerta, creati una acum!",
         "NoTriggeredAlerts": "Nu exista inca alerte declansate",
-        "CancelAndReturnToAlerts": "Anuleaza si %sintoarce-te la lista cu alerte%s",
+        "CancelAndReturnToAlerts": "Anuleaza si %1$sintoarce-te la lista cu alerte%2$s",
         "InvalidReportCondition": "Conditia raportului nu este o valoare valida",
         "InvalidMetricCondition": "Parametrul din conditie nu este o valoare valida",
         "DayComparedToPreviousDay": "ziua anterioara",
@@ -59,8 +59,8 @@
         "WeekComparedToPreviousWeek": "saptamana anterioara",
         "MonthComparedToPreviousMonth": "luna precedenta",
         "MonthComparedToPreviousYear": "aceeasi luna in anul anterior",
-        "ScheduledReportsPluginNotActivated": "Pluginul RapoarteProgramate este obligatoriu pentru a putea crea sau edita alerte. Puteti sa il activati accesand %spagina cu setari a pluginului%s.",
-        "MobileMessagingPluginNotActivated": "Pluging-ul MobileMessaging este necesar pentru a trimite alerte SMS.Il poti activa accessand setarile paginii %splugin %s.",
+        "ScheduledReportsPluginNotActivated": "Pluginul RapoarteProgramate este obligatoriu pentru a putea crea sau edita alerte. Puteti sa il activati accesand %1$spagina cu setari a pluginului%2$s.",
+        "MobileMessagingPluginNotActivated": "Pluging-ul MobileMessaging este necesar pentru a trimite alerte SMS.Il poti activa accessand %1$ssetarile paginii plugin%2$s.",
         "When": "cand",
         "ComparedToThe": "comparat cu"
     }

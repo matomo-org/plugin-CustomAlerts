@@ -38,15 +38,15 @@
         "DecreasesMoreThan": "уменьшается более чем",
         "IncreasesMoreThan": "увеличилось более чем на",
         "NoTriggeredAlerts": "Сработанных оповещений еще не было",
-        "CancelAndReturnToAlerts": "Отменить и %sвернуться к списку оповещений%s",
+        "CancelAndReturnToAlerts": "Отменить и %1$sвернуться к списку оповещений%2$s",
         "DayComparedToPreviousDay": "предыдущий день",
         "DayComparedToPreviousWeek": "Тот же день неделей раньше",
         "DayComparedToPreviousYear": "тот же день годом раньше",
         "WeekComparedToPreviousWeek": "предыдущая неделя",
         "MonthComparedToPreviousMonth": "предыдущий месяц",
         "MonthComparedToPreviousYear": "этот же месяц годом раньше",
-        "ScheduledReportsPluginNotActivated": "Плагин ScheduledReports необходим для создания или редактирования оповещений. Вы можете активировать его на %sстранице настройки плагина%s.",
-        "MobileMessagingPluginNotActivated": "Плагин MobileMessaging необходим для отправки SMS-оповещений. Вы можете активировать его на %sстранице настройки плагина%s.",
+        "ScheduledReportsPluginNotActivated": "Плагин ScheduledReports необходим для создания или редактирования оповещений. Вы можете активировать его на %1$sстранице настройки плагина%2$s.",
+        "MobileMessagingPluginNotActivated": "Плагин MobileMessaging необходим для отправки SMS-оповещений. Вы можете активировать его на %1$sстранице настройки плагина%2$s.",
         "When": "когда",
         "ComparedToThe": "сравнить с"
     }

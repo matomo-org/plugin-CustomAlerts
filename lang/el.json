@@ -54,7 +54,7 @@
         "PercentageIncreasesMoreThan": "% μεγαλώνει περισσότερο από",
         "NoAlertsDefined": "Δεν έχετε ακόμη δημιουργήσει Συναγερμούς για τον ιστοτόπο, δημιουργήστε έναν τώρα!",
         "NoTriggeredAlerts": "Δεν υπάρχουν ακόμη ειδοποιήσεις που να συνέβησαν",
-        "CancelAndReturnToAlerts": "Ακύρωση και %sεπιστροφή στη λίστα με τους συναγερμούς%s",
+        "CancelAndReturnToAlerts": "Ακύρωση και %1$sεπιστροφή στη λίστα των ειδοποιήσεων%2$s",
         "InvalidReportCondition": "Η συνθήκη της αναφοράς δεν έχει έγκυρη τιμή",
         "InvalidMetricCondition": "Η συνθήκη της μετρικής δεν έχει έγκυρη τιμή",
         "DayComparedToPreviousDay": "προηγούμενη ημέρα",
@@ -63,8 +63,8 @@
         "WeekComparedToPreviousWeek": "προηγούμενη εβδομάδα",
         "MonthComparedToPreviousMonth": "προηγούμενος μήνας",
         "MonthComparedToPreviousYear": "ίδιος μήνας το προηγούμενο έτος",
-        "ScheduledReportsPluginNotActivated": "Απαιτείται το πρόσθετο ScheduledReports για τη δημιουργία ή τροποποίηση ειδοποιήσεων. Μπορείτε να το ενεργοποιήσετε στη %sσελίδα ρυθμίσεων των πρόσθετων%s.",
-        "MobileMessagingPluginNotActivated": "Απαιτείται το πρόσθετο MobileMessaging για την αποστολή ειδοποιήσεων με SMS. Μπορείτε να το ενεργοποιήσετε στη %sσελίδα ρυθμίσεων των πρόσθετων%s.",
+        "ScheduledReportsPluginNotActivated": "Το πρόσθετο ScheduledReports απαιτείται προκειμένου να δημιουργείτε ή επεξεργάζεστε ειδοποιήσεις. Μπορείτε να το ενεργοποιήσετε στη %1$sσελίδα ρυθμίσεων του πρόσθετου%2$s.",
+        "MobileMessagingPluginNotActivated": "Το πρόσθετο MobileMessaging απαιτείται για να μπορούν να αποστέλλονται ειδοποιήσεις με SMS. Μπορείτε να το ενεργοποιήσετε στη %1$sσελίδα ρυθμίσεων του πρόσθετου%2$s.",
         "When": "όταν",
         "ComparedToThe": "σε σύγκριση με"
     }

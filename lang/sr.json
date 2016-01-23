@@ -52,7 +52,7 @@
         "PercentageIncreasesMoreThan": "% se poveća više od",
         "NoAlertsDefined": "Niste do sada kreirali nijedno upozorenje, kreirajte ga sad!",
         "NoTriggeredAlerts": "Za sad nema aktiviranih upozorenja",
-        "CancelAndReturnToAlerts": "Prekini i %svrati se na prikaz upozorenja%s",
+        "CancelAndReturnToAlerts": "Prekini i %1$svrati se na prikaz upozorenja%2$s",
         "InvalidReportCondition": "Uslov za izveštaj nije validan",
         "InvalidMetricCondition": "Metrički uslov nije validan",
         "DayComparedToPreviousDay": "prethodni dan",
@@ -61,8 +61,8 @@
         "WeekComparedToPreviousWeek": "prethodna nedelja",
         "MonthComparedToPreviousMonth": "prethodni mesec",
         "MonthComparedToPreviousYear": "isti mesec prethodne godine",
-        "ScheduledReportsPluginNotActivated": "Dodatak Zakazani izveštaji je neophodan kako bi se kreirala ili menjala upozorenja. Možete da ga aktivirate na stranici %spodešavanja dodataka%s.",
-        "MobileMessagingPluginNotActivated": "Dodatak Mobilne poruke je neophodan za slanje SMS upozorenja. Možete da ga aktivirate na stranici %spodešavanje dodataka%s.",
+        "ScheduledReportsPluginNotActivated": "Dodatak Zakazani izveštaji je neophodan kako bi se kreirala ili menjala upozorenja. Možete da ga aktivirate na stranici %1$spodešavanja dodataka%2$s.",
+        "MobileMessagingPluginNotActivated": "Dodatak Mobilne poruke je neophodan za slanje SMS upozorenja. Možete da ga aktivirate na stranici %1$spodešavanje dodataka%2$s.",
         "When": "kad",
         "ComparedToThe": "u poređenju sa"
     }

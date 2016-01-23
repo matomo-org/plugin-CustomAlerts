@@ -54,7 +54,7 @@
         "PercentageIncreasesMoreThan": "% se zvýší více než",
         "NoAlertsDefined": "Zatím jste nevytvořili žádné upozornění. Vytvořte ho nyní.",
         "NoTriggeredAlerts": "Zatím nejsou žádná vyvolaná upozornění",
-        "CancelAndReturnToAlerts": "Zrušit a %svrátit se k seznamu upozornění%s",
+        "CancelAndReturnToAlerts": "Zrušit a %1$svrátit se k seznamu upozornění%2$s",
         "InvalidReportCondition": "Podmínka hlášení není platná hodnota",
         "InvalidMetricCondition": "Podmínka měření není platná hodnota",
         "DayComparedToPreviousDay": "Předchozí den",
@@ -63,8 +63,8 @@
         "WeekComparedToPreviousWeek": "minulý týden",
         "MonthComparedToPreviousMonth": "předchozí měsíc",
         "MonthComparedToPreviousYear": "stejný měsíc v předchozím roce",
-        "ScheduledReportsPluginNotActivated": "Pro vytváření a úpravu vlastních upozornění je vyžadován zásuvný modul ScheduledReports. Můžete ho povolit na stránce %snastavení zásuvných modulů%s.",
-        "MobileMessagingPluginNotActivated": "Pro odesílání SMS upozornění je vyžadován zásuvný modul MobileMessaging. Můžete ho povolit na stránce %snastavení zásuvných modulů%s.",
+        "ScheduledReportsPluginNotActivated": "Pro vytváření a úpravu vlastních upozornění je vyžadován zásuvný modul ScheduledReports. Můžete ho povolit na stránce %1$snastavení zásuvných modulů%2$s.",
+        "MobileMessagingPluginNotActivated": "Pro odesílání SMS upozornění je vyžadován zásuvný modul MobileMessaging. Můžete ho povolit na stránce %1$snastavení zásuvných modulů%2$s.",
         "When": "kdy",
         "ComparedToThe": "V porovnání s"
     }
