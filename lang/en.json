@@ -54,7 +54,7 @@
         "PercentageIncreasesMoreThan": "% increases more than",
         "NoAlertsDefined": "You haven't created any alerts yet, create one now!",
         "NoTriggeredAlerts": "There are no triggered alerts yet",
-        "CancelAndReturnToAlerts": "Cancel and %sreturn to the list of alerts%s",
+        "CancelAndReturnToAlerts": "Cancel and %1$sreturn to the list of alerts%2$s",
         "InvalidReportCondition": "Report condition is not a valid value",
         "InvalidMetricCondition": "Metric condition is not a valid value",
         "DayComparedToPreviousDay": "previous day",
@@ -63,8 +63,8 @@
         "WeekComparedToPreviousWeek": "previous week",
         "MonthComparedToPreviousMonth": "previous month",
         "MonthComparedToPreviousYear": "same month in the previous year",
-        "ScheduledReportsPluginNotActivated": "The ScheduledReports plugin is required in order to create or edit alerts. You can activate it by accessing the %splugin settings page%s.",
-        "MobileMessagingPluginNotActivated": "The MobileMessaging plugin is required to send SMS alerts. You can activate it by accessing the %splugin settings page%s.",
+        "ScheduledReportsPluginNotActivated": "The ScheduledReports plugin is required in order to create or edit alerts. You can activate it by accessing the %1$splugin settings page%2$s.",
+        "MobileMessagingPluginNotActivated": "The MobileMessaging plugin is required to send SMS alerts. You can activate it by accessing the %1$splugin settings page%2$s.",
         "When": "when",
         "ComparedToThe": "compared to the"
     }
