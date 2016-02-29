@@ -1,5 +1,10 @@
 {
     "CustomAlerts": {
+        "Alert": "Sinjalzim",
+        "Alerts": "Sinjalizime",
+        "CreateNewAlert": "Kirjoni Sinjalizim të ri",
+        "SmsAlertFromName": "Sinjalizim i Ri",
+        "MailEnd": "Analizim të mbarë!",
         "DayComparedToPreviousDay": "dita e mëparshme",
         "DayComparedToPreviousWeek": "e njëjta ditë javën e kaluar",
         "DayComparedToPreviousYear": "e njëjta ditë vitin e kaluar",
