@@ -10,15 +10,18 @@ namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
 use Piwik\Date;
 use Piwik\Mail;
+use Piwik\Piwik;
 use Piwik\Plugin;
 use Piwik\Plugins\CustomAlerts\Notifier;
+use Piwik\Site;
 use Piwik\Translate;
+use Piwik\Period\Factory as PeriodFactory;
 
 class CustomNotifier extends Notifier
 {
     private $alerts = array();
 
-    protected function getToday()
+    public function getToday()
     {
         return Date::factory('2010-01-01');
     }
@@ -51,9 +54,7 @@ class CustomNotifier extends Notifier
  */
 class NotifierTest extends BaseTest
 {
-    /**
-     * @var CustomNotifier
-     */
+    /** @var CustomNotifier $notifier */
     private $notifier;
 
     public function setUp()
@@ -105,23 +106,49 @@ t your custom alert settings, please sign in and access the Alerts page.=
 
     public function test_sendAlertsPerEmailToRecipient_shouldUseDifferentSubjectDependingOnPeriod()
     {
-        $this->assertDateInSubject('week', 'week December 21 - 27, 2009');
-        $this->assertDateInSubject('day', 'Thursday, December 31, 2009');
-        $this->assertDateInSubject('month', 'December 2009');
+        $this->assertDateInSubject('week', $this->getMockMail('week')->getSubject());
+        $this->assertDateInSubject('day', $this->getMockMail('day')->getSubject());
+        $this->assertDateInSubject('month', $this->getMockMail('month')->getSubject());
     }
 
-    private function assertDateInSubject($period, $expectedDate)
+    /**
+     * @param $period
+     * @return Mail
+     */
+    private function getMockMail($period) {
+        $mail = new Mail();
+
+        $websiteName = Site::getNameFor($this->idSite);
+        $prettyDate  = $this->getPrettyDateForSite($period, $this->idSite);
+        $mail->setSubject(Piwik::translate('CustomAlerts_MailAlertSubject', array($websiteName, $prettyDate)));
+
+        return $mail;
+    }
+
+    private function getPrettyDateForSite($period, $idSite)
+    {
+        $timezone = Site::getTimezoneFor($idSite);
+
+        $customToday = $this->notifier->getToday();
+        $piwikDate = Date::factory($customToday->getDatetime(), $timezone);
+        $dateWithSubPeriod = $piwikDate->subPeriod(1, $period);
+        $period     = PeriodFactory::build($period, $dateWithSubPeriod);
+        $prettyDate = $period->getLocalizedLongString();
+
+        return $prettyDate;
+    }
+
+    private function assertDateInSubject($period, $expectedSubject)
     {
         $alerts = $this->getTriggeredAlerts();
         Mail::setDefaultTransport(new \Zend_Mail_Transport_File());
 
         $mail = new Mail();
-        $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com', $period, 1);
+        $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com', $period, $this->idSite);
 
-        $expected = 'New alert for website Piwik test [' . $expectedDate . ']';
         $expecteds = array(
-            $expected,
-            \Zend_Mime::encodeQuotedPrintableHeader($expected, 'utf-8')
+            $expectedSubject,
+            \Zend_Mime::encodeQuotedPrintableHeader($expectedSubject, 'utf-8')
         );
 
         $isExpected = in_array( $mail->getSubject(), $expecteds);
