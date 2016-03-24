@@ -48,7 +48,7 @@
 	<br/>
 
     {% if requirementsAreMet %}
-        <a class="addrow" href="{{ linkTo({'module': 'CustomAlerts', 'action': 'addNewAlert'}) }}" ><img src='plugins/Morpheus/images/add.png'/> {{ 'CustomAlerts_CreateNewAlert'|translate }}</a>
+        <a class="addrow addNewAlert" href="{{ linkTo({'module': 'CustomAlerts', 'action': 'addNewAlert'}) }}" ><img src='plugins/Morpheus/images/add.png'/> {{ 'CustomAlerts_CreateNewAlert'|translate }}</a>
         <a class="viewHistory" href="{{ linkTo({'module': 'CustomAlerts', 'action': 'historyTriggeredAlerts'}) }}"><img src='plugins/Morpheus/images/table.png'/> {{ 'CustomAlerts_AlertsHistory'|translate }}</a>
 	{% else %}
         {{ alertsMacro.requirementsNotMet() }}

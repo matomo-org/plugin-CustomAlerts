@@ -124,8 +124,8 @@ t your custom alert settings, please sign in and access the Alerts page.=
             \Zend_Mime::encodeQuotedPrintableHeader($expected, 'utf-8')
         );
 
-        $isExpected = in_array( $mail->getSubject(), $expecteds);
-        $this->assertTrue($isExpected , $mail->getSubject() . " not found in " . var_export($expecteds, true));
+        $isExpected = in_array($mail->getSubject(), $expecteds);
+        $this->assertTrue($isExpected , '"' . $mail->getSubject() . '" not found in ' . var_export($expecteds, true));
     }
 
     public function test_sendNewAlerts()
@@ -233,5 +233,4 @@ t your custom alert settings, please sign in and access the Alerts page.=
         );
         return $alerts;
     }
-
 }

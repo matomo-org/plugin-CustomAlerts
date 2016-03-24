@@ -10,7 +10,10 @@ var CustomAlerts = (function($) {
 
     function getSiteId()
     {
-        return $('[name=idSite]').attr('siteid');
+        var siteIds = $('input[name="idSite\\[\\]"]:checked').map(function(){
+            return $(this).val();
+        }).get();
+        return siteIds;
     }
 
     function updateFormValues(siteId) {
@@ -253,14 +256,6 @@ var CustomAlerts = (function($) {
         $('.alerts #reportCondition').change(updateReportCondition)
         $('.alerts #metricCondition').change(updateMetricCondition)
 
-        var currentSiteId = getSiteId();
-        $('#alertReportSiteSelector').bind('change', function (e, site) {
-            if (site.id != currentSiteId) {
-                currentSiteId = site.id;
-                updateFormValues(site.id);
-            }
-        });
-
         $('.entityListContainer .deleteAlert[id]').click(function() {
             deleteAlert($(this).attr('id'));
         });
@@ -275,6 +270,22 @@ var CustomAlerts = (function($) {
             delay: 300
         });
 
+        $('.alerts #sites-select-all').bind('click', function (e) {
+            e.preventDefault();
+            $('input[name="idSite\\[\\]"]').iCheck('check');
+            $('#sites-deselect-all').toggleClass('visible');
+            $(this).toggleClass('visible');
+        });
+        $('.alerts #sites-deselect-all').bind('click', function (e) {
+            e.preventDefault();
+            $('input[name="idSite\\[\\]"]').iCheck('uncheck');
+            $('#sites-select-all').toggleClass('visible');
+            $(this).toggleClass('visible');
+        });
+        $('.alerts #sites-inverse-select').bind('click', function (e) {
+            e.preventDefault();
+            $('input[name="idSite\\[\\]"]').iCheck('toggle');
+        });
     });
 
     return {
@@ -296,7 +307,7 @@ var CustomAlerts = (function($) {
             apiParameters.reportUniqueId = $('#report').find('option:selected').val();
             apiParameters.reportCondition = $('#reportCondition').find('option:selected').val();
             apiParameters.reportValue  = $('#reportValue').val();
-            apiParameters.idSites = [getSiteId()];
+            apiParameters.idSites = getSiteId();
             apiParameters.comparedTo = $('[name=compared_to]:not([data-inactive])').val();
 
             return apiParameters;
