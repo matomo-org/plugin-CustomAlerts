@@ -134,6 +134,7 @@ class Controller extends \Piwik\Plugin\Controller
     private function addBasicCreateAndEditVariables($view, $alert)
     {
         $view->alert = $alert;
+        $view->sites = $this->fetchSites($alert);
         $view->alertGroupConditions  = Processor::getGroupConditions();
         $view->alertMetricConditions = Processor::getMetricConditions();
         $view->comparablesDates   = Processor::getComparablesDates();
@@ -279,5 +280,24 @@ class Controller extends \Piwik\Plugin\Controller
         $prettyDate = $period->getLocalizedShortString();
 
         return $prettyDate;
+    }
+
+    private function fetchSites($alert)
+    {
+        $sites = SitesManagerApi::getInstance()->getSitesWithAtLeastViewAccess();
+
+        if (empty($alert['id_sites'])) {
+            return $sites;
+        }
+
+        $checked = $alert['id_sites'];
+
+        foreach ($sites as &$site) {
+            if (array_search($site['idsite'], $checked) !== false) {
+                $site['checked'] = true;
+            }
+        }
+
+        return $sites;
     }
 }

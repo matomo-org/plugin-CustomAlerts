@@ -21,16 +21,19 @@
             <tr>
                 <td class="first"><label for="applyTo">{{ 'CustomAlerts_ApplyTo'|translate }}</label></td>
                 <td>
-
-                    <div piwik-siteselector
-                         class="sites_autocomplete"
-                         siteid="{{ currentSiteId }}"
-                         sitename="{{ currentSiteName }}"
-                         switch-site-on-select="false"
-                         show-all-sites-item="false"
-                         show-selected-site="true"
-                         name="idSite"
-                         id="alertReportSiteSelector"></div>
+                    <div class="sites-select-controls">
+                        <a href="#" id="sites-select-all" class="visible">{{ 'CustomAlerts_SelectAll'|translate }}</a>
+                        <a href="#" id="sites-deselect-all">{{ 'CustomAlerts_DeselectAll'|translate }}</a>
+                        <a href="#" id="sites-inverse-select">{{ 'CustomAlerts_InverseSelection'|translate }}</a>
+                    </div>
+                    {% for site in sites %}
+                        <div class="site-checkbox">
+                            <label class="checkbox" for="site-{{ site.idsite }}">
+                                <input type="checkbox" name="idSite[]" value="{{ site.idsite }}" {% if site.checked is defined and site.checked %} checked="checked"{% endif %} id="site-{{ site.idsite }}" />
+                                {{ site.name }}
+                            </label>
+                        </div>
+                    {% endfor %}
                 </td>
             </tr>
             <tr>

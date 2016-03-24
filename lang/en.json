@@ -66,6 +66,9 @@
         "ScheduledReportsPluginNotActivated": "The ScheduledReports plugin is required in order to create or edit alerts. You can activate it by accessing the %1$splugin settings page%2$s.",
         "MobileMessagingPluginNotActivated": "The MobileMessaging plugin is required to send SMS alerts. You can activate it by accessing the %1$splugin settings page%2$s.",
         "When": "when",
-        "ComparedToThe": "compared to the"
+        "ComparedToThe": "compared to the",
+        "SelectAll": "Select all",
+        "DeselectAll": "Deselect all",
+        "InverseSelection": "Inverse selection"
     }
 }
