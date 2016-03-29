@@ -6,6 +6,8 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
 
+namespace Piwik\Plugins\CustomAlerts\tests\Fixtures;
+
 use Piwik\Piwik;
 use Piwik\Plugins\CustomAlerts\Model;
 use Piwik\Tests\Framework\Fixture;
@@ -13,7 +15,7 @@ use Piwik\Tests\Framework\Fixture;
 /**
  * Tracks custom events
  */
-class Test_Piwik_Fixture_CustomAlerts extends Fixture
+class CustomAlerts extends Fixture
 {
     public $dateTime = '2010-01-03 11:22:33';
     public $idSite = 1;

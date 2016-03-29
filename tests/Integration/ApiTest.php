@@ -139,6 +139,16 @@ class ApiTest extends BaseTest
         $this->assertIsAlert($id, 'MyCustomAlert', 'week');
     }
 
+    public function test_addAlert_ShouldCreateANewAlertForTwoSites()
+    {
+        $this->setSuperUser();
+
+        $id = $this->createAlert('MyCustomAlert', 'week', [$this->idSite, $this->idSite2]);
+        $this->assertGreaterThan(3, $id);
+
+        $this->assertIsAlert($id, 'MyCustomAlert', 'week', [$this->idSite, $this->idSite2]);
+    }
+
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage CustomAlerts_AccessException
@@ -513,7 +523,7 @@ class ApiTest extends BaseTest
     protected function createAlert($name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites_getOne', $metricCondition = 'less_than', $reportCondition = 'matches_exactly', $emails = array('test1@example.com', 'test2@example.com'), $comparedTo = 1)
     {
         if (is_null($idSites)) {
-            $idSites = $this->idSite;
+            $idSites = [$this->idSite];
         }
 
         // those should be dropped by the api as they do not exist in Piwik

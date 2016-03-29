@@ -93,7 +93,7 @@ class API extends \Piwik\Plugin\API
             return array();
         }
 
-        $idSites = Site::getIdSitesFromIdSitesString($idSites);
+        $idSites = $this->getIdSites($idSites);
         Piwik::checkUserHasViewAccess($idSites);
 
         if (Piwik::hasUserSuperUserAccess() && $ifSuperUserReturnAllAlerts) {
@@ -128,7 +128,7 @@ class API extends \Piwik\Plugin\API
      */
 	public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false)
 	{
-        $idSites          = Site::getIdSitesFromIdSitesString($idSites);
+        $idSites          = $this->getIdSites($idSites);
         $additionalEmails = $this->filterAdditionalEmails($additionalEmails);
         $phoneNumbers     = $this->filterPhoneNumbers($phoneNumbers);
 
@@ -173,7 +173,7 @@ class API extends \Piwik\Plugin\API
         // make sure alert exists and user has permission to read
         $this->getAlert($idAlert);
 
-        $idSites          = Site::getIdSitesFromIdSitesString($idSites);
+        $idSites          = $this->getIdSites($idSites);
         $additionalEmails = $this->filterAdditionalEmails($additionalEmails);
         $phoneNumbers     = $this->filterPhoneNumbers($phoneNumbers);
 
@@ -218,7 +218,7 @@ class API extends \Piwik\Plugin\API
             return array();
         }
 
-        $idSites = Site::getIdSitesFromIdSitesString($idSites);
+        $idSites = $this->getIdSites($idSites);
         Piwik::checkUserHasViewAccess($idSites);
 
         $login = Piwik::getCurrentUserLogin();
@@ -281,4 +281,13 @@ class API extends \Piwik\Plugin\API
         $this->validator->checkAdditionalEmails($additionalEmails);
     }
 
+    /**
+     * @param mixed $idSites
+     * @return array
+     */
+    protected function getIdSites($idSites)
+    {
+        $idSites = Site::getIdSitesFromIdSitesString($idSites);
+        return $idSites;
+    }
 }
