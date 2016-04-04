@@ -8,17 +8,16 @@
  */
 namespace Piwik\Plugins\CustomAlerts;
 
-use Piwik\Menu\MenuUser;
+use Piwik\Menu\MenuAdmin;
 use Piwik\Piwik;
 
 class Menu extends \Piwik\Plugin\Menu
 {
-    public function configureUserMenu(MenuUser $menu)
+    public function configureAdminMenu(MenuAdmin $menu)
     {
         if (!Piwik::isUserIsAnonymous()) {
             $menu->addPersonalItem('CustomAlerts_Alerts', $this->urlForAction('index'), $order = 9);
         }
-
     }
 
 }
