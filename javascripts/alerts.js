@@ -27,7 +27,8 @@ var CustomAlerts = (function($) {
             date: piwik.currentDateString,
             period: getPeriodValue(),
             idSites: [siteId],
-            format: 'JSON'
+            format: 'JSON',
+            filter_limit: '-1'
         }, 'GET');
         ajaxRequest.setCallback(function(data) {
             renderForm(data);
