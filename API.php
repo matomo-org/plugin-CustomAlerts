@@ -123,7 +123,6 @@ class API extends \Piwik\Plugin\API
      * @param int $comparedTo
      * @param bool|string $reportCondition
      * @param bool|string $reportValue
-     * @internal param bool $enableEmail
      * @return int ID of new Alert
      */
 	public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false)
@@ -165,7 +164,6 @@ class API extends \Piwik\Plugin\API
      * @param bool|string $reportCondition
      * @param bool|string $reportValue
      *
-     * @internal param bool $enableEmail
      * @return boolean
      */
 	public function editAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false)
