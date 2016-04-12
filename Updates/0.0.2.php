@@ -9,25 +9,35 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
-use Piwik\Common;
 use Piwik\Updater;
 use Piwik\Updates;
+use Piwik\Updater\Migration\Factory as MigrationFactory;
 
 /**
  */
 class Updates_0_0_2 extends Updates
 {
-    static function getSql()
+    /**
+     * @var MigrationFactory
+     */
+    private $migration;
+
+    public function __construct(MigrationFactory $factory)
+    {
+        $this->migration = $factory;
+    }
+
+    public function getMigrations(Updater $updater)
     {
         return array(
-            "ALTER TABLE `" . Common::prefixTable('alert') . "` CHANGE `enable_mail` `email_me` BOOLEAN NOT NULL" => array(1060, 1054),
-            "ALTER TABLE `" . Common::prefixTable('alert') . "` ADD `additional_emails` TEXT AFTER `email_me` " => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert') . "` ADD `phone_numbers` TEXT AFTER `additional_emails` " => 1060,
+            $this->migration->db->changeColumn('alert', 'enable_mail', 'email_me', 'BOOLEAN NOT NULL'),
+            $this->migration->db->addColumn('alert', 'additional_emails', 'TEXT', 'email_me'),
+            $this->migration->db->addColumn('alert', 'phone_numbers', 'TEXT', 'additional_emails'),
         );
     }
 
-    static function update()
+    public function doUpdate(Updater $updater)
     {
-        Updater::updateDatabase(__FILE__, self::getSql());
+        $updater->executeMigrations(__FILE__, $this->getMigrations($updater));
     }
 }

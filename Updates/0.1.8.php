@@ -9,24 +9,34 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
-use Piwik\Common;
 use Piwik\Updater;
 use Piwik\Updates;
+use Piwik\Updater\Migration\Factory as MigrationFactory;
 
 /**
  */
 class Updates_0_1_8 extends Updates
 {
-    static function getSql()
+    /**
+     * @var MigrationFactory
+     */
+    private $migration;
+
+    public function __construct(MigrationFactory $factory)
+    {
+        $this->migration = $factory;
+    }
+
+    public function getMigrations(Updater $updater)
     {
         return array(
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` CHANGE `compared_to` `compared_to` SMALLINT( 4 ) UNSIGNED NOT NULL DEFAULT 1" => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert') . "` CHANGE `compared_to` `compared_to` SMALLINT( 4 ) UNSIGNED NOT NULL DEFAULT 1" => 1060,
+            $this->migration->db->changeColumnType('alert_triggered', 'compared_to', 'SMALLINT( 4 ) UNSIGNED NOT NULL DEFAULT 1'),
+            $this->migration->db->changeColumnType('alert', 'compared_to', 'SMALLINT( 4 ) UNSIGNED NOT NULL DEFAULT 1'),
         );
     }
 
-    static function update()
+    public function doUpdate(Updater $updater)
     {
-        Updater::updateDatabase(__FILE__, self::getSql());
+        $updater->executeMigrations(__FILE__, $this->getMigrations($updater));
     }
 }

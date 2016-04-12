@@ -9,23 +9,34 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
-use Piwik\Common;
 use Piwik\Updater;
 use Piwik\Updates;
+use Piwik\Updater\Migration\Factory as MigrationFactory;
 
 /**
  */
 class Updates_0_0_6 extends Updates
 {
-    static function getSql()
+    /**
+     * @var MigrationFactory
+     */
+    private $migration;
+
+    public function __construct(MigrationFactory $factory)
+    {
+        $this->migration = $factory;
+    }
+
+    public function getMigrations(Updater $updater)
     {
         return array(
-            "ALTER TABLE `" . Common::prefixTable('alert_log') . "` ADD `ts_last_sent` timestamp NULL DEFAULT NULL AFTER `ts_triggered` " => array(1060, 1146)
+            $this->migration->db->addColumn('alert_log', 'ts_last_sent', 'timestamp NULL DEFAULT NULL', 'ts_triggered')
+                                ->addErrorCodeToIgnore(Updater\Migration\Db::ERROR_CODE_TABLE_NOT_EXISTS)
         );
     }
 
-    static function update()
+    public function doUpdate(Updater $updater)
     {
-        Updater::updateDatabase(__FILE__, self::getSql());
+        $updater->executeMigrations(__FILE__, $this->getMigrations($updater));
     }
 }

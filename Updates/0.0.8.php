@@ -12,36 +12,53 @@ namespace Piwik\Plugins\CustomAlerts;
 use Piwik\Common;
 use Piwik\Updater;
 use Piwik\Updates;
+use Piwik\Updater\Migration\Factory as MigrationFactory;
+use Piwik\Updater\Migration\Db as DbMigration;
 
 /**
  */
 class Updates_0_0_8 extends Updates
 {
-    static function getSql()
+    /**
+     * @var MigrationFactory
+     */
+    private $migration;
+
+    public function __construct(MigrationFactory $factory)
     {
+        $this->migration = $factory;
+    }
+
+    public function getMigrations(Updater $updater)
+    {
+        $triggeredTable = Common::prefixTable('alert_triggered');
+
         return array(
-            "RENAME TABLE `" . Common::prefixTable('alert_log') . "` TO `" . Common::prefixTable('alert_triggered') . "`" => array(1060, 1146, 1050),
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `name` VARCHAR(100) NOT NULL AFTER `value_new` " => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `login` VARCHAR(100) NOT NULL AFTER `name` " => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `period` VARCHAR(5) NOT NULL AFTER `login` " => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `report` VARCHAR(150) NOT NULL AFTER `period` " => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `report_condition` VARCHAR(50) AFTER `report` " => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `report_matched` VARCHAR(1000) AFTER `report_condition` " => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `metric` VARCHAR(150) NOT NULL AFTER `report_matched` " => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `metric_condition` VARCHAR(50) NOT NULL AFTER `metric` " => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `metric_matched` FLOAT NOT NULL AFTER `metric_condition` " => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `compared_to` TINYINT NOT NULL AFTER `metric_matched` " => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `email_me` BOOLEAN NOT NULL AFTER `compared_to` " => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `additional_emails` TEXT AFTER `email_me` " => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `phone_numbers` TEXT AFTER `additional_emails` " => 1060,
-            "DELETE FROM `" . Common::prefixTable('alert_triggered') . "`" => 1060,
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` DROP KEY `ts_triggered` " => array(1060, 1091),
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` ADD `idtriggered` BIGINT unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT FIRST " => 1060
+            $this->migration->db->sql("RENAME TABLE `" . Common::prefixTable('alert_log') . "` TO `" . Common::prefixTable('alert_triggered') . "`",
+                                     array(DbMigration::ERROR_CODE_DUPLICATE_COLUMN, DbMigration::ERROR_CODE_TABLE_NOT_EXISTS, DbMigration::ERROR_CODE_TABLE_EXISTS)),
+            $this->migration->db->addColumns('alert_triggered', array(
+                'name' => 'VARCHAR(100) NOT NULL',
+                'login' => 'VARCHAR(100) NOT NULL',
+                'period' => 'VARCHAR(5) NOT NULL',
+                'report' => 'VARCHAR(150) NOT NULL',
+                'report_condition' => 'VARCHAR(50)',
+                'report_matched' => 'VARCHAR(1000)',
+                'metric' => 'VARCHAR(150) NOT NULL',
+                'metric_condition' => 'VARCHAR(50) NOT NULL',
+                'metric_matched' => 'FLOAT NOT NULL',
+                'compared_to' => 'TINYINT NOT NULL',
+                'email_me' => 'BOOLEAN NOT NULL',
+                'additional_emails' => 'TEXT',
+                'phone_numbers' => 'TEXT',
+            ), 'value_new'),
+            $this->migration->db->sql("DELETE FROM `$triggeredTable`", DbMigration::ERROR_CODE_DUPLICATE_COLUMN),
+            $this->migration->db->sql("ALTER TABLE `$triggeredTable` DROP KEY `ts_triggered` ", array(DbMigration::ERROR_CODE_DUPLICATE_COLUMN, DbMigration::ERROR_CODE_COLUMN_NOT_EXISTS)),
+            $this->migration->db->sql("ALTER TABLE `$triggeredTable` ADD `idtriggered` BIGINT unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT FIRST ", DbMigration::ERROR_CODE_DUPLICATE_COLUMN)
         );
     }
 
-    static function update()
+    public function doUpdate(Updater $updater)
     {
-        Updater::updateDatabase(__FILE__, self::getSql());
+        $updater->executeMigrations(__FILE__, $this->getMigrations($updater));
     }
 }

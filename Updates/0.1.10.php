@@ -9,18 +9,28 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
-use Piwik\Common;
 use Piwik\Updater;
 use Piwik\Updates;
+use Piwik\Updater\Migration\Factory as MigrationFactory;
 
 /**
  */
 class Updates_0_1_10 extends Updates
 {
-    static function getSql()
+    /**
+     * @var MigrationFactory
+     */
+    private $migration;
+
+    public function __construct(MigrationFactory $factory)
+    {
+        $this->migration = $factory;
+    }
+
+    public function getMigrations(Updater $updater)
     {
         return array(
-            "ALTER TABLE `" . Common::prefixTable('alert_triggered') . "` CHANGE `ts_triggered` `ts_triggered` timestamp NOT NULL default CURRENT_TIMESTAMP" => 1060,
+            $this->migration->db->changeColumnType('alert_triggered', 'ts_triggered', 'timestamp NOT NULL default CURRENT_TIMESTAMP'),
         );
     }
 
