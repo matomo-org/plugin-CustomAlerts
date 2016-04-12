@@ -25,7 +25,7 @@ class Tasks extends \Piwik\Plugin\Tasks
     public function __construct(Processor $processor, Notifier $notifier)
     {
         $this->processor = $processor;
-        $this->notified = $notifier;
+        $this->notifier = $notifier;
     }
 
     public function schedule()

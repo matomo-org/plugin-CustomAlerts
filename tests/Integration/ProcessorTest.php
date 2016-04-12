@@ -18,6 +18,14 @@ use Piwik\Plugins\CustomAlerts\Processor;
 use Piwik\Tests\Framework\Fixture;
 
 class CustomProcessor extends Processor {
+    public function __construct()
+    {
+
+        $processedReport = StaticContainer::get('Piwik\Plugins\API\ProcessedReport');
+        $validator = StaticContainer::get('Piwik\Plugins\CustomAlerts\Validator');
+        parent::__construct($processedReport, $validator);
+    }
+
     public function filterDataTable($dataTable, $condition, $value) {
         parent::filterDataTable($dataTable, $condition, $value);
     }
@@ -54,7 +62,7 @@ class ProcessorTest extends BaseTest
     {
         parent::setUp();
 
-        $this->processor = new CustomProcessor(StaticContainer::get('Piwik\Plugins\API\ProcessedReport'));
+        $this->processor = new CustomProcessor();
     }
 
     private function getDataTable()
