@@ -9,6 +9,7 @@
 namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
 use Piwik\Cache as PiwikCache;
+use Piwik\Container\StaticContainer;
 use Piwik\Plugin;
 use Piwik\Plugins\CustomAlerts\Controller;
 use Piwik\SettingsPiwik;
@@ -16,6 +17,11 @@ use Piwik\Translate;
 
 class CustomController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct(StaticContainer::get('Piwik\Plugins\API\ProcessedReport'));
+    }
+
     public function enrichTriggeredAlerts($triggeredAlerts)
     {
         return parent::enrichTriggeredAlerts($triggeredAlerts);
@@ -42,11 +48,7 @@ class ControllerTest extends BaseTest
         Plugin\Manager::getInstance()->loadPlugin('CustomAlerts');
         Plugin\Manager::getInstance()->loadPlugin('Morpheus');
 
-        if (class_exists('\Piwik\Cache\PluginAwareStaticCache')) {
-            \Piwik\Cache\PluginAwareStaticCache::clearAll(); // TODO remove this one
-        } else {
-            PiwikCache::flushAll();
-        }
+        PiwikCache::flushAll();
 
         Translate::loadAllTranslations();
 
