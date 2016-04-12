@@ -26,6 +26,17 @@ use Piwik\View;
  */
 class Controller extends \Piwik\Plugin\Controller
 {
+    /**
+     * @var ProcessedReport
+     */
+    private $processedReport;
+
+    public function __construct(ProcessedReport $processedReport)
+    {
+        $this->processedReport = $processedReport;
+        parent::__construct();
+    }
+
 	/**
 	 * Shows all Alerts of the current selected idSite.
 	 */
@@ -160,8 +171,7 @@ class Controller extends \Piwik\Plugin\Controller
             return;
         }
 
-        $processedReport = new ProcessedReport();
-        $report = $processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
+        $report = $this->processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
 
         return $report;
     }
@@ -210,8 +220,6 @@ class Controller extends \Piwik\Plugin\Controller
 
     protected function enrichTriggeredAlerts($triggeredAlerts)
     {
-        $processedReport = new ProcessedReport();
-
         $cached = array();
         foreach ($triggeredAlerts as &$alert) {
             $idSite = $alert['idsite'];
@@ -236,7 +244,7 @@ class Controller extends \Piwik\Plugin\Controller
             }
 
             if (is_array($cached[$idSite]['metric'][$report]) && !array_key_exists($metric, $cached[$idSite]['metric'][$report])) {
-                $cached[$idSite]['metric'][$report][$metric] = $processedReport->translateMetric($metric, $idSite, $alert['report']);
+                $cached[$idSite]['metric'][$report][$metric] = $this->processedReport->translateMetric($metric, $idSite, $alert['report']);
             }
         }
 

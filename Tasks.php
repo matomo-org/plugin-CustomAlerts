@@ -12,6 +12,22 @@ use Piwik\Site;
 
 class Tasks extends \Piwik\Plugin\Tasks
 {
+    /**
+     * @var Processor
+     */
+    private $processor;
+
+    /**
+     * @var Notifier
+     */
+    private $notifier;
+
+    public function __construct(Processor $processor, Notifier $notifier)
+    {
+        $this->processor = $processor;
+        $this->notified = $notifier;
+    }
+
     public function schedule()
     {
         $alerts  = new CustomAlerts();
@@ -48,9 +64,7 @@ class Tasks extends \Piwik\Plugin\Tasks
 
     private function runAlerts($period, $idSite)
     {
-        $processor = new Processor();
-        $processor->processAlerts($period, (int) $idSite);
-        $notifier  = new Notifier();
-        $notifier->sendNewAlerts($period, (int) $idSite);
+        $this->processor->processAlerts($period, (int) $idSite);
+        $this->notifier->sendNewAlerts($period, (int) $idSite);
     }
 }

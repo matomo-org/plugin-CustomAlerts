@@ -9,6 +9,7 @@
 namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
 use Piwik\Common;
+use Piwik\Container\StaticContainer;
 use Piwik\DataTable\Row;
 use Piwik\DataTable;
 use Piwik\Date;
@@ -53,7 +54,7 @@ class ProcessorTest extends BaseTest
     {
         parent::setUp();
 
-        $this->processor = new CustomProcessor();
+        $this->processor = new CustomProcessor(StaticContainer::get('Piwik\Plugins\API\ProcessedReport'));
     }
 
     private function getDataTable()

@@ -70,7 +70,23 @@ class Processor
         );
     }
 
-	public function processAlerts($period, $idSite)
+    /**
+     * @var ProcessedReport
+     */
+    private $processedReport;
+
+    /**
+     * @var Validator
+     */
+    private $validator;
+
+    public function __construct(ProcessedReport $processedReport, Validator $validator)
+    {
+        $this->processedReport = $processedReport;
+        $this->validator = $validator;
+    }
+
+    public function processAlerts($period, $idSite)
 	{
         $alerts = $this->getAllAlerts($period);
 
@@ -108,8 +124,7 @@ class Processor
             return false;
         }
 
-        $validator = new Validator();
-        if (!$validator->isValidComparableDate($alert['period'], $alert['compared_to'])) {
+        if (!$this->validator->isValidComparableDate($alert['period'], $alert['compared_to'])) {
             // actually it would be nice to log or send a notification or whatever that we have skipped an alert
             return false;
         }
@@ -125,8 +140,7 @@ class Processor
     private function reportExists($idSite, $report, $metric)
     {
         try {
-            $validator = new Validator();
-            $validator->checkApiMethodAndMetric($idSite, $report, $metric);
+            $this->validator->checkApiMethodAndMetric($idSite, $report, $metric);
         } catch (\Exception $e) {
             return false;
         }
@@ -296,8 +310,7 @@ class Processor
      */
     public function getValueForAlertInPast($alert, $idSite, $subPeriodN)
     {
-        $processedReport = new ProcessedReport();
-        $report = $processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
+        $report = $this->processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
 
         $dateInPast = $this->getDateForAlertInPast($idSite, $alert['period'], $subPeriodN);
 
