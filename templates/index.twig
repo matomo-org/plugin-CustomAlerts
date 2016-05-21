@@ -4,8 +4,8 @@
 
 {% block content %}
 
-    <div class="alerts">
-        <h2 piwik-enriched-headline>{{ 'CustomAlerts_PersonalAlerts'|translate }}</h2>
+    <div piwik-content-block class="alerts"
+         content-title="{{ 'CustomAlerts_PersonalAlerts'|translate|e('html_attr') }}">
 
         {% include "@CustomAlerts/list.twig" %}
     </div>
