@@ -2,10 +2,8 @@
 
 {% block content %}
 
-<div class="alerts">
-    {% include "@CustomAlerts/form.twig" with {
-        headline: 'CustomAlerts_EditAlert'|translate
-    } %}
-</div>
+{% include "@CustomAlerts/form.twig" with {
+    headline: 'CustomAlerts_EditAlert'|translate
+} %}
 
 {% endblock %}
