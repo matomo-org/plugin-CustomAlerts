@@ -130,6 +130,7 @@
                 var options = {id: 'CustomAlertsMetricValueError', context: 'error', type: 'toast'};
 
                 notification.show(_pk_translate('CustomAlerts_InvalidMetricValue'), options);
+                notification.scrollToNotification();
                 $('#metricValue').addClass('invalid');
                 return false;
             }

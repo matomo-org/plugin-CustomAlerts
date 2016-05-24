@@ -25,7 +25,7 @@ use Piwik\View;
 /**
   *
  */
-class Controller extends \Piwik\Plugin\Controller
+class Controller extends \Piwik\Plugin\ControllerAdmin
 {
     /**
      * @var ProcessedReport
