@@ -31,8 +31,8 @@ class Updates_0_0_7 extends Updates
     {
         return array(
             $this->migration->db->changeColumnTypes('alert_log', array(
-                'value_old', 'DECIMAL (20,3) DEFAULT NULL',
-                'value_new', 'DECIMAL (20,3) DEFAULT NULL'
+                'value_old' => 'DECIMAL (20,3) DEFAULT NULL',
+                'value_new' => 'DECIMAL (20,3) DEFAULT NULL'
             ))->addErrorCodeToIgnore(Updater\Migration\Db::ERROR_CODE_TABLE_NOT_EXISTS),
         );
     }

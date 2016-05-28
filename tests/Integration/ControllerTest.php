@@ -115,7 +115,7 @@ FORMATTED;
         $rendered = $this->controller->formatAlerts($alerts, 'html');
 
         $expected = <<<FORMATTED
-<table style="border-collapse: collapse;width:100%" class="tableForm dataTable entityTable">
+<table style="border-collapse: collapse;" class="tableForm dataTable entityTable" piwik-content-table>
     <thead style="background-color:rgb(228,226,215);color:rgb(37,87,146);">
     <tr>
         <th style="padding:6px 6px;text-align: left;">Alert Name</th>
