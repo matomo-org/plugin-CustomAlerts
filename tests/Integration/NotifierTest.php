@@ -120,7 +120,7 @@ t your custom alert settings, please sign in and access the Alerts page.=
 
         $expected = 'New alert for website Piwik test [' . $expectedDate . ']';
         $expecteds = array(
-            $mail->sanitiseString($expected),
+            str_replace('–', '-', $expected),
             \Zend_Mime::encodeQuotedPrintableHeader($expected, 'utf-8')
         );
         $isExpected = in_array( $mail->getSubject(), $expecteds);
