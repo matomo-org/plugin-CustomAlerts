@@ -131,7 +131,9 @@ t your custom alert settings, please sign in and access the Alerts page.=
     public function test_sendNewAlerts()
     {
         $methods = array('sendAlertsPerEmailToRecipient', 'sendAlertsPerSmsToRecipient', 'markAlertAsSent');
-        $mock    = $this->getMock('Piwik\Plugins\CustomAlerts\tests\Integration\CustomNotifier', $methods);
+        $mock    = $this->getMockBuilder('Piwik\Plugins\CustomAlerts\tests\Integration\CustomNotifier')
+                        ->setMethods($methods)
+                        ->getMock();
 
         $alerts = array(
             $this->buildAlert(1, 'Alert1', 'week', 4, 'Test', 'login1'),
