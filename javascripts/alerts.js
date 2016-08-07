@@ -26,7 +26,7 @@ var CustomAlerts = (function($) {
             method: 'API.getReportMetadata',
             date: piwik.currentDateString,
             period: getPeriodValue(),
-            idSites: [siteId],
+            idSite: siteId,
             format: 'JSON',
             filter_limit: '-1'
         }, 'GET');
