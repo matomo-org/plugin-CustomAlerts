@@ -72,7 +72,7 @@ class CustomAlerts extends \Piwik\Plugin
 
 	public function getJavaScriptFiles(&$jsFiles)
 	{
-		$jsFiles[] = "plugins/CustomAlerts/javascripts/alerts.js";
+		$jsFiles[] = "plugins/CustomAlerts/angularjs/managecustomalerts/managecustomalerts.controller.js";
 	}
 
 	public function getStylesheetFiles(&$cssFiles)
@@ -162,6 +162,7 @@ class CustomAlerts extends \Piwik\Plugin
 
     public function getClientSideTranslationKeys(&$translations)
     {
+        $translations[] = 'General_Value';
         $translations[] = 'CustomAlerts_InvalidMetricValue';
     }
 

@@ -2,41 +2,8 @@
 
 {% block content %}
 
-<div class="alerts">
-
-    <h2>{{ 'CustomAlerts_ManageAlerts'|translate }}</h2>
-
-    <div class="entityContainer entityAddContainer">
-        {% include "@CustomAlerts/form.twig" with {
-            headline: 'CustomAlerts_CreateNewAlert'|translate,
-            currentSiteName: siteName,
-            currentSiteId: idSite
-        } %}
-    </div>
-</div>
-
-<script type="text/javascript">
-
-function onSubmit(event)
-{
-    try {
-        event.preventDefault();
-        event.stopPropagation();
-    } catch (e) {
-        event.returnValue = false; // IE8
-    }
-
-    var apiParameters = CustomAlerts.getApiParameters();
-
-    if (!CustomAlerts.isValidAlert(apiParameters)) {
-        return false;
-    }
-
-    CustomAlerts.sendApiRequest('CustomAlerts.addAlert', apiParameters);
-
-    return false;
-}
-
-</script>
+{% include "@CustomAlerts/form.twig" with {
+    headline: 'CustomAlerts_CreateNewAlert'|translate
+} %}
 
 {% endblock %}
