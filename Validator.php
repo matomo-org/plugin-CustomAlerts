@@ -23,6 +23,15 @@ use Piwik\Plugins\MobileMessaging\API as APIMobileMessaging;
  */
 class Validator
 {
+    /**
+     * @var ProcessedReport
+     */
+    private $processedReport;
+
+    public function __construct(ProcessedReport $processedReport)
+    {
+        $this->processedReport = $processedReport;
+    }
 
     public function checkAdditionalEmails($additionalEmails)
     {
@@ -140,13 +149,11 @@ class Validator
             throw new Exception(Piwik::translate('CustomAlerts_InvalidReport'));
         }
 
-        $processedReport = new ProcessedReport();
-
-        if (!$processedReport->isValidReportForSite($idSite, $apiMethodUniqueId)) {
+        if (!$this->processedReport->isValidReportForSite($idSite, $apiMethodUniqueId)) {
             throw new Exception(Piwik::translate('CustomAlerts_InvalidReport'));
         }
 
-        if (!$processedReport->isValidMetricForReport($metric, $idSite, $apiMethodUniqueId)) {
+        if (!$this->processedReport->isValidMetricForReport($metric, $idSite, $apiMethodUniqueId)) {
             throw new Exception(Piwik::translate('CustomAlerts_InvalidMetric'));
         }
     }

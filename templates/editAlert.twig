@@ -1,52 +1,9 @@
-{% extends 'user.twig' %}
+{% extends 'admin.twig' %}
 
 {% block content %}
 
-<div class="alerts">
-
-    <h2>{{ 'CustomAlerts_ManageAlerts'|translate }}</h2>
-
-    <div class="entityContainer entityAddContainer">
-        {% include "@CustomAlerts/form.twig" with {
-            headline: 'CustomAlerts_EditAlert'|translate,
-            currentSiteName: alertSiteName,
-            currentSiteId: alertSiteId
-        } %}
-    </div>
-</div>
-
-<script type="text/javascript">
-
-$(function() {
-    if (updateReportParametersFunctions.email) {
-        updateReportParametersFunctions.email({emailMe: {{ alert.email_me ? 'true':'false' }}, additionalEmails: {{ alert.additional_emails|json_encode|raw }} });
-    }
-    if (updateReportParametersFunctions.mobile) {
-        updateReportParametersFunctions.mobile({phoneNumbers: {{ alert.phone_numbers|json_encode|raw }} });
-    }
-});
-
-function onSubmit(event)
-{
-    try {
-        event.preventDefault();
-        event.stopPropagation();
-    } catch (e) {
-        event.returnValue = false; // IE8
-    }
-
-    var apiParameters     = CustomAlerts.getApiParameters();
-    apiParameters.idAlert = {{ alert.idalert }};
-
-    if (!CustomAlerts.isValidAlert(apiParameters)) {
-        return false;
-    }
-
-    CustomAlerts.sendApiRequest('CustomAlerts.editAlert', apiParameters);
-
-    return false;
-}
-
-</script>
+{% include "@CustomAlerts/form.twig" with {
+    headline: 'CustomAlerts_EditAlert'|translate
+} %}
 
 {% endblock %}

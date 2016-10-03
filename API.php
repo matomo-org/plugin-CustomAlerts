@@ -24,10 +24,15 @@ use Piwik\Site;
 class API extends \Piwik\Plugin\API
 {
     private $validator;
+    /**
+     * @var Processor
+     */
+    private $processor;
 
-    public function __construct()
+    public function __construct(Processor $processor, Validator $validator)
     {
-        $this->validator = new Validator();
+        $this->validator = $validator;
+        $this->processor = $processor;
     }
 
     /**
@@ -66,13 +71,11 @@ class API extends \Piwik\Plugin\API
     {
         $alert = $this->getAlert($idAlert);
 
-        $processor = new Processor();
-
         $values = array();
         foreach ($alert['id_sites'] as $idSite) {
             $values[] = array(
                 'idSite' => (int) $idSite,
-                'value'  => $processor->getValueForAlertInPast($alert, $idSite, (int) $subPeriodN)
+                'value'  => $this->processor->getValueForAlertInPast($alert, $idSite, (int) $subPeriodN)
             );
         }
 
@@ -123,7 +126,6 @@ class API extends \Piwik\Plugin\API
      * @param int $comparedTo
      * @param bool|string $reportCondition
      * @param bool|string $reportValue
-     * @internal param bool $enableEmail
      * @return int ID of new Alert
      */
 	public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false)
@@ -165,7 +167,6 @@ class API extends \Piwik\Plugin\API
      * @param bool|string $reportCondition
      * @param bool|string $reportValue
      *
-     * @internal param bool $enableEmail
      * @return boolean
      */
 	public function editAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false)

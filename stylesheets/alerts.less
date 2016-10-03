@@ -1,91 +1,31 @@
 .alerts {
 
-  .addrow {
-    text-decoration: none;
-  }
-
   table.dataTable img {
-    margin-right: 0em;
-  }
-
-  .viewHistory {
-    margin-left: 20px;
-    text-decoration: none;
+    margin-right: 0;
   }
 
   form {
     margin-bottom: 80px;
   }
 
-  .entityListContainer, .entityAddContainer {
-    display: table-cell;
-    max-width: none !important;
-    min-width:800px;
-  }
-
   .ui-autocomplete-loading {
     background: white url('plugins/CustomAlerts/images/ui-anim_basic_16x16.gif') right center no-repeat;
   }
 
-  .entityAddContainer {
-    position: relative;
-
-    td.first {
-      width: 190px !important;
-    }
-  }
-
-  #alertReportSiteSelector {
-    position: initial;
-  }
-
-  .entityCancel {
-    clear: none;
-  }
-
   #reportValue,
   #metricValue {
-    width: 80px;
-    border-radius: 0 !important;
-    padding: 12px 12px !important;
+    width: 160px;
+  }
+
+  .row.conditionAndValue {
+    > .col {
+      padding-left: 0;
+      padding-right: 0;
+    }
   }
 
   #reportValue {
     width: 250px;
-  }
-
-  .inlineSelect {
-    margin-bottom: 2px;
-    border-radius: 0px;
-    color: #666;
-    border: none;
-    outline: none;
-    display: inline-block;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    cursor: pointer;
-    border: 1px solid #d4d4d4;
-    padding: 12px 12px;
-  }
-}
-
-@-moz-document url-prefix() {
-  .alerts .inlineSelect {
-    padding: 10px 12px !important;
-  }
-}
-
-#CustomAlerts_MissingPlugins ul {
-  list-style: inherit;
-  padding-left: inherit;
-}
-
-.entityListContainer {
-  .entityCancel {
-    padding: 0px;
-    margin-top: -24px;
-    margin-bottom: 5px;
   }
   td {
     word-wrap: break-word;
@@ -95,8 +35,15 @@
   }
   .edit {
     min-width: 60px;
+    padding-top: 2px;
   }
   .delete {
     min-width: 77px;
+    padding-top: 2px;
   }
+}
+
+#CustomAlerts_MissingPlugins ul {
+  list-style: inherit;
+  padding-left: inherit;
 }

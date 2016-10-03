@@ -9,23 +9,33 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
-use Piwik\Common;
 use Piwik\Updater;
 use Piwik\Updates;
+use Piwik\Updater\Migration\Factory as MigrationFactory;
 
 /**
  */
 class Updates_0_0_5 extends Updates
 {
-    static function getSql()
+    /**
+     * @var MigrationFactory
+     */
+    private $migration;
+
+    public function __construct(MigrationFactory $factory)
+    {
+        $this->migration = $factory;
+    }
+
+    public function getMigrations(Updater $updater)
     {
         return array(
-            "ALTER TABLE `" . Common::prefixTable('alert') . "` ADD `compared_to` TINYINT NOT NULL DEFAULT 1 AFTER `metric_matched` " => 1060
+            $this->migration->db->addColumn('alert', 'compared_to', 'TINYINT NOT NULL DEFAULT 1', 'metric_matched')
         );
     }
 
-    static function update()
+    public function doUpdate(Updater $updater)
     {
-        Updater::updateDatabase(__FILE__, self::getSql());
+        $updater->executeMigrations(__FILE__, $this->getMigrations($updater));
     }
 }

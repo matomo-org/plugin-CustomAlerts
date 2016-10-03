@@ -9,6 +9,7 @@
 namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
 use Piwik\Cache as PiwikCache;
+use Piwik\Container\StaticContainer;
 use Piwik\Plugin;
 use Piwik\Plugins\CustomAlerts\Controller;
 use Piwik\SettingsPiwik;
@@ -16,6 +17,11 @@ use Piwik\Translate;
 
 class CustomController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct(StaticContainer::get('Piwik\Plugins\API\ProcessedReport'));
+    }
+
     public function enrichTriggeredAlerts($triggeredAlerts)
     {
         return parent::enrichTriggeredAlerts($triggeredAlerts);
@@ -42,11 +48,7 @@ class ControllerTest extends BaseTest
         Plugin\Manager::getInstance()->loadPlugin('CustomAlerts');
         Plugin\Manager::getInstance()->loadPlugin('Morpheus');
 
-        if (class_exists('\Piwik\Cache\PluginAwareStaticCache')) {
-            \Piwik\Cache\PluginAwareStaticCache::clearAll(); // TODO remove this one
-        } else {
-            PiwikCache::flushAll();
-        }
+        PiwikCache::flushAll();
 
         Translate::loadAllTranslations();
 
@@ -113,7 +115,7 @@ FORMATTED;
         $rendered = $this->controller->formatAlerts($alerts, 'html');
 
         $expected = <<<FORMATTED
-<table style="border-collapse: collapse;width:100%" class="tableForm dataTable entityTable">
+<table style="border-collapse: collapse;" class="tableForm dataTable entityTable" piwik-content-table>
     <thead style="background-color:rgb(228,226,215);color:rgb(37,87,146);">
     <tr>
         <th style="padding:6px 6px;text-align: left;">Alert Name</th>

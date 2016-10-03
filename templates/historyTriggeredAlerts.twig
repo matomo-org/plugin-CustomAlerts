@@ -1,20 +1,19 @@
-{% extends 'user.twig' %}
+{% extends 'admin.twig' %}
 
 {% import '@CustomAlerts/macros.twig' as alertsMacro %}
 
 {% block content %}
 
-    <div class="alerts">
-        <h2>{{ 'CustomAlerts_AlertsHistory'|translate }}</h2>
+    <div class="alerts" piwik-content-block
+         content-title="{{ 'CustomAlerts_AlertsHistory'|translate|e('html_attr') }}">
 
-        <div class='entityListContainer'>
-            {{ alertsFormatted|raw }}
+        {{ alertsFormatted|raw }}
+
+        <div class="tableActionBar">
+            <a href="{{ linkTo({'module': 'CustomAlerts', 'action': 'index'}) }}">
+                <span class="icon-table"></span> {{ 'CustomAlerts_ManageAlerts'|translate }}
+            </a>
         </div>
 
-        <br />
-        <a class="addrow" href="{{ linkTo({'module': 'CustomAlerts', 'action': 'index'}) }}"><img src='plugins/Morpheus/images/table.png'/> {{ 'CustomAlerts_PersonalAlerts'|translate }}</a>
-
-        <br />
-        <br />
     </div>
 {% endblock %}

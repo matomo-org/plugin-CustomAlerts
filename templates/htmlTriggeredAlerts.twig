@@ -1,30 +1,30 @@
 {% import '@CustomAlerts/macros.twig' as alertsMacro %}
 {% set style = extended ? '' : 'padding:5px 0 5px 6px;' %}
-<table style="border-collapse: collapse;width:100%" class="tableForm dataTable entityTable">
-    <thead style="background-color:rgb(228,226,215);color:rgb(37,87,146);">
+<table {% if not extended %}style="border-collapse: collapse;" class="tableForm dataTable entityTable"{% endif %} piwik-content-table>
+    <thead {% if not extended %}style="background-color:rgb(228,226,215);color:rgb(37,87,146);"{% endif %}>
     <tr>
-        <th style="padding:6px 6px;text-align: left;">{{ 'CustomAlerts_AlertName'|translate }}</th>
+        <th {% if not extended %}style="padding:6px 6px;text-align: left;"{% endif %}>{{ 'CustomAlerts_AlertName'|translate }}</th>
         {% if extended %}
-            <th style="padding:6px 6px;text-align: left;">{{ 'General_Date'|translate }}</th>
-            <th style="padding:6px 6px;text-align: left;">{{ 'General_Website'|translate }}</th>
+            <th style="text-align: left;">{{ 'General_Date'|translate }}</th>
+            <th style="text-align: left;">{{ 'General_Website'|translate }}</th>
         {% endif %}
-        <th style="padding:6px 6px;text-align: left;">{{ 'General_Report'|translate }}</th>
-        <th style="padding:6px 6px;text-align: left;">{{ 'CustomAlerts_AlertCondition'|translate }}</th>
-        <th style="padding:6px 6px;text-align: left;">{{ 'CustomAlerts_Alert'|translate }}</th>
+        <th {% if not extended %}style="padding:6px 6px;text-align: left;"{% endif %}>{{ 'General_Report'|translate }}</th>
+        <th {% if not extended %}style="padding:6px 6px;text-align: left;"{% endif %}>{{ 'CustomAlerts_AlertCondition'|translate }}</th>
+        <th {% if not extended %}style="padding:6px 6px;text-align: left;"{% endif %}>{{ 'CustomAlerts_Alert'|translate }}</th>
     </tr>
     </thead>
     <tbody>
 {% if triggeredAlerts|length %}
 {% for alert in triggeredAlerts %}
     <tr>
-        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="{{ piwikUrl }}{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert, 'idSite': alert.idsite, 'period': alert.period, 'date': 'yesterday', 'token_auth': false, 'convertToUnicode': false, 'format': false, 'method': false, 'trigger': false})|raw }}">{{ alert.name }}</a></td>
+        <td style="max-width:300px;{% if not extended %}border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"{% endif %}><a href="{{ piwikUrl }}{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert, 'idSite': alert.idsite, 'period': alert.period, 'date': 'yesterday', 'token_auth': false, 'convertToUnicode': false, 'format': false, 'method': false, 'trigger': false})|raw }}">{{ alert.name }}</a></td>
         {% if extended %}
             <td style="white-space: nowrap;">{{ alert.ts_triggered }}</td>
             <td>{{ alert.siteName|raw }}</td>
         {% endif %}
-        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);{{ style }}">{{ alert.reportName|default(alert.report) }}</td>
-        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);{{ style }}">{{ alert.dimension|default('') }} {{ alert.reportConditionName }} {% if alert.report_matched %}'{{ alert.report_matched|truncate(100)|raw }}'{% endif %}</td>
-        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);{{ style }}">{{ alert.reportMetric }} {{ alertsMacro.metricChangeDescription(alert) }}</td>
+        <td style="max-width:300px;{% if not extended %}border-bottom:1px solid rgb(231,231,231);{% endif %}{{ style }}">{{ alert.reportName|default(alert.report) }}</td>
+        <td style="max-width:300px;{% if not extended %}border-bottom:1px solid rgb(231,231,231);{% endif %}{{ style }}">{{ alert.dimension|default('') }} {{ alert.reportConditionName }} {% if alert.report_matched %}'{{ alert.report_matched|truncate(100)|raw }}'{% endif %}</td>
+        <td style="max-width:300px;{% if not extended %}border-bottom:1px solid rgb(231,231,231);{% endif %}{{ style }}">{{ alert.reportMetric }} {{ alertsMacro.metricChangeDescription(alert) }}</td>
     </tr>
 
 {% endfor %}
@@ -32,8 +32,7 @@
     <tr>
         <td colspan="{% if extended %}7{% else %}3{% endif %}">
             <br/>
-            {{ 'CustomAlerts_NoTriggeredAlerts'|translate }}
-            <br/><br/>
+            <p>{{ 'CustomAlerts_NoTriggeredAlerts'|translate }}</p>
         </td>
     </tr>
 {% endif %}

@@ -1,143 +1,153 @@
-{% if not requirementsAreMet %}
+{% import '@MobileMessaging/macros.twig' as mobileMacro %}
 
-    {% import '@CustomAlerts/macros.twig' as alertsMacro %}
-    {{ alertsMacro.requirementsNotMet() }}
+<div piwik-content-block content-title="{{ headline|e('html_attr') }}" class="alerts">
 
-{% else %}
+    <div piwik-form ng-controller="ManagecustomalertsController as manageAlerts">
 
-    <form method="POST" onSubmit="return onSubmit(event);">
-        <table class="tableForm dataTable entityTable">
-            <thead>
-            <tr class="first">
-                <th colspan="2">{{ headline }}</th>
-            <tr>
-            </thead>
-            <tbody>
+        <div piwik-field uicontrol="text" name="alertName"
+             maxlength="100"
+             ng-model="manageAlerts.alert.name"
+             title="{{ 'CustomAlerts_AlertName'|translate|e('html_attr') }}"
+             {% if alert %}value="{{ alert.name|e('html_attr') }}"{% endif %}>
+        </div>
 
-            <tr>
-                <td class="first"><label for="alertName">{{ 'CustomAlerts_AlertName'|translate }}</label></td>
-                <td><input class="inp" type="text" maxlength="100" name="alertName" id="alertName" value="{% if alert %}{{ alert.name|e('html_attr') }}{% endif %}"/></td>
-            </tr>
-            <tr>
-                <td class="first"><label for="applyTo">{{ 'CustomAlerts_ApplyTo'|translate }}</label></td>
-                <td>
+        <div piwik-field uicontrol="site" name="idSite"
+             ng-model="manageAlerts.alert.site"
+             ng-change="manageAlerts.changeReport()"
+             title="{{ 'General_Website'|translate|e('html_attr') }}"
+             introduction="{{ 'CustomAlerts_ApplyTo'|translate|e('html_attr') }}"
+             value='{{ currentSite|json_encode }}'>
+        </div>
 
-                    <div piwik-siteselector
-                         class="sites_autocomplete"
-                         siteid="{{ currentSiteId }}"
-                         sitename="{{ currentSiteName }}"
-                         switch-site-on-select="false"
-                         show-all-sites-item="false"
-                         show-selected-site="true"
-                         name="idSite"
-                         id="alertReportSiteSelector"></div>
-                </td>
-            </tr>
-            <tr>
-                <td class="first"><label for="period">{{ 'General_Period'|translate }}</label></td>
-                <td><select class="period inp" name="period" id="period">
-                        <option value="day" {% if alert and alert.period == 'day' %}selected="selected"{% endif %}>{{ 'Intl_PeriodDay'|translate }}</option>
-                        <option value="week" {% if alert and alert.period == 'week' %}selected="selected"{% endif %}>{{ 'Intl_PeriodWeek'|translate }}</option>
-                        <option value="month" {% if alert and alert.period == 'month' %}selected="selected"{% endif %}>{{ 'Intl_PeriodMonth'|translate }}</option>
-                    </select></td>
-            </tr>
+        <div piwik-field uicontrol="select" name="period"
+             ng-model="manageAlerts.alert.period"
+             ng-change="manageAlerts.changeReport()"
+             title="{{ 'General_Period'|translate|e('html_attr') }}"
+             options="{{ periodOptions|json_encode }}"
+             value="{% if alert and alert.period %}{{ alert.period }}{% else %}day{% endif %}">
+        </div>
 
-            {{ postEvent('Template.reportParametersScheduledReports') }}
+        <div piwik-field uicontrol="checkbox"
+             name="report_email_me"
+             introduction="{{ 'ScheduledReports_SendReportTo'|translate|e('html_attr') }}"
+             ng-model="manageAlerts.alert.emailMe"
+             title="{{ 'ScheduledReports_SentToMe'|translate|e('html_attr') }} ({{ currentUserEmail|e('html_attr') }})"
+             value="{% if alert and alert.email_me %}1{% else %}0{% endif %}">
+        </div>
 
-            {% if not supportsSMS %}
-                <tr>
-                    <td class="first"><label for="period">{{ 'MobileMessaging_PhoneNumbers'|translate }}</label></td>
-                    <td>
-                        {{ 'CustomAlerts_MobileMessagingPluginNotActivated'|translate('<a href="' ~ linkTo({'module':"CorePluginsAdmin", 'action': 'plugins', 'updated':null}) ~ '#MobileMessaging">', '</a>')|raw }}
-                    </td>
-                </tr>
+        <div piwik-field uicontrol="textarea" var-type="array"
+             ng-model="manageAlerts.alert.additionalEmails"
+             title="{{ 'ScheduledReports_AlsoSendReportToTheseEmails'|translate|e('html_attr') }}"
+             {% if alert and alert.additional_emails %}value="{{ alert.additional_emails|json_encode }}"{% endif %}>
+        </div>
+
+        {% if supportsSMS %}
+            {% if alert %}
+                {{ mobileMacro.selectPhoneNumbers(phoneNumbers, 'manageAlerts', alert.phone_numbers, false) }}
+            {% else %}
+                {{ mobileMacro.selectPhoneNumbers(phoneNumbers, 'manageAlerts', '', false) }}
             {% endif %}
+        {% else %}
+            <div class="row">
+                <div class="col s12">
+                    <div piwik-alert="info">
+                        <strong>{{ 'MobileMessaging_PhoneNumbers'|translate }}</strong>:
+                        {{ 'CustomAlerts_MobileMessagingPluginNotActivated'|translate('<a href="' ~ linkTo({'module':"CorePluginsAdmin", 'action': 'plugins', 'updated':null}) ~ '#MobileMessaging">', '</a>')|raw }}
+                    </div>
 
-            <tr>
-                <td class="first"><label for="compared_to">{{ 'CustomAlerts_AlertCondition'|translate }}</label></td>
-                <td>
+                </div>
+            </div>
+        {% endif %}
 
-                    <br />
-                    <span class="reportField">
-                        {{ 'CustomAlerts_ThisAppliesTo'|translate}}
-                        <select class="reports inp inlineSelect" name="report" id="report">
-                            {% if reportMetadata and alert %}
-                                <option value="{{ alert.report|e('html_attr') }}" selected="selected">{{ reportMetadata.name }}</option>
-                            {% endif %}
-                        </select>
-                    </span>
+        <div piwik-field uicontrol="select" name="report"
+             ng-model="manageAlerts.alert.report"
+             ng-change="manageAlerts.changeReport()"
+             title="{{ 'CustomAlerts_ThisAppliesTo'|translate|e('html_attr') }}"
+             introduction="{{ 'CustomAlerts_AlertCondition'|translate|e('html_attr') }}"
+             options="manageAlerts.reportOptions"
+             {% if reportMetadata and alert %}value="{{ alert.report|e('html_attr') }}"{% endif %}>
+        </div>
 
-                    <span class="reportConditionField">
-                        <br /> {{ 'CustomAlerts_When'|translate }} <span id="reportInfo"></span>
-                        <select class="reportCondition inp inlineSelect" name="reportCondition" id="reportCondition">
-                            {% for condName, condValue in alertGroupConditions %}
-                                <option value="{{ condValue|e('html_attr') }}" {% if alert and condValue == alert.report_condition %}selected="selected"{% endif %}>{{ condName|translate }}</option>
-                            {% endfor %}
-                        </select>
-                    </span>
+        <div class="row" ng-show="manageAlerts.isLoadingReport">
+            <div class="col s12">
+                <div piwik-activity-indicator loading="manageAlerts.isLoadingReport"></div>
+            </div>
+        </div>
 
-                    <span class="reportValueField">
-                        <input type="text" role="textbox" autocomplete="off" class="reportValue inp ui-autocomplete-input" maxlength="255" name="reportValue" id="reportValue" value="{% if alert %}{{ alert.report_matched|raw }}{% endif %}" placeholder="{{ 'General_Search'|translate }}" length="15">
-                    </span>
+        <div class="row conditionAndValue" ng-show="manageAlerts.hasReportDimension">
+            <div class="col s12 m6">
+                <div piwik-field uicontrol="select" name="reportCondition"
+                     ng-model="manageAlerts.alert.reportCondition"
+                     full-width="true"
+                     title="{{ 'CustomAlerts_When'|translate|e('html_attr') }} <span class='reportInfo'></span>"
+                     options="{{ alertGroupConditions|json_encode }}"
+                     value="{% if alert %}{{ alert.report_condition|e('html_attr') }}{% else %}{{ alertGroupConditions.0.key|e('html_attr') }}{% endif %}">
+                </div>
+            </div>
+            <div class="col s12 m6">
+                <div piwik-field uicontrol="text"
+                     ng-model="manageAlerts.alert.reportValue"
+                     title="{{ 'General_Value'|translate|e('html_attr') }}"
+                     full-width="true"
+                     ng-show="'matches_any' != manageAlerts.alert.reportCondition"
+                     role="textbox" autocomplete="off" class="ui-autocomplete-input" maxlength="255" name="reportValue"
+                     {% if alert %}value="{{ alert.report_matched|raw }}"{% endif %} >
+                </div>
+            </div>
+        </div>
 
-                    <br/><br />
+        <div piwik-field uicontrol="select" name="metric"
+             ng-model="manageAlerts.alert.metric"
+             ng-change="manageAlerts.changeMetricCondition()"
+             introduction="{{ 'CustomAlerts_AlertMeWhen'|translate|e('html_attr') }}"
+             options="manageAlerts.metricOptions"
+             {% if alert %}value="{{ alert.metric|raw }}"{% endif %}>
+        </div>
 
-                    <span>
-                        {{ 'CustomAlerts_AlertMeWhen'|translate }}
-                        <select name="metric" id="metric" class="metrics inp inlineSelect">
-                            {% if reportMetadata and alert %}
-                                {% for metricName, metricValue in reportMetadata.metrics %}
-                                    <option value="{{ metricName|e('html_attr') }}" {%  if metricName == alert.metric %}selected="selected"{% endif %}>{{ metricValue }}</option>
-                                {% endfor %}
-                            {% endif %}
-                        </select>
-                    </span>
+        <div class="row conditionAndValue">
+            <div class="col s12 m6">
+                <div piwik-field uicontrol="select" name="metricCondition"
+                     options="{{ metricConditionOptions|json_encode }}"
+                     ng-model="manageAlerts.alert.metricCondition"
+                     ng-change="manageAlerts.changeMetricCondition()"
+                     full-width="true"
+                     value="{% if alert %}{{ alert.metric_condition|e('html_attr') }}{% else %}{{ metricConditionOptions.0.key|e('html_attr') }}{% endif %}" >
+                </div>
+            </div>
+            <div class="col s12 m6">
+                <div piwik-field uicontrol="text" name="metricValue"
+                     ng-model="manageAlerts.alert.metricValue"
+                     title="<span class='metricValueDescription'></span>"
+                     full-width="true"
+                     {% if alert %}value="{{ alert.metric_matched|e('html_attr') }}"{% endif %} >
+                </div>
+            </div>
+        </div>
 
-                    <span>
-                        <select name="metricCondition" id="metricCondition" class="inp inlineSelect">
-                            {% for condName, condValue in alertMetricConditions %}
-                                <option value="{{ condValue|e('html_attr') }}" {% if alert and condValue == alert.metric_condition %}selected="selected"{% endif %}>{{ condName|translate }}</option>
-                            {% endfor %}
-                        </select>
-                    </span>
+        {% for period, comparablesDatesPeriod in comparablesDates %}
 
-                    <span>
-                        <input type="text" class="inp" name="metricValue" id="metricValue" value="{% if alert %}{{ alert.metric_matched|e('html_attr') }}{% endif %}" />
-                        <span class="metricValueDescription">%</span>
-                    </span>
+            <div piwik-field uicontrol="select" name="compared_to"
+                 ng-show="'{{ period|e('html_attr') }}' == manageAlerts.alert.period && manageAlerts.isComparable"
+                 ng-model="manageAlerts.alert.comparedTo['{{ period|e('html_attr') }}']"
+                {% if comparablesDatesPeriod|length <= 1 %}
+                    disabled="disabled"
+                {% endif %}
+                 options="{{ comparablesDatesPeriod|json_encode }}"
+                 introduction="{{ 'CustomAlerts_ComparedToThe'|translate|e('html_attr') }}"
+                 value="{% if alert and alert.period == period %}{{ alert.compared_to|e('html_attr') }}{% else %}{{ comparablesDatesPeriod.0.key|e('html_attr') }}{% endif %}" >
+            </div>
+        {% endfor %}
 
-                    <span class="comparedToField">
-                        <br />
-                        {{ 'CustomAlerts_ComparedToThe'|translate }}
-                        {% for period, comparablesDatesPeriod in comparablesDates %}
-                            <select name="compared_to"
-                                    class="inlineSelect"
-                                    data-period="{{ period|e('html_attr') }}"
-                                    id="compared_to"
-                                    {% if comparablesDatesPeriod|length <= 1 %}
-                                        disabled="disabled"
-                                    {% endif %}
-                                    >
-                                {% for compDateTranslation, value in comparablesDatesPeriod %}
-                                    <option value="{{ value|e('html_attr') }}"
-                                            {% if alert and value == alert.compared_to %} selected="selected"{% endif %}
-                                            >{{ compDateTranslation|translate }}</option>
-                                {% endfor %}
-                            </select>
-                        {% endfor %}
-                    </span>
-                    <br />
-                    <br />
-                </td>
-            </tr>
-            </tbody>
-        </table>
-
-        <input type="submit" value="{{ 'General_Save'|translate }}" name="submit" class="submit" />
+        {% if alert and alert.idalert %}
+            <input piwik-save-button saving="manageAlerts.isLoading" ng-click="manageAlerts.updateAlert({{ alert.idalert }})"/>
+        {% else %}
+            <input piwik-save-button saving="manageAlerts.isLoading" ng-click="manageAlerts.createAlert()"/>
+        {% endif %}
 
         <div class='entityCancel'>
             {% set backlink = linkTo({'module': 'CustomAlerts', 'action': 'index'}) %}
             {{ 'General_OrCancel'|translate("<a class='entityCancelLink' href='" ~ backlink ~ "'>","</a>")|raw }}
         </div>
-    </form>
-{% endif %}
+    </div>
+
+</div>

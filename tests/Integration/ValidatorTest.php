@@ -8,6 +8,7 @@
 
 namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
+use Piwik\Container\StaticContainer;
 use Piwik\Plugins\CustomAlerts\Validator;
 
 /**
@@ -26,7 +27,8 @@ class ValidatorTest extends BaseTest
     {
         parent::setUp();
 
-        $this->validator = new Validator();
+        $processedReport = StaticContainer::get('Piwik\Plugins\API\ProcessedReport');
+        $this->validator = new Validator($processedReport);
     }
 
     /**

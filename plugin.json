@@ -1,9 +1,9 @@
 {
     "name": "CustomAlerts",
     "description": "Create custom Alerts to be notified of important changes on your website or app! ",
-    "version": "0.1.22",
+    "version": "3.0.0",
     "require": {
-        "piwik": ">=2.15.0-b18,<3.0.0-b1"
+        "piwik": ">=3.0.0-dev,<4.0.0"
     },
     "authors": [
         {
@@ -12,6 +12,12 @@
             "homepage": "http://piwik.org"
         }
     ],
+    "support": {
+        "issues": "https://github.com/piwik/plugin-CustomAlerts/issues",
+        "forum": "https://forum.piwik.org",
+        "source": "https://github.com/piwik/plugin-CustomAlerts",
+        "wiki": "https://github.com/piwik/plugin-CustomAlerts/wiki"
+    },
     "license": "GPL v3+",
     "keywords": ["alerts", "notification", "report", "monitoring"],
     "homepage": "http://piwik.org"

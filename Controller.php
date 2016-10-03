@@ -18,14 +18,26 @@ use Piwik\Piwik;
 use Piwik\Plugin\Manager as PluginManager;
 use Piwik\Plugins\API\ProcessedReport;
 use Piwik\Plugins\SitesManager\API as SitesManagerApi;
+use Piwik\Plugins\MobileMessaging\API as APIMobileMessaging;
 use Piwik\Site;
 use Piwik\View;
 
 /**
   *
  */
-class Controller extends \Piwik\Plugin\Controller
+class Controller extends \Piwik\Plugin\ControllerAdmin
 {
+    /**
+     * @var ProcessedReport
+     */
+    private $processedReport;
+
+    public function __construct(ProcessedReport $processedReport)
+    {
+        $this->processedReport = $processedReport;
+        parent::__construct();
+    }
+
 	/**
 	 * Shows all Alerts of the current selected idSite.
 	 */
@@ -43,7 +55,6 @@ class Controller extends \Piwik\Plugin\Controller
         }
 
         $view->alerts = $alerts;
-        $view->requirementsAreMet = $this->areRequirementsMet();
 
 		return $view->render();
 	}
@@ -69,6 +80,8 @@ class Controller extends \Piwik\Plugin\Controller
 		$this->setGeneralVariablesView($view);
         $this->addBasicCreateAndEditVariables($view, null);
 
+        $view->currentSite = array('id' => $this->idSite, 'name' => $this->site->getName());
+
 		return $view->render();
 	}
 
@@ -80,8 +93,7 @@ class Controller extends \Piwik\Plugin\Controller
 		$this->setGeneralVariablesView($view);
 
         $alert = API::getInstance()->getAlert($idAlert);
-		$view->alertSiteName = $this->findSiteName($alert);
-		$view->alertSiteId   = $this->findSiteId($alert);
+        $view->currentSite = array('id' => $this->findSiteId($alert), 'name' => $this->findSiteName($alert));
 
         $this->addBasicCreateAndEditVariables($view, $alert);
 
@@ -134,17 +146,48 @@ class Controller extends \Piwik\Plugin\Controller
     private function addBasicCreateAndEditVariables($view, $alert)
     {
         $view->alert = $alert;
-        $view->alertGroupConditions  = Processor::getGroupConditions();
-        $view->alertMetricConditions = Processor::getMetricConditions();
-        $view->comparablesDates   = Processor::getComparablesDates();
-        $view->reportMetadata     = $this->findReportMetadata($alert);
-        $view->requirementsAreMet = $this->areRequirementsMet();
-        $view->supportsSMS        = $this->supportsSms();
-    }
 
-    private function areRequirementsMet()
-    {
-        return PluginManager::getInstance()->isPluginActivated('ScheduledReports');
+        $alertGroupConditions = array();
+        foreach (Processor::getGroupConditions() as $condName => $condValue) {
+            $alertGroupConditions[] = array('key' => $condValue, 'value' => Piwik::translate($condName));
+        }
+
+        $view->alertGroupConditions = $alertGroupConditions;
+
+        $comparablesDates = array();
+        foreach (Processor::getComparablesDates() as $period => $comparablesDatesPeriod) {
+            $comparablesDates[$period] = array();
+            foreach ($comparablesDatesPeriod as $compDateTranslation => $key) {
+                $comparablesDates[$period][] = array('key' => (string)$key, 'value' => Piwik::translate($compDateTranslation));
+            }
+        }
+
+        $view->currentUserEmail = Piwik::getCurrentUserEmail();
+        $view->comparablesDates   = $comparablesDates;
+        $view->reportMetadata     = $this->findReportMetadata($alert);
+        $view->supportsSMS        = $this->supportsSms();
+        $view->periodOptions = array(
+            array('key' => 'day', 'value' => Piwik::translate('Intl_PeriodDay')),
+            array('key' => 'week', 'value' => Piwik::translate('Intl_PeriodWeek')),
+            array('key' => 'month', 'value' => Piwik::translate('Intl_PeriodMonth')),
+        );
+
+        $numbers = APIMobileMessaging::getInstance()->getActivatedPhoneNumbers();
+
+        $phoneNumbers = array();
+        if (!empty($numbers)) {
+            foreach ($numbers as $number) {
+                $phoneNumbers[$number] = $number;
+            }
+        }
+
+        $view->phoneNumbers = $phoneNumbers;
+
+        $metricConditionOptions = array();
+        foreach (Processor::getMetricConditions() as $condName => $condValue) {
+            $metricConditionOptions[] = array('key' => $condValue, 'value' => Piwik::translate($condName));
+        }
+        $view->metricConditionOptions = $metricConditionOptions;
     }
 
     private function supportsSms()
@@ -160,8 +203,7 @@ class Controller extends \Piwik\Plugin\Controller
             return;
         }
 
-        $processedReport = new ProcessedReport();
-        $report = $processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
+        $report = $this->processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
 
         return $report;
     }
@@ -210,8 +252,6 @@ class Controller extends \Piwik\Plugin\Controller
 
     protected function enrichTriggeredAlerts($triggeredAlerts)
     {
-        $processedReport = new ProcessedReport();
-
         $cached = array();
         foreach ($triggeredAlerts as &$alert) {
             $idSite = $alert['idsite'];
@@ -236,7 +276,7 @@ class Controller extends \Piwik\Plugin\Controller
             }
 
             if (is_array($cached[$idSite]['metric'][$report]) && !array_key_exists($metric, $cached[$idSite]['metric'][$report])) {
-                $cached[$idSite]['metric'][$report][$metric] = $processedReport->translateMetric($metric, $idSite, $alert['report']);
+                $cached[$idSite]['metric'][$report][$metric] = $this->processedReport->translateMetric($metric, $idSite, $alert['report']);
             }
         }
 
