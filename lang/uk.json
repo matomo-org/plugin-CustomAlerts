@@ -1,0 +1,10 @@
+{
+    "CustomAlerts": {
+        "DayComparedToPreviousDay": "попередній день",
+        "DayComparedToPreviousWeek": "того ж дня тижнем раніше",
+        "DayComparedToPreviousYear": "того ж дня в попередньому році",
+        "WeekComparedToPreviousWeek": "попередній тиждень",
+        "MonthComparedToPreviousMonth": "попередній місяць",
+        "MonthComparedToPreviousYear": "той же місяць роком раніше"
+    }
+}

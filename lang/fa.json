@@ -17,7 +17,6 @@
         "EditAlert": "ویرایش هشدار",
         "AreYouSureDeleteAlert": "آیا از حذف این هشدار مطمئن هستید؟",
         "InvalidPeriod": "دوره نامعتبر است",
-        "InvalidMetricValue": "مقدار باید عددی باشد",
         "InvalidReport": "گزارش داده شده نامعتبر است",
         "InvalidComparableDate": "روز قابل مقایسه اشتباه است",
         "InvalidMetric": "متریک داده شده باری گزارش داده شده موجود نیست",
