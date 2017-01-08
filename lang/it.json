@@ -49,6 +49,8 @@
         "IsGreaterThan": "è maggiore di",
         "DecreasesMoreThan": "diminuisce di più di",
         "IncreasesMoreThan": "aumenta di più di",
+        "PercentageDecreasesMoreThan": "%% diminuisce più di",
+        "PercentageIncreasesMoreThan": "%% aumenta più di",
         "NoAlertsDefined": "Non hai ancora creato alcun Avviso per questo sito, creane uno adesso!",
         "NoTriggeredAlerts": "Non ci sono ancora degli avvisi attivati",
         "CancelAndReturnToAlerts": "Cancella e %1$sritorna all'elenco degli avvisi%2$s",
