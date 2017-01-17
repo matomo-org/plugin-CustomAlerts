@@ -32,7 +32,7 @@ class Notifier extends \Piwik\Plugin
         $now    = $this->getToday()->getDatetime();
 
         $model  = new Model();
-        $alerts = $model->getTriggeredAlertsForPeriod($period, $now, false);
+        $alerts = $model->getTriggeredAlertsForPeriod($period, $now);
 
         return array_filter($alerts, function ($alert) use ($idSite) {
             return $idSite && (int) $alert['idsite'] === (int) $idSite && empty($alert['ts_last_sent']);
