@@ -185,8 +185,14 @@ class Notifier extends \Piwik\Plugin
         $controller = $this->getController();
 
         $viewHtml = new View('@CustomAlerts/alertHtmlMail');
+        $viewHtml->assign('idSite', $idSite);
+        $viewHtml->assign('period', $period);
+        $viewHtml->assign('date', $this->getToday()->toString());
+        $viewHtml->assign('websiteName', $websiteName);
+        $viewHtml->assign('prettyDate', $prettyDate);
         $viewHtml->assign('triggeredAlerts', $controller->formatAlerts($alerts, 'html'));
         $mail->setBodyHtml($viewHtml->render());
+
 
         $viewText = new View('@CustomAlerts/alertTextMail');
         $viewText->assign('triggeredAlerts', $controller->formatAlerts($alerts, 'text'));
