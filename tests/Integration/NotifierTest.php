@@ -89,17 +89,19 @@ class NotifierTest extends BaseTest
         $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com', 'day', 1);
 
         $expectedHtml = <<<HTML
-Hello,<br /><br />=0A=0AThe triggered alerts are listed in the table bel=
-ow. To adjust your custom alert settings, please sign in and access the=
- Alerts page.<br /><br />=0A=0A<table
+<table style=3D"max-width:1000px;">=0A  <tr><td>=0A    <table style=3D"w=
+idth:100%; background-color:#37474f; padding:10px 0; margin:25px 0; heig=
+ht:64px;">=0A      <tr>=0A        <td style=3D"padding:0 0 0 15px;"><img=
 HTML;
 
         $expectedText = 'Hello,=0A=0AThe triggered alerts are listed in the table below. To adjus=
 t your custom alert settings, please sign in and access the Alerts page.=
 =0A=0A';
 
-        $this->assertStringStartsWith($expectedHtml, html_entity_decode($mail->getBodyHtml(true)));
-        $this->assertStringStartsWith($expectedText, $mail->getBodyText(true));
+        $renderedHtml = html_entity_decode($mail->getBodyHtml(true));
+        $this->assertStringStartsWith($expectedHtml, $renderedHtml, "Got HTML response: " . var_export($renderedHtml, true));
+        $renderedText = $mail->getBodyText(true);
+        $this->assertStringStartsWith($expectedText, $renderedText, "Got text response: " . var_export($renderedText, true));
         $this->assertEquals(array('test@example.com'), $mail->getRecipients());
     }
 

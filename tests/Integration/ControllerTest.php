@@ -115,35 +115,36 @@ FORMATTED;
         $rendered = $this->controller->formatAlerts($alerts, 'html');
 
         $expected = <<<FORMATTED
-<table style="border-collapse: collapse;" class="tableForm dataTable entityTable" piwik-content-table>
-    <thead style="background-color:rgb(228,226,215);color:rgb(37,87,146);">
+<table style='width:100%;border-collapse: collapse; border:1px solid rgb(231,231,231); padding:5px;  margin:30px 0;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; ' class="tableForm dataTable entityTable" piwik-content-table>
+    <thead style="background-color:#f2f2f2;color:#0d0d0d;">
     <tr>
-        <th style="padding:6px 6px;text-align: left;">Alert Name</th>
-                <th style="padding:6px 6px;text-align: left;">Report</th>
-        <th style="padding:6px 6px;text-align: left;">Alert Condition</th>
-        <th style="padding:6px 6px;text-align: left;">Alert</th>
+        <th style="padding:13px 0 13px 10px;text-align: left;font-weight:normal;font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; ">Alert Name</th>
+                <th style="padding:13px 0 13px 10px;text-align: left;font-weight:normal;font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; ">Report</th>
+        <th style="padding:13px 0 13px 10px;text-align: left;font-weight:normal;font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; ">Alert Condition</th>
+        <th style="padding:13px 0 13px 10px;text-align: left;font-weight:normal;font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; ">Alert</th>
     </tr>
     </thead>
     <tbody>
     <tr>
-        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday">MyName1</a></td>
-                <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Single Website dashboard</td>
-        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Website is 'Piwik'</td>
-        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Visits decreased more than 5000 from 228.128 to 4493</td>
+        <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;"><a style="color:#439fe0; text-decoration:none;" href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday">MyName1</a></td>
+                <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;">Single Website dashboard</td>
+        <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;">Website is 'Piwik'</td>
+        <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;padding:17px 10px;">Visits decreased more than 5000 from 228.128 to 4493</td>
     </tr>
 
     <tr>
-        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;"><a href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday">MyName2</a></td>
-                <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Single Website dashboard</td>
-        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Website is 'Piwik'</td>
-        <td style="max-width:300px;border-bottom:1px solid rgb(231,231,231);padding:5px 0 5px 6px;">Visits decreased more than 5000 from 228.128 to 4493</td>
+        <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;"><a style="color:#439fe0; text-decoration:none;" href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday">MyName2</a></td>
+                <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;">Single Website dashboard</td>
+        <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;">Website is 'Piwik'</td>
+        <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;padding:17px 10px;">Visits decreased more than 5000 from 228.128 to 4493</td>
     </tr>
 
     </tbody>
 </table>
+
 FORMATTED;
 
-        $this->assertEquals($expected, $rendered);
+        $this->assertEquals($expected, $rendered, "Got following HTML response: ". var_export($rendered, true));
 
     }
 
