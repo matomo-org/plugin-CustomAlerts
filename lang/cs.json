@@ -9,6 +9,7 @@
         "MailAlertSubject": "Nové upozornění pro stránky %1$s [%2$s]",
         "MailAlertContent": "%1$s bylo vyvoláno, protože měření %2$s ve hlášení %3$s %4$s.",
         "MailText": "Vyvolaná upozornění jsou zobrazena v tabulce níže. Pokud některé z vlastních upozornění chcete upravit, přihlaste se a proveďte to na stránce vlastních upozornění.",
+        "MailTextForSiteOnDate": "Vyvolaná oznámení pro %1$s v %2$s jsou vypsána v tabulce níže. Pokud chcete nastavení vlastních upozornění změnit, přihlaste se a změňte ho na stránce vlastních upozornění.",
         "MailEnd": "Šťastné analyzování!",
         "ValueIsLessThan": "je %2$s, což je méně než %1$s",
         "ValueIsGreaterThan": "je %2$s, což je víc než %1$s",

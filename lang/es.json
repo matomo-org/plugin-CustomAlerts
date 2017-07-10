@@ -9,6 +9,7 @@
         "MailAlertSubject": "Nuevas alertas para el sitio de internet %1$s [%2$s]",
         "MailAlertContent": "%1$s ha sido activado como la métrica %2$s en el informe %3$s %4$s.",
         "MailText": "Las alertas activadas están catalogados en la siguiente tabla. Para modificar las opciones de alerta personalizadas, acceda a su cuenta y diríjase a la página Alertas.",
+        "MailTextForSiteOnDate": "Las alertas disparadas para %1$s en %2$s aparecen listadas en la tabla de abajo. Para ajustar la configuración de tus alertas personalizadas, por favor, conéctate y accede a la página de Alertas.",
         "MailEnd": "¡Feliz análisis!",
         "ValueIsLessThan": "es %2$s que es menos que %1$s",
         "ValueIsGreaterThan": "es %2$s que es mayor que %1$s",
@@ -49,6 +50,8 @@
         "IsGreaterThan": "es mayor que",
         "DecreasesMoreThan": "disminuye con más de",
         "IncreasesMoreThan": "aumenta más que",
+        "PercentageDecreasesMoreThan": "%% decrece más de",
+        "PercentageIncreasesMoreThan": "%% incrementa más de",
         "NoAlertsDefined": "¡Todavía no ha creado alertas, crea una ahora!",
         "NoTriggeredAlerts": "Todavía no hay alertas activadas",
         "CancelAndReturnToAlerts": "Cancelar y %1$svolver a la lista de alertas%2$s",
@@ -60,8 +63,8 @@
         "WeekComparedToPreviousWeek": "semana anterior",
         "MonthComparedToPreviousMonth": "el mes anterior",
         "MonthComparedToPreviousYear": "el mismo mes del año anterior",
-        "ScheduledReportsPluginNotActivated": "Para crear o modificar alertas es necesario tener el complemento ScheduledReports. Puede activarlo en la %1$spágina de configuración de los complementos%2$s.",
-        "MobileMessagingPluginNotActivated": "Para mandar alertas por SMS es necesario tener el complemento MobileMessaging. Puede activarlo a través de la %1$spágina de configuración de los complementos%2$s.",
+        "ScheduledReportsPluginNotActivated": "Para crear o modificar alertas es necesario tener el complemento ScheduledReports. Puede activarlo en la %1$spágina de configuración de complementos%2$s.",
+        "MobileMessagingPluginNotActivated": "Para mandar alertas por SMS es necesario tener el complemento MobileMessaging. Puede activarlo a través de la %1$spágina de configuración de complementos%2$s.",
         "When": "cuando",
         "ComparedToThe": "comparados con"
     }

@@ -9,6 +9,7 @@
         "MailAlertSubject": "Nouvelle alerte pour le site web %1$s [%2$s]",
         "MailAlertContent": "%1$s a été déclenchée car la métrique %2$s du rapport %3$s %4$s.",
         "MailText": "Les alertes déclenchées sont listées dans le tableau ci-dessous. Pour régler vos paramètres d'alerte personnalisés, veuillez vous identifier et accéder à la page d'Alertes.",
+        "MailTextForSiteOnDate": "Les alertes déclenchées pour %1$s sur %2$s sont listées dans le tableau ci-dessous. Pour régler vos paramètres d'alerte personnalisés, veuillez vous identifier et accéder à la page d'Alertes.",
         "MailEnd": "Bonne analyse!",
         "ValueIsLessThan": "est %2$s ce qui est moins que %1$s",
         "ValueIsGreaterThan": "est %2$s ce qui est plus grand que %1$s",

@@ -9,6 +9,7 @@
         "MailAlertSubject": "Sinjalizim i ri për sajtin %1$s [%2$s]",
         "MailAlertContent": "%1$s është shkaktuar si vlera %2$s në raportin %3$s %4$s.",
         "MailText": "Sinjalizimet e prodhuar tregohen në tabelën më poshtë. Që të merreni me rregullimet për sinjalizimet vetjake, ju lutemi, bëni hyrjen dhe hyni te faqja Sinjalizime.",
+        "MailTextForSiteOnDate": "Sinjalizimet e prodhuar për %1$s në %2$s tregohen në tabelën më poshtë. Që të merreni me rregullimet për sinjalizimet vetjake, ju lutemi, bëni hyrjen dhe hyni te faqja Sinjalizime.",
         "MailEnd": "Analizim të mbarë!",
         "ValueIsLessThan": "është %2$s, që është më pak se %1$s",
         "ValueIsGreaterThan": "është %2$s, që është më më shumë se %1$s",

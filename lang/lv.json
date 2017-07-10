@@ -1,0 +1,15 @@
+{
+    "CustomAlerts": {
+        "Alert": "Paziņojums",
+        "Alerts": "Paziņojumi",
+        "CreateNewAlert": "Izveidot jaunu paziņojumu",
+        "SmsAlertFromName": "Jauns paziņojums",
+        "MailAlertSubject": "Jauns paziņojums priekš mājaslapas %1$s [%2$s]",
+        "MailEnd": "Priecīgu analizēšanu!",
+        "OperationIs": "ir",
+        "OperationIsNot": "nav",
+        "OperationContains": "satur",
+        "OperationDoesNotContain": "nesatur",
+        "EditAlert": "Izmainīt paziņojumu"
+    }
+}

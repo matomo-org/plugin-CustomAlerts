@@ -56,8 +56,8 @@
         "WeekComparedToPreviousWeek": "edellinen viikko",
         "MonthComparedToPreviousMonth": "edellinen kuukausi",
         "MonthComparedToPreviousYear": "sama kuukausi edelliseltä vuodelta",
-        "ScheduledReportsPluginNotActivated": "AjastetutRaportit-liitännäinen on välttämätön, jotta voit luoda tai muokata hälytyksiä. Voit aktivoida sen sivulta %1$sliitännäisten asetukset%2$s.",
-        "MobileMessagingPluginNotActivated": "Mobiiliviestintäliitännäinen on välttämätön SMS hälytyksien lähettämistä varten. Voit aktivoida sen sivulta %1$sliitännäisten asetukset%2$s.",
+        "ScheduledReportsPluginNotActivated": "ScheduledReports-liitännäinen on välttämätön, jotta voit luoda tai muokata hälytyksiä. Voit ottaa sen käyttöön sivulta %1$sliitännäisten asetukset%2$s.",
+        "MobileMessagingPluginNotActivated": "MobileMessaging-lisäosa on välttämätön SMS-hälytyksien lähettämistä varten. Voit ottaa sen käyttöön sivulta %1$sliitännäisten asetukset%2$s.",
         "When": "kun",
         "ComparedToThe": "verrattuna"
     }

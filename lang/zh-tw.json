@@ -9,6 +9,7 @@
         "MailAlertSubject": "%1$s 的新警報 [%2$s]",
         "MailAlertContent": "%1$s 已觸發，因為報表 %3$s 中的數據 %2$s %4$s。",
         "MailText": "下方表格可以看到已觸發的警報。要調整自訂警報設定，請登入並訪問警報頁面。",
+        "MailTextForSiteOnDate": "%1$s 於 %2$s 所觸發的警報位於下方表格。要調整你的自訂警報設定，請登入後存取自訂警報頁面。",
         "MailEnd": "分析快樂！",
         "ValueIsLessThan": "是 %2$s，已小於 %1$s",
         "ValueIsGreaterThan": "是 %2$s，已大於 %1$s",

@@ -9,6 +9,7 @@
         "MailAlertSubject": "Neue Benachrichtigung für Website %1$s [%2$s]",
         "MailAlertContent": "%1$s wurde registriert als %2$s im Report %3$s %4$s.",
         "MailText": "Die ausgelösten Benachrichtigungen sind in der Tabelle unten aufgelistet. Um Ihre benutzerdefinierten Benachrichtigungen anzupassen melden Sie sich bitte an und rufen die Benachrichtigungen Seite auf.",
+        "MailTextForSiteOnDate": "Die ausgelösten Benachrichtigungen für %1$s auf %2$s sind in der Tabelle unten aufgelistet. Um Ihre benutzerdefinierten Benachrichtigungen anzupassen melden Sie sich bitte an und rufen die Benachrichtigungen Seite auf.",
         "MailEnd": "Viel Spaß beim Analysieren!",
         "ValueIsLessThan": "entspricht %2$s, was kleiner ist als %1$s.",
         "ValueIsGreaterThan": "entspricht %2$s, was größer ist als %1$s.",
