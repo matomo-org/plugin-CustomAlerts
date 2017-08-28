@@ -12,7 +12,9 @@
             <th style="text-align: center;">{{ 'General_Website'|translate }}</th>
         {% endif %}
         <th {% if not extended %}style="{{styleTableHeader}}"{% endif %}>{{ 'General_Report'|translate }}</th>
+{% if hasConditions %}
         <th {% if not extended %}style="{{styleTableHeader}}"{% endif %}>{{ 'CustomAlerts_AlertCondition'|translate }}</th>
+{% endif %}
         <th {% if not extended %}style="{{styleTableHeader}}"{% endif %}>{{ 'CustomAlerts_Alert'|translate }}</th>
     </tr>
     </thead>
@@ -26,7 +28,9 @@
             <td>{{ alert.siteName|raw }}</td>
         {% endif %}
         <td style="{% if not extended %}{{styleTableCell}}{% else %}max-width:300px;{% endif %}{{ style }}">{{ alert.reportName|default(alert.report) }}</td>
+{% if hasConditions %}
         <td style="{% if not extended %}{{styleTableCell}}{% else %}max-width:300px;{% endif %}{{ style }}">{{ alert.dimension|default('') }} {{ alert.reportConditionName }} {% if alert.report_matched %}'{{ alert.report_matched|truncate(100)|raw }}'{% endif %}</td>
+{% endif %}
         <td style="{% if not extended %}{{styleTableCell}}{% else %}max-width:300px;{% endif %}{{ style }}padding:17px 10px;">{{ alert.reportMetric }} {{ alertsMacro.metricChangeDescription(alert) }}</td>
     </tr>
 

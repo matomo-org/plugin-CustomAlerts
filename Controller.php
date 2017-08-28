@@ -114,6 +114,9 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
             case 'html_extended':
                 $view = new View('@CustomAlerts/htmlTriggeredAlerts');
                 $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
+                $view->hasConditions   = count(array_filter($triggeredAlerts, function($alert) {
+                    return !empty($alert['report_condition']);
+                }));
                 $view->extended        = true;
 
                 return $view->render();
@@ -121,6 +124,9 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
             case 'html':
                 $view = new View('@CustomAlerts/htmlTriggeredAlerts');
                 $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
+                $view->hasConditions   = count(array_filter($triggeredAlerts, function($alert) {
+                    return !empty($alert['report_condition']);
+                }));
                 $view->extended        = false;
 
                 return $view->render();
