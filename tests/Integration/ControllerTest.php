@@ -148,6 +148,41 @@ FORMATTED;
 
     }
 
+    public function test_formatAlertsNoConditions_asHtml()
+    {
+        $alerts = array(
+            $this->buildAlert(1, 'My Alert', 'week', 1, 'Piwik Site', 'superUserLogin', 'nb_visits', 'decrease_more_than', 5000, 'MultiSites_getOne', null, null)
+        );
+
+        $host = SettingsPiwik::getPiwikUrl();
+
+        $rendered = $this->controller->formatAlerts($alerts, 'html');
+
+        $expected = <<<FORMATTED
+<table style='width:100%;border-collapse: collapse; border:1px solid rgb(231,231,231); padding:5px;  margin:30px 0;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; ' class="tableForm dataTable entityTable" piwik-content-table>
+    <thead style="background-color:#f2f2f2;color:#0d0d0d;">
+    <tr>
+        <th style="padding:13px 0 13px 10px;text-align: left;font-weight:normal;font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; ">Alert Name</th>
+                <th style="padding:13px 0 13px 10px;text-align: left;font-weight:normal;font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; ">Report</th>
+        <th style="padding:13px 0 13px 10px;text-align: left;font-weight:normal;font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; ">Alert</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;"><a style="color:#439fe0; text-decoration:none;" href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday">My Alert</a></td>
+                <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;">Single Website dashboard</td>
+        <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;padding:17px 10px;">Visits decreased more than 5000 from 228.128 to 4493</td>
+    </tr>
+
+    </tbody>
+</table>
+
+FORMATTED;
+
+        $this->assertEquals($expected, $rendered, "Got following HTML response: ". var_export($rendered, true));
+
+    }
+
     public function test_enrichTriggeredAlerts_shouldEnrichAlerts_IfReportExistsAndMetricIsValid()
     {
         $timestamp = 1389824417;
