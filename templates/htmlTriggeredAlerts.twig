@@ -25,7 +25,7 @@
         <td style="{% if not extended %}{{styleTableCell}}{% else %}max-width:300px;{% endif %}{{ style }}"><a style="color:#439fe0; text-decoration:none;" href="{{ piwikUrl }}{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert, 'idSite': alert.idsite, 'period': alert.period, 'date': 'yesterday', 'token_auth': false, 'convertToUnicode': false, 'format': false, 'method': false, 'trigger': false})|raw }}">{{ alert.name }}</a></td>
         {% if extended %}
             <td style="white-space: nowrap;">{{ alert.ts_triggered }}</td>
-            <td>{{ alert.siteName|raw }}</td>
+            <td>{{ alert.siteName|rawSafeDecoded }}</td>
         {% endif %}
         <td style="{% if not extended %}{{styleTableCell}}{% else %}max-width:300px;{% endif %}{{ style }}">{{ alert.reportName|default(alert.report) }}</td>
 {% if hasConditions %}
