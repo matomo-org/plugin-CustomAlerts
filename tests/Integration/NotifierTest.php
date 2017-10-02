@@ -98,7 +98,7 @@ HTML;
 t your custom alert settings, please sign in and access the Alerts page.=
 =0A=0A';
 
-        $renderedHtml = html_entity_decode($mail->getBodyHtml(true));
+        $renderedHtml = html_entity_decode($mail->getBodyHtml(true), ENT_COMPAT | ENT_HTML401, 'UTF-8');
         $this->assertStringStartsWith($expectedHtml, $renderedHtml, "Got HTML response: " . var_export($renderedHtml, true));
         $renderedText = $mail->getBodyText(true);
         $this->assertStringStartsWith($expectedText, $renderedText, "Got text response: " . var_export($renderedText, true));
