@@ -1,0 +1,21 @@
+{
+    "CustomAlerts": {
+        "Alert": "Peringatan",
+        "Alerts": "Peringatan",
+        "CreateNewAlert": "Buat Peringatan baru",
+        "SmsAlertFromName": "Peringatan Baru",
+        "OperationIs": "adalah",
+        "OperationContains": "mengandung",
+        "OperationDoesNotContain": "tidak mengandung",
+        "EditAlert": "Ubah Peringatan",
+        "AlertName": "Nama Peringatan",
+        "ApplyTo": "Gunakan pada",
+        "Condition": "Kondisi",
+        "MatchesAnyExpression": "cocok dengan apa saja",
+        "StartsWith": "mulai dengan",
+        "EndsWith": "diakhiri dengan",
+        "DayComparedToPreviousDay": "hari sebelumnya",
+        "WeekComparedToPreviousWeek": "minggu sebelumnya",
+        "MonthComparedToPreviousMonth": "bulan sebelumnya"
+    }
+}

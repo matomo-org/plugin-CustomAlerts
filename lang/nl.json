@@ -65,7 +65,7 @@
         "MonthComparedToPreviousYear": "zelfde maand in het vorige jaar",
         "ScheduledReportsPluginNotActivated": "De ScheduledReports plugin is modig om een Alert aan te maken of te wijzigen. Je kunt het activeren door naar de %1$splugin settings pagina%2$s te gaan.",
         "MobileMessagingPluginNotActivated": "De MobileMessaging plugin is nodig om SMS melding te sturen. Deze kan geactiveerd worden via %1$splugin instellingen pagina %2$s.",
-        "When": "wanneer",
+        "When": "als",
         "ComparedToThe": "vergeleken met de"
     }
 }
