@@ -9,18 +9,19 @@
 
 describe("CustomAlerts", function () {
     this.timeout(0);
+    this.fixture = "Piwik\\Plugins\\CustomAlerts\\tests\\Fixtures\\CustomAlerts";
 
     var generalParams = 'idSite=1&period=year&date=2012-08-09';
 
     it('should load the custom alerts list correctly', function (done) {
         expect.screenshot('list').to.be.captureSelector('.pageWrap', function (page) {
-            page.load("?" + generalParams + "&module=CustomAlerts&action=index&idSite=1&period=day&date=yesterday&tests_hide_piwik_version=1");
+            page.load("?" + generalParams + "&module=CustomAlerts&action=index&idSite=1&period=day&date=yesterday");
         }, done);
     });
 
     it('should load the triggered custom alerts list correctly', function (done) {
         expect.screenshot('list_triggered').to.be.captureSelector('.pageWrap', function (page) {
-            page.load("?" + generalParams + "&module=CustomAlerts&action=historyTriggeredAlerts&idSite=1&period=day&date=yesterday&tests_hide_piwik_version=1");
+            page.load("?" + generalParams + "&module=CustomAlerts&action=historyTriggeredAlerts&idSite=1&period=day&date=yesterday");
         }, done);
     });
 
