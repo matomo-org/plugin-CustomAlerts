@@ -2,7 +2,7 @@
 /**
  * Piwik - free/libre analytics platform
  *
- * @link http://piwik.org
+ * @link    http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
 
@@ -120,13 +120,13 @@ t your custom alert settings, please sign in and access the Alerts page.=
         $mail = new Mail();
         $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com', $period, 1);
 
-        $expected = 'New alert for website Piwik test [' . $expectedDate . ']';
-        $expecteds = array(
+        $expected   = 'New alert for website Piwik test [' . $expectedDate . ']';
+        $expecteds  = array(
             str_replace('–', '-', $expected),
             \Zend_Mime::encodeQuotedPrintableHeader($expected, 'utf-8')
         );
-        $isExpected = in_array( $mail->getSubject(), $expecteds);
-        $this->assertTrue($isExpected , $mail->getSubject() . " not found in " . var_export($expecteds, true));
+        $isExpected = in_array($mail->getSubject(), $expecteds);
+        $this->assertTrue($isExpected, $mail->getSubject() . " not found in " . var_export($expecteds, true));
     }
 
     public function test_sendNewAlerts()
@@ -201,27 +201,39 @@ t your custom alert settings, please sign in and access the Alerts page.=
         $mock->sendNewAlerts($period, $idSite);
     }
 
-    private function buildAlert($id, $name, $period = 'week', $idSite = 1, $siteName = 'Piwik test', $login = 'superUserLogin', $metric = 'nb_visits', $metricCondition = 'decrease_more_than', $metricMatched = 5000, $report = 'MultiSites_getOne', $reportCondition = 'matches_exactly', $reportMatched = 'Piwik')
-    {
+    private function buildAlert(
+        $id,
+        $name,
+        $period = 'week',
+        $idSite = 1,
+        $siteName = 'Piwik test',
+        $login = 'superUserLogin',
+        $metric = 'nb_visits',
+        $metricCondition = 'decrease_more_than',
+        $metricMatched = 5000,
+        $report = 'MultiSites_getOne',
+        $reportCondition = 'matches_exactly',
+        $reportMatched = 'Piwik'
+    ) {
         return array(
-            'idtriggered' => 1,
-            'idalert' => $id,
-            'idsite' => $idSite,
-            'name' => $name,
-            'period' => $period,
-            'login' => $login,
-            'report' => $report,
-            'report_condition' => $reportCondition,
-            'report_matched' => $reportMatched,
-            'metric' => $metric,
-            'metric_condition' => $metricCondition,
-            'metric_matched' => $metricMatched,
+            'idtriggered'       => 1,
+            'idalert'           => $id,
+            'idsite'            => $idSite,
+            'name'              => $name,
+            'period'            => $period,
+            'login'             => $login,
+            'report'            => $report,
+            'report_condition'  => $reportCondition,
+            'report_matched'    => $reportMatched,
+            'metric'            => $metric,
+            'metric_condition'  => $metricCondition,
+            'metric_matched'    => $metricMatched,
             'additional_emails' => array('test5@example.com'),
-            'phone_numbers' => array('+1234567890', '232'),
-            'email_me' => 1,
-            'value_new' => '4493.000',
-            'value_old' => '228.128',
-            'ts_triggered' => time()
+            'phone_numbers'     => array('+1234567890', '232'),
+            'email_me'          => 1,
+            'value_new'         => '4493.000',
+            'value_old'         => '228.128',
+            'ts_triggered'      => time()
         );
     }
 

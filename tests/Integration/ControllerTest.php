@@ -2,7 +2,7 @@
 /**
  * Piwik - free/libre analytics platform
  *
- * @link http://piwik.org
+ * @link    http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
 
@@ -144,7 +144,7 @@ FORMATTED;
 
 FORMATTED;
 
-        $this->assertEquals($expected, $rendered, "Got following HTML response: ". var_export($rendered, true));
+        $this->assertEquals($expected, $rendered, "Got following HTML response: " . var_export($rendered, true));
 
     }
 
@@ -179,93 +179,150 @@ FORMATTED;
 
 FORMATTED;
 
-        $this->assertEquals($expected, $rendered, "Got following HTML response: ". var_export($rendered, true));
+        $this->assertEquals($expected, $rendered, "Got following HTML response: " . var_export($rendered, true));
 
     }
 
     public function test_enrichTriggeredAlerts_shouldEnrichAlerts_IfReportExistsAndMetricIsValid()
     {
         $timestamp = 1389824417;
-        $alerts = array(
-            array('idsite' => 1, 'period' => 'day', 'ts_triggered' => $timestamp, 'metric' => 'nb_visits', 'report' => 'MultiSites_getAll', 'report_condition' => 'matches_any', 'value_old' => '228.001', 'value_new' => '1.0'),
-            array('idsite' => 1, 'period' => 'week', 'ts_triggered' => $timestamp, 'metric' => 'nb_visits', 'report' => 'NotExistingModule_Action', 'report_condition' => 'matches_exactly', 'value_old' => '228.000', 'value_new' => '1.0'),
-            array('idsite' => 1, 'period' => 'month', 'ts_triggered' => $timestamp, 'metric' => 'bounce_rate', 'report' => 'Actions_getPageUrls', 'report_condition' => 'matches_exactly', 'value_old' => '228.999', 'value_new' => '1.0'),
-            array('idsite' => 1, 'period' => 'day', 'ts_triggered' => $timestamp, 'metric' => 'not_valid', 'report' => 'Actions_getPageUrls', 'report_condition' => 'contains', 'value_old' => '228.001', 'value_new' => '1.01'),
+        $alerts    = array(
+            array(
+                'idsite'           => 1,
+                'period'           => 'day',
+                'ts_triggered'     => $timestamp,
+                'metric'           => 'nb_visits',
+                'report'           => 'MultiSites_getAll',
+                'report_condition' => 'matches_any',
+                'value_old'        => '228.001',
+                'value_new'        => '1.0'
+            ),
+            array(
+                'idsite'           => 1,
+                'period'           => 'week',
+                'ts_triggered'     => $timestamp,
+                'metric'           => 'nb_visits',
+                'report'           => 'NotExistingModule_Action',
+                'report_condition' => 'matches_exactly',
+                'value_old'        => '228.000',
+                'value_new'        => '1.0'
+            ),
+            array(
+                'idsite'           => 1,
+                'period'           => 'month',
+                'ts_triggered'     => $timestamp,
+                'metric'           => 'bounce_rate',
+                'report'           => 'Actions_getPageUrls',
+                'report_condition' => 'matches_exactly',
+                'value_old'        => '228.999',
+                'value_new'        => '1.0'
+            ),
+            array(
+                'idsite'           => 1,
+                'period'           => 'day',
+                'ts_triggered'     => $timestamp,
+                'metric'           => 'not_valid',
+                'report'           => 'Actions_getPageUrls',
+                'report_condition' => 'contains',
+                'value_old'        => '228.001',
+                'value_new'        => '1.01'
+            ),
             // no dimension ,
-            array('idsite' => 1, 'period' => 'day', 'ts_triggered' => $timestamp, 'metric' => 'nb_visits', 'report' => 'VisitsSummary_get', 'report_condition' => 'matches_any', 'value_old' => '228.001', 'value_new' => '10')
+            array(
+                'idsite'           => 1,
+                'period'           => 'day',
+                'ts_triggered'     => $timestamp,
+                'metric'           => 'nb_visits',
+                'report'           => 'VisitsSummary_get',
+                'report_condition' => 'matches_any',
+                'value_old'        => '228.001',
+                'value_new'        => '10'
+            )
         );
 
         $enriched = $this->controller->enrichTriggeredAlerts($alerts);
 
 
-        $alerts[0]['reportName']   = 'All Websites dashboard';
-        $alerts[0]['reportMetric'] = 'Visits';
-        $alerts[0]['dimension']    = 'Website';
+        $alerts[0]['reportName']          = 'All Websites dashboard';
+        $alerts[0]['reportMetric']        = 'Visits';
+        $alerts[0]['dimension']           = 'Website';
         $alerts[0]['reportConditionName'] = 'matches any';
-        $alerts[0]['value_old']    = '228.001';
-        $alerts[0]['value_new']    = 1;
-        $alerts[0]['siteName']     = 'Piwik test';
-        $alerts[0]['ts_triggered'] = 'Tue, Jan 14';
+        $alerts[0]['value_old']           = '228.001';
+        $alerts[0]['value_new']           = 1;
+        $alerts[0]['siteName']            = 'Piwik test';
+        $alerts[0]['ts_triggered']        = 'Tue, Jan 14';
         $this->assertInternalType('int', $alerts[0]['value_new']);
-        $alerts[1]['reportName']   = null;
-        $alerts[1]['reportMetric'] = null;
-        $alerts[1]['dimension']    = null;
+        $alerts[1]['reportName']          = null;
+        $alerts[1]['reportMetric']        = null;
+        $alerts[1]['dimension']           = null;
         $alerts[1]['reportConditionName'] = null;
-        $alerts[1]['value_old']    = 228;
-        $alerts[1]['value_new']    = 1;
-        $alerts[1]['siteName']     = 'Piwik test';
-        $alerts[1]['ts_triggered'] = 'Jan 6 – 12, 2014';
+        $alerts[1]['value_old']           = 228;
+        $alerts[1]['value_new']           = 1;
+        $alerts[1]['siteName']            = 'Piwik test';
+        $alerts[1]['ts_triggered']        = 'Jan 6 – 12, 2014';
         $this->assertInternalType('int', $alerts[1]['value_old']);
         $this->assertInternalType('int', $alerts[1]['value_new']);
-        $alerts[2]['reportName']   = 'Page URLs';
-        $alerts[2]['reportMetric'] = 'Bounce Rate';
-        $alerts[2]['dimension']    = 'Page URL';
+        $alerts[2]['reportName']          = 'Page URLs';
+        $alerts[2]['reportMetric']        = 'Bounce Rate';
+        $alerts[2]['dimension']           = 'Page URL';
         $alerts[2]['reportConditionName'] = 'is';
-        $alerts[2]['value_old']    = '228.999';
-        $alerts[2]['value_new']    = '1';
-        $alerts[2]['siteName']     = 'Piwik test';
-        $alerts[2]['ts_triggered'] = 'Dec 2013';
-        $alerts[3]['reportName']   = 'Page URLs';
-        $alerts[3]['reportMetric'] = null;
-        $alerts[3]['dimension']    = 'Page URL';
+        $alerts[2]['value_old']           = '228.999';
+        $alerts[2]['value_new']           = '1';
+        $alerts[2]['siteName']            = 'Piwik test';
+        $alerts[2]['ts_triggered']        = 'Dec 2013';
+        $alerts[3]['reportName']          = 'Page URLs';
+        $alerts[3]['reportMetric']        = null;
+        $alerts[3]['dimension']           = 'Page URL';
         $alerts[3]['reportConditionName'] = 'contains';
-        $alerts[3]['value_old']    = '228.001';
-        $alerts[3]['value_new']    = '1.01';
-        $alerts[3]['siteName']     = 'Piwik test';
-        $alerts[3]['ts_triggered'] = 'Tue, Jan 14';
-        $alerts[4]['reportName']   = 'Visits Summary';
-        $alerts[4]['reportMetric'] = 'Visits';
-        $alerts[4]['dimension']    = null;
+        $alerts[3]['value_old']           = '228.001';
+        $alerts[3]['value_new']           = '1.01';
+        $alerts[3]['siteName']            = 'Piwik test';
+        $alerts[3]['ts_triggered']        = 'Tue, Jan 14';
+        $alerts[4]['reportName']          = 'Visits Summary';
+        $alerts[4]['reportMetric']        = 'Visits';
+        $alerts[4]['dimension']           = null;
         $alerts[4]['reportConditionName'] = 'matches any';
-        $alerts[4]['value_old']    = '228.001';
-        $alerts[4]['value_new']    = 10;
-        $alerts[4]['siteName']     = 'Piwik test';
-        $alerts[4]['ts_triggered'] = 'Tue, Jan 14';
+        $alerts[4]['value_old']           = '228.001';
+        $alerts[4]['value_new']           = 10;
+        $alerts[4]['siteName']            = 'Piwik test';
+        $alerts[4]['ts_triggered']        = 'Tue, Jan 14';
         $this->assertInternalType('int', $alerts[4]['value_new']);
-    
+
         $this->assertEquals($alerts, $enriched);
     }
 
-    private function buildAlert($id, $name, $period = 'week', $idSite = 1, $siteName = 'Piwik test', $login = 'superUserLogin', $metric = 'nb_visits', $metricCondition = 'decrease_more_than', $metricMatched = 5000, $report = 'MultiSites_getOne', $reportCondition = 'matches_exactly', $reportMatched = 'Piwik')
-    {
+    private function buildAlert(
+        $id,
+        $name,
+        $period = 'week',
+        $idSite = 1,
+        $siteName = 'Piwik test',
+        $login = 'superUserLogin',
+        $metric = 'nb_visits',
+        $metricCondition = 'decrease_more_than',
+        $metricMatched = 5000,
+        $report = 'MultiSites_getOne',
+        $reportCondition = 'matches_exactly',
+        $reportMatched = 'Piwik'
+    ) {
         return array(
-            'idalert' => $id,
-            'idsite' => $idSite,
-            'name' => $name,
-            'period' => $period,
-            'login' => $login,
-            'report' => $report,
-            'report_condition' => $reportCondition,
-            'report_matched' => $reportMatched,
-            'metric' => $metric,
-            'metric_condition' => $metricCondition,
-            'metric_matched' => $metricMatched,
+            'idalert'           => $id,
+            'idsite'            => $idSite,
+            'name'              => $name,
+            'period'            => $period,
+            'login'             => $login,
+            'report'            => $report,
+            'report_condition'  => $reportCondition,
+            'report_matched'    => $reportMatched,
+            'metric'            => $metric,
+            'metric_condition'  => $metricCondition,
+            'metric_matched'    => $metricMatched,
             'additional_emails' => array('test5@example.com'),
-            'phone_numbers' => array('+1234567890', '232'),
-            'email_me' => 1,
-            'value_new' => '4493.000',
-            'value_old' => '228.128',
-            'ts_triggered' => time()
+            'phone_numbers'     => array('+1234567890', '232'),
+            'email_me'          => 1,
+            'value_new'         => '4493.000',
+            'value_old'         => '228.128',
+            'ts_triggered'      => time()
         );
     }
 

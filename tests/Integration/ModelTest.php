@@ -2,7 +2,7 @@
 /**
  * Piwik - free/libre analytics platform
  *
- * @link http://piwik.org
+ * @link    http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
 
@@ -26,7 +26,7 @@ class ModelTest extends BaseTest
         parent::setUp();
 
         $this->createAlert('Initial1', 'day');
-        $this->createAlert('Initial2', 'week', array($this->idSite,$this->idSite2));
+        $this->createAlert('Initial2', 'week', array($this->idSite, $this->idSite2));
         $this->createAlert('Initial3', 'month', array($this->idSite2));
         $this->setUser();
     }
@@ -100,7 +100,7 @@ class ModelTest extends BaseTest
     public function test_getAlert_ShouldLoadAlertAndRelatedWebsiteIds_IfExists()
     {
         $this->assertIsAlert(1, 'Initial1', 'day', array(1));
-        $this->assertIsAlert(2, 'Initial2', 'week', array(1,2));
+        $this->assertIsAlert(2, 'Initial2', 'week', array(1, 2));
         $this->assertIsAlert(3, 'Initial3', 'month', array(2));
     }
 
@@ -172,26 +172,26 @@ class ModelTest extends BaseTest
         unset($triggeredAlerts[0]['ts_triggered']);
 
         $expected = array(
-            'idtriggered' => 1,
-            'idalert' => 2,
-            'idsite' => 1,
-            'ts_last_sent' => null,
-            'name' => 'Initial2',
-            'period' => 'week',
-            'login' => 'superUserLogin',
-            'report' => 'MultiSites_getOne',
-            'report_condition' => 'matches_exactly',
-            'report_matched' => 'Piwik',
-            'metric' => 'nb_visits',
-            'metric_condition' => 'less_than',
-            'metric_matched' => '5',
-            'compared_to' => 1,
-            'value_new' => 99,
-            'value_old' => 48.519,
+            'idtriggered'       => 1,
+            'idalert'           => 2,
+            'idsite'            => 1,
+            'ts_last_sent'      => null,
+            'name'              => 'Initial2',
+            'period'            => 'week',
+            'login'             => 'superUserLogin',
+            'report'            => 'MultiSites_getOne',
+            'report_condition'  => 'matches_exactly',
+            'report_matched'    => 'Piwik',
+            'metric'            => 'nb_visits',
+            'metric_condition'  => 'less_than',
+            'metric_matched'    => '5',
+            'compared_to'       => 1,
+            'value_new'         => 99,
+            'value_old'         => 48.519,
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
-            'phone_numbers' => array('0123456789'),
-            'email_me' => 0,
-            'id_sites' => array(1, 2)
+            'phone_numbers'     => array('0123456789'),
+            'email_me'          => 0,
+            'id_sites'          => array(1, 2)
         );
 
         $this->assertEquals(array($expected), $triggeredAlerts);
@@ -323,8 +323,14 @@ class ModelTest extends BaseTest
         return $tableNames;
     }
 
-    private function createAlert($name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites_getOne', $login = 'superUserLogin')
-    {
+    private function createAlert(
+        $name,
+        $period = 'week',
+        $idSites = null,
+        $metric = 'nb_visits',
+        $report = 'MultiSites_getOne',
+        $login = 'superUserLogin'
+    ) {
         if (is_null($idSites)) {
             $idSites = $this->idSite;
         }
@@ -332,15 +338,21 @@ class ModelTest extends BaseTest
             $idSites = array($idSites);
         }
 
-        $emails = array('test1@example.com', 'test2@example.com');
+        $emails       = array('test1@example.com', 'test2@example.com');
         $phoneNumbers = array('0123456789');
 
         $id = $this->model->createAlert($name, $idSites, $login, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $comparedTo = 1, $report, 'matches_exactly', 'Piwik');
         return $id;
     }
 
-    private function editAlert($id, $name, $period = 'week', $idSites = null, $metric = 'nb_visits', $report = 'MultiSites_getOne')
-    {
+    private function editAlert(
+        $id,
+        $name,
+        $period = 'week',
+        $idSites = null,
+        $metric = 'nb_visits',
+        $report = 'MultiSites_getOne'
+    ) {
         if (is_null($idSites)) {
             $idSites = $this->idSite;
         }
@@ -348,15 +360,27 @@ class ModelTest extends BaseTest
             $idSites = array($idSites);
         }
 
-        $emails = array('test1@example.com', 'test2@example.com');
+        $emails       = array('test1@example.com', 'test2@example.com');
         $phoneNumbers = array('0123456789');
 
-        $id = $this->model->updateAlert($id, $name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $comparedTo = 1, $report, 'matches_exactly', 'Piwik');
+        $id = $this->model->updateAlert($id, $name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, 'less_than',
+            5, $comparedTo = 1, $report, 'matches_exactly', 'Piwik');
         return $id;
     }
 
-    private function assertIsAlert($id, $name, $period = 'week', $idSites = null, $login = 'superUserLogin', $metric = 'nb_visits', $metricCondition = 'less_than', $metricMatched = 5, $report = 'MultiSites_getOne', $reportCondition = 'matches_exactly', $reportMatched = 'Piwik')
-    {
+    private function assertIsAlert(
+        $id,
+        $name,
+        $period = 'week',
+        $idSites = null,
+        $login = 'superUserLogin',
+        $metric = 'nb_visits',
+        $metricCondition = 'less_than',
+        $metricMatched = 5,
+        $report = 'MultiSites_getOne',
+        $reportCondition = 'matches_exactly',
+        $reportMatched = 'Piwik'
+    ) {
         if (is_null($idSites)) {
             $idSites = array($this->idSite);
         }
@@ -364,21 +388,21 @@ class ModelTest extends BaseTest
         $alert = $this->model->getAlert($id);
 
         $expected = array(
-            'idalert' => $id,
-            'name' => $name,
-            'login' => $login,
-            'period' => $period,
-            'report' => $report,
-            'report_condition' => $reportCondition,
-            'report_matched' => $reportMatched,
-            'metric' => $metric,
-            'metric_condition' => $metricCondition,
-            'metric_matched' => $metricMatched,
-            'email_me' => 0,
+            'idalert'           => $id,
+            'name'              => $name,
+            'login'             => $login,
+            'period'            => $period,
+            'report'            => $report,
+            'report_condition'  => $reportCondition,
+            'report_matched'    => $reportMatched,
+            'metric'            => $metric,
+            'metric_condition'  => $metricCondition,
+            'metric_matched'    => $metricMatched,
+            'email_me'          => 0,
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
-            'phone_numbers' => array('0123456789'),
-            'compared_to' => 1,
-            'id_sites' => $idSites,
+            'phone_numbers'     => array('0123456789'),
+            'compared_to'       => 1,
+            'id_sites'          => $idSites,
         );
 
         $this->assertEquals($expected, $alert);

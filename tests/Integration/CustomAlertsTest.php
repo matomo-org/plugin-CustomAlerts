@@ -2,14 +2,13 @@
 /**
  * Piwik - free/libre analytics platform
  *
- * @link http://piwik.org
+ * @link    http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
 
 namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
 use Piwik\Date;
-use Piwik\Db;
 use Piwik\Piwik;
 use Piwik\Plugins\CustomAlerts\CustomAlerts;
 
@@ -126,14 +125,15 @@ class CustomAlertsTest extends BaseTest
 
     private function createAlert($name, $phoneNumbers, $idSites = array(1), $login = false)
     {
-        $report  = 'MultiSites_getOne';
-        $emails  = array('test1@example.com', 'test2@example.com');
+        $report = 'MultiSites_getOne';
+        $emails = array('test1@example.com', 'test2@example.com');
 
         if (false === $login) {
             $login = Piwik::getCurrentUserLogin();
         }
 
-        $id = $this->model->createAlert($name, $idSites, $login, 'week', 0, $emails, $phoneNumbers, 'nb_visits', 'less_than', 5, $comparedTo = 7, $report, 'matches_exactly', 'Piwik');
+        $id = $this->model->createAlert($name, $idSites, $login, 'week', 0, $emails, $phoneNumbers, 'nb_visits',
+            'less_than', 5, $comparedTo = 7, $report, 'matches_exactly', 'Piwik');
 
         return $this->model->getAlert($id);
     }
