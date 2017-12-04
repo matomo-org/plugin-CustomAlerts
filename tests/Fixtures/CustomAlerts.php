@@ -2,9 +2,11 @@
 /**
  * Piwik - free/libre analytics platform
  *
- * @link http://piwik.org
+ * @link    http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
+
+namespace Piwik\Plugins\CustomAlerts\tests\Fixtures;
 
 use Piwik\Piwik;
 use Piwik\Plugins\CustomAlerts\Model;
@@ -13,10 +15,10 @@ use Piwik\Tests\Framework\Fixture;
 /**
  * Tracks custom events
  */
-class Test_Piwik_Fixture_CustomAlerts extends Fixture
+class CustomAlerts extends Fixture
 {
     public $dateTime = '2010-01-03 11:22:33';
-    public $idSite = 1;
+    public $idSite   = 1;
 
     public function setUp()
     {
@@ -62,7 +64,7 @@ class Test_Piwik_Fixture_CustomAlerts extends Fixture
             $login = Piwik::getCurrentUserLogin();
         }
 
-        $emails = array('test1@example.com', 'test2@example.com');
+        $emails       = array('test1@example.com', 'test2@example.com');
         $phoneNumbers = array('0123456789');
 
         $reportMatched = '';
@@ -73,9 +75,4 @@ class Test_Piwik_Fixture_CustomAlerts extends Fixture
         $model = new Model();
         $model->createAlert($name, $idSites, $login, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $comparedTo = 1, $report, 'matches_exactly', $reportMatched);
     }
-
-    public function tearDown()
-    {
-    }
-
 }

@@ -2,7 +2,7 @@
 /**
  * Piwik - free/libre analytics platform
  *
- * @link http://piwik.org
+ * @link    http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
 
@@ -170,7 +170,7 @@ class ValidatorTest extends BaseTest
     }
 
     /**
-     * @dataProvider invalidMetricConditionProvider
+     * @dataProvider             invalidMetricConditionProvider
      * @expectedException \Exception
      * @expectedExceptionMessage CustomAlerts_InvalidMetricCondition
      */
@@ -226,7 +226,7 @@ class ValidatorTest extends BaseTest
     }
 
     /**
-     * @dataProvider invalidReportConditionProvider
+     * @dataProvider             invalidReportConditionProvider
      * @expectedException \Exception
      * @expectedExceptionMessage CustomAlerts_InvalidReportCondition
      */
@@ -249,7 +249,7 @@ class ValidatorTest extends BaseTest
     }
 
     /**
-     * @dataProvider invalidComparedToProvider
+     * @dataProvider             invalidComparedToProvider
      * @expectedException \Exception
      * @expectedExceptionMessage CustomAlerts_InvalidComparableDate
      */

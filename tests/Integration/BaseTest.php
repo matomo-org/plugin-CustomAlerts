@@ -2,14 +2,12 @@
 /**
  * Piwik - free/libre analytics platform
  *
- * @link http://piwik.org
+ * @link    http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
 
 namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
-use Piwik\Access;
-use Piwik\Db;
 use Piwik\Plugins\CustomAlerts\API;
 use Piwik\Plugins\CustomAlerts\Model;
 use Piwik\Tests\Framework\Mock\FakeAccess;
@@ -51,15 +49,15 @@ abstract class BaseTest extends IntegrationTestCase
     {
         FakeAccess::setIdSitesAdmin(array(1, 2));
         FakeAccess::$superUser = true;
-        FakeAccess::$identity = 'superUserLogin';
+        FakeAccess::$identity  = 'superUserLogin';
     }
 
     protected function setUser()
     {
-        FakeAccess::$superUser = false;
+        FakeAccess::$superUser    = false;
         FakeAccess::$idSitesAdmin = array();
-        FakeAccess::$idSitesView = array(99);
-        FakeAccess::$identity = 'aUser';
+        FakeAccess::$idSitesView  = array(99);
+        FakeAccess::$identity     = 'aUser';
     }
 
     /**

@@ -2,7 +2,7 @@
 /**
  * Piwik - free/libre analytics platform
  *
- * @link http://piwik.org
+ * @link    http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
 
@@ -13,20 +13,20 @@ use Piwik\Container\StaticContainer;
 use Piwik\DataTable\Row;
 use Piwik\DataTable;
 use Piwik\Date;
-use Piwik\Plugins\Actions;
 use Piwik\Plugins\CustomAlerts\Processor;
 use Piwik\Tests\Framework\Fixture;
 
-class CustomProcessor extends Processor {
+class CustomProcessor extends Processor
+{
     public function __construct()
     {
-
         $processedReport = StaticContainer::get('Piwik\Plugins\API\ProcessedReport');
-        $validator = StaticContainer::get('Piwik\Plugins\CustomAlerts\Validator');
+        $validator       = StaticContainer::get('Piwik\Plugins\CustomAlerts\Validator');
         parent::__construct($processedReport, $validator);
     }
 
-    public function filterDataTable($dataTable, $condition, $value) {
+    public function filterDataTable($dataTable, $condition, $value)
+    {
         parent::filterDataTable($dataTable, $condition, $value);
     }
 
@@ -69,12 +69,12 @@ class ProcessorTest extends BaseTest
     {
         $dataTable = new DataTable();
         $dataTable->addRowsFromArray(array(
-                array(Row::COLUMNS => array('label' => 'ten', 'visits' => 10)),
-                array(Row::COLUMNS => array('label' => '3test', 'visits' => 33)),
-                array(Row::COLUMNS => array('label' => 'ninety', 'visits' => 90)),
-                array(Row::COLUMNS => array('label' => '3test', 'visits' => 65)),
-                array(Row::COLUMNS => array('label' => '3teste', 'visits' => 67)),
-                array(Row::COLUMNS => array('label' => 'hundred', 'visits' => 100))
+            array(Row::COLUMNS => array('label' => 'ten', 'visits' => 10)),
+            array(Row::COLUMNS => array('label' => '3test', 'visits' => 33)),
+            array(Row::COLUMNS => array('label' => 'ninety', 'visits' => 90)),
+            array(Row::COLUMNS => array('label' => '3test', 'visits' => 65)),
+            array(Row::COLUMNS => array('label' => '3teste', 'visits' => 67)),
+            array(Row::COLUMNS => array('label' => 'hundred', 'visits' => 100))
         ));
 
         return $dataTable;
@@ -147,9 +147,9 @@ class ProcessorTest extends BaseTest
 
         foreach ($assertions as $assert) {
             $alert = array(
-                'report' => 'Actions_getPageUrls',
-                'metric' => $assert[0],
-                'period' => 'day',
+                'report'           => 'Actions_getPageUrls',
+                'metric'           => $assert[0],
+                'period'           => 'day',
                 'report_condition' => 'contains',
                 'report_matched'   => Common::sanitizeInputValue($assert[1])
             );
@@ -331,7 +331,7 @@ class ProcessorTest extends BaseTest
     {
         $alert = $this->buildAlert();
 
-        $methods = array('getValueForAlertInPast', 'triggerAlert');
+        $methods       = array('getValueForAlertInPast', 'triggerAlert');
         $processorMock = $this->getMockBuilder('Piwik\Plugins\CustomAlerts\tests\Integration\CustomProcessor')
                               ->setMethods($methods)
                               ->getMock();
@@ -354,7 +354,7 @@ class ProcessorTest extends BaseTest
 
         $processorMock->processAlert($alert, $idSite);
 
-        $idSite = 2;
+        $idSite        = 2;
         $processorMock = $this->getMockBuilder('Piwik\Plugins\CustomAlerts\tests\Integration\CustomProcessor')
                               ->setMethods($methods)
                               ->getMock();
@@ -380,23 +380,23 @@ class ProcessorTest extends BaseTest
 
     public function test_processAlert_shouldNotFail_IfReportDoesNotExist()
     {
-        $alert = $this->buildAlert(array(1,2), 'NotExistingReport_Action');
+        $alert = $this->buildAlert(array(1, 2), 'NotExistingReport_Action');
 
-        $this->assertProcessNotRun($alert, array(1,2,3));
+        $this->assertProcessNotRun($alert, array(1, 2, 3));
     }
 
     public function test_processAlert_shouldNotFail_IfMetricDoesNotBelongToTheReport()
     {
-        $alert = $this->buildAlert(array(1,2), 'MultiSites_getAll', 'not_existing_metric');
+        $alert = $this->buildAlert(array(1, 2), 'MultiSites_getAll', 'not_existing_metric');
 
-        $this->assertProcessNotRun($alert, array(1,2,3));
+        $this->assertProcessNotRun($alert, array(1, 2, 3));
     }
 
     public function test_processAlert_shouldNotRun_IfNoWebsitesDefined()
     {
         $alert = $this->buildAlert(array());
 
-        $this->assertProcessNotRun($alert, array(1,2));
+        $this->assertProcessNotRun($alert, array(1, 2));
     }
 
     public function test_processAlert_shouldNotRun_IfWebsiteDoesNotMatch()
@@ -410,7 +410,7 @@ class ProcessorTest extends BaseTest
     {
         $alert = $this->buildAlert(array(1), 'MultiSites_getAll', 'nb_visits', '5', 'day', $comparedTo = 7);
 
-        $methods = array('getValueForAlertInPast', 'triggerAlert');
+        $methods       = array('getValueForAlertInPast', 'triggerAlert');
         $processorMock = $this->getMockBuilder('Piwik\Plugins\CustomAlerts\tests\Integration\CustomProcessor')
                               ->setMethods($methods)
                               ->getMock();
@@ -486,23 +486,29 @@ class ProcessorTest extends BaseTest
         return $this->processor->shouldBeTriggered($alert, $metricPast1, $metricPast2);
     }
 
-    private function buildAlert($idSites = array(1,2), $report = 'MultiSites_getAll', $metric = 'nb_visits', $metricMatched = '4', $period = 'month', $comparedTo = 12)
-    {
+    private function buildAlert(
+        $idSites = array(1, 2),
+        $report = 'MultiSites_getAll',
+        $metric = 'nb_visits',
+        $metricMatched = '4',
+        $period = 'month',
+        $comparedTo = 12
+    ) {
         return array(
-            'idalert' => 1,
-            'period' => $period,
-            'id_sites' => $idSites,
+            'idalert'          => 1,
+            'period'           => $period,
+            'id_sites'         => $idSites,
             'metric_condition' => 'increase_more_than',
-            'metric_matched' => $metricMatched,
-            'report' => $report,
-            'metric' => $metric,
-            'compared_to' => $comparedTo
+            'metric_matched'   => $metricMatched,
+            'report'           => $report,
+            'metric'           => $metric,
+            'compared_to'      => $comparedTo
         );
     }
 
     private function assertProcessNotRun($alert, $idSites)
     {
-        $methods = array('getValueForAlertInPast', 'triggerAlert');
+        $methods       = array('getValueForAlertInPast', 'triggerAlert');
         $processorMock = $this->getMockBuilder('Piwik\Plugins\CustomAlerts\tests\Integration\CustomProcessor')
                               ->setMethods($methods)
                               ->getMock();
