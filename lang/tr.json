@@ -2,7 +2,7 @@
     "CustomAlerts": {
         "Alert": "Uyarı",
         "Alerts": "Uyarılar",
-        "PluginDescription": "Alerts uygulama eki Piwik üzerindeki herhangi bir rapor ve ölçüm için özel uyarılar tanımlanabilmesini sağlar.",
+        "PluginDescription": "Alerts uygulama eki Matomo üzerindeki herhangi bir rapor ve ölçüm için özel uyarılar tanımlanabilmesini sağlar.",
         "CreateNewAlert": "Uyarı ekle",
         "SmsAlertFromName": "Uyarı Ekle",
         "MailAlertSubject": "Şu site için yeni uyarı %1$s [%2$s]",

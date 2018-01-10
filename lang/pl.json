@@ -2,7 +2,7 @@
     "CustomAlerts": {
         "Alert": "Alarm",
         "Alerts": "Alarmy",
-        "PluginDescription": "Wtyczka Alarmy pozwala na zdefiniowanie indywidualnych alarmów dla dowolnego raportu i wskaźnika dostępnego w Piwik.",
+        "PluginDescription": "Wtyczka Alarmy pozwala na zdefiniowanie indywidualnych alarmów dla dowolnego raportu i wskaźnika dostępnego w Matomo.",
         "CreateNewAlert": "Stwórz nowy alarm",
         "SmsAlertFromName": "Nowy alarm",
         "SmsAlertContent": "%1$s został wyzwolony dla serwisu %4$s, ponieważ wskaźnik %2$s w raporcie %3$s %5$s.",

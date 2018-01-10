@@ -2,7 +2,7 @@
     "CustomAlerts": {
         "Alert": "Benachrichtigung",
         "Alerts": "Benachrichtigungen",
-        "PluginDescription": "Das Benachrichtigungs-Plugin lässt Sie frei definierbare Benachrichtigungen auf beliebige in Piwik verfügbare Berichte und Metriken festlegen.",
+        "PluginDescription": "Das Benachrichtigungs-Plugin lässt Sie frei definierbare Benachrichtigungen auf beliebige in Matomo verfügbare Berichte und Metriken festlegen.",
         "CreateNewAlert": "Neue Benachrichtigung erstellen",
         "SmsAlertFromName": "Neue Benachrichtigung",
         "SmsAlertContent": "%1$s wurde für Website %4$s registriert da die Metrik %2$s im Bericht %3$s %5$s.",

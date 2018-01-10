@@ -2,7 +2,7 @@
     "CustomAlerts": {
         "Alert": "Notifiera",
         "Alerts": "Varningar",
-        "PluginDescription": "Notifieringstillägget låter dig skapa anpassade notifieringar för alla rapporter och mätvärden som finns i Piwik.",
+        "PluginDescription": "Notifieringstillägget låter dig skapa anpassade notifieringar för alla rapporter och mätvärden som finns i Matomo.",
         "CreateNewAlert": "Skapa ny Notifiering",
         "SmsAlertFromName": "Ny påminnelse",
         "SmsAlertContent": "%1$s har blivit triggad för webbsida %4$s, det har även %2$s i rapport %3$s %5$s.",

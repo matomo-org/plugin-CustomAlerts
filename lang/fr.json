@@ -2,7 +2,7 @@
     "CustomAlerts": {
         "Alert": "Alerte",
         "Alerts": "Alertes",
-        "PluginDescription": "Le composant des alertes vous permet de définir des alertes personalisées sur n'importe quel rapport et métrique disponible dans Piwik.",
+        "PluginDescription": "Le composant des alertes vous permet de définir des alertes personalisées sur n'importe quel rapport et métrique disponible dans Matomo.",
         "CreateNewAlert": "Créer une nouvelle alerte",
         "SmsAlertFromName": "Nouvelle alerte",
         "SmsAlertContent": "%1$s a été déclenchée pour le site %4$s car la métrique %2$s du rapport %3$s %5$s.",

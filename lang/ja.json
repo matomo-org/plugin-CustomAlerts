@@ -2,7 +2,7 @@
     "CustomAlerts": {
         "Alert": "通知",
         "Alerts": "通知",
-        "PluginDescription": "アラートのプラグインを使用すると、任意のレポートと Piwik で利用可能なメトリックにカスタムアラートを定義できます。",
+        "PluginDescription": "アラートのプラグインを使用すると、任意のレポートと Matomo で利用可能なメトリックにカスタムアラートを定義できます。",
         "CreateNewAlert": "新しい通知を作成",
         "SmsAlertFromName": "新しい通知",
         "SmsAlertContent": "%1$s は、レポート %3$s %5$s のメトリック %2$s としてウェブサイト %4$s のために引き起こされています。",
