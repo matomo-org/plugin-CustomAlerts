@@ -2,7 +2,7 @@
     "CustomAlerts": {
         "Alert": "Upozorenje",
         "Alerts": "Upozorenja",
-        "PluginDescription": "Dodatak za upozorenja vam omogućuje da definišete upozorenja u bilo kom izveštaju ili metrici koji postoje u Piwik-u.",
+        "PluginDescription": "Dodatak za upozorenja vam omogućuje da definišete upozorenja u bilo kom izveštaju ili metrici koji postoje u Matomo-u.",
         "CreateNewAlert": "Kreiranje novog upozorenja",
         "SmsAlertFromName": "Novo upozorenje",
         "SmsAlertContent": "%1$s je pokrenut za sajt %4$s kao metrika %2$s u izveštaju %3$s %5$s.",

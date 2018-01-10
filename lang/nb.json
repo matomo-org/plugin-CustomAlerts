@@ -2,7 +2,7 @@
     "CustomAlerts": {
         "Alert": "Varsling",
         "Alerts": "Varslinger",
-        "PluginDescription": "Varslingsutvidelsen lar deg definere tilpassede varsler for rapporter og måltall som er tilgjengelige i Piwik.",
+        "PluginDescription": "Varslingsutvidelsen lar deg definere tilpassede varsler for rapporter og måltall som er tilgjengelige i Matomo.",
         "CreateNewAlert": "Opprett ny varsling",
         "SmsAlertFromName": "Ny varsling",
         "SmsAlertContent": "%1$s har blitt utløst for nettstedet %4$s siden måltallet %2$s i rapporten %3$s %5$s.",

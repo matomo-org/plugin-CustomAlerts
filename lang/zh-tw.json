@@ -2,7 +2,7 @@
     "CustomAlerts": {
         "Alert": "警報",
         "Alerts": "警報",
-        "PluginDescription": "這個警報外掛讓你設定當 Piwik 中的報表或數據可用時可以發送自訂警告。",
+        "PluginDescription": "這個警報外掛讓你設定當 Matomo 中的報表或數據可用時可以發送自訂警告。",
         "CreateNewAlert": "新增警報",
         "SmsAlertFromName": "新警報",
         "SmsAlertContent": "%4$s 的 %1$s 已觸發，因為報表 %3$s 中的數據 %2$s %5$s。",

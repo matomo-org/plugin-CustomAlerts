@@ -2,7 +2,7 @@
     "CustomAlerts": {
         "Alert": "警报",
         "Alerts": "警报",
-        "PluginDescription": "警报插件可以让您给Piwik中任何报告和度量设置自定义警报。",
+        "PluginDescription": "警报插件可以让您给Matomo中任何报告和度量设置自定义警报。",
         "CreateNewAlert": "创建新警报",
         "SmsAlertFromName": "新的警报",
         "SmsAlertContent": "在报告 %3$s %5$s中，网站%4$s 的%1$s被作为度量%2$s触发。",

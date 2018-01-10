@@ -2,7 +2,7 @@
     "CustomAlerts": {
         "Alert": "Sinjalizim",
         "Alerts": "Sinjalizime",
-        "PluginDescription": "Shtojca Sinjalizime ju lejon të përcaktoni sinjalizime vetjake për çfarëdo raporti dhe vlere që përmban Piwik-u.",
+        "PluginDescription": "Shtojca Sinjalizime ju lejon të përcaktoni sinjalizime vetjake për çfarëdo raporti dhe vlere që përmban Matomo-u.",
         "CreateNewAlert": "Krijoni Sinjalizim të ri",
         "SmsAlertFromName": "Sinjalizim i Ri",
         "SmsAlertContent": "%1$s është shkaktuar për sajtin %4$s si vlera %2$s në raportin %3$s %5$s.",

@@ -2,7 +2,7 @@
     "CustomAlerts": {
         "Alert": "Avviso",
         "Alerts": "Avvisi",
-        "PluginDescription": "Il plugin Avvisi ti permette di definire degli avvisi personalizzati su report e metriche disponibili in Piwik.",
+        "PluginDescription": "Il plugin Avvisi ti permette di definire degli avvisi personalizzati su report e metriche disponibili in Matomo.",
         "CreateNewAlert": "Crea nuovo Avviso",
         "SmsAlertFromName": "Nuovo Avviso",
         "SmsAlertContent": "%1$s è stato attivato per il sito %4$s come metrica %2$s nel report %3$s %5$s.",

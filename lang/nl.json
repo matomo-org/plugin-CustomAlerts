@@ -2,7 +2,7 @@
     "CustomAlerts": {
         "Alert": "Alarm",
         "Alerts": "Alarmen",
-        "PluginDescription": "De Alerts plugin laat je aangepaste alarmen definiëren op elk rapport en meetwaarde die beschikbaar is binnen Piwik.",
+        "PluginDescription": "De Alerts plugin laat je aangepaste alarmen definiëren op elk rapport en meetwaarde die beschikbaar is binnen Matomo.",
         "CreateNewAlert": "Nieuw alarm aanmaken",
         "SmsAlertFromName": "Nieuw alarm",
         "SmsAlertContent": "%1$s is geactiveerd voor website %4$s als meetwaarde %2$s in rapport %3$s %5$s.",

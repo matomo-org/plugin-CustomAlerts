@@ -2,7 +2,7 @@
     "CustomAlerts": {
         "Alert": "Alerta",
         "Alerts": "Alertas",
-        "PluginDescription": "O plugin de Alerta permite definir alertas personalizados em qualquer relatório ou métrica disponível no Piwik.",
+        "PluginDescription": "O plugin de Alerta permite definir alertas personalizados em qualquer relatório ou métrica disponível no Matomo.",
         "CreateNewAlert": "Criar novo Alerta",
         "SmsAlertFromName": "Novo Alerta",
         "SmsAlertContent": "%1$s foi acionado para o website %4$s como a medida %2$s no relatório %3$s %5$s.",
