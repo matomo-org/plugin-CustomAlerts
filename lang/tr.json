@@ -16,7 +16,7 @@
         "AccessException": "Şu ID'li uyarının sahibi değilsiniz %d",
         "EditAlert": "Uyarıyı Düzenle",
         "AreYouSureDeleteAlert": "Bu uyarıyı silmek istediğinizden emin misiniz?",
-        "InvalidPeriod": "Hatalı periyot verildi!",
+        "InvalidPeriod": "Belirtilen zaman aralığı geçersiz!",
         "InvalidReport": "Hatalı rapor verildi!",
         "InvalidComparableDate": "Geçersiz karşılaştırılabilir tarih!",
         "ParmeterIsTooLong": "%s çok uzun. İzin verilen max karakter %d.",
