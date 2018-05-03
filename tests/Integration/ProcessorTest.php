@@ -126,13 +126,13 @@ class ProcessorTest extends BaseTest
         // for some reasons @dataProvider results in an "Mysql::getProfiler() undefined method" error
         $assertions = array(
             array('nb_hits', 'what-is-piwik', 1),
-            // label does not start with leading slash
-            array('nb_hits', '/what-is-piwik', null),
+            // label does always start with leading slash
+            array('nb_hits', '/what-is-piwik', 1),
             array('nb_hits', 'foo', 3),
             array('nb_visits', 'foo', 2),
             array('nb_hits', 'i', 5),
             array('nb_hits', 'foo2=bar', 3),
-            array('nb_hits', '/', 3),
+            array('nb_hits', '/', 5),
             array('nb_hits', 'foo=bar&foo2=bar', 3),
             array('nb_hits', 'php?foo=bar&foo2=bar', 3),
             array('nb_hits', 'file.php?foo=bar&foo2=bar', 2),
