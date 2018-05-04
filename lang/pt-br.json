@@ -48,6 +48,8 @@
         "IsGreaterThan": "é maior que",
         "DecreasesMoreThan": "diminui mais do que",
         "IncreasesMoreThan": "aumenta mais do que",
+        "PercentageDecreasesMoreThan": "1%% diminui mais que",
+        "PercentageIncreasesMoreThan": "1%% aumenta mais que",
         "NoAlertsDefined": "Você ainda não criou nenhum alerta, crie um agora!",
         "NoTriggeredAlerts": "Ainda não há alertas disparados",
         "CancelAndReturnToAlerts": "Cancelar e %1$svoltar para a lista de alertas%2$s",

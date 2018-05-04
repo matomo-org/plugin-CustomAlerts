@@ -3,7 +3,7 @@
         "Alert": "Notifikation",
         "Alerts": "Notifikationer",
         "PluginDescription": "Underretningsudvidelsen kan angive tilpassede underretninger om enhver rapport og måling tilgængelig i Matomo.",
-        "CreateNewAlert": "Opret ny nitifikation",
+        "CreateNewAlert": "Opret ny notifikation",
         "SmsAlertFromName": "Ny notifikation",
         "SmsAlertContent": "%1$s er blevet udløst for hjemmesiden %4$s som måling %2$s i rapport %3$s %5$s.",
         "MailAlertSubject": "Ny notifikation for hjemmesiden %1$s [%2$s]",
