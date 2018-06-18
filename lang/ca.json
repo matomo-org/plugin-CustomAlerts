@@ -1,5 +1,7 @@
 {
     "CustomAlerts": {
-        "Condition": "condició"
+        "Condition": "condició",
+        "PercentageDecreasesMoreThan": "%% decreix més de",
+        "PercentageIncreasesMoreThan": "%% incrementa més de"
     }
 }
