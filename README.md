@@ -1,7 +1,6 @@
 # Piwik CustomAlerts Plugin 
 
-[![Build Status](https://travis-ci.org/piwik/plugin-CustomAlerts.png?branch=master)](https://travis-ci.org/piwik/plugin-CustomAlerts) [![Coverage Status](https://coveralls.io/repos/piwik/plugin-CustomAlerts/badge.png?branch=coverage_test)](https://coveralls.io/r/piwik/plugin-CustomAlerts?branch=coverage_test) 
-
+[![Build Status](https://travis-ci.org/matomo-org/plugin-CustomAlerts.png?branch=master)](https://travis-ci.org/piwik/plugin-CustomAlerts) 
 ## Description
 
 Create Custom Alerts + Be notified by email/SMS!
