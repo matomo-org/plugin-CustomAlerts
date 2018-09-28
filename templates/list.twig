@@ -25,7 +25,7 @@
                 <td class="name">{{ alert.name }}</td>
                 <td class="site">{{ alert.siteName|rawSafeDecoded }}</td>
                 <td class="period">{{ alert.period|capitalize }}</td>
-                <td class="reportName">{{ alert.reportName|default('-') }}</td>
+                <td class="reportName">{{ alert.reportName|default('-')|rawSafeDecoded }}</td>
                 <td class="edit">
                     <a href="{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert}) }}"
                        class="table-action"

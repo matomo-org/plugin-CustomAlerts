@@ -13,6 +13,7 @@ namespace Piwik\Plugins\CustomAlerts;
 
 use Piwik\API\Request as ApiRequest;
 use Piwik\Common;
+use Piwik\Context;
 use Piwik\DataTable;
 use Piwik\Date;
 use Piwik\Plugins\API\ProcessedReport;
@@ -310,7 +311,13 @@ class Processor
      */
     public function getValueForAlertInPast($alert, $idSite, $subPeriodN)
     {
-        $report = $this->processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
+        $report = Context::changeIdSite($idSite, function () use ($idSite, $alert) {
+            return $this->processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
+        });
+
+        if (empty($report)) {
+            throw new \Exception("Could not find report for alert '{$alert['report']}'.");
+        }
 
         $dateInPast = $this->getDateForAlertInPast($idSite, $alert['period'], $subPeriodN);
 
@@ -332,6 +339,7 @@ class Processor
         $subtableId = DataTable\Manager::getInstance()->getMostRecentTableId();
 
         $request = new ApiRequest($params);
+
         $table   = $request->process();
         $value   = $this->aggregateToOneValue($table, $alert['metric'], $alert['report_condition'], $alert['report_matched']);
 
