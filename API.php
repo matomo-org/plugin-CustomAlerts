@@ -92,11 +92,12 @@ class API extends \Piwik\Plugin\API
      */
 	public function getAlerts($idSites, $ifSuperUserReturnAllAlerts = false)
 	{
+        $idSites = Site::getIdSitesFromIdSitesString($idSites);
+
         if (empty($idSites)) {
             return array();
         }
 
-        $idSites = Site::getIdSitesFromIdSitesString($idSites);
         Piwik::checkUserHasViewAccess($idSites);
 
         if (Piwik::hasUserSuperUserAccess() && $ifSuperUserReturnAllAlerts) {
