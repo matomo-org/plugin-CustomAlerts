@@ -13,6 +13,7 @@ namespace Piwik\Plugins\CustomAlerts;
 
 use Exception;
 use Piwik\Common;
+use Piwik\Context;
 use Piwik\Period;
 use Piwik\Piwik;
 use Piwik\Plugins\API\ProcessedReport;
@@ -145,17 +146,19 @@ class Validator
      */
     public function checkApiMethodAndMetric($idSite, $apiMethodUniqueId, $metric)
     {
-        if (empty($apiMethodUniqueId) || false === strpos($apiMethodUniqueId, '_')) {
-            throw new Exception(Piwik::translate('CustomAlerts_InvalidReport'));
-        }
+        Context::changeIdSite($idSite, function () use ($idSite, $apiMethodUniqueId, $metric) {
+            if (empty($apiMethodUniqueId) || false === strpos($apiMethodUniqueId, '_')) {
+                throw new Exception(Piwik::translate('CustomAlerts_InvalidReport'));
+            }
 
-        if (!$this->processedReport->isValidReportForSite($idSite, $apiMethodUniqueId)) {
-            throw new Exception(Piwik::translate('CustomAlerts_InvalidReport'));
-        }
+            if (!$this->processedReport->isValidReportForSite($idSite, $apiMethodUniqueId)) {
+                throw new Exception(Piwik::translate('CustomAlerts_InvalidReport'));
+            }
 
-        if (!$this->processedReport->isValidMetricForReport($metric, $idSite, $apiMethodUniqueId)) {
-            throw new Exception(Piwik::translate('CustomAlerts_InvalidMetric'));
-        }
+            if (!$this->processedReport->isValidMetricForReport($metric, $idSite, $apiMethodUniqueId)) {
+                throw new Exception(Piwik::translate('CustomAlerts_InvalidMetric'));
+            }
+        });
     }
 
     /**

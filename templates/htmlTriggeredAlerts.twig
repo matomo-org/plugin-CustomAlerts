@@ -27,7 +27,7 @@
             <td style="white-space: nowrap;">{{ alert.ts_triggered }}</td>
             <td>{{ alert.siteName|rawSafeDecoded }}</td>
         {% endif %}
-        <td style="{% if not extended %}{{styleTableCell}}{% else %}max-width:300px;{% endif %}{{ style }}">{{ alert.reportName|default(alert.report) }}</td>
+        <td style="{% if not extended %}{{styleTableCell}}{% else %}max-width:300px;{% endif %}{{ style }}">{{ alert.reportName|default(alert.report)|rawSafeDecoded }}</td>
 {% if hasConditions %}
         <td style="{% if not extended %}{{styleTableCell}}{% else %}max-width:300px;{% endif %}{{ style }}">{{ alert.dimension|default('') }} {{ alert.reportConditionName }} {% if alert.report_matched %}'{{ alert.report_matched|truncate(100)|raw }}'{% endif %}</td>
 {% endif %}
