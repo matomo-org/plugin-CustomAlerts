@@ -1,0 +1,17 @@
+{
+    "CustomAlerts": {
+        "Alert": "Alerta",
+        "Alerts": "Alertas",
+        "CreateNewAlert": "Crear nueva alerta",
+        "SmsAlertFromName": "Nueva alerta",
+        "MailEnd": "Feliz análisis!",
+        "OperationIs": "es",
+        "OperationIsNot": "no es",
+        "OperationContains": "contiene",
+        "OperationDoesNotContain": "no contiene",
+        "ManageAlerts": "Administrar alertas personalizadas",
+        "AlertsHistory": "Historial de alertas disparadas",
+        "AlertCondition": "Estado de Alertas",
+        "EditAlert": "Editar Alerta"
+    }
+}

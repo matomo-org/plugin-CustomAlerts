@@ -61,7 +61,7 @@
         "MonthComparedToPreviousMonth": "forrige måned",
         "MonthComparedToPreviousYear": "samme måned i det foregående år",
         "ScheduledReportsPluginNotActivated": "Planlagte rapporter udvidelsen er påkrævet for at oprette eller redigere notifikationer. Du kan aktivere den på %1$sindstillingssiden for udvidelsen%2$s.",
-        "MobileMessagingPluginNotActivated": "Mobil-besked programudvidelsen er nødvendig for at sende SMS-beskeder. Du kan aktivere den ved at gå til %1$sindstillinger for programudvidelser%2$s",
+        "MobileMessagingPluginNotActivated": "Mobil-besked programudvidelsen er nødvendig for at sende sms-beskeder. Du kan aktivere den ved at gå til %1$sindstillinger for programudvidelser%2$s",
         "When": "når",
         "ComparedToThe": "sammenlignet med"
     }
