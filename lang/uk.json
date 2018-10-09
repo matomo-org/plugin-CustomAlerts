@@ -1,5 +1,10 @@
 {
     "CustomAlerts": {
+        "Alert": "Сповіщення",
+        "Alerts": "Сповіщення",
+        "PluginDescription": "Плагін Сповіщення дозволяє визначати спеціальні сповіщення на будь-якому звіті та показнику, доступних у Matomo.",
+        "CreateNewAlert": "Створити нове сповіщення",
+        "SmsAlertFromName": "Нове сповіщення",
         "DayComparedToPreviousDay": "попередній день",
         "DayComparedToPreviousWeek": "того ж дня тижнем раніше",
         "DayComparedToPreviousYear": "того ж дня в попередньому році",
