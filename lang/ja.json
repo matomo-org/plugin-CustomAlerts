@@ -7,7 +7,7 @@
         "SmsAlertFromName": "新しい通知",
         "SmsAlertContent": "%1$s は、レポート %3$s %5$s のメトリック %2$s としてウェブサイト %4$s のために引き起こされています。",
         "MailAlertSubject": "ウェブサイト %1$s [%2$s] に対する新しいアラート",
-        "MailAlertContent": "レポート %3$s %4$s の %1$s has been triggered as the metric %2$s",
+        "MailAlertContent": "レポート %3$s %4$s のメトリック %2$s として %1$s がトリガされました。",
         "MailText": "アラートは、以下の表に記載されています。カスタムアラート設定を調整するには、ログイン後、アラートページにアクセスしてください。",
         "MailTextForSiteOnDate": "%2$s での %1$s のトリガーアラートは、次の表のとおりです。 カスタムアラート設定を調整するには、ログインしてアラートページにアクセスしてください。",
         "MailEnd": "ハッピーな解析を！",
