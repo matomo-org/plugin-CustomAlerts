@@ -12,6 +12,7 @@
 namespace Piwik\Plugins\CustomAlerts;
 
 use Piwik\Container\StaticContainer;
+use Piwik\Context;
 use Piwik\Date;
 use Piwik\Mail;
 use Piwik\Period;
@@ -175,31 +176,33 @@ class Notifier extends \Piwik\Plugin
             return;
         }
 
-        $prettyDate  = $this->getPrettyDateForSite($period, $idSite);
-        $websiteName = Site::getNameFor($idSite);
+        $queryParams = ['date' => $this->getToday()->toString(), 'period' => $period, 'idSite' => $idSite];
+        Context::executeWithQueryParameters($queryParams, function () use ($alerts, $mail, $recipient, $period, $idSite) {
+            $prettyDate  = $this->getPrettyDateForSite($period, $idSite);
+            $websiteName = Site::getNameFor($idSite);
 
-        $mail->setDefaultFromPiwik();
-        $mail->addTo($recipient);
-        $mail->setSubject(Piwik::translate('CustomAlerts_MailAlertSubject', array($websiteName, $prettyDate)));
+            $mail->setDefaultFromPiwik();
+            $mail->addTo($recipient);
+            $mail->setSubject(Piwik::translate('CustomAlerts_MailAlertSubject', array($websiteName, $prettyDate)));
 
-        $controller = $this->getController();
+            $controller = $this->getController();
 
-        $viewHtml = new View('@CustomAlerts/alertHtmlMail');
-        $viewHtml->assign('idSite', $idSite);
-        $viewHtml->assign('period', $period);
-        $viewHtml->assign('date', $this->getToday()->toString());
-        $viewHtml->assign('websiteName', $websiteName);
-        $viewHtml->assign('prettyDate', $prettyDate);
-        $viewHtml->assign('triggeredAlerts', $controller->formatAlerts($alerts, 'html'));
-        $mail->setBodyHtml($viewHtml->render());
+            $viewHtml = new View('@CustomAlerts/alertHtmlMail');
+            $viewHtml->assign('idSite', $idSite);
+            $viewHtml->assign('period', $period);
+            $viewHtml->assign('date', $this->getToday()->toString());
+            $viewHtml->assign('websiteName', $websiteName);
+            $viewHtml->assign('prettyDate', $prettyDate);
+            $viewHtml->assign('triggeredAlerts', $controller->formatAlerts($alerts, 'html'));
+            $mail->setWrappedHtmlBody($viewHtml);
 
+            $viewText = new View('@CustomAlerts/alertTextMail');
+            $viewText->assign('triggeredAlerts', $controller->formatAlerts($alerts, 'text'));
+            $viewText->setContentType('text/plain');
+            $mail->setBodyText($viewText->render());
 
-        $viewText = new View('@CustomAlerts/alertTextMail');
-        $viewText->assign('triggeredAlerts', $controller->formatAlerts($alerts, 'text'));
-        $viewText->setContentType('text/plain');
-        $mail->setBodyText($viewText->render());
-
-        $mail->send();
+            $mail->send();
+        });
     }
 
     /**
