@@ -1,9 +1,9 @@
 {
     "name": "CustomAlerts",
     "description": "Create custom Alerts to be notified of important changes on your website or app! ",
-    "version": "3.0.4",
+    "version": "3.0.5",
     "require": {
-        "piwik": ">=3.0.0-dev,<4.0.0-b1"
+        "piwik": ">=3.8.0-rc2,<4.0.0-b1"
     },
     "authors": [
         {
