@@ -89,9 +89,10 @@ class NotifierTest extends BaseTest
         $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com', 'day', 1);
 
         $expectedHtml = <<<HTML
-<table style=3D"max-width:1000px;">=0A  <tr><td>=0A    <table style=3D"w=
-idth:100%; background-color:#37474f; padding:10px 0; margin:25px 0; heig=
-ht:64px;">=0A      <tr>=0A        <td style=3D"padding:0 0 0 15px;"><img=
+<html style=3D"background-color:#edecec">=0A=0A<head>=0A    <meta charse=
+t=3D"utf-8">=0A    <meta name=3D"robots" content=3D"noindex,nofollow">=
+=0A    <meta name=3D"generator" content=3D"Matomo Analytics">=0A</head>=
+=0A=0A<body style=3D"color:#212121;font-family:-apple-system, BlinkMacSy=
 HTML;
 
         $expectedText = 'Hello,=0A=0AThe triggered alerts are listed in the table below. To adjus=
