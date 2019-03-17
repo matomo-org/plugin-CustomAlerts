@@ -6,6 +6,8 @@
         "CreateNewAlert": "Tạo cảnh báo mới",
         "SmsAlertFromName": "Cảnh báo mới",
         "MailAlertSubject": "Cảnh báo mới cho website %1$s [%2$s]",
+        "OperationContains": "chứa",
+        "OperationDoesNotContain": "không chứa",
         "Condition": "Điều kiện",
         "DayComparedToPreviousDay": "Ngày trước đó"
     }

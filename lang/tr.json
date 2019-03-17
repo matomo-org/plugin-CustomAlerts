@@ -10,7 +10,7 @@
         "MailAlertContent": "%3$s %4$s raporundaki %2$s ölçütü için %1$s tetiklendi.",
         "MailText": "Tetiklenen uyarılar aşağıdaki tabloda görülebilir. Özel uyarı ayarlarınızı yapmak için oturum açıp Uyarılar bölümüne gidin.",
         "MailTextForSiteOnDate": "%2$s zamanında %1$s için tetiklenen uyarılar aşağıdaki tabloda görülebilir. Özel uyarı ayarlarınızı yapmak için oturum açıp Uyarılar bölümüne gidin.",
-        "MailEnd": "Mutlu incelemeler!",
+        "MailEnd": "İstatistiklerin tadını çıkarın!",
         "ValueIsLessThan": "%2$s, %1$sdeğerinden küçük",
         "ValueIsGreaterThan": "%2$s, %1$s değerinden büyük",
         "ValueDecreasedMoreThan": "%2$s ile %3$s arasında %1$s değerinden daha fazla azaldı",
