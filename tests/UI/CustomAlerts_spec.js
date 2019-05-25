@@ -13,42 +13,44 @@ describe("CustomAlerts", function () {
 
     var generalParams = 'idSite=1&period=year&date=2012-08-09';
 
-    it('should load the triggered custom alerts list correctly', function (done) {
-        expect.screenshot('list_triggered').to.be.captureSelector('.pageWrap', function (page) {
-            page.load("?" + generalParams + "&module=CustomAlerts&action=historyTriggeredAlerts&idSite=1&period=day&date=yesterday");
-        }, done);
+    it('should load the triggered custom alerts list correctly', async function () {
+        await page.goto("?" + generalParams + "&module=CustomAlerts&action=historyTriggeredAlerts&idSite=1&period=day&date=yesterday");
+        var elem = await page.$('.pageWrap');
+        expect(await elem.screenshot()).to.matchImage('list_triggered');
     });
 
-    it('should load the custom alerts list correctly', function (done) {
-        expect.screenshot('list').to.be.captureSelector('.pageWrap', function (page) {
-            page.load("?" + generalParams + "&module=CustomAlerts&action=index&idSite=1&period=day&date=yesterday");
-        }, done);
+    it('should load the custom alerts list correctly', async function () {
+        await page.goto("?" + generalParams + "&module=CustomAlerts&action=index&idSite=1&period=day&date=yesterday");
+        var elem = await page.$('.pageWrap');
+        expect(await elem.screenshot()).to.matchImage('list');
     });
 
-    it('should load custom alerts edit screen', function (done) {
-        expect.screenshot('edit').to.be.captureSelector('.pageWrap', function (page) {
-            page.click('tbody tr:first-child td.edit a', 1000);
-        }, done);
+    it('should load custom alerts edit screen', async function () {
+        await page.click('tbody tr:first-child td.edit a');
+        await page.waitForNetworkIdle();
+        var elem = await page.$('.pageWrap');
+        expect(await elem.screenshot()).to.matchImage('edit');
     });
 
-    it('should save changed alert', function (done) {
+    it('should save changed alert', async function () {
         // only check if name was changed in list, no need to make a screenshot
-        expect.current_page.contains(".pageWrap td:contains('Test Alert 1 changed')", function (page) {
-            page.sendKeys('#alertName', ' changed');
-            page.click('[piwik-save-button]', 1000);
-        }, done);
+        await page.type('#alertName', ' changed');
+        await page.click('[piwik-save-button]');
+        await page.waitForNetworkIdle();
+        await page.waitForFunction('$(".pageWrap td:contains(\'Test Alert 1 changed\')").length > 0');
     });
 
-    it('should show delete dialog', function (done) {
-        expect.screenshot('delete').to.be.captureSelector('.modal.open', function (page) {
-            page.click('tbody tr:first-child td.delete button');
-        }, done);
+    it('should show delete dialog', async function () {
+        await page.click('tbody tr:first-child td.delete button');
+        await page.waitFor(350); // wait for animation
+        var elem = await page.jQuery('.modal.open');
+        expect(await elem.screenshot()).to.matchImage('delete');
     });
 
-    it('should deleted alert', function (done) {
+    it('should deleted alert', async function () {
         // only check if name isn't in list, no need to make a screenshot
-        expect.current_page.not.contains(".pageWrap td:contains('Test Alert 1 changed')", function (page) {
-            page.click('.modal.open .modal-action:contains("Yes")', 1000);
-        }, done);
+        await (await page.jQuery('.modal.open .modal-action:contains("Yes")')).click();
+        await page.waitForNetworkIdle();
+        await page.waitForFunction('$(".pageWrap td:contains(\'Test Alert 1 changed\')").length == 0');
     });
 });
