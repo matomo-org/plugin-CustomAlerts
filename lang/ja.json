@@ -2,7 +2,7 @@
     "CustomAlerts": {
         "Alert": "アラート",
         "Alerts": "アラート",
-        "PluginDescription": "アラートのプラグインを使用すると、任意のレポートと Matomo で利用可能なメトリックにカスタムアラートを定義できます。",
+        "PluginDescription": "アラートプラグインを使用すると、Matomo で利用可能な任意のレポートとメトリックにカスタムアラートを定義できます。",
         "CreateNewAlert": "新しいアラートを作成",
         "SmsAlertFromName": "新しいアラート",
         "SmsAlertContent": "%1$s は、レポート %3$s %5$s のメトリック %2$s としてウェブサイト %4$s のために引き起こされています。",
@@ -53,7 +53,7 @@
         "PercentageDecreasesMoreThan": "%% より減少",
         "PercentageIncreasesMoreThan": "%% より増加",
         "NoAlertsDefined": "まだアラートを作成していません。今すぐ作成してください!",
-        "NoTriggeredAlerts": "まだ発生したアラートはありません",
+        "NoTriggeredAlerts": "トリガーされたアラートはまだありません",
         "CancelAndReturnToAlerts": "キャンセルして %1$sアラートのリストに戻る%2$s",
         "InvalidReportCondition": "レポート条件が有効な値ではありません",
         "InvalidMetricCondition": "メトリック条件が有効な値ではありません",
@@ -66,6 +66,6 @@
         "ScheduledReportsPluginNotActivated": "アラートを作成または編集するには、ScheduledReports プラグインが必要です。%1$splugin settings page%2$s へアクセスし、有効にして下さい。",
         "MobileMessagingPluginNotActivated": "MobileMessaging プラグインは、 SMS アラートを送信する必要があります。 %1$splugin settings page%2$s にアクセスすることによって、それを有効化できます。",
         "When": "いつ",
-        "ComparedToThe": "に比較して"
+        "ComparedToThe": "と比較して"
     }
 }
