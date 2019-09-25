@@ -19,10 +19,22 @@
              value='{{ currentSite|json_encode }}'>
         </div>
 
+        <div id="customAlertPeriodHelp" class="inline-help-node">
+            <span class="icon-info"></span>
+            {{ 'CustomAlerts_YouCanChoosePeriodFrom'|translate }}:
+
+            <ul>
+                <li>&bull; {{ 'CustomAlerts_PeriodDayDescription'|translate }}</li>
+                <li>&bull; {{ 'CustomAlerts_PeriodWeekDescription'|translate }}</li>
+                <li>&bull; {{ 'CustomAlerts_PeriodMonthDescription'|translate }}</li>
+            </ul>
+        </div>
+
         <div piwik-field uicontrol="select" name="period"
              ng-model="manageAlerts.alert.period"
              ng-change="manageAlerts.changeReport()"
              title="{{ 'General_Period'|translate|e('html_attr') }}"
+             inline-help="#customAlertPeriodHelp"
              options="{{ periodOptions|json_encode }}"
              value="{% if alert and alert.period %}{{ alert.period }}{% else %}day{% endif %}">
         </div>
