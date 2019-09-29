@@ -66,6 +66,10 @@
         "ScheduledReportsPluginNotActivated": "The ScheduledReports plugin is required in order to create or edit alerts. You can activate it by accessing the %1$splugin settings page%2$s.",
         "MobileMessagingPluginNotActivated": "The MobileMessaging plugin is required to send SMS alerts. You can activate it by accessing the %1$splugin settings page%2$s.",
         "When": "when",
-        "ComparedToThe": "compared to the"
+        "ComparedToThe": "compared to the",
+        "YouCanChoosePeriodFrom": "You can choose from the following options",
+        "PeriodDayDescription": "Day - Sent every day around midnight",
+        "PeriodWeekDescription": "Week - Sent every Monday around midnight",
+        "PeriodMonthDescription": "Month - Sent every 1st of the month around midnight"
     }
 }
