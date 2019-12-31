@@ -66,6 +66,10 @@
         "ScheduledReportsPluginNotActivated": "アラートを作成または編集するには、ScheduledReports プラグインが必要です。%1$splugin settings page%2$s へアクセスし、有効にして下さい。",
         "MobileMessagingPluginNotActivated": "MobileMessaging プラグインは、 SMS アラートを送信する必要があります。 %1$splugin settings page%2$s にアクセスすることによって、それを有効化できます。",
         "When": "いつ",
-        "ComparedToThe": "と比較して"
+        "ComparedToThe": "と比較して",
+        "YouCanChoosePeriodFrom": "次のオプションから選択できます",
+        "PeriodDayDescription": "日-毎日真夜中頃に送信されます",
+        "PeriodWeekDescription": "週-毎週月曜日の真夜中頃に送信されます",
+        "PeriodMonthDescription": "月-毎月 1 日の午前 0 時頃に送信されます"
     }
 }
