@@ -28,6 +28,7 @@ describe("CustomAlerts", function () {
     it('should load custom alerts edit screen', async function () {
         await page.click('tbody tr:first-child td.edit a');
         await page.waitForNetworkIdle();
+        await page.waitFor(350); // wait for animation
         var elem = await page.$('.pageWrap');
         expect(await elem.screenshot()).to.matchImage('edit');
     });
