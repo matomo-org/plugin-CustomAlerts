@@ -322,7 +322,6 @@ class Processor
         $dateInPast = $this->getDateForAlertInPast($idSite, $alert['period'], $subPeriodN);
 
         $params = array(
-            'method' => $report['module'] . '.' . $report['action'],
             'format' => 'original',
             'idSite' => $idSite,
             'period' => $alert['period'],
@@ -338,9 +337,8 @@ class Processor
 
         $subtableId = DataTable\Manager::getInstance()->getMostRecentTableId();
 
-        $request = new ApiRequest($params);
+        $table = ApiRequest::processRequest($report['module'] . '.' . $report['action'], $params, $default = []);
 
-        $table   = $request->process();
         $value   = $this->aggregateToOneValue($table, $alert['metric'], $alert['report_condition'], $alert['report_matched']);
 
         DataTable\Manager::getInstance()->deleteAll($subtableId);
