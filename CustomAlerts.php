@@ -21,7 +21,7 @@ use Piwik\Plugins\SitesManager\API as SitesManagerApi;
 class CustomAlerts extends \Piwik\Plugin
 {
 
-	public function getListHooksRegistered()
+	public function registerEvents()
 	{
 		return array(
 		    'MobileMessaging.deletePhoneNumber' => 'removePhoneNumberFromAllAlerts',
