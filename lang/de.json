@@ -31,7 +31,7 @@
         "InvalidPeriod": "Ungültiger Zeitraum",
         "InvalidMetricValue": "Der metrische Wert muss numerisch sein",
         "InvalidReport": "Ungültiger Bericht angegeben!",
-        "InvalidComparableDate": "Ungültige zu vergleichende Daten!",
+        "InvalidComparableDate": "Ungültiges zu vergleichendes Datum!",
         "InvalidMetric": "Die gewählte Metrik ist nicht für den gewählten Bericht verfügbar!",
         "ParmeterIsTooLong": "%s ist zu lang. Maximal %d Zeichen erlaubt.",
         "AlertName": "Titel der Benachrichtigung",
@@ -66,6 +66,10 @@
         "ScheduledReportsPluginNotActivated": "Das ScheduledReports-Plugin wird benötigt, um Benachrichtungen zu erstellen oder zu bearbeiten. Sie können es aktivieren, indem Sie die %1$sPlugin Einstellungen Seite%2$s besuchen.",
         "MobileMessagingPluginNotActivated": "Das MobileMessaging-Plugin wird benötigt, um SMS Benachrichtigungen zu versenden. Sie können es aktivieren, indem Sie die %1$sPlugin Einstellungen Seite%2$s besuchen.",
         "When": "sobald",
-        "ComparedToThe": "verglichen mit"
+        "ComparedToThe": "verglichen mit",
+        "YouCanChoosePeriodFrom": "Sie können aus folgenden Möglichkeiten wählen",
+        "PeriodDayDescription": "Tag - Versand täglich gegen Mitternacht",
+        "PeriodWeekDescription": "Woche - Versand jeden Montag gegen Mitternacht",
+        "PeriodMonthDescription": "Monat - Versand jeden 1. des Monats gegen Mitternacht"
     }
 }

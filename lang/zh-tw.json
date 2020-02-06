@@ -66,6 +66,10 @@
         "ScheduledReportsPluginNotActivated": "必須要啟用 ScheduledReports 外掛才能建立或編輯警報。你可以在%1$s外掛管理%2$s頁面啟用它。",
         "MobileMessagingPluginNotActivated": "必須要啟用 MobileMessaging 外掛才能寄送簡訊警報。你可以在%1$s外掛管理%2$s頁面啟用它。",
         "When": "當",
-        "ComparedToThe": "比對"
+        "ComparedToThe": "比對",
+        "YouCanChoosePeriodFrom": "你可以選擇以下選項",
+        "PeriodDayDescription": "日 - 每日午夜寄出",
+        "PeriodWeekDescription": "週 - 每週一午夜寄出",
+        "PeriodMonthDescription": "月 - 每月1號午夜寄出"
     }
 }

@@ -66,6 +66,10 @@
         "ScheduledReportsPluginNotActivated": "Le composant de rapports planifiés est requis pour créer ou modifier des alertes. Vous pouvez l'activer en accédant à %1$sla page de paramètres du composant%2$s.",
         "MobileMessagingPluginNotActivated": "Le composant de messagerie mobile est requis pour envoyer des alertes SMS. vous pouvez l'activer en accédant à %1$sla page de paramètres du composant%2$s.",
         "When": "quand",
-        "ComparedToThe": "comparer à"
+        "ComparedToThe": "comparer à",
+        "YouCanChoosePeriodFrom": "Vous pouvez choisir parmi les options suivantes",
+        "PeriodDayDescription": "Jour - Envoyé tous les jours vers minuit",
+        "PeriodWeekDescription": "Semaine - Envoyé tous les lundis vers minuit",
+        "PeriodMonthDescription": "Mois - Envoyé tous les 1er du mois vers minuit"
     }
 }
