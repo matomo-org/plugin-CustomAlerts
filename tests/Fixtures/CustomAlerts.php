@@ -20,7 +20,7 @@ class CustomAlerts extends Fixture
     public $dateTime = '2010-01-03 11:22:33';
     public $idSite   = 1;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->setUpWebsites();
         $this->addAlerts();

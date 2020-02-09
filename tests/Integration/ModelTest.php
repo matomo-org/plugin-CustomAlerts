@@ -21,7 +21,7 @@ use Piwik\Plugins\CustomAlerts\Model;
 class ModelTest extends BaseTest
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -298,7 +298,7 @@ class ModelTest extends BaseTest
         $tableNames = $this->getCurrentAvailableTableNames();
 
         foreach ($expectedTables as $expectedTable) {
-            $this->assertContains(Common::prefixTable($expectedTable), $tableNames);
+            self::assertTrue(in_array(Common::prefixTable($expectedTable), $tableNames));
         }
     }
 
@@ -307,7 +307,7 @@ class ModelTest extends BaseTest
         $tableNames = $this->getCurrentAvailableTableNames();
 
         foreach ($expectedTables as $expectedTable) {
-            $this->assertNotContains(Common::prefixTable($expectedTable), $tableNames);
+            self::assertTrue(!in_array(Common::prefixTable($expectedTable), $tableNames));
         }
     }
 

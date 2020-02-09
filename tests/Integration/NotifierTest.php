@@ -56,7 +56,7 @@ class NotifierTest extends BaseTest
      */
     private $notifier;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -73,7 +73,7 @@ class NotifierTest extends BaseTest
         $this->notifier = new CustomNotifier();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
 
@@ -134,7 +134,7 @@ t your custom alert settings, please sign in and access the Alerts page.=
     {
         $methods = array('sendAlertsPerEmailToRecipient', 'sendAlertsPerSmsToRecipient', 'markAlertAsSent');
         $mock    = $this->getMockBuilder('Piwik\Plugins\CustomAlerts\tests\Integration\CustomNotifier')
-                        ->setMethods($methods)
+                        ->onlyMethods($methods)
                         ->getMock();
 
         $alerts = array(

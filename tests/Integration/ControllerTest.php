@@ -40,7 +40,7 @@ class ControllerTest extends BaseTest
      */
     private $controller;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -55,7 +55,7 @@ class ControllerTest extends BaseTest
         $this->controller = new CustomController();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
 
@@ -96,12 +96,11 @@ FORMATTED;
         $this->assertEquals($expected, $rendered);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Unsupported format
-     */
     public function test_formatAlerts_ShouldThrowException_IfInvalidFormatGiven()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Unsupported format');
+
         $alerts = $this->getTriggeredAlerts();
         $this->controller->formatAlerts($alerts, 'php');
     }
@@ -251,7 +250,7 @@ FORMATTED;
         $alerts[0]['value_new']           = 1;
         $alerts[0]['siteName']            = 'Piwik test';
         $alerts[0]['ts_triggered']        = 'Tue, Jan 14';
-        $this->assertInternalType('int', $alerts[0]['value_new']);
+        self::assertIsInt($alerts[0]['value_new']);
         $alerts[1]['reportName']          = null;
         $alerts[1]['reportMetric']        = null;
         $alerts[1]['dimension']           = null;
@@ -260,8 +259,8 @@ FORMATTED;
         $alerts[1]['value_new']           = 1;
         $alerts[1]['siteName']            = 'Piwik test';
         $alerts[1]['ts_triggered']        = 'Jan 6 – 12, 2014';
-        $this->assertInternalType('int', $alerts[1]['value_old']);
-        $this->assertInternalType('int', $alerts[1]['value_new']);
+        self::assertIsInt($alerts[1]['value_old']);
+        self::assertIsInt($alerts[1]['value_new']);
         $alerts[2]['reportName']          = 'Page URLs';
         $alerts[2]['reportMetric']        = 'Bounce Rate';
         $alerts[2]['dimension']           = 'Page URL';
@@ -286,7 +285,7 @@ FORMATTED;
         $alerts[4]['value_new']           = 10;
         $alerts[4]['siteName']            = 'Piwik test';
         $alerts[4]['ts_triggered']        = 'Tue, Jan 14';
-        $this->assertInternalType('int', $alerts[4]['value_new']);
+        self::assertIsInt($alerts[4]['value_new']);
 
         $this->assertEquals($alerts, $enriched);
     }

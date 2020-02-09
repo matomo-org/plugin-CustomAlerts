@@ -58,7 +58,7 @@ class ProcessorTest extends BaseTest
      */
     private $processor;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -234,11 +234,10 @@ class ProcessorTest extends BaseTest
         $this->assertFilterResult('does_not_end_with', 'NoneMatChIng', array(10, 33, 90, 65, 67, 100));
     }
 
-    /**
-     * @expectedException \Exception
-     */
     public function test_filterDataTable_shouldThrowException_IfConditionIsInvalid()
     {
+        $this->expectException(\Exception::class);
+
         $this->assertFilterResult('noTValIdConDitiOn', 't', array());
     }
 
@@ -433,11 +432,10 @@ class ProcessorTest extends BaseTest
         $processorMock->processAlert($alert, 1);
     }
 
-    /**
-     * @expectedException \Exception
-     */
     public function test_shouldBeTriggered_ShouldFail_IfInvalidConditionGiven()
     {
+        $this->expectException(\Exception::class);
+
         $this->assertShouldBeTriggered('NotExistInG', 30, 100, 70);
     }
 

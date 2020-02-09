@@ -19,7 +19,7 @@ use Piwik\Tests\Framework\Mock\FakeAccess;
 class ApiTest extends BaseTest
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -29,101 +29,91 @@ class ApiTest extends BaseTest
         $this->setUser();
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage checkUserHasViewAccess Fake exception
-     */
     public function test_addAlert_ShouldFail_IfNotEnoughPermissions()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('checkUserHasViewAccess Fake exception');
+
         $this->createAlert('NotEnoughPermissions');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage General_PleaseSpecifyValue
-     */
     public function test_addAlert_ShouldFail_IfEmptyName()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('General_PleaseSpecifyValue');
+
         $this->setSuperUser();
         $this->createAlert('');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_InvalidMetric
-     */
     public function test_addAlert_ShouldFail_IfInvalidMetricProvided()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_InvalidMetric');
+
         $this->setSuperUser();
         $this->createAlert('InvalidMetric', 'week', null, $metric = 'nb_notExisting');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_InvalidReport
-     */
     public function test_addAlert_ShouldFail_IfInvalidReportProvided()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_InvalidReport');
+
         $this->setSuperUser();
         $this->createAlert('InvalidReport', 'week', null, 'nb_visits', 'IkReport_NotExisTing');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_InvalidPeriod
-     */
     public function test_addAlert_ShouldFail_ShouldFailIfPeriodNotValid()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_InvalidPeriod');
+
         $this->setSuperUser();
         $this->createAlert('InvalidPeriod', 'unvAlidPerioD');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_InvalidMetricCondition
-     */
     public function test_addAlert_ShouldFail_IfInvalidMetricCondition()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_InvalidMetricCondition');
+
         $this->setSuperUser();
         $this->createAlert('InvalidMetricCondition', 'week', null, 'nb_visits', 'MultiSites_getOne', 'InvaLiD');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_InvalidMetricCondition
-     */
     public function test_addAlert_ShouldFail_IfEmptyMetricCondition()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_InvalidMetricCondition');
+
         $this->setSuperUser();
         $this->createAlert('EmptyMetricCondition', 'week', null, 'nb_visits', 'MultiSites_getOne', '');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_InvalidReportCondition
-     */
     public function test_addAlert_ShouldFail_IfInvalidReportCondition()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_InvalidReportCondition');
+
         $this->setSuperUser();
         $this->createAlert('InvalidReportCondition', 'week', null, 'nb_visits', 'MultiSites_getOne', 'less_than', 'InvaLiD');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_InvalidComparableDate
-     */
     public function test_addAlert_ShouldFail_IfInvalidComparableDate()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_InvalidComparableDate');
+
         $this->setSuperUser();
         $this->createAlert('InvalidComparableDate', 'week', null, 'nb_visits', 'MultiSites_getOne', 'less_than', 'matches_exactly', array(), 99);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage UsersManager_ExceptionInvalidEmail (inv+34i32s?y)
-     */
     public function test_addAlert_ShouldFail_IfInvalidEmail()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('UsersManager_ExceptionInvalidEmail (inv+34i32s?y)');
+
         $this->setSuperUser();
         $this->createAlert('InvalidEmail', 'week', null, 'nb_visits', 'MultiSites_getOne', 'less_than', 'matches_any', array('test@example.com', 'inv+34i32s?y', 'test2@example.com'));
     }
@@ -138,76 +128,69 @@ class ApiTest extends BaseTest
         $this->assertIsAlert($id, 'MyCustomAlert', 'week');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_AccessException
-     */
     public function test_editAlert_ShouldFail_IfNotPermission()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_AccessException');
+
         $this->editAlert(2, 'MyCustomAlert', 'day');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_AlertDoesNotExist
-     */
     public function test_editAlert_ShouldFail_IfNotExists()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
+
         $this->editAlert(99999, 'MyCustomAlert', 'day');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage checkUserHasViewAccess Fake exception
-     */
     public function test_editAlert_ShouldFail_IfNotPermissionForWebsites()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('checkUserHasViewAccess Fake exception');
+
         $id = $this->createAlert('MyAlert');
         $this->editAlert($id, 'MyCustomAlert', 'day', array(9999));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_InvalidMetricCondition
-     */
     public function test_editAlert_ShouldFail_IfInvalidMetricCondition()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_InvalidMetricCondition');
+
         $this->setSuperUser();
 
         $id = $this->createAlert('MyAlert');
         $this->editAlert($id, 'InvalidMetricCondition', 'week', null, 'nb_visits', 'MultiSites_getOne', 'InvaLiD');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_InvalidMetricCondition
-     */
     public function test_editAlert_ShouldFail_IfEmptyMetricCondition()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_InvalidMetricCondition');
+
         $this->setSuperUser();
 
         $id = $this->createAlert('MyAlert');
         $this->editAlert($id, 'EmptyMetricCondition', 'week', null, 'nb_visits', 'MultiSites_getOne', '');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_InvalidReportCondition
-     */
     public function test_editAlert_ShouldFail_IfInvalidReportCondition()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_InvalidReportCondition');
+
         $this->setSuperUser();
 
         $id = $this->createAlert('MyAlert');
         $this->editAlert($id, 'InvalidReportCondition', 'week', null, 'nb_visits', 'MultiSites_getOne', 'less_than', 'InvaLiD');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage UsersManager_ExceptionInvalidEmail (inv+34i32s?y)
-     */
     public function test_editAlert_ShouldFail_IfInvalidEmail()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('UsersManager_ExceptionInvalidEmail (inv+34i32s?y)');
+
         $this->setSuperUser();
 
         $id = $this->createAlert('MyAlert');
@@ -292,12 +275,11 @@ class ApiTest extends BaseTest
         $this->assertCount(0, $alerts);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage checkUserHasViewAccess Fake exception
-     */
     public function test_getAlerts_shouldFail_IfUserDoesNotHaveAccessToWebsite()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('checkUserHasViewAccess Fake exception');
+
         FakeAccess::clearAccess();
 
         $this->api->getAlerts(array($this->idSite));
@@ -314,32 +296,29 @@ class ApiTest extends BaseTest
         $this->assertEquals('Initial3', $alerts[2]['name']);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_AlertDoesNotExist
-     */
     public function test_getAlert_ShouldFail_IfInvalidIdProvided()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
+
         $this->setSuperUser();
 
         $this->api->getAlert(9999);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_AccessException
-     */
     public function test_getAlert_ShouldFail_IfNotOwnerOfAlert()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_AccessException');
+
         $this->api->getAlert(2);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_AccessException
-     */
     public function test_getAlert_ShouldFail_IfNotOwnerOfAlertEventIfUserIsSuperUser()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_AccessException');
+
         $this->setSuperUser();
         FakeAccess::$identity = 'test';
         $this->api->getAlert(2);
@@ -353,32 +332,29 @@ class ApiTest extends BaseTest
         $this->assertIsAlert(2, 'Initial2', 'week', array($this->idSite, $this->idSite2));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_AlertDoesNotExist
-     */
     public function test_getValuesForAlertInPast_ShouldFail_IfInvalidIdProvided()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
+
         $this->setSuperUser();
 
         $this->api->getValuesForAlertInPast(9999, 1);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_AccessException
-     */
     public function test_getValuesForAlertInPast_ShouldFail_IfNotOwnerOfAlert()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_AccessException');
+
         $this->api->getValuesForAlertInPast(2, 1);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_AccessException
-     */
     public function test_getValuesForAlertInPast_ShouldFail_IfNotOwnerOfAlertEventIfUserIsSuperUser()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_AccessException');
+
         $this->setSuperUser();
         FakeAccess::$identity = 'test';
         $this->api->getValuesForAlertInPast(2, 1);
@@ -411,21 +387,19 @@ class ApiTest extends BaseTest
         $this->assertEquals($numAlerts - 1, $numAlertsAfter);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_AccessException
-     */
     public function test_deleteAlert_ShouldFail_IfNotOwnerOfAlert()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_AccessException');
+
         $this->api->deleteAlert(2);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_AccessException
-     */
     public function test_deleteAlert_ShouldFail_IfNotOwnerOfAlertEvenIfUserIsSuperuser()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_AccessException');
+
         $this->setSuperUser();
         FakeAccess::$identity = 'test';
 
@@ -470,12 +444,11 @@ class ApiTest extends BaseTest
         $this->assertEquals(array($expected), $triggeredAlerts);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage checkUserHasViewAccess Fake exception
-     */
     public function test_getTriggeredAlerts_ShouldThrowException_IfNotEnoughPermission()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('checkUserHasViewAccess Fake exception');
+
         $this->setUser();
         $this->api->getTriggeredAlerts(array(1));
     }

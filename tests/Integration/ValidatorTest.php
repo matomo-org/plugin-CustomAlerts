@@ -23,7 +23,7 @@ class ValidatorTest extends BaseTest
      */
     private $validator;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -31,12 +31,11 @@ class ValidatorTest extends BaseTest
         $this->validator = new Validator($processedReport);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage UsersManager_ExceptionInvalidEmail
-     */
     public function test_checkAdditionalEmails_ShouldFail_IfContainsInvalidEmail()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('UsersManager_ExceptionInvalidEmail');
+
         $this->validator->checkAdditionalEmails(array('test@example.com', 'invalidemail'));
     }
 
@@ -45,12 +44,11 @@ class ValidatorTest extends BaseTest
         $this->assertNull($this->validator->checkAdditionalEmails(array('test@example.com', 'test@example.com')));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_AccessException
-     */
     public function test_checkUserHasPermissionForAlert_ShouldFail_IfInvalid()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_AccessException');
+
         $this->setUser();
 
         $alert = array(
@@ -61,12 +59,11 @@ class ValidatorTest extends BaseTest
         $this->validator->checkUserHasPermissionForAlert($alert);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_AccessException
-     */
     public function test_checkUserHasPermissionForAlert_ShouldFail_IfInvalidEventIfUserIsSuperUser()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_AccessException');
+
         $this->setSuperUser();
 
         $alert = array(
@@ -89,12 +86,11 @@ class ValidatorTest extends BaseTest
         $this->assertNull($this->validator->checkUserHasPermissionForAlert($alert));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_InvalidPeriod
-     */
     public function test_checkPeriod_ShouldFail_IfInvalidPeriod()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_InvalidPeriod');
+
         $this->validator->checkPeriod('invalidperiod');
     }
 
@@ -114,21 +110,19 @@ class ValidatorTest extends BaseTest
         $this->assertTrue($this->validator->isValidPeriod('month'));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage General_PleaseSpecifyValue
-     */
     public function test_checkName_ShouldFail_IfNameIsEmpty()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('General_PleaseSpecifyValue');
+
         $this->validator->checkName('');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_ParmeterIsTooLong
-     */
     public function test_checkName_ShouldFail_IfNameIsTooLong()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_ParmeterIsTooLong');
+
         $name = range(0, 101);
         $this->validator->checkName(implode('', $name));
     }
@@ -140,14 +134,15 @@ class ValidatorTest extends BaseTest
 
     /**
      * @dataProvider invalidApiMethodAndMetricValidator
-     * @expectedException \Exception
      */
     public function test_checkApiMethodAndMetric_ShouldFail_IfInvalid($idSite, $apiMethod, $metric, $expectedMessage)
     {
+        $this->expectException(\Exception::class);
+
         try {
             $this->validator->checkApiMethodAndMetric($idSite, $apiMethod, $metric);
         } catch (\Exception $e) {
-            $this->assertContains($expectedMessage, $e->getMessage());
+            self::assertStringContainsString($expectedMessage, $e->getMessage());
 
             throw $e;
         }
@@ -170,12 +165,13 @@ class ValidatorTest extends BaseTest
     }
 
     /**
-     * @dataProvider             invalidMetricConditionProvider
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_InvalidMetricCondition
+     * @dataProvider invalidMetricConditionProvider
      */
     public function test_checkMetricCondition_ShouldFail_IfInvalid($condition)
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_InvalidMetricCondition');
+
         $this->validator->checkMetricCondition($condition);
     }
 
@@ -226,12 +222,13 @@ class ValidatorTest extends BaseTest
     }
 
     /**
-     * @dataProvider             invalidReportConditionProvider
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_InvalidReportCondition
+     * @dataProvider invalidReportConditionProvider
      */
     public function test_checkReportCondition_ShouldFail_IfInvalid($condition)
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_InvalidReportCondition');
+
         $this->validator->checkReportCondition($condition);
     }
 
@@ -249,12 +246,13 @@ class ValidatorTest extends BaseTest
     }
 
     /**
-     * @dataProvider             invalidComparedToProvider
-     * @expectedException \Exception
-     * @expectedExceptionMessage CustomAlerts_InvalidComparableDate
+     * @dataProvider invalidComparedToProvider
      */
     public function test_checkComparedTo_ShouldFail_IfInvalid($period, $comparedTo)
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_InvalidComparableDate');
+
         $this->validator->checkComparedTo($period, $comparedTo);
     }
 
