@@ -13,7 +13,7 @@ use Piwik\Container\StaticContainer;
 use Piwik\Plugin;
 use Piwik\Plugins\CustomAlerts\Controller;
 use Piwik\SettingsPiwik;
-use Piwik\Translate;
+use Piwik\Tests\Framework\Fixture;
 
 class CustomController extends Controller
 {
@@ -50,7 +50,7 @@ class ControllerTest extends BaseTest
 
         PiwikCache::flushAll();
 
-        Translate::loadAllTranslations();
+        Fixture::loadAllTranslations();
 
         $this->controller = new CustomController();
     }
@@ -59,7 +59,7 @@ class ControllerTest extends BaseTest
     {
         parent::tearDown();
 
-        Translate::reset();
+        Fixture::resetTranslations();
     }
 
     public function test_formatAlerts_asText()
