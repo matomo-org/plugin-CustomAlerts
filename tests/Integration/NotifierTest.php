@@ -12,7 +12,7 @@ use Piwik\Date;
 use Piwik\Mail;
 use Piwik\Plugin;
 use Piwik\Plugins\CustomAlerts\Notifier;
-use Piwik\Translate;
+use Piwik\Tests\Framework\Fixture;
 
 class CustomNotifier extends Notifier
 {
@@ -64,7 +64,7 @@ class NotifierTest extends BaseTest
         Plugin\Manager::getInstance()->loadPlugin('CustomAlerts');
         Plugin\Manager::getInstance()->loadPlugin('Morpheus');
 
-        Translate::loadAllTranslations();
+        Fixture::loadAllTranslations();
 
         \Piwik\Plugins\UsersManager\API::getInstance()->addUser('login1', 'p2kK2msAw1', 'test1@example.com');
         \Piwik\Plugins\UsersManager\API::getInstance()->addUser('login2', 'p2kK2msAw1', 'test2@example.com');
@@ -77,7 +77,7 @@ class NotifierTest extends BaseTest
     {
         parent::tearDown();
 
-        Translate::reset();
+        Fixture::resetTranslations();
     }
 
     public function test_sendAlertsPerEmailToRecipient()
