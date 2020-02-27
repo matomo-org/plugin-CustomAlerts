@@ -33,7 +33,7 @@ abstract class BaseTest extends IntegrationTestCase
     protected $idSite;
     protected $idSite2;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

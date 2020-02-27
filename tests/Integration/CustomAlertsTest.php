@@ -24,7 +24,7 @@ class CustomAlertsTest extends BaseTest
      */
     private $plugin = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
