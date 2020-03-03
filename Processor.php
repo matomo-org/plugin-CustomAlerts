@@ -88,13 +88,13 @@ class Processor
     }
 
     public function processAlerts($period, $idSite)
-	{
+    {
         $alerts = $this->getAllAlerts($period);
 
-		foreach ($alerts as $alert) {
-			$this->processAlert($alert, $idSite);
-		}
-	}
+        foreach ($alerts as $alert) {
+            $this->processAlert($alert, $idSite);
+        }
+    }
 
     protected function processAlert($alert, $idSite)
     {
@@ -201,21 +201,21 @@ class Processor
      *
      * @return mixed
      */
-	protected function aggregateToOneValue($dataTable, $metric, $filterCond = '', $filterValue = '')
-	{
-		if (!empty($filterValue)) {
+    protected function aggregateToOneValue($dataTable, $metric, $filterCond = '', $filterValue = '')
+    {
+        if (!empty($filterValue)) {
             $this->filterDataTable($dataTable, $filterCond, $filterValue);
-		}
+        }
 
-		if ($dataTable->getRowsCount() > 1) {
-			$dataTable->filter('Truncate', array(0, null, $metric));
-		}
+        if ($dataTable->getRowsCount() > 1) {
+            $dataTable->filter('Truncate', array(0, null, $metric));
+        }
 
         $dataTable->applyQueuedFilters();
 
-		$dataRow = $dataTable->getFirstRow();
+        $dataRow = $dataTable->getFirstRow();
 
-		if (!$dataRow) {
+        if (!$dataRow) {
             return null;
         }
 
@@ -226,7 +226,7 @@ class Processor
         }
 
         return $value;
-	}
+    }
 
     /**
      * @param $dataTable

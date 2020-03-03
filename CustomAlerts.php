@@ -21,19 +21,19 @@ use Piwik\Plugins\SitesManager\API as SitesManagerApi;
 class CustomAlerts extends \Piwik\Plugin
 {
 
-	public function registerEvents()
-	{
-		return array(
-		    'MobileMessaging.deletePhoneNumber' => 'removePhoneNumberFromAllAlerts',
-		    'AssetManager.getJavaScriptFiles'   => 'getJavaScriptFiles',
-		    'AssetManager.getStylesheetFiles'   => 'getStylesheetFiles',
+    public function registerEvents()
+    {
+        return array(
+            'MobileMessaging.deletePhoneNumber' => 'removePhoneNumberFromAllAlerts',
+            'AssetManager.getJavaScriptFiles'   => 'getJavaScriptFiles',
+            'AssetManager.getStylesheetFiles'   => 'getStylesheetFiles',
             'API.Request.dispatch'              => 'checkApiPermission',
             'Request.dispatch'                  => 'checkControllerPermission',
             'Translate.getClientSideTranslationKeys' => 'getClientSideTranslationKeys',
             'UsersManager.deleteUser'           => 'deleteAlertsForLogin',
             'SitesManager.deleteSite.end'       => 'deleteAlertsForSite'
-		);
-	}
+        );
+    }
 
     public function checkApiPermission(&$parameters, $pluginName, $methodName)
     {
@@ -70,15 +70,15 @@ class CustomAlerts extends \Piwik\Plugin
         Model::uninstall();
     }
 
-	public function getJavaScriptFiles(&$jsFiles)
-	{
-		$jsFiles[] = "plugins/CustomAlerts/angularjs/managecustomalerts/managecustomalerts.controller.js";
-	}
+    public function getJavaScriptFiles(&$jsFiles)
+    {
+        $jsFiles[] = "plugins/CustomAlerts/angularjs/managecustomalerts/managecustomalerts.controller.js";
+    }
 
-	public function getStylesheetFiles(&$cssFiles)
-	{
-		$cssFiles[] = "plugins/CustomAlerts/stylesheets/alerts.less";
-	}
+    public function getStylesheetFiles(&$cssFiles)
+    {
+        $cssFiles[] = "plugins/CustomAlerts/stylesheets/alerts.less";
+    }
 
     public function deleteAlertsForLogin($userLogin)
     {

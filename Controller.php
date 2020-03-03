@@ -38,11 +38,11 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
         parent::__construct();
     }
 
-	/**
-	 * Shows all Alerts of the current selected idSite.
-	 */
-	public function index()
-	{
+    /**
+     * Shows all Alerts of the current selected idSite.
+     */
+    public function index()
+    {
         $view = new View('@CustomAlerts/index');
         $this->setGeneralVariablesView($view);
 
@@ -56,11 +56,11 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
 
         $view->alerts = $alerts;
 
-		return $view->render();
-	}
+        return $view->render();
+    }
 
-	public function historyTriggeredAlerts()
-	{
+    public function historyTriggeredAlerts()
+    {
         $view = new View('@CustomAlerts/historyTriggeredAlerts');
         $this->setGeneralVariablesView($view);
 
@@ -71,34 +71,34 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
 
         $view->alertsFormatted = $this->formatAlerts($alerts, 'html_extended');
 
-		return $view->render();
-	}
+        return $view->render();
+    }
 
-	public function addNewAlert()
-	{
+    public function addNewAlert()
+    {
         $view = new View('@CustomAlerts/addNewAlert');
-		$this->setGeneralVariablesView($view);
+        $this->setGeneralVariablesView($view);
         $this->addBasicCreateAndEditVariables($view, null);
 
         $view->currentSite = array('id' => $this->idSite, 'name' => $this->site->getName());
 
-		return $view->render();
-	}
+        return $view->render();
+    }
 
-	public function editAlert()
-	{
-		$idAlert = Common::getRequestVar('idAlert', null, 'int');
+    public function editAlert()
+    {
+        $idAlert = Common::getRequestVar('idAlert', null, 'int');
 
         $view = new View('@CustomAlerts/editAlert');
-		$this->setGeneralVariablesView($view);
+        $this->setGeneralVariablesView($view);
 
         $alert = API::getInstance()->getAlert($idAlert);
         $view->currentSite = array('id' => $this->findSiteId($alert), 'name' => $this->findSiteName($alert));
 
         $this->addBasicCreateAndEditVariables($view, $alert);
 
-		return $view->render();
-	}
+        return $view->render();
+    }
 
     /**
      * Returns the Alerts that were triggered in $format.

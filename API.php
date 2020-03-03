@@ -44,8 +44,8 @@ class API extends \Piwik\Plugin\API
      *
      * @return array
      */
-	public function getAlert($idAlert)
-	{
+    public function getAlert($idAlert)
+    {
         $alert = $this->getModel()->getAlert($idAlert);
 
         if (empty($alert)) {
@@ -90,8 +90,8 @@ class API extends \Piwik\Plugin\API
      *
      * @return array
      */
-	public function getAlerts($idSites, $ifSuperUserReturnAllAlerts = false)
-	{
+    public function getAlerts($idSites, $ifSuperUserReturnAllAlerts = false)
+    {
         $idSites = Site::getIdSitesFromIdSitesString($idSites);
 
         if (empty($idSites)) {
@@ -109,7 +109,7 @@ class API extends \Piwik\Plugin\API
         $alerts = $this->getModel()->getAlerts($idSites, $login);
 
         return $alerts;
-	}
+    }
 
     /**
      * Creates an Alert for given website(s).
@@ -129,8 +129,8 @@ class API extends \Piwik\Plugin\API
      * @param bool|string $reportValue
      * @return int ID of new Alert
      */
-	public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false)
-	{
+    public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false)
+    {
         $idSites          = Site::getIdSitesFromIdSitesString($idSites);
         $additionalEmails = $this->filterAdditionalEmails($additionalEmails);
         $phoneNumbers     = $this->filterPhoneNumbers($phoneNumbers);
@@ -148,7 +148,7 @@ class API extends \Piwik\Plugin\API
         $metricValue = Common::forceDotAsSeparatorForDecimalPoint((float) $metricValue);
 
         return $this->getModel()->createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue);
-	}
+    }
 
     /**
      * Edits an Alert for given website(s).
@@ -170,8 +170,8 @@ class API extends \Piwik\Plugin\API
      *
      * @return boolean
      */
-	public function editAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false)
-	{
+    public function editAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false)
+    {
         // make sure alert exists and user has permission to read
         $this->getAlert($idAlert);
 
@@ -191,7 +191,7 @@ class API extends \Piwik\Plugin\API
         $metricValue = Common::forceDotAsSeparatorForDecimalPoint((float) $metricValue);
 
         return $this->getModel()->updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue);
-	}
+    }
 
     /**
      * Delete alert by id.
@@ -199,13 +199,13 @@ class API extends \Piwik\Plugin\API
      * @param int $idAlert
      * @throws \Exception
      */
-	public function deleteAlert($idAlert)
-	{
+    public function deleteAlert($idAlert)
+    {
         // make sure alert exists and user has permission to read
         $this->getAlert($idAlert);
 
         $this->getModel()->deleteAlert($idAlert);
-	}
+    }
 
     /**
      * Get triggered alerts.

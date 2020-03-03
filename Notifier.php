@@ -46,9 +46,9 @@ class Notifier extends \Piwik\Plugin
      * @param string $period
      * @param int    $idSite
      */
-	public function sendNewAlerts($period, $idSite)
-	{
-		$triggeredAlerts = $this->getTriggeredAlerts($period, $idSite);
+    public function sendNewAlerts($period, $idSite)
+    {
+        $triggeredAlerts = $this->getTriggeredAlerts($period, $idSite);
 
         $alertsPerEmail = $this->groupAlertsPerEmailRecipient($triggeredAlerts);
         foreach ($alertsPerEmail as $email => $alerts) {
@@ -246,4 +246,3 @@ class Notifier extends \Piwik\Plugin
     }
 
 }
-?>

@@ -141,8 +141,7 @@ class Validator
      * @param int $idSite
      * @param string $apiMethodUniqueId for example MultiSites.getAll
      * @param string $metric
-     * @throws \Exception
-     * @return boolean
+     * @return void
      */
     public function checkApiMethodAndMetric($idSite, $apiMethodUniqueId, $metric)
     {
