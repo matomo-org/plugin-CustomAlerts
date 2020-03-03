@@ -360,13 +360,13 @@ class Model
 
     public function deleteTriggeredAlertsForSite($idSite)
     {
-        $this->getDb()->query("DELETE FROM " . Common::prefixTable("alert_triggered") . " WHERE idsite = ?", $idSite);
+        $this->getDb()->query("DELETE FROM " . Common::prefixTable("alert_triggered") . " WHERE idsite = ?", array($idSite));
     }
 
     private function getDefinedSiteIds($idAlert)
     {
         $sql   = "SELECT idsite FROM " . Common::prefixTable('alert_site') . " WHERE idalert = ?";
-        $sites = Db::fetchAll($sql, $idAlert, \PDO::FETCH_COLUMN);
+        $sites = Db::fetchAll($sql, array($idAlert), \PDO::FETCH_COLUMN);
 
         $idSites = array();
         foreach ($sites as $site) {
@@ -402,7 +402,7 @@ class Model
 
     private function removeAllSites($idAlert)
     {
-        $this->getDb()->query("DELETE FROM " . Common::prefixTable("alert_site") . " WHERE idalert = ?", $idAlert);
+        $this->getDb()->query("DELETE FROM " . Common::prefixTable("alert_site") . " WHERE idalert = ?", array($idAlert));
     }
 
     /**
