@@ -101,27 +101,23 @@ class ProcessorTest extends BaseTest
 
         $t->setUrlReferrer('http://www.google.com.vn/url?sa=t&rct=j&q=%3C%3E%26%5C%22the%20pdo%20extension%20is%20required%20for%20this%20adapter%20but%20the%20extension%20is%20not%20loaded&source=web&cd=4&ved=0FjAD&url=http%3A%2F%2Fforum.piwik.org%2Fread.php%3F2%2C1011&ei=y-HHAQ&usg=AFQjCN2-nt5_GgDeg&cad=rja');
         $t->setUrl('http://example.org/%C3%A9%C3%A9%C3%A9%22%27...%20%3Cthis%20is%20cool%3E!');
-        $t->setGenerationTime(523);
         $t->doTrackPageView('incredible title! <>,;');
 
         $t->setForceVisitDateTime($date->addHour(.1)->getDatetime());
         $t->setUrl('http://example.org/dir/file.php?foo=bar&foo2=bar');
-        $t->setGenerationTime(123);
+        $t->setPerformanceTimings(0, 123, 234, 345, 456, 567);
         $t->doTrackPageView('incredible title! <>,;');
 
         $t->setForceVisitDateTime($date->addHour(.2)->getDatetime());
         $t->setUrl('http://example.org/dir/file/xyz.php?foo=bar&foo2=bar');
-        $t->setGenerationTime(231);
         $t->doTrackPageView('incredible title! <>,;');
 
         $t->setForceVisitDateTime($date->addHour(.2)->getDatetime());
         $t->setUrl('http://example.org/what-is-piwik');
-        $t->setGenerationTime(231);
         $t->doTrackPageView('incredible title! <>,;');
 
         $t->setForceVisitDateTime($date->addHour(.3)->getDatetime());
         $t->setUrl('http://example.org/dir/file.php?foo=bar&foo2=bar');
-        $t->setGenerationTime(147);
         $t->doTrackPageView('incredible title! <>,;');
 
         Fixture::checkBulkTrackingResponse($t->doBulkTrack());
@@ -141,7 +137,7 @@ class ProcessorTest extends BaseTest
             array('nb_hits', 'file.php?foo=bar&foo2=bar', 2),
             array('nb_hits', 'dir/file.php?foo=bar&foo2=bar', 2),
             array('nb_hits', 'dir', 3),
-            array('avg_time_generation', 'dir/file.php?foo=bar&foo2=bar', 0.135),
+            array('avg_time_server', 'dir/file.php?foo=bar&foo2=bar', 0.123),
 
             // sometimes 0 sometimes 360 sometimes even 7 (?) - random code here
             // array('avg_time_on_page', 'dir/file.php?foo=bar&foo2=bar', 0),
