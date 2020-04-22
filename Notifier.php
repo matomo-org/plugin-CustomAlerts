@@ -57,7 +57,7 @@ class Notifier extends \Piwik\Plugin
 
         $alertsPerSms = $this->groupAlertsPerSmsRecipient($triggeredAlerts);
         foreach ($alertsPerSms as $phoneNumber => $alerts) {
-            $this->sendAlertsPerSmsToRecipient($alerts, APIMobileMessaging::getInstance(), $phoneNumber);
+            $this->sendAlertsPerSmsToRecipient($alerts, new \Piwik\Plugins\MobileMessaging\Model(), $phoneNumber);
         }
 
         foreach($triggeredAlerts as $triggeredAlert) {
@@ -134,10 +134,10 @@ class Notifier extends \Piwik\Plugin
 
     /**
      * @param array  $alerts
-     * @param APIMobileMessaging $mobileMessagingAPI
+     * @param \Piwik\Plugins\MobileMessaging\Model $mobileMessagingModel
      * @param string $phoneNumber
      */
-    protected function sendAlertsPerSmsToRecipient($alerts, $mobileMessagingAPI, $phoneNumber)
+    protected function sendAlertsPerSmsToRecipient($alerts, $mobileMessagingModel, $phoneNumber)
     {
         if (empty($phoneNumber) || empty($alerts)) {
             return;
@@ -151,7 +151,7 @@ class Notifier extends \Piwik\Plugin
         $content = $controller->formatAlerts($alerts, 'sms');
         $subject = Piwik::translate('CustomAlerts_SmsAlertFromName');
 
-        $mobileMessagingAPI->sendSMS(
+        $mobileMessagingModel->sendSMS(
             $content,
             $phoneNumber,
             $subject
