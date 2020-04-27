@@ -252,7 +252,7 @@ class API extends \Piwik\Plugin\API
 
     private function filterPhoneNumbers($phoneNumbers)
     {
-        $availablePhoneNumbers = APIMobileMessaging::getInstance()->getActivatedPhoneNumbers();
+        $availablePhoneNumbers = (new \Piwik\Plugins\MobileMessaging\Model())->getActivatedPhoneNumbers(Piwik::getCurrentUserLogin());
 
         foreach ($phoneNumbers as $key => &$phoneNumber) {
 

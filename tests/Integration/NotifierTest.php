@@ -186,13 +186,13 @@ t your custom alert settings, please sign in and access the Alerts page.=
         $mock->expects($this->at(4))
              ->method('sendAlertsPerSmsToRecipient')
              ->with($this->equalTo(array($alerts[0], $alerts[1], $alerts[3])),
-                    $this->isInstanceOf('\Piwik\Plugins\MobileMessaging\API'),
+                    $this->isInstanceOf('\Piwik\Plugins\MobileMessaging\Model'),
                     $this->equalTo('+1234567890'));
 
         $mock->expects($this->at(5))
              ->method('sendAlertsPerSmsToRecipient')
              ->with($this->equalTo($alerts),
-                    $this->isInstanceOf('\Piwik\Plugins\MobileMessaging\API'),
+                    $this->isInstanceOf('\Piwik\Plugins\MobileMessaging\Model'),
                     $this->equalTo('232'));
 
         foreach ($alerts as $index => $alert) {

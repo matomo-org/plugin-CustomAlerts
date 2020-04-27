@@ -178,7 +178,7 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
             array('key' => 'month', 'value' => Piwik::translate('Intl_PeriodMonth')),
         );
 
-        $numbers = APIMobileMessaging::getInstance()->getActivatedPhoneNumbers();
+        $numbers = (new \Piwik\Plugins\MobileMessaging\Model())->getActivatedPhoneNumbers(Piwik::getCurrentUserLogin());
 
         $phoneNumbers = array();
         if (!empty($numbers)) {
