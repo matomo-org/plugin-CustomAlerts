@@ -166,7 +166,7 @@ class Notifier extends \Piwik\Plugin
     /**
      * @param array $alerts
      * @param Mail $mail
-     * @param string[] $recipient Email addresses
+     * @param string $recipient Email address
      * @param $period
      * @param $idSite
      */
@@ -182,7 +182,7 @@ class Notifier extends \Piwik\Plugin
             $websiteName = Site::getNameFor($idSite);
 
             $mail->setDefaultFromPiwik();
-            $mail->addTo($recipient);
+            $mail->addAddress($recipient);
             $mail->setSubject(Piwik::translate('CustomAlerts_MailAlertSubject', array($websiteName, $prettyDate)));
 
             $controller = $this->getController();
