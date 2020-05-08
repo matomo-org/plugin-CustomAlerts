@@ -11,6 +11,7 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
+use Piwik\Common;
 use Piwik\Db;
 use Piwik\Piwik;
 use Piwik\Plugins\SitesManager\API as SitesManagerApi;
@@ -31,9 +32,22 @@ class CustomAlerts extends \Piwik\Plugin
             'Request.dispatch'                  => 'checkControllerPermission',
             'Translate.getClientSideTranslationKeys' => 'getClientSideTranslationKeys',
             'UsersManager.deleteUser'           => 'deleteAlertsForLogin',
-            'SitesManager.deleteSite.end'       => 'deleteAlertsForSite'
+            'SitesManager.deleteSite.end'       => 'deleteAlertsForSite',
+            'Db.getTablesInstalled'             => 'getTablesInstalled'
 		);
 	}
+
+    /**
+     * Register the new tables, so Matomo knows about them.
+     *
+     * @param array $allTablesInstalled
+     */
+    public function getTablesInstalled(&$allTablesInstalled)
+    {
+        $allTablesInstalled[] = Common::prefixTable('alert');
+        $allTablesInstalled[] = Common::prefixTable('alert_site');
+        $allTablesInstalled[] = Common::prefixTable('alert_triggered');
+    }
 
     public function checkApiPermission(&$parameters, $pluginName, $methodName)
     {
