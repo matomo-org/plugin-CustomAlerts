@@ -8,6 +8,7 @@
 
 namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
+use PHPMailer\PHPMailer\PHPMailer;
 use Piwik\Date;
 use Piwik\Mail;
 use Piwik\Plugin;
@@ -56,6 +57,11 @@ class NotifierTest extends BaseTest
      */
     private $notifier;
 
+    /**
+     * @var PHPMailer
+     */
+    private $mail;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -86,7 +92,7 @@ class NotifierTest extends BaseTest
         $mail   = new Mail();
 
         $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com', 'day', 1);
-        $mail->preSend();
+        $this->mail->preSend();
 
         $expectedHtml = <<<HTML
 Content-Type: text/html; charset=utf-8
@@ -106,7 +112,7 @@ Content-Transfer-Encoding: quoted-printable
 
 Hello,=0A=0AThe triggered alerts are listed in the table below. To adjust y=';
 
-        $renderedBody = html_entity_decode($mail->createBody(), ENT_COMPAT | ENT_HTML401, 'UTF-8');
+        $renderedBody = html_entity_decode($this->mail->createBody(), ENT_COMPAT | ENT_HTML401, 'UTF-8');
         $this->assertStringContainsString($expectedHtml, $renderedBody);
         $this->assertStringContainsString($expectedText, $renderedBody);
         $this->assertEquals(array('test@example.com'), array_keys($mail->getRecipients()));
@@ -248,6 +254,17 @@ Hello,=0A=0AThe triggered alerts are listed in the table below. To adjust y=';
             $this->buildAlert(2, 'MyName2'),
         );
         return $alerts;
+    }
+
+    public function provideContainerConfig()
+    {
+        return [
+            'observers.global' => \DI\add([
+                ['Test.Mail.send', function (PHPMailer $mail) {
+                    $this->mail = $mail;
+                }],
+            ]),
+        ];
     }
 
 }

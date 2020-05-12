@@ -182,7 +182,7 @@ class Notifier extends \Piwik\Plugin
             $websiteName = Site::getNameFor($idSite);
 
             $mail->setDefaultFromPiwik();
-            $mail->addAddress($recipient);
+            $mail->addTo($recipient);
             $mail->setSubject(Piwik::translate('CustomAlerts_MailAlertSubject', array($websiteName, $prettyDate)));
 
             $controller = $this->getController();
