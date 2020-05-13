@@ -92,7 +92,6 @@ class NotifierTest extends BaseTest
         $mail   = new Mail();
 
         $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com', 'day', 1);
-        $this->mail->preSend();
 
         $expectedHtml = <<<HTML
 Content-Type: text/html; charset=utf-8
@@ -262,6 +261,7 @@ Hello,=0A=0AThe triggered alerts are listed in the table below. To adjust y=';
             'observers.global' => \DI\add([
                 ['Test.Mail.send', function (PHPMailer $mail) {
                     $this->mail = $mail;
+                    $this->mail->preSend();
                 }],
             ]),
         ];
