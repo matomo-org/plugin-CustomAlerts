@@ -166,7 +166,7 @@ class Notifier extends \Piwik\Plugin
     /**
      * @param array $alerts
      * @param Mail $mail
-     * @param string[] $recipient Email addresses
+     * @param string $recipient Email address
      * @param $period
      * @param $idSite
      */

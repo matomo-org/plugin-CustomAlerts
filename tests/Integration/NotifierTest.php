@@ -8,6 +8,7 @@
 
 namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
+use PHPMailer\PHPMailer\PHPMailer;
 use Piwik\Date;
 use Piwik\Mail;
 use Piwik\Plugin;
@@ -56,6 +57,11 @@ class NotifierTest extends BaseTest
      */
     private $notifier;
 
+    /**
+     * @var PHPMailer
+     */
+    private $mail;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -84,26 +90,31 @@ class NotifierTest extends BaseTest
     {
         $alerts = $this->getTriggeredAlerts();
         $mail   = new Mail();
-        Mail::setDefaultTransport(new \Zend_Mail_Transport_File());
 
         $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com', 'day', 1);
 
         $expectedHtml = <<<HTML
-<html style=3D"background-color:#edecec">=0A=0A<head>=0A    <meta charse=
-t=3D"utf-8">=0A    <meta name=3D"robots" content=3D"noindex,nofollow">=
-=0A    <meta name=3D"generator" content=3D"Matomo Analytics">=0A</head>=
-=0A=0A<body style=3D"color:#212121;font-family:-apple-system, BlinkMacSy=
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<html style=3D"background-color:#edecec">
+
+<head>
+    <meta charset=3D"utf-8">
+    <meta name=3D"robots" content=3D"noindex,nofollow">
+    <meta name=3D"generator" content=3D"Matomo Analytics">
+</head>
 HTML;
 
-        $expectedText = 'Hello,=0A=0AThe triggered alerts are listed in the table below. To adjus=
-t your custom alert settings, please sign in and access the Alerts page.=
-=0A=0A';
+        $expectedText = 'Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-        $renderedHtml = html_entity_decode($mail->getBodyHtml(true), ENT_COMPAT | ENT_HTML401, 'UTF-8');
-        $this->assertStringStartsWith($expectedHtml, $renderedHtml, "Got HTML response: " . var_export($renderedHtml, true));
-        $renderedText = $mail->getBodyText(true);
-        $this->assertStringStartsWith($expectedText, $renderedText, "Got text response: " . var_export($renderedText, true));
-        $this->assertEquals(array('test@example.com'), $mail->getRecipients());
+Hello,=0A=0AThe triggered alerts are listed in the table below. To adjust y=';
+
+        $renderedBody = html_entity_decode($this->mail->createBody(), ENT_COMPAT | ENT_HTML401, 'UTF-8');
+        $this->assertStringContainsString($expectedHtml, $renderedBody);
+        $this->assertStringContainsString($expectedText, $renderedBody);
+        $this->assertEquals(array('test@example.com'), array_keys($mail->getRecipients()));
     }
 
     public function test_sendAlertsPerEmailToRecipient_shouldUseDifferentSubjectDependingOnPeriod()
@@ -116,18 +127,12 @@ t your custom alert settings, please sign in and access the Alerts page.=
     private function assertDateInSubject($period, $expectedDate)
     {
         $alerts = $this->getTriggeredAlerts();
-        Mail::setDefaultTransport(new \Zend_Mail_Transport_File());
 
         $mail = new Mail();
         $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com', $period, 1);
 
-        $expected   = 'New alert for website Piwik test [' . $expectedDate . ']';
-        $expecteds  = array(
-            str_replace('–', '-', $expected),
-            \Zend_Mime::encodeQuotedPrintableHeader($expected, 'utf-8')
-        );
-        $isExpected = in_array($mail->getSubject(), $expecteds);
-        $this->assertTrue($isExpected, $mail->getSubject() . " not found in " . var_export($expecteds, true));
+        $expected   = 'New alert for website Piwik test [' . str_replace('–', '-', $expectedDate) . ']';
+        $this->assertEquals($mail->getSubject(), $expected);
     }
 
     public function test_sendNewAlerts()
@@ -248,6 +253,18 @@ t your custom alert settings, please sign in and access the Alerts page.=
             $this->buildAlert(2, 'MyName2'),
         );
         return $alerts;
+    }
+
+    public function provideContainerConfig()
+    {
+        return [
+            'observers.global' => \DI\add([
+                ['Test.Mail.send', function (PHPMailer $mail) {
+                    $this->mail = $mail;
+                    $this->mail->preSend();
+                }],
+            ]),
+        ];
     }
 
 }
