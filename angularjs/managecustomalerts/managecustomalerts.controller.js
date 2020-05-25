@@ -149,11 +149,11 @@
             this.isComparable = condition && -1 !== condition.indexOf('_more_than');
 
             if (isPercentageCondition || isPercentageMetric) {
-                $('.metricValueDescription').text('%');
+                $('[name=metricValue]').attr('title', '%');
             } else if (isSecondsMetric) {
-                $('.metricValueDescription').text('s');
+                $('[name=metricValue]').attr('title', 's');
             } else {
-                $('.metricValueDescription').text(_pk_translate('General_Value'));
+                $('[name=metricValue]').attr('title', _pk_translate('General_Value'));
             }
         }
         
