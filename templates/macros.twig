@@ -1,5 +1,5 @@
 {% macro metricChangeDescription(alert) %}
-{% spaceless %}
+{% apply spaceless %}
     {%- if alert.metric_condition == 'less_than' %}
         {{ 'CustomAlerts_ValueIsLessThan'|translate(alert.metric_matched, alert.value_new) }}
     {% elseif alert.metric_condition == 'greater_than' %}
@@ -13,5 +13,5 @@
     {% elseif alert.metric_condition == 'percentage_increase_more_than' %}
         {{ 'CustomAlerts_ValuePercentageIncreasedMoreThan'|translate(alert.metric_matched, alert.value_old|default('-'), alert.value_new) }}
     {% endif -%}
-{% endspaceless %}
+{% endapply  %}
 {% endmacro %}
