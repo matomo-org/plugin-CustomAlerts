@@ -148,12 +148,14 @@
             var isSecondsMetric = metric && -1 !== metric.indexOf('_time_');
             this.isComparable = condition && -1 !== condition.indexOf('_more_than');
 
+            $('[name="metricValue"]').attr('title', '');
+
             if (isPercentageCondition || isPercentageMetric) {
-                $('[name=metricValue]').attr('title', '%');
+                $('.metricValueDescription').text('%');
             } else if (isSecondsMetric) {
-                $('[name=metricValue]').attr('title', 's');
+                $('.metricValueDescription').text('s');
             } else {
-                $('[name=metricValue]').attr('title', _pk_translate('General_Value'));
+                $('.metricValueDescription').text(_pk_translate('General_Value'));
             }
         }
         
