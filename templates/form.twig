@@ -129,6 +129,7 @@
                 <div piwik-field uicontrol="text" name="metricValue"
                      ng-model="manageAlerts.alert.metricValue"
                      full-width="true"
+                     ng-attr-title="<span class='metricValueDescription'></span>"
                      {% if alert %}value="{{ alert.metric_matched|e('html_attr') }}"{% endif %} >
                 </div>
             </div>
