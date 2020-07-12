@@ -66,6 +66,10 @@
         "ScheduledReportsPluginNotActivated": "A extensão ScheduledReports é obrigatória para criar ou editar alertas. Pode ativar a mesma acedendo à %1$spágina de definições da extensão%2$s.",
         "MobileMessagingPluginNotActivated": "A extensão MobileMessaging é obrigatória para enviar alertas por SMS. Pode ativar a mesma acedendo à %1$spágina de definições da extensão%2$s.",
         "When": "quando",
-        "ComparedToThe": "comparativamente ao"
+        "ComparedToThe": "comparativamente ao",
+        "YouCanChoosePeriodFrom": "Pode escolher uma das seguintes opções",
+        "PeriodDayDescription": "Dia - Enviar todos os dias, por volta da meia-note",
+        "PeriodWeekDescription": "Semana - Enviar todas as segundas-feira, por volta da meia-note",
+        "PeriodMonthDescription": "Mês - Enviar ao primeiro dia de cada mês, por volta da meia-note"
     }
 }

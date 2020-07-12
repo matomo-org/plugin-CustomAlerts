@@ -66,6 +66,10 @@
         "ScheduledReportsPluginNotActivated": "Pro vytváření a úpravu vlastních upozornění je vyžadován zásuvný modul ScheduledReports. Můžete ho povolit na stránce %1$snastavení zásuvných modulů%2$s.",
         "MobileMessagingPluginNotActivated": "Pro odesílání SMS upozornění je vyžadován zásuvný modul MobileMessaging. Můžete ho povolit na stránce %1$snastavení zásuvných modulů%2$s.",
         "When": "kdy",
-        "ComparedToThe": "V porovnání s"
+        "ComparedToThe": "V porovnání s",
+        "YouCanChoosePeriodFrom": "Můžete vybrat z následujících možností",
+        "PeriodDayDescription": "Den - Odeslat každý den kolem půlnoci",
+        "PeriodWeekDescription": "Týden - Odeslat každé pondělí kolem půlnoci",
+        "PeriodMonthDescription": "Měsíc - Odeslat každého 1. v měsíci kolem půlnoci"
     }
 }

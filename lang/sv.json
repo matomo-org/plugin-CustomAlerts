@@ -66,6 +66,10 @@
         "ScheduledReportsPluginNotActivated": "Plugin för Schemalaggd Rapport behövs för att kunna skapa eller redigera nya påminnelser. Du kan aktivera det genom att ge det åtkomst på sidan för %1$splugin inställningar%2$s.",
         "MobileMessagingPluginNotActivated": "Pluginet för MobilaMeddelande krävs för att skicka SMS påminnelser. Du kan aktivera detta på sidan för %1$splugin inställningar%2$s.",
         "When": "när",
-        "ComparedToThe": "Jämfört med"
+        "ComparedToThe": "Jämfört med",
+        "YouCanChoosePeriodFrom": "Du kan välja från följande alternativ",
+        "PeriodDayDescription": "Dag - Skickas varje dygn runt midnatt",
+        "PeriodWeekDescription": "Vecka - Skickas varje måndag runt midnatt",
+        "PeriodMonthDescription": "Månad - Skickas den 1:a varje månad runt midnatt"
     }
 }

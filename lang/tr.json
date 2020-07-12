@@ -66,6 +66,10 @@
         "ScheduledReportsPluginNotActivated": "Uyarı eklemek ve düzenlemek için %1$sUygulama eki ayarları bölümünden etkinleştirebileceğiniz%2$siçin Zamanlanmış Raporlar (ScheduledReports) uygulama eki gereklidir.",
         "MobileMessagingPluginNotActivated": "SMS uyarılarını göndermek için %1$sUygulama eki ayaları bölümünden etkinleştirebileceğiniz%2$s Mobil İletişim (MobileMessaging) uygulama eki gereklidir.",
         "When": "şu zamanda",
-        "ComparedToThe": "şununla karşılaştırıldığıda"
+        "ComparedToThe": "şununla karşılaştırıldığıda",
+        "YouCanChoosePeriodFrom": "Şu seçeneklerden seçebilirsiniz",
+        "PeriodDayDescription": "Günlük - Her gün gece yarısı gönderilir",
+        "PeriodWeekDescription": "Haftalık - Her Pazartesi gece yarısı gönderilir",
+        "PeriodMonthDescription": "Aylık - Her ayın 1. günü gece yarısı gönderilir"
     }
 }

@@ -66,6 +66,10 @@
         "ScheduledReportsPluginNotActivated": "计划报告插件要求是为了创建或编辑警报。您可以在访问%1$s插件设置页面%2$s来启用它。",
         "MobileMessagingPluginNotActivated": "移动通讯插件需要发送短信提醒。您可以在访问%1$s插件设置页面%2$s来启用它。",
         "When": "当",
-        "ComparedToThe": "相比于"
+        "ComparedToThe": "相比于",
+        "YouCanChoosePeriodFrom": "您可以从以下选项中选择",
+        "PeriodDayDescription": "日-每天午夜左右发送",
+        "PeriodWeekDescription": "周-每周一午夜左右发送",
+        "PeriodMonthDescription": "月-每个月的1号在午夜12点发送"
     }
 }
