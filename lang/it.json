@@ -66,6 +66,10 @@
         "ScheduledReportsPluginNotActivated": "Per creare o modificare gli avvisi è richiesto il plugin ScheduledReports. Puoi attivarlo accedendo alla %1$spagina impostazioni plugin%2$s.",
         "MobileMessagingPluginNotActivated": "Per inviare avvisi SMS è richiesto il plugin MobileMessaging. Puoi attivarlo accedendo alla %1$spagina impostazioni plugins%2$s.",
         "When": "quando",
-        "ComparedToThe": "confrontato con"
+        "ComparedToThe": "confrontato con",
+        "YouCanChoosePeriodFrom": "Puoi scegliere tra le seguenti opzioni",
+        "PeriodDayDescription": "Giornaliero - Invia ogni giorno intorno alla mezzanotte",
+        "PeriodWeekDescription": "Settimanale - Invia ogni Lunedì intorno alla mezzanotte",
+        "PeriodMonthDescription": "Mensile - Invia il 1° del mese intorno alla mezzanotte"
     }
 }

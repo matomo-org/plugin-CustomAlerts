@@ -2,6 +2,7 @@
     "CustomAlerts": {
         "Alert": "Hälytys",
         "Alerts": "Hälytykset",
+        "PluginDescription": "Hälytykset-liitännäinen mahdollistaa mukautettujen hälytysten luomisen pohjautuen mihin tahansa raporttiin ja mittariin Matomossa.",
         "CreateNewAlert": "Luo uusi hälytys",
         "SmsAlertFromName": "Uusi hälytys",
         "SmsAlertContent": "%1$s on lauennut verkkosivulla %4$s mittarilla %2$s raportissa %3$s %5$s.",
@@ -46,6 +47,8 @@
         "IsGreaterThan": "on suurempi kuin",
         "DecreasesMoreThan": "laskee enemmän kuin",
         "IncreasesMoreThan": "lisääntyy enemmän kuin",
+        "PercentageDecreasesMoreThan": "%% laskee enemmän kuin",
+        "PercentageIncreasesMoreThan": "%% lisääntyy enemmän kuin",
         "NoAlertsDefined": "Et ole vielä luonut hälytyksiä, luo hälytys nyt!",
         "NoTriggeredAlerts": "Lauenneita hälytyksiä ei ole vielä",
         "CancelAndReturnToAlerts": "Peruuta ja %1$spalaa hälytyksiin%2$s",
@@ -60,6 +63,10 @@
         "ScheduledReportsPluginNotActivated": "ScheduledReports-liitännäinen on välttämätön, jotta voit luoda tai muokata hälytyksiä. Voit ottaa sen käyttöön sivulta %1$sliitännäisten asetukset%2$s.",
         "MobileMessagingPluginNotActivated": "MobileMessaging-lisäosa on välttämätön SMS-hälytyksien lähettämistä varten. Voit ottaa sen käyttöön sivulta %1$sliitännäisten asetukset%2$s.",
         "When": "kun",
-        "ComparedToThe": "verrattuna"
+        "ComparedToThe": "verrattuna",
+        "YouCanChoosePeriodFrom": "Voit valita seuraavista valinnoista",
+        "PeriodDayDescription": "Päivä - Lähetä päivittäin keskiyön aikaan",
+        "PeriodWeekDescription": "Viikko - Lähetä maanantaisin keskiyön aikaan",
+        "PeriodMonthDescription": "Kuukausi - Lähetä joka kuun ensimmäinen päivä keskiyön aikaan"
     }
 }

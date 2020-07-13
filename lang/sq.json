@@ -66,6 +66,10 @@
         "ScheduledReportsPluginNotActivated": "Që të mund të krijohen ose përpunohen sinjalizime, lypset shtojca ScheduledReports. Mund ta aktivizoni duke hyrë te %1$sfaqja e rregullimeve të shtojcës%2$s.",
         "MobileMessagingPluginNotActivated": "Që të mund të dërgohen sinjalizime me SMS, lypset shtojca MobileMessaging. Mund ta aktivizoni duke hyrë te %1$sfaqja e rregullimeve të shtojcës%2$s.",
         "When": "kur",
-        "ComparedToThe": "krahasuar me"
+        "ComparedToThe": "krahasuar me",
+        "YouCanChoosePeriodFrom": "Mund të zgjidhni mundësitë vijuese",
+        "PeriodDayDescription": "Ditë - Dërguar çdo ditë aty nga mesnata",
+        "PeriodWeekDescription": "Javë - Dërguar çdo Të hënë aty nga mesnata",
+        "PeriodMonthDescription": "Muaj - Dërguar ditën e 1rë të muajit aty nga mesnata"
     }
 }
