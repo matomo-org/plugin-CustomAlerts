@@ -66,6 +66,10 @@
         "ScheduledReportsPluginNotActivated": "De ScheduledReports plugin is modig om een Alert aan te maken of te wijzigen. Je kunt het activeren door naar de %1$splugin settings pagina%2$s te gaan.",
         "MobileMessagingPluginNotActivated": "De MobileMessaging plugin is nodig om SMS melding te sturen. Deze kan geactiveerd worden via %1$splugin instellingen pagina %2$s.",
         "When": "als",
-        "ComparedToThe": "vergeleken met de"
+        "ComparedToThe": "vergeleken met de",
+        "YouCanChoosePeriodFrom": "Je kunt kiezen uit de volgende opties",
+        "PeriodDayDescription": "Dag - Elke dag rond middernacht verzonden",
+        "PeriodWeekDescription": "Week - wordt elke maandag rond middernacht verzonden",
+        "PeriodMonthDescription": "Maand - Verzonden elke 1e van de maand rond middernacht"
     }
 }
