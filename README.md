@@ -1,6 +1,6 @@
 # Matomo CustomAlerts Plugin 
 
-[![Build Status](https://travis-ci.org/matomo-org/plugin-CustomAlerts.png?branch=master)](https://travis-ci.org/matomo-org/plugin-CustomAlerts) 
+[![Build Status](https://travis-ci.org/matomo-org/plugin-CustomAlerts.png?branch=4.x-dev)](https://travis-ci.org/matomo-org/plugin-CustomAlerts)
 ## Description
 
 Create Custom Alerts + Be notified by email/SMS!
