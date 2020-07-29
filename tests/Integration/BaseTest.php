@@ -52,14 +52,6 @@ abstract class BaseTest extends IntegrationTestCase
         FakeAccess::$identity  = 'superUserLogin';
     }
 
-    protected function setUser()
-    {
-        FakeAccess::$superUser    = false;
-        FakeAccess::$idSitesAdmin = array();
-        FakeAccess::$idSitesView  = array(99);
-        FakeAccess::$identity     = 'aUser';
-    }
-
     /**
      * Create a test case
      * (prevent issue: https://travis-ci.org/piwik/piwik/jobs/34659383 )
@@ -74,5 +66,13 @@ abstract class BaseTest extends IntegrationTestCase
         return array(
             'Piwik\Access' => new FakeAccess()
         );
+    }
+
+    protected function setUser()
+    {
+        FakeAccess::$superUser    = false;
+        FakeAccess::$idSitesAdmin = array();
+        FakeAccess::$idSitesView  = array(99);
+        FakeAccess::$identity     = 'aUser';
     }
 }

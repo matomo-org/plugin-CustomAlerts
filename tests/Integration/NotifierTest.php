@@ -19,16 +19,6 @@ class CustomNotifier extends Notifier
 {
     private $alerts = array();
 
-    protected function getToday()
-    {
-        return Date::factory('2010-01-01');
-    }
-
-    protected function getTriggeredAlerts($period, $idSite)
-    {
-        return $this->alerts;
-    }
-
     public function setTriggeredAlerts($alerts)
     {
         $this->alerts = $alerts;
@@ -42,6 +32,16 @@ class CustomNotifier extends Notifier
     public function sendAlertsPerSmsToRecipient($alerts, $mobileMessagingAPI, $phoneNumber)
     {
         parent::sendAlertsPerSmsToRecipient($alerts, $mobileMessagingAPI, $phoneNumber);
+    }
+
+    protected function getToday()
+    {
+        return Date::factory('2010-01-01');
+    }
+
+    protected function getTriggeredAlerts($period, $idSite)
+    {
+        return $this->alerts;
     }
 }
 
@@ -117,94 +117,16 @@ Hello,=0A=0AThe triggered alerts are listed in the table below. To adjust y=';
         $this->assertEquals(array('test@example.com'), array_keys($mail->getRecipients()));
     }
 
-    public function test_sendAlertsPerEmailToRecipient_shouldUseDifferentSubjectDependingOnPeriod()
+    /**
+     * @return array
+     */
+    private function getTriggeredAlerts()
     {
-        $this->assertDateInSubject('week', 'week December 21 – 27, 2009');
-        $this->assertDateInSubject('day', 'Thursday, December 31, 2009');
-        $this->assertDateInSubject('month', 'December 2009');
-    }
-
-    private function assertDateInSubject($period, $expectedDate)
-    {
-        $alerts = $this->getTriggeredAlerts();
-
-        $mail = new Mail();
-        $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com', $period, 1);
-
-        $expected   = 'New alert for website Piwik test [' . str_replace('–', '-', $expectedDate) . ']';
-        $this->assertEquals($mail->getSubject(), $expected);
-    }
-
-    public function test_sendNewAlerts()
-    {
-        $methods = array('sendAlertsPerEmailToRecipient', 'sendAlertsPerSmsToRecipient', 'markAlertAsSent');
-        $mock    = $this->getMockBuilder('Piwik\Plugins\CustomAlerts\tests\Integration\CustomNotifier')
-                        ->onlyMethods($methods)
-                        ->getMock();
-
         $alerts = array(
-            $this->buildAlert(1, 'Alert1', 'week', 4, 'Test', 'login1'),
-            $this->buildAlert(2, 'Alert2', 'week', 4, 'Test', 'login2'),
-            $this->buildAlert(3, 'Alert3', 'week', 4, 'Test', 'login1'),
-            $this->buildAlert(4, 'Alert4', 'week', 4, 'Test', 'login3'),
+            $this->buildAlert(1, 'MyName1'),
+            $this->buildAlert(2, 'MyName2'),
         );
-
-        $alerts[2]['phone_numbers'] = array('232');
-
-        $idSite = 1;
-        $period = 'week';
-
-        $mock->setTriggeredAlerts($alerts);
-
-        $mock->expects($this->at(0))
-             ->method('sendAlertsPerEmailToRecipient')
-             ->with($this->equalTo($alerts),
-                    $this->isInstanceOf('\Piwik\Mail'),
-                    $this->equalTo('test5@example.com'),
-                    $this->equalTo($period),
-                    $this->equalTo($idSite));
-
-        $mock->expects($this->at(1))
-             ->method('sendAlertsPerEmailToRecipient')
-             ->with($this->equalTo(array($alerts[0], $alerts[2])),
-                    $this->isInstanceOf('\Piwik\Mail'),
-                    $this->equalTo('test1@example.com'),
-                    $this->equalTo($period),
-                    $this->equalTo($idSite));
-
-        $mock->expects($this->at(2))
-             ->method('sendAlertsPerEmailToRecipient')
-             ->with($this->equalTo(array($alerts[1])),
-                    $this->isInstanceOf('\Piwik\Mail'),
-                    $this->equalTo('test2@example.com'),
-                    $this->equalTo($period),
-                    $this->equalTo($idSite));
-
-        $mock->expects($this->at(3))
-             ->method('sendAlertsPerEmailToRecipient')
-             ->with($this->equalTo(array($alerts[3])),
-                    $this->isInstanceOf('\Piwik\Mail'),
-                    $this->equalTo('test3@example.com'),
-                    $this->equalTo($period),
-                    $this->equalTo($idSite));
-
-        $mock->expects($this->at(4))
-             ->method('sendAlertsPerSmsToRecipient')
-             ->with($this->equalTo(array($alerts[0], $alerts[1], $alerts[3])),
-                    $this->isInstanceOf('\Piwik\Plugins\MobileMessaging\Model'),
-                    $this->equalTo('+1234567890'));
-
-        $mock->expects($this->at(5))
-             ->method('sendAlertsPerSmsToRecipient')
-             ->with($this->equalTo($alerts),
-                    $this->isInstanceOf('\Piwik\Plugins\MobileMessaging\Model'),
-                    $this->equalTo('232'));
-
-        foreach ($alerts as $index => $alert) {
-            $mock->expects($this->at(6 + $index))->method('markAlertAsSent')->with($this->equalTo($alert));
-        }
-
-        $mock->sendNewAlerts($period, $idSite);
+        return $alerts;
     }
 
     private function buildAlert(
@@ -220,7 +142,8 @@ Hello,=0A=0AThe triggered alerts are listed in the table below. To adjust y=';
         $report = 'MultiSites_getOne',
         $reportCondition = 'matches_exactly',
         $reportMatched = 'Piwik'
-    ) {
+    )
+    {
         return array(
             'idtriggered'       => 1,
             'idalert'           => $id,
@@ -243,26 +166,106 @@ Hello,=0A=0AThe triggered alerts are listed in the table below. To adjust y=';
         );
     }
 
-    /**
-     * @return array
-     */
-    private function getTriggeredAlerts()
+    public function test_sendAlertsPerEmailToRecipient_shouldUseDifferentSubjectDependingOnPeriod()
     {
+        $this->assertDateInSubject('week', 'week December 21 – 27, 2009');
+        $this->assertDateInSubject('day', 'Thursday, December 31, 2009');
+        $this->assertDateInSubject('month', 'December 2009');
+    }
+
+    private function assertDateInSubject($period, $expectedDate)
+    {
+        $alerts = $this->getTriggeredAlerts();
+
+        $mail = new Mail();
+        $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com', $period, 1);
+
+        $expected = 'New alert for website Piwik test [' . str_replace('–', '-', $expectedDate) . ']';
+        $this->assertEquals($mail->getSubject(), $expected);
+    }
+
+    public function test_sendNewAlerts()
+    {
+        $methods = array('sendAlertsPerEmailToRecipient', 'sendAlertsPerSmsToRecipient', 'markAlertAsSent');
+        $mock    = $this->getMockBuilder('Piwik\Plugins\CustomAlerts\tests\Integration\CustomNotifier')
+            ->onlyMethods($methods)
+            ->getMock();
+
         $alerts = array(
-            $this->buildAlert(1, 'MyName1'),
-            $this->buildAlert(2, 'MyName2'),
+            $this->buildAlert(1, 'Alert1', 'week', 4, 'Test', 'login1'),
+            $this->buildAlert(2, 'Alert2', 'week', 4, 'Test', 'login2'),
+            $this->buildAlert(3, 'Alert3', 'week', 4, 'Test', 'login1'),
+            $this->buildAlert(4, 'Alert4', 'week', 4, 'Test', 'login3'),
         );
-        return $alerts;
+
+        $alerts[2]['phone_numbers'] = array('232');
+
+        $idSite = 1;
+        $period = 'week';
+
+        $mock->setTriggeredAlerts($alerts);
+
+        $mock->expects($this->at(0))
+            ->method('sendAlertsPerEmailToRecipient')
+            ->with($this->equalTo($alerts),
+                $this->isInstanceOf('\Piwik\Mail'),
+                $this->equalTo('test5@example.com'),
+                $this->equalTo($period),
+                $this->equalTo($idSite));
+
+        $mock->expects($this->at(1))
+            ->method('sendAlertsPerEmailToRecipient')
+            ->with($this->equalTo(array($alerts[0], $alerts[2])),
+                $this->isInstanceOf('\Piwik\Mail'),
+                $this->equalTo('test1@example.com'),
+                $this->equalTo($period),
+                $this->equalTo($idSite));
+
+        $mock->expects($this->at(2))
+            ->method('sendAlertsPerEmailToRecipient')
+            ->with($this->equalTo(array($alerts[1])),
+                $this->isInstanceOf('\Piwik\Mail'),
+                $this->equalTo('test2@example.com'),
+                $this->equalTo($period),
+                $this->equalTo($idSite));
+
+        $mock->expects($this->at(3))
+            ->method('sendAlertsPerEmailToRecipient')
+            ->with($this->equalTo(array($alerts[3])),
+                $this->isInstanceOf('\Piwik\Mail'),
+                $this->equalTo('test3@example.com'),
+                $this->equalTo($period),
+                $this->equalTo($idSite));
+
+        $mock->expects($this->at(4))
+            ->method('sendAlertsPerSmsToRecipient')
+            ->with($this->equalTo(array($alerts[0], $alerts[1], $alerts[3])),
+                $this->isInstanceOf('\Piwik\Plugins\MobileMessaging\Model'),
+                $this->equalTo('+1234567890'));
+
+        $mock->expects($this->at(5))
+            ->method('sendAlertsPerSmsToRecipient')
+            ->with($this->equalTo($alerts),
+                $this->isInstanceOf('\Piwik\Plugins\MobileMessaging\Model'),
+                $this->equalTo('232'));
+
+        foreach ($alerts as $index => $alert) {
+            $mock->expects($this->at(6 + $index))->method('markAlertAsSent')->with($this->equalTo($alert));
+        }
+
+        $mock->sendNewAlerts($period, $idSite);
     }
 
     public function provideContainerConfig()
     {
         return [
             'observers.global' => \DI\add([
-                ['Test.Mail.send', function (PHPMailer $mail) {
+                [
+                    'Test.Mail.send', function (PHPMailer $mail) {
                     $this->mail = $mail;
                     $this->mail->preSend();
-                }],
+                }
+                ],
             ]),
         ];
     }

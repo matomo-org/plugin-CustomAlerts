@@ -3,10 +3,8 @@
 /**
  * Matomo - free/libre analytics platform
  *
- * @link https://matomo.org
+ * @link    https://matomo.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html Gpl v3 or later
- * @version $Id$
- *
  */
 
 namespace Piwik\Plugins\CustomAlerts;
@@ -83,43 +81,21 @@ class Model
     }
 
     /**
-     * Returns a single Alert
-     *
-     * @param int $idAlert
-     *
-     * @return array|null
-     */
-	public function getAlert($idAlert)
-	{
-        $query  = sprintf('SELECT * FROM %s WHERE idalert = ? LIMIT 1', Common::prefixTable('alert'));
-		$alerts = Db::fetchAll($query, array(intval($idAlert)));
-
-        if (empty($alerts)) {
-            return;
-        }
-
-        $alerts = $this->completeAlerts($alerts);
-		$alert  = array_shift($alerts);
-
-		return $alert;
-	}
-
-    /**
      * Returns the Alerts that are defined on the idSites given.
      *
-     * @param array $idSites
-     * @param bool|string $login   false returns alerts for all users
+     * @param array       $idSites
+     * @param bool|string $login false returns alerts for all users
      *
      * @return array
      */
-	public function getAlerts($idSites, $login = false)
-	{
+    public function getAlerts($idSites, $login = false)
+    {
         $sql    = ("SELECT * FROM " . Common::prefixTable('alert')
-                 . " WHERE idalert IN (" . $this->getInnerSiteQuery($idSites) . ") ");
+            . " WHERE idalert IN (" . $this->getInnerSiteQuery($idSites) . ") ");
         $values = array();
 
         if ($login !== false) {
-            $sql     .= " AND login = ?";
+            $sql      .= " AND login = ?";
             $values[] = $login;
         }
 
@@ -127,240 +103,33 @@ class Model
         $alerts = $this->completeAlerts($alerts);
 
         return $alerts;
-	}
+    }
 
-	public function getTriggeredAlertsForPeriod($period, $date)
-	{
-		$piwikDate = Date::factory($date);
-		$date      = Period\Factory::build($period, $piwikDate);
-
-        $db  = $this->getDb();
-		$sql = $this->getTriggeredAlertsSelectPart()
-               . " WHERE  period = ? AND ts_triggered BETWEEN ? AND ?";
-
-        $values = array(
-            $period,
-            $date->getDateStart()->getDateStartUTC(),
-            $date->getDateEnd()->getDateEndUTC()
-        );
-
-		$alerts = $db->fetchAll($sql, $values);
-        $alerts = $this->completeAlerts($alerts);
-
-        return $alerts;
-	}
-
-	public function getTriggeredAlerts($idSites, $login)
-	{
+    /**
+     * @param $idSites
+     * @return array
+     */
+    protected function getInnerSiteQuery($idSites)
+    {
         $idSites = array_map('intval', $idSites);
 
-        $db  = $this->getDb();
-		$sql = $this->getTriggeredAlertsSelectPart()
-             . " WHERE idsite IN (" . Common::getSqlStringFieldsArray($idSites) . ")"
-             . " AND login = ?";
+        $innerSiteQuery = "SELECT idalert FROM " . Common::prefixTable('alert_site')
+            . " WHERE idsite IN (" . implode(",", $idSites) . ")";
 
-        $values = $idSites;
-        $values[] = $login;
-
-		$alerts = $db->fetchAll($sql, $values);
-        $alerts = $this->completeAlerts($alerts);
-
-        return $alerts;
-	}
-
-    private function getTriggeredAlertsSelectPart()
-    {
-        return "SELECT * FROM   ". Common::prefixTable('alert_triggered');
+        return $innerSiteQuery;
     }
 
-    public function getAllAlerts()
+    private function completeAlerts($alerts)
     {
-        $sql = "SELECT * FROM ". Common::prefixTable('alert');
-
-        $alerts = Db::fetchAll($sql);
-        $alerts = $this->completeAlerts($alerts);
-
-        return $alerts;
-    }
-
-	public function getAllAlertsForPeriod($period)
-	{
-        $sql = "SELECT * FROM ". Common::prefixTable('alert') . " WHERE period = ?";
-
-        $alerts = Db::fetchAll($sql, array($period));
-        $alerts = $this->completeAlerts($alerts);
-
-        return $alerts;
-	}
-
-    /**
-     * Creates an Alert for given website(s).
-     *
-     * @param string $name
-     * @param int[] $idSites
-     * @param string $login
-     * @param string $period
-     * @param bool $emailMe
-     * @param array $additionalEmails
-     * @param array $phoneNumbers
-     * @param string $metric (nb_uniq_visits, sum_visit_length, ..)
-     * @param string $metricCondition
-     * @param float $metricValue
-     * @param int $comparedTo
-     * @param string $reportUniqueId
-     * @param string $reportCondition
-     * @param string $reportValue
-     *
-     * @throws \Exception
-     * @internal param bool $enableEmail
-     * @return int ID of new Alert
-     */
-	public function createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue)
-	{
-        $idAlert = $this->getNextAlertId();
-
-		$newAlert = array(
-			'idalert'          => $idAlert,
-			'name'             => $name,
-			'period'           => $period,
-			'login'            => $login,
-			'email_me'         => $emailMe ? 1 : 0,
-			'additional_emails' => json_encode($additionalEmails),
-			'phone_numbers'    => json_encode($phoneNumbers),
-			'metric'           => $metric,
-			'metric_condition' => $metricCondition,
-			'metric_matched'   => $metricValue,
-			'report'           => $reportUniqueId,
-            'compared_to'      => $comparedTo,
-            'report_condition' => $reportCondition,
-            'report_matched'   => $reportValue
-		);
-
-        $db = $this->getDb();
-		$db->insert(Common::prefixTable('alert'), $newAlert);
-
-        $this->setSiteIds($idAlert, $idSites);
-
-        return $idAlert;
-	}
-
-    /**
-     * Edits an Alert for given website(s).
-     *
-     * @param $idAlert
-     * @param string $name Name of Alert
-     * @param int[] $idSites array of ints of idSites.
-     * @param string $period Period the alert is defined on.
-     * @param bool $emailMe
-     * @param array $additionalEmails
-     * @param array $phoneNumbers
-     * @param string $metric (nb_uniq_visits, sum_visit_length, ..)
-     * @param string $metricCondition
-     * @param float $metricValue
-     * @param int $comparedTo
-     * @param string $reportUniqueId
-     * @param string $reportCondition
-     * @param string $reportValue
-     *
-     * @throws \Exception
-     * @internal param bool $enableEmail
-     * @return boolean
-     */
-	public function updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue)
-	{
-		$alert = array(
-			'name'             => $name,
-			'period'           => $period,
-			'email_me'         => $emailMe ? 1 : 0,
-            'additional_emails' => json_encode($additionalEmails),
-            'phone_numbers'    => json_encode($phoneNumbers),
-			'metric'           => $metric,
-			'metric_condition' => $metricCondition,
-			'metric_matched'   => $metricValue,
-			'report'           => $reportUniqueId,
-            'compared_to'      => $comparedTo,
-            'report_condition' => $reportCondition,
-            'report_matched'   => $reportValue
-		);
-
-        $db = $this->getDb();
-		$db->update(Common::prefixTable('alert'), $alert, "idalert = " . intval($idAlert));
-
-        $this->setSiteIds($idAlert, $idSites);
-
-		return $idAlert;
-	}
-
-    /**
-     * Delete alert by id.
-     *
-     * @param int $idAlert
-     *
-     * @throws \Exception In case alert does not exist or not enough permission
-     */
-	public function deleteAlert($idAlert)
-	{
-        $db = $this->getDb();
-        $db->query("DELETE FROM " . Common::prefixTable("alert") . " WHERE idalert = ?", array($idAlert));
-        $db->query("DELETE FROM " . Common::prefixTable("alert_triggered") . " WHERE idalert = ?", array($idAlert));
-        $this->removeAllSites($idAlert);
-    }
-
-    public function triggerAlert($idAlert, $idSite, $valueNew, $valueOld, $datetime)
-    {
-        $alert      = $this->getAlert($idAlert);
-
-        $keysToKeep = array('idalert', 'name', 'login', 'period', 'metric', 'metric_condition', 'metric_matched', 'report', 'report_condition', 'report_matched', 'compared_to', 'email_me', 'additional_emails', 'phone_numbers');
-
-        $triggeredAlert = array();
-        foreach ($keysToKeep as $key) {
-            $triggeredAlert[$key] = $alert[$key];
+        foreach ($alerts as &$alert) {
+            $alert['additional_emails'] = json_decode($alert['additional_emails']);
+            $alert['phone_numbers']     = json_decode($alert['phone_numbers']);
+            $alert['email_me']          = (int)$alert['email_me'];
+            $alert['compared_to']       = (int)$alert['compared_to'];
+            $alert['id_sites']          = $this->getDefinedSiteIds($alert['idalert']);
         }
 
-        $triggeredAlert['metric_matched'] = Common::forceDotAsSeparatorForDecimalPoint($triggeredAlert['metric_matched']);
-        $triggeredAlert['ts_triggered'] = $datetime;
-        $triggeredAlert['ts_last_sent'] = null;
-        $triggeredAlert['value_new'] = $valueNew;
-        $triggeredAlert['value_old'] = $valueOld;
-        $triggeredAlert['idsite']    = $idSite;
-        $triggeredAlert['additional_emails'] = json_encode($triggeredAlert['additional_emails']);
-        $triggeredAlert['phone_numbers'] = json_encode($triggeredAlert['phone_numbers']);
-
-        $db = $this->getDb();
-        $db->insert(
-            Common::prefixTable('alert_triggered'),
-            $triggeredAlert
-        );
-    }
-
-    public function markTriggeredAlertAsSent($idTriggered, $timestamp)
-    {
-        $log = array(
-            'ts_last_sent' => Date::factory($timestamp)->getDatetime()
-        );
-
-        $where = sprintf("idtriggered = %d", $idTriggered);
-
-        $db = $this->getDb();
-        $db->update(Common::prefixTable('alert_triggered'), $log, $where);
-    }
-
-    public function setSiteIds($idAlert, $idSites)
-    {
-        $this->removeAllSites($idAlert);
-
-        $db = $this->getDb();
-        foreach ($idSites as $idSite) {
-            $db->insert(Common::prefixTable('alert_site'), array(
-                'idalert' => intval($idAlert),
-                'idsite' => intval($idSite)
-            ));
-        }
-    }
-
-    public function deleteTriggeredAlertsForSite($idSite)
-    {
-        $this->getDb()->query("DELETE FROM " . Common::prefixTable("alert_triggered") . " WHERE idsite = ?", $idSite);
+        return $alerts;
     }
 
     private function getDefinedSiteIds($idAlert)
@@ -376,6 +145,125 @@ class Model
         return $idSites;
     }
 
+    public function getTriggeredAlertsForPeriod($period, $date)
+    {
+        $piwikDate = Date::factory($date);
+        $date      = Period\Factory::build($period, $piwikDate);
+
+        $db  = $this->getDb();
+        $sql = $this->getTriggeredAlertsSelectPart()
+            . " WHERE  period = ? AND ts_triggered BETWEEN ? AND ?";
+
+        $values = array(
+            $period,
+            $date->getDateStart()->getDateStartUTC(),
+            $date->getDateEnd()->getDateEndUTC()
+        );
+
+        $alerts = $db->fetchAll($sql, $values);
+        $alerts = $this->completeAlerts($alerts);
+
+        return $alerts;
+    }
+
+    private function getDb()
+    {
+        return Db::get();
+    }
+
+    private function getTriggeredAlertsSelectPart()
+    {
+        return "SELECT * FROM   " . Common::prefixTable('alert_triggered');
+    }
+
+    public function getTriggeredAlerts($idSites, $login)
+    {
+        $idSites = array_map('intval', $idSites);
+
+        $db  = $this->getDb();
+        $sql = $this->getTriggeredAlertsSelectPart()
+            . " WHERE idsite IN (" . Common::getSqlStringFieldsArray($idSites) . ")"
+            . " AND login = ?";
+
+        $values   = $idSites;
+        $values[] = $login;
+
+        $alerts = $db->fetchAll($sql, $values);
+        $alerts = $this->completeAlerts($alerts);
+
+        return $alerts;
+    }
+
+    public function getAllAlerts()
+    {
+        $sql = "SELECT * FROM " . Common::prefixTable('alert');
+
+        $alerts = Db::fetchAll($sql);
+        $alerts = $this->completeAlerts($alerts);
+
+        return $alerts;
+    }
+
+    public function getAllAlertsForPeriod($period)
+    {
+        $sql = "SELECT * FROM " . Common::prefixTable('alert') . " WHERE period = ?";
+
+        $alerts = Db::fetchAll($sql, array($period));
+        $alerts = $this->completeAlerts($alerts);
+
+        return $alerts;
+    }
+
+    /**
+     * Creates an Alert for given website(s).
+     *
+     * @param string $name
+     * @param int[]  $idSites
+     * @param string $login
+     * @param string $period
+     * @param bool   $emailMe
+     * @param array  $additionalEmails
+     * @param array  $phoneNumbers
+     * @param string $metric (nb_uniq_visits, sum_visit_length, ..)
+     * @param string $metricCondition
+     * @param float  $metricValue
+     * @param int    $comparedTo
+     * @param string $reportUniqueId
+     * @param string $reportCondition
+     * @param string $reportValue
+     *
+     * @return int ID of new Alert
+     * @throws \Exception
+     */
+    public function createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue)
+    {
+        $idAlert = $this->getNextAlertId();
+
+        $newAlert = array(
+            'idalert'           => $idAlert,
+            'name'              => $name,
+            'period'            => $period,
+            'login'             => $login,
+            'email_me'          => $emailMe ? 1 : 0,
+            'additional_emails' => json_encode($additionalEmails),
+            'phone_numbers'     => json_encode($phoneNumbers),
+            'metric'            => $metric,
+            'metric_condition'  => $metricCondition,
+            'metric_matched'    => $metricValue,
+            'report'            => $reportUniqueId,
+            'compared_to'       => $comparedTo,
+            'report_condition'  => $reportCondition,
+            'report_matched'    => $reportValue
+        );
+
+        $db = $this->getDb();
+        $db->insert(Common::prefixTable('alert'), $newAlert);
+
+        $this->setSiteIds($idAlert, $idSites);
+
+        return $idAlert;
+    }
+
     private function getNextAlertId()
     {
         $idAlert = Db::fetchOne("SELECT max(idalert) + 1 FROM " . Common::prefixTable('alert'));
@@ -387,17 +275,17 @@ class Model
         return $idAlert;
     }
 
-    private function completeAlerts($alerts)
+    public function setSiteIds($idAlert, $idSites)
     {
-        foreach ($alerts as &$alert) {
-            $alert['additional_emails'] = json_decode($alert['additional_emails']);
-            $alert['phone_numbers']     = json_decode($alert['phone_numbers']);
-            $alert['email_me']          = (int) $alert['email_me'];
-            $alert['compared_to']       = (int) $alert['compared_to'];
-            $alert['id_sites']          = $this->getDefinedSiteIds($alert['idalert']);
-        }
+        $this->removeAllSites($idAlert);
 
-        return $alerts;
+        $db = $this->getDb();
+        foreach ($idSites as $idSite) {
+            $db->insert(Common::prefixTable('alert_site'), array(
+                'idalert' => intval($idAlert),
+                'idsite'  => intval($idSite)
+            ));
+        }
     }
 
     private function removeAllSites($idAlert)
@@ -406,22 +294,128 @@ class Model
     }
 
     /**
-     * @param $idSites
-     * @return array
+     * Edits an Alert for given website(s).
+     *
+     * @param int    $idAlert
+     * @param string $name    Name of Alert
+     * @param int[]  $idSites array of ints of idSites.
+     * @param string $period  Period the alert is defined on.
+     * @param bool   $emailMe
+     * @param array  $additionalEmails
+     * @param array  $phoneNumbers
+     * @param string $metric  (nb_uniq_visits, sum_visit_length, ..)
+     * @param string $metricCondition
+     * @param float  $metricValue
+     * @param int    $comparedTo
+     * @param string $reportUniqueId
+     * @param string $reportCondition
+     * @param string $reportValue
+     *
+     * @return int
+     * @throws \Exception
      */
-    protected function getInnerSiteQuery($idSites)
+    public function updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue)
     {
-        $idSites = array_map('intval', $idSites);
+        $alert = array(
+            'name'              => $name,
+            'period'            => $period,
+            'email_me'          => $emailMe ? 1 : 0,
+            'additional_emails' => json_encode($additionalEmails),
+            'phone_numbers'     => json_encode($phoneNumbers),
+            'metric'            => $metric,
+            'metric_condition'  => $metricCondition,
+            'metric_matched'    => $metricValue,
+            'report'            => $reportUniqueId,
+            'compared_to'       => $comparedTo,
+            'report_condition'  => $reportCondition,
+            'report_matched'    => $reportValue
+        );
 
-        $innerSiteQuery = "SELECT idalert FROM " . Common::prefixTable('alert_site')
-                        . " WHERE idsite IN (" . implode(",", $idSites) . ")";
+        $db = $this->getDb();
+        $db->update(Common::prefixTable('alert'), $alert, "idalert = " . intval($idAlert));
 
-        return $innerSiteQuery;
+        $this->setSiteIds($idAlert, $idSites);
+
+        return $idAlert;
     }
 
-    private function getDb()
+    /**
+     * Delete alert by id.
+     *
+     * @param int $idAlert
+     *
+     * @throws \Exception In case alert does not exist or not enough permission
+     */
+    public function deleteAlert($idAlert)
     {
-        return Db::get();
+        $db = $this->getDb();
+        $db->query("DELETE FROM " . Common::prefixTable("alert") . " WHERE idalert = ?", array($idAlert));
+        $db->query("DELETE FROM " . Common::prefixTable("alert_triggered") . " WHERE idalert = ?", array($idAlert));
+        $this->removeAllSites($idAlert);
+    }
+
+    public function triggerAlert($idAlert, $idSite, $valueNew, $valueOld, $datetime)
+    {
+        $alert = $this->getAlert($idAlert);
+
+        $keysToKeep = array('idalert', 'name', 'login', 'period', 'metric', 'metric_condition', 'metric_matched', 'report', 'report_condition', 'report_matched', 'compared_to', 'email_me', 'additional_emails', 'phone_numbers');
+
+        $triggeredAlert = array();
+        foreach ($keysToKeep as $key) {
+            $triggeredAlert[$key] = $alert[$key];
+        }
+
+        $triggeredAlert['metric_matched']    = Common::forceDotAsSeparatorForDecimalPoint($triggeredAlert['metric_matched']);
+        $triggeredAlert['ts_triggered']      = $datetime;
+        $triggeredAlert['ts_last_sent']      = null;
+        $triggeredAlert['value_new']         = $valueNew;
+        $triggeredAlert['value_old']         = $valueOld;
+        $triggeredAlert['idsite']            = $idSite;
+        $triggeredAlert['additional_emails'] = json_encode($triggeredAlert['additional_emails']);
+        $triggeredAlert['phone_numbers']     = json_encode($triggeredAlert['phone_numbers']);
+
+        $db = $this->getDb();
+        $db->insert(
+            Common::prefixTable('alert_triggered'),
+            $triggeredAlert
+        );
+    }
+
+    /**
+     * Returns a single Alert
+     *
+     * @param int $idAlert
+     *
+     * @return array|null
+     */
+    public function getAlert($idAlert)
+    {
+        $query  = sprintf('SELECT * FROM %s WHERE idalert = ? LIMIT 1', Common::prefixTable('alert'));
+        $alerts = Db::fetchAll($query, array(intval($idAlert)));
+
+        if (empty($alerts)) {
+            return null;
+        }
+
+        $alerts = $this->completeAlerts($alerts);
+        return array_shift($alerts);
+    }
+
+    public function markTriggeredAlertAsSent($idTriggered, $timestamp)
+    {
+        $log = array(
+            'ts_last_sent' => Date::factory($timestamp)->getDatetime()
+        );
+
+        $where = sprintf("idtriggered = %d", $idTriggered);
+
+        $db = $this->getDb();
+        $db->update(Common::prefixTable('alert_triggered'), $log, $where);
+    }
+
+    public function deleteTriggeredAlertsForSite($idSite)
+    {
+        $this->getDb()->query("DELETE FROM " . Common::prefixTable("alert_triggered") . " WHERE idsite = ?", $idSite);
     }
 
 }

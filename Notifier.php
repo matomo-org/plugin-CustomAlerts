@@ -3,10 +3,8 @@
 /**
  * Matomo - free/libre analytics platform
  *
- * @link https://matomo.org
+ * @link    https://matomo.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html Gpl v3 or later
- * @version $Id$
- *
  */
 
 namespace Piwik\Plugins\CustomAlerts;
@@ -27,27 +25,15 @@ use Piwik\View;
  */
 class Notifier extends \Piwik\Plugin
 {
-    protected function getTriggeredAlerts($period, $idSite)
-    {
-        $now    = $this->getToday()->getDatetime();
-
-        $model  = new Model();
-        $alerts = $model->getTriggeredAlertsForPeriod($period, $now);
-
-        return array_filter($alerts, function ($alert) use ($idSite) {
-            return $idSite && (int) $alert['idsite'] === (int) $idSite && empty($alert['ts_last_sent']);
-        });
-    }
-
     /**
      * Sends a list of the triggered alerts to all recipients.
      *
      * @param string $period
      * @param int    $idSite
      */
-	public function sendNewAlerts($period, $idSite)
-	{
-		$triggeredAlerts = $this->getTriggeredAlerts($period, $idSite);
+    public function sendNewAlerts($period, $idSite)
+    {
+        $triggeredAlerts = $this->getTriggeredAlerts($period, $idSite);
 
         $alertsPerEmail = $this->groupAlertsPerEmailRecipient($triggeredAlerts);
         foreach ($alertsPerEmail as $email => $alerts) {
@@ -59,40 +45,33 @@ class Notifier extends \Piwik\Plugin
             $this->sendAlertsPerSmsToRecipient($alerts, new \Piwik\Plugins\MobileMessaging\Model(), $phoneNumber);
         }
 
-        foreach($triggeredAlerts as $triggeredAlert) {
+        foreach ($triggeredAlerts as $triggeredAlert) {
             $this->markAlertAsSent($triggeredAlert);
         }
     }
 
-    private function groupAlertsPerSmsRecipient($triggeredAlerts)
+    protected function getTriggeredAlerts($period, $idSite)
     {
-        $recipients = array();
+        $now = $this->getToday()->getDatetime();
 
-        foreach($triggeredAlerts as $triggeredAlert) {
+        $model  = new Model();
+        $alerts = $model->getTriggeredAlertsForPeriod($period, $now);
 
-            $phoneNumbers = $triggeredAlert['phone_numbers'];
+        return array_filter($alerts, function ($alert) use ($idSite) {
+            return $idSite && (int)$alert['idsite'] === (int)$idSite && empty($alert['ts_last_sent']);
+        });
+    }
 
-            if (empty($phoneNumbers)) {
-                $phoneNumbers = array();
-            }
-
-            foreach ($phoneNumbers as $phoneNumber) {
-                if (!array_key_exists($phoneNumber, $recipients)) {
-                    $recipients[$phoneNumber] = array();
-                }
-
-                $recipients[$phoneNumber][] = $triggeredAlert;
-            }
-        }
-
-        return $recipients;
+    protected function getToday()
+    {
+        return Date::now();
     }
 
     private function groupAlertsPerEmailRecipient($triggeredAlerts)
     {
         $alertsPerEmail = array();
 
-        foreach($triggeredAlerts as $triggeredAlert) {
+        foreach ($triggeredAlerts as $triggeredAlert) {
 
             $emails = $this->getEmailRecipientsForAlert($triggeredAlert);
 
@@ -108,12 +87,23 @@ class Notifier extends \Piwik\Plugin
         return $alertsPerEmail;
     }
 
-    protected function markAlertAsSent($triggeredAlert)
+    /**
+     * @param $triggeredAlert
+     * @return array
+     */
+    private function getEmailRecipientsForAlert($triggeredAlert)
     {
-        $timestamp = Date::now()->getDatetime();
+        $recipients = $triggeredAlert['additional_emails'];
 
-        $model = new Model();
-        $model->markTriggeredAlertAsSent($triggeredAlert['idtriggered'], $timestamp);
+        if (empty($recipients)) {
+            $recipients = array();
+        }
+
+        if ($triggeredAlert['email_me']) {
+            $recipients[] = $this->getEmailAddressFromLogin($triggeredAlert['login']);
+        }
+
+        return $recipients;
     }
 
     protected function getEmailAddressFromLogin($login)
@@ -133,41 +123,10 @@ class Notifier extends \Piwik\Plugin
 
     /**
      * @param array  $alerts
-     * @param \Piwik\Plugins\MobileMessaging\Model $mobileMessagingModel
-     * @param string $phoneNumber
-     */
-    protected function sendAlertsPerSmsToRecipient($alerts, $mobileMessagingModel, $phoneNumber)
-    {
-        if (empty($phoneNumber) || empty($alerts)) {
-            return;
-        }
-
-        if (!PluginManager::getInstance()->isPluginActivated('MobileMessaging')) {
-            return;
-        }
-
-        $controller = $this->getController();
-        $content = $controller->formatAlerts($alerts, 'sms');
-        $subject = Piwik::translate('CustomAlerts_SmsAlertFromName');
-
-        $mobileMessagingModel->sendSMS(
-            $content,
-            $phoneNumber,
-            $subject
-        );
-    }
-
-    private function getController()
-    {
-        return StaticContainer::get('Piwik\Plugins\CustomAlerts\Controller');
-    }
-
-    /**
-     * @param array $alerts
-     * @param Mail $mail
+     * @param Mail   $mail
      * @param string $recipient Email address
-     * @param $period
-     * @param $idSite
+     * @param        $period
+     * @param        $idSite
      */
     protected function sendAlertsPerEmailToRecipient($alerts, Mail $mail, $recipient, $period, $idSite)
     {
@@ -204,30 +163,6 @@ class Notifier extends \Piwik\Plugin
         });
     }
 
-    /**
-     * @param $triggeredAlert
-     * @return array
-     */
-    private function getEmailRecipientsForAlert($triggeredAlert)
-    {
-        $recipients = $triggeredAlert['additional_emails'];
-
-        if (empty($recipients)) {
-            $recipients = array();
-        }
-
-        if ($triggeredAlert['email_me']) {
-            $recipients[] = $this->getEmailAddressFromLogin($triggeredAlert['login']);
-        }
-
-        return $recipients;
-    }
-
-    protected function getToday()
-    {
-        return Date::now();
-    }
-
     protected function getPrettyDateForSite($period, $idSite)
     {
         $timezone = Site::getTimezoneFor($idSite);
@@ -244,5 +179,66 @@ class Notifier extends \Piwik\Plugin
         return $prettyDate;
     }
 
+    private function getController()
+    {
+        return StaticContainer::get('Piwik\Plugins\CustomAlerts\Controller');
+    }
+
+    private function groupAlertsPerSmsRecipient($triggeredAlerts)
+    {
+        $recipients = array();
+
+        foreach ($triggeredAlerts as $triggeredAlert) {
+
+            $phoneNumbers = $triggeredAlert['phone_numbers'];
+
+            if (empty($phoneNumbers)) {
+                $phoneNumbers = array();
+            }
+
+            foreach ($phoneNumbers as $phoneNumber) {
+                if (!array_key_exists($phoneNumber, $recipients)) {
+                    $recipients[$phoneNumber] = array();
+                }
+
+                $recipients[$phoneNumber][] = $triggeredAlert;
+            }
+        }
+
+        return $recipients;
+    }
+
+    /**
+     * @param array                                $alerts
+     * @param \Piwik\Plugins\MobileMessaging\Model $mobileMessagingModel
+     * @param string                               $phoneNumber
+     */
+    protected function sendAlertsPerSmsToRecipient($alerts, $mobileMessagingModel, $phoneNumber)
+    {
+        if (empty($phoneNumber) || empty($alerts)) {
+            return;
+        }
+
+        if (!PluginManager::getInstance()->isPluginActivated('MobileMessaging')) {
+            return;
+        }
+
+        $controller = $this->getController();
+        $content    = $controller->formatAlerts($alerts, 'sms');
+        $subject    = Piwik::translate('CustomAlerts_SmsAlertFromName');
+
+        $mobileMessagingModel->sendSMS(
+            $content,
+            $phoneNumber,
+            $subject
+        );
+    }
+
+    protected function markAlertAsSent($triggeredAlert)
+    {
+        $timestamp = Date::now()->getDatetime();
+
+        $model = new Model();
+        $model->markTriggeredAlertAsSent($triggeredAlert['idtriggered'], $timestamp);
+    }
 }
-?>

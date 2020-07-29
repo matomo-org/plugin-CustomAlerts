@@ -52,6 +52,21 @@ class CustomAlertsTest extends BaseTest
         $this->assertEquals(array(1, 3, 2), $siteIds);
     }
 
+    private function createAlert($name, $phoneNumbers, $idSites = array(1), $login = false)
+    {
+        $report = 'MultiSites_getOne';
+        $emails = array('test1@example.com', 'test2@example.com');
+
+        if (false === $login) {
+            $login = Piwik::getCurrentUserLogin();
+        }
+
+        $id = $this->model->createAlert($name, $idSites, $login, 'week', 0, $emails, $phoneNumbers, 'nb_visits',
+            'less_than', 5, $comparedTo = 7, $report, 'matches_exactly', 'Piwik');
+
+        return $this->model->getAlert($id);
+    }
+
     public function test_removePhoneNumberFromAllAlerts()
     {
         $alert1 = $this->createAlert('Initial1', array());
@@ -69,6 +84,17 @@ class CustomAlertsTest extends BaseTest
         $this->assertOnlyPhoneNumberChanged(4, $alert4, array('123445679'));
         $this->assertOnlyPhoneNumberChanged(5, $alert5, array('123445679', '2384'));
         $this->assertOnlyPhoneNumberChanged(6, $alert6, array('123445679'));
+    }
+
+    private function assertOnlyPhoneNumberChanged($id, $alertBefore, $phoneNumbers)
+    {
+        $alert = $this->model->getAlert($id);
+
+        $this->assertSame($phoneNumbers, $alert['phone_numbers']);
+
+        $alertBefore['phone_numbers'] = $phoneNumbers;
+
+        $this->assertSame($alertBefore, $alert);
     }
 
     public function test_deleteAlertsForWebsite()
@@ -121,32 +147,6 @@ class CustomAlertsTest extends BaseTest
         $this->assertEquals('Initial1', $alerts[0]['name']);
         $this->assertEquals('Initial3', $alerts[1]['name']);
         $this->assertEquals('Initial6', $alerts[2]['name']);
-    }
-
-    private function createAlert($name, $phoneNumbers, $idSites = array(1), $login = false)
-    {
-        $report = 'MultiSites_getOne';
-        $emails = array('test1@example.com', 'test2@example.com');
-
-        if (false === $login) {
-            $login = Piwik::getCurrentUserLogin();
-        }
-
-        $id = $this->model->createAlert($name, $idSites, $login, 'week', 0, $emails, $phoneNumbers, 'nb_visits',
-            'less_than', 5, $comparedTo = 7, $report, 'matches_exactly', 'Piwik');
-
-        return $this->model->getAlert($id);
-    }
-
-    private function assertOnlyPhoneNumberChanged($id, $alertBefore, $phoneNumbers)
-    {
-        $alert = $this->model->getAlert($id);
-
-        $this->assertSame($phoneNumbers, $alert['phone_numbers']);
-
-        $alertBefore['phone_numbers'] = $phoneNumbers;
-
-        $this->assertSame($alertBefore, $alert);
     }
 
 }

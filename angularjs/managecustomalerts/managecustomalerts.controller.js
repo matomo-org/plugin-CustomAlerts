@@ -38,7 +38,7 @@
                 period: self.alert.period,
                 idSites: [this.alert.site.id],
                 filter_limit: '-1'
-            }).then(function(data) {
+            }).then(function (data) {
                 renderForm(data);
                 self.isLoadingReport = false;
             }, function () {
@@ -50,8 +50,7 @@
             return 'MultiSites_getOne' == apiMethodUniqueId || 'MultiSites_getAll' == apiMethodUniqueId;
         }
 
-        function updateMetrics(metrics)
-        {
+        function updateMetrics(metrics) {
             self.metricOptions = [];
             if (metrics) {
                 for (var metric in metrics) {
@@ -71,7 +70,7 @@
             self.actualReportMetadata = null;
 
             for (var i = 0; i < data.length; i++) {
-                var reportMetadata  = data[i];
+                var reportMetadata = data[i];
                 var reportApiMethod = reportMetadata.uniqueId;
 
                 if (isBlockedReportApiMethod(reportApiMethod)) {
@@ -106,16 +105,16 @@
 
             var apiParameters = {};
             apiParameters.format = 'json';
-            apiParameters.name  = self.alert.name;
+            apiParameters.name = self.alert.name;
             apiParameters.metric = self.alert.metric;
-            apiParameters.metricCondition  = self.alert.metricCondition;
+            apiParameters.metricCondition = self.alert.metricCondition;
             apiParameters.metricValue = self.alert.metricValue;
             apiParameters.emailMe = self.alert.emailMe ? 1 : 0;
             apiParameters.additionalEmails = (self.alert.additionalEmails && self.alert.additionalEmails.length) ? self.alert.additionalEmails : [''];
             apiParameters.phoneNumbers = self.report && self.report.phoneNumbers ? self.report && self.report.phoneNumbers : [''];
             apiParameters.reportUniqueId = self.alert.report;
             apiParameters.reportCondition = self.alert.reportCondition;
-            apiParameters.reportValue  = self.alert.reportValue;
+            apiParameters.reportValue = self.alert.reportValue;
             apiParameters.idSites = [self.alert.site.id];
             apiParameters.comparedTo = self.alert.comparedTo[self.alert.period];
 
@@ -158,7 +157,7 @@
                 $('.metricValueDescription').text(_pk_translate('General_Value'));
             }
         }
-        
+
         function sendApiRequest(method, POSTparams) {
             self.isLoading = true;
 
@@ -171,7 +170,7 @@
                 self.isLoading = false;
             });
         }
-        
+
         this.createAlert = function () {
             var apiParameters = getApiParameters();
 
@@ -181,7 +180,7 @@
 
             sendApiRequest('CustomAlerts.addAlert', apiParameters);
         };
-        
+
         this.updateAlert = function (idAlert) {
             var apiParameters = getApiParameters();
             apiParameters.idAlert = idAlert;
@@ -211,15 +210,14 @@
 
             var metric = self.alert.metric;
 
-            function sendFeedback(values)
-            {
-                var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
-                response( $.grep( values, function( value ) {
+            function sendFeedback(values) {
+                var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
+                response($.grep(values, function (value) {
                     if (!value) return false;
 
                     value = value.label || value.value || value[metric] || value;
-                    return matcher.test( value );
-                }) );
+                    return matcher.test(value);
+                }));
             }
 
             if (angular.isArray(reportValuesAutoComplete)) {
@@ -254,7 +252,7 @@
                 apiAction: apiAction,
                 idSite: self.alert.site.id,
                 format: 'JSON'
-            }).then(function(data) {
+            }).then(function (data) {
                 if (data && data.reportData) {
                     reportValuesAutoComplete = data.reportData;
                     sendFeedback(data.reportData);

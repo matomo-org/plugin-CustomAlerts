@@ -3,10 +3,8 @@
 /**
  * Matomo - free/libre analytics platform
  *
- * @link https://matomo.org
+ * @link    https://matomo.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html Gpl v3 or later
- * @version $Id$
- *
  */
 
 namespace Piwik\Plugins\CustomAlerts;
@@ -136,11 +134,10 @@ class Validator
      * the given idSites and if the a dimension is
      * given (requires report_condition, report_matched)
      *
-     * @param int $idSite
+     * @param int    $idSite
      * @param string $apiMethodUniqueId for example MultiSites.getAll
      * @param string $metric
      * @throws \Exception
-     * @return boolean
      */
     public function checkApiMethodAndMetric($idSite, $apiMethodUniqueId, $metric)
     {

@@ -29,6 +29,30 @@ class ApiTest extends BaseTest
         $this->setUser();
     }
 
+    protected function createAlert(
+        $name,
+        $period = 'week',
+        $idSites = null,
+        $metric = 'nb_visits',
+        $report = 'MultiSites_getOne',
+        $metricCondition = 'less_than',
+        $reportCondition = 'matches_exactly',
+        $emails = array('test1@example.com', 'test2@example.com'),
+        $comparedTo = 1
+    )
+    {
+        if (is_null($idSites)) {
+            $idSites = $this->idSite;
+        }
+
+        // those should be dropped by the api as they do not exist in Piwik
+        $phoneNumbers = array('+1234567890', '1234567890');
+
+        $id = $this->api->addAlert($name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, $metricCondition,
+            $metricMatched = 5, $comparedTo, $report, $reportCondition, 'Piwik');
+        return $id;
+    }
+
     public function test_addAlert_ShouldFail_IfNotEnoughPermissions()
     {
         $this->expectException(\Exception::class);
@@ -128,12 +152,78 @@ class ApiTest extends BaseTest
         $this->assertIsAlert($id, 'MyCustomAlert', 'week');
     }
 
+    protected function assertIsAlert(
+        $id,
+        $name,
+        $period = 'week',
+        $idSites = null,
+        $login = 'superUserLogin',
+        $metric = 'nb_visits',
+        $metricCondition = 'less_than',
+        $metricMatched = 5,
+        $report = 'MultiSites_getOne',
+        $reportCondition = 'matches_exactly',
+        $reportMatched = 'Piwik'
+    )
+    {
+        if (is_null($idSites)) {
+            $idSites = array($this->idSite);
+        }
+
+        $alert = $this->api->getAlert($id);
+
+        $expected = array(
+            'idalert'           => $id,
+            'name'              => $name,
+            'login'             => $login,
+            'period'            => $period,
+            'report'            => $report,
+            'report_condition'  => $reportCondition,
+            'report_matched'    => $reportMatched,
+            'metric'            => $metric,
+            'metric_condition'  => $metricCondition,
+            'metric_matched'    => $metricMatched,
+            'email_me'          => 0,
+            'additional_emails' => array('test1@example.com', 'test2@example.com'),
+            'phone_numbers'     => array(),
+            'compared_to'       => 1,
+            'id_sites'          => $idSites
+        );
+
+        $this->assertEquals($expected, $alert);
+    }
+
     public function test_editAlert_ShouldFail_IfNotPermission()
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('CustomAlerts_AccessException');
 
         $this->editAlert(2, 'MyCustomAlert', 'day');
+    }
+
+    protected function editAlert(
+        $id,
+        $name,
+        $period = 'week',
+        $idSites = null,
+        $metric = 'nb_visits',
+        $report = 'MultiSites_getOne',
+        $metricCondition = 'less_than',
+        $reportCondition = 'matches_exactly',
+        $emails = array('test1@example.com', 'test2@example.com')
+    )
+    {
+        if (is_null($idSites)) {
+            $idSites = $this->idSite;
+        }
+
+        // those should be dropped by the api as they do not exist in Piwik
+        $phoneNumbers = array('+1234567890', '1234567890');
+        $comparedTo   = 1;
+
+        $id = $this->api->editAlert($id, $name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, $metricCondition,
+            $metricMatched = 5, $comparedTo, $report, $reportCondition, 'Piwik');
+        return $id;
     }
 
     public function test_editAlert_ShouldFail_IfNotExists()
@@ -480,92 +570,5 @@ class ApiTest extends BaseTest
         FakeAccess::$idSitesView = array(1);
         $triggeredAlerts         = $this->api->getTriggeredAlerts(array(1));
         $this->assertCount(0, $triggeredAlerts);
-    }
-
-    protected function createAlert(
-        $name,
-        $period = 'week',
-        $idSites = null,
-        $metric = 'nb_visits',
-        $report = 'MultiSites_getOne',
-        $metricCondition = 'less_than',
-        $reportCondition = 'matches_exactly',
-        $emails = array('test1@example.com', 'test2@example.com'),
-        $comparedTo = 1
-    ) {
-        if (is_null($idSites)) {
-            $idSites = $this->idSite;
-        }
-
-        // those should be dropped by the api as they do not exist in Piwik
-        $phoneNumbers = array('+1234567890', '1234567890');
-
-        $id = $this->api->addAlert($name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, $metricCondition,
-            $metricMatched = 5, $comparedTo, $report, $reportCondition, 'Piwik');
-        return $id;
-    }
-
-    protected function editAlert(
-        $id,
-        $name,
-        $period = 'week',
-        $idSites = null,
-        $metric = 'nb_visits',
-        $report = 'MultiSites_getOne',
-        $metricCondition = 'less_than',
-        $reportCondition = 'matches_exactly',
-        $emails = array('test1@example.com', 'test2@example.com')
-    ) {
-        if (is_null($idSites)) {
-            $idSites = $this->idSite;
-        }
-
-        // those should be dropped by the api as they do not exist in Piwik
-        $phoneNumbers = array('+1234567890', '1234567890');
-        $comparedTo   = 1;
-
-        $id = $this->api->editAlert($id, $name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, $metricCondition,
-            $metricMatched = 5, $comparedTo, $report, $reportCondition, 'Piwik');
-        return $id;
-    }
-
-    protected function assertIsAlert(
-        $id,
-        $name,
-        $period = 'week',
-        $idSites = null,
-        $login = 'superUserLogin',
-        $metric = 'nb_visits',
-        $metricCondition = 'less_than',
-        $metricMatched = 5,
-        $report = 'MultiSites_getOne',
-        $reportCondition = 'matches_exactly',
-        $reportMatched = 'Piwik'
-    ) {
-        if (is_null($idSites)) {
-            $idSites = array($this->idSite);
-        }
-
-        $alert = $this->api->getAlert($id);
-
-        $expected = array(
-            'idalert'           => $id,
-            'name'              => $name,
-            'login'             => $login,
-            'period'            => $period,
-            'report'            => $report,
-            'report_condition'  => $reportCondition,
-            'report_matched'    => $reportMatched,
-            'metric'            => $metric,
-            'metric_condition'  => $metricCondition,
-            'metric_matched'    => $metricMatched,
-            'email_me'          => 0,
-            'additional_emails' => array('test1@example.com', 'test2@example.com'),
-            'phone_numbers'     => array(),
-            'compared_to'       => 1,
-            'id_sites'          => $idSites
-        );
-
-        $this->assertEquals($expected, $alert);
     }
 }

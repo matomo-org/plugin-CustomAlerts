@@ -2,23 +2,24 @@
 
 <table piwik-content-table ng-controller="ManagecustomalertsController as manageAlerts">
     <thead>
-        <tr>
-            <th>{{ 'General_Name'|translate }}</th>
-            <th>{{ 'General_Website'|translate }}</th>
-            <th>{{ 'General_Period'|translate }}</th>
-            <th>{{ 'General_Report'|translate }}</th>
-            <th>{{ 'General_Edit'|translate }}</th>
-            <th>{{ 'General_Delete'|translate }}</th>
-        </tr>
-    </thead>
-    {% if not alerts %}
     <tr>
-        <td colspan="6">
-            <br/>
-            {{ 'CustomAlerts_NoAlertsDefined'|translate }}
-            <br/><br/>
-        </td>
+        <th>{{ 'General_Name'|translate }}</th>
+        <th>{{ 'General_Website'|translate }}</th>
+        <th>{{ 'General_Period'|translate }}</th>
+        <th>{{ 'General_Report'|translate }}</th>
+        <th>{{ 'General_Edit'|translate }}</th>
+        <th>{{ 'General_Delete'|translate }}</th>
     </tr>
+    </thead>
+    <tbody>
+    {% if not alerts %}
+        <tr>
+            <td colspan="6">
+                <br/>
+                {{ 'CustomAlerts_NoAlertsDefined'|translate }}
+                <br/><br/>
+            </td>
+        </tr>
     {% else %}
         {% for alert in alerts %}
             <tr>
@@ -30,19 +31,20 @@
                     <a href="{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert}) }}"
                        class="table-action"
                        title="{{ 'General_Edit'|translate|e('html_attr') }}"
-                        ><span class="icon-edit"></span></a>
+                    ><span class="icon-edit"></span></a>
                 </td>
                 <td class="delete">
                     <button
-                        id="{{ alert.idalert|e('html_attr') }}"
-                        ng-click="manageAlerts.deleteAlert({{ alert.idalert|e('html_attr') }})"
-                        class="deleteAlert table-action"
-                        title="{{ 'General_Delete'|translate|e('html_attr') }}"
-                        ><span class="icon-delete"></span> </button>
+                            id="{{ alert.idalert|e('html_attr') }}"
+                            ng-click="manageAlerts.deleteAlert({{ alert.idalert|e('html_attr') }})"
+                            class="deleteAlert table-action"
+                            title="{{ 'General_Delete'|translate|e('html_attr') }}"
+                    ><span class="icon-delete"></span></button>
                 </td>
             </tr>
         {% endfor %}
     {% endif %}
+    </tbody>
 </table>
 
 <div class="tableActionBar">

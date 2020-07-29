@@ -2,7 +2,7 @@
 /**
  * Matomo - free/libre analytics platform
  *
- * @link https://matomo.org
+ * @link    https://matomo.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  *
  */
@@ -27,6 +27,11 @@ class Updates_0_0_2 extends Updates
         $this->migration = $factory;
     }
 
+    public function doUpdate(Updater $updater)
+    {
+        $updater->executeMigrations(__FILE__, $this->getMigrations($updater));
+    }
+
     public function getMigrations(Updater $updater)
     {
         return array(
@@ -34,10 +39,5 @@ class Updates_0_0_2 extends Updates
             $this->migration->db->addColumn('alert', 'additional_emails', 'TEXT', 'email_me'),
             $this->migration->db->addColumn('alert', 'phone_numbers', 'TEXT', 'additional_emails'),
         );
-    }
-
-    public function doUpdate(Updater $updater)
-    {
-        $updater->executeMigrations(__FILE__, $this->getMigrations($updater));
     }
 }

@@ -2,7 +2,7 @@
 /**
  * Matomo - free/libre analytics platform
  *
- * @link https://matomo.org
+ * @link    https://matomo.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  *
  */
@@ -27,15 +27,15 @@ class Updates_0_0_5 extends Updates
         $this->migration = $factory;
     }
 
+    public function doUpdate(Updater $updater)
+    {
+        $updater->executeMigrations(__FILE__, $this->getMigrations($updater));
+    }
+
     public function getMigrations(Updater $updater)
     {
         return array(
             $this->migration->db->addColumn('alert', 'compared_to', 'TINYINT NOT NULL DEFAULT 1', 'metric_matched')
         );
-    }
-
-    public function doUpdate(Updater $updater)
-    {
-        $updater->executeMigrations(__FILE__, $this->getMigrations($updater));
     }
 }

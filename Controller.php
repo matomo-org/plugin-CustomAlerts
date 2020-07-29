@@ -2,10 +2,8 @@
 /**
  * Matomo - free/libre analytics platform
  *
- * @link https://matomo.org
+ * @link    https://matomo.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html Gpl v3 or later
- * @version $Id$
- *
  */
 
 namespace Piwik\Plugins\CustomAlerts;
@@ -21,7 +19,7 @@ use Piwik\Site;
 use Piwik\View;
 
 /**
-  *
+ *
  */
 class Controller extends \Piwik\Plugin\ControllerAdmin
 {
@@ -36,11 +34,11 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
         parent::__construct();
     }
 
-	/**
-	 * Shows all Alerts of the current selected idSite.
-	 */
-	public function index()
-	{
+    /**
+     * Shows all Alerts of the current selected idSite.
+     */
+    public function index()
+    {
         $view = new View('@CustomAlerts/index');
         $this->setGeneralVariablesView($view);
 
@@ -54,162 +52,12 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
 
         $view->alerts = $alerts;
 
-		return $view->render();
-	}
-
-	public function historyTriggeredAlerts()
-	{
-        $view = new View('@CustomAlerts/historyTriggeredAlerts');
-        $this->setGeneralVariablesView($view);
-
-        $idSites = $this->getSiteIdsHavingAccess();
-        $alerts  = API::getInstance()->getTriggeredAlerts($idSites);
-        array_slice($alerts, 0, 100);
-        $alerts  = array_reverse($alerts);
-
-        $view->alertsFormatted = $this->formatAlerts($alerts, 'html_extended');
-
-		return $view->render();
-	}
-
-	public function addNewAlert()
-	{
-        $view = new View('@CustomAlerts/addNewAlert');
-		$this->setGeneralVariablesView($view);
-        $this->addBasicCreateAndEditVariables($view, null);
-
-        $view->currentSite = array('id' => $this->idSite, 'name' => $this->site->getName());
-
-		return $view->render();
-	}
-
-	public function editAlert()
-	{
-		$idAlert = Common::getRequestVar('idAlert', null, 'int');
-
-        $view = new View('@CustomAlerts/editAlert');
-		$this->setGeneralVariablesView($view);
-
-        $alert = API::getInstance()->getAlert($idAlert);
-        $view->currentSite = array('id' => $this->findSiteId($alert), 'name' => $this->findSiteName($alert));
-
-        $this->addBasicCreateAndEditVariables($view, $alert);
-
-		return $view->render();
-	}
-
-    /**
-     * Returns the Alerts that were triggered in $format.
-     *
-     * @param array $triggeredAlerts
-     * @param string $format Can be 'html' or 'tsv'
-     * @throws \Exception
-     * @return string
-     */
-    public function formatAlerts($triggeredAlerts, $format)
-    {
-        switch ($format) {
-            case 'html_extended':
-                $view = new View('@CustomAlerts/htmlTriggeredAlerts');
-                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
-                $view->hasConditions   = count(array_filter($triggeredAlerts, function($alert) {
-                    return !empty($alert['report_condition']);
-                }));
-                $view->extended        = true;
-
-                return $view->render();
-
-            case 'html':
-                $view = new View('@CustomAlerts/htmlTriggeredAlerts');
-                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
-                $view->hasConditions   = count(array_filter($triggeredAlerts, function($alert) {
-                    return !empty($alert['report_condition']);
-                }));
-                $view->extended        = false;
-
-                return $view->render();
-
-            case 'sms':
-
-                $view = new View('@CustomAlerts/smsTriggeredAlerts');
-                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
-
-                return $view->render();
-
-            case 'text':
-
-                $view = new View('@CustomAlerts/textTriggeredAlerts');
-                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
-
-                return $view->render();
-        }
-
-        throw new \Exception('Unsupported format');
+        return $view->render();
     }
 
-    private function addBasicCreateAndEditVariables($view, $alert)
+    private function getSiteIdsHavingAccess()
     {
-        $view->alert = $alert;
-
-        $alertGroupConditions = array();
-        foreach (Processor::getGroupConditions() as $condName => $condValue) {
-            $alertGroupConditions[] = array('key' => $condValue, 'value' => Piwik::translate($condName));
-        }
-
-        $view->alertGroupConditions = $alertGroupConditions;
-
-        $comparablesDates = array();
-        foreach (Processor::getComparablesDates() as $period => $comparablesDatesPeriod) {
-            $comparablesDates[$period] = array();
-            foreach ($comparablesDatesPeriod as $compDateTranslation => $key) {
-                $comparablesDates[$period][] = array('key' => (string)$key, 'value' => Piwik::translate($compDateTranslation));
-            }
-        }
-
-        $view->currentUserEmail = Piwik::getCurrentUserEmail();
-        $view->comparablesDates   = $comparablesDates;
-        $view->reportMetadata     = $this->findReportMetadata($alert);
-        $view->supportsSMS        = $this->supportsSms();
-        $view->periodOptions = array(
-            array('key' => 'day', 'value' => Piwik::translate('Intl_PeriodDay')),
-            array('key' => 'week', 'value' => Piwik::translate('Intl_PeriodWeek')),
-            array('key' => 'month', 'value' => Piwik::translate('Intl_PeriodMonth')),
-        );
-
-        $numbers = (new \Piwik\Plugins\MobileMessaging\Model())->getActivatedPhoneNumbers(Piwik::getCurrentUserLogin());
-
-        $phoneNumbers = array();
-        if (!empty($numbers)) {
-            foreach ($numbers as $number) {
-                $phoneNumbers[$number] = $number;
-            }
-        }
-
-        $view->phoneNumbers = $phoneNumbers;
-
-        $metricConditionOptions = array();
-        foreach (Processor::getMetricConditions() as $condName => $condValue) {
-            $metricConditionOptions[] = array('key' => $condValue, 'value' => Piwik::translate($condName));
-        }
-        $view->metricConditionOptions = $metricConditionOptions;
-    }
-
-    private function supportsSms()
-    {
-        return PluginManager::getInstance()->isPluginActivated('MobileMessaging');
-    }
-
-    private function findReportMetadata($alert)
-    {
-        $idSite = $this->findSiteId($alert);
-
-        if (empty($idSite)) {
-            return;
-        }
-
-        $report = $this->processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
-
-        return $report;
+        return SitesManagerApi::getInstance()->getSitesIdWithAtLeastViewAccess();
     }
 
     private function findReportName($alert)
@@ -221,20 +69,23 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
         }
     }
 
-    private function findSiteName($alert)
+    private function findReportMetadata($alert)
     {
         $idSite = $this->findSiteId($alert);
 
-        if (!empty($idSite)) {
-
-            return Site::getNameFor($idSite);
+        if (empty($idSite)) {
+            return null;
         }
+
+        $report = $this->processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
+
+        return $report;
     }
 
     private function findSiteId($alert)
     {
         if (empty($alert)) {
-            return;
+            return null;
         }
 
         // triggered alert
@@ -249,9 +100,78 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
         }
     }
 
-    private function getSiteIdsHavingAccess()
+    private function findSiteName($alert)
     {
-        return SitesManagerApi::getInstance()->getSitesIdWithAtLeastViewAccess();
+        $idSite = $this->findSiteId($alert);
+
+        if (!empty($idSite)) {
+
+            return Site::getNameFor($idSite);
+        }
+    }
+
+    public function historyTriggeredAlerts()
+    {
+        $view = new View('@CustomAlerts/historyTriggeredAlerts');
+        $this->setGeneralVariablesView($view);
+
+        $idSites = $this->getSiteIdsHavingAccess();
+        $alerts  = API::getInstance()->getTriggeredAlerts($idSites);
+        array_slice($alerts, 0, 100);
+        $alerts = array_reverse($alerts);
+
+        $view->alertsFormatted = $this->formatAlerts($alerts, 'html_extended');
+
+        return $view->render();
+    }
+
+    /**
+     * Returns the Alerts that were triggered in $format.
+     *
+     * @param array  $triggeredAlerts
+     * @param string $format Can be 'html' or 'tsv'
+     * @return string
+     * @throws \Exception
+     */
+    public function formatAlerts($triggeredAlerts, $format)
+    {
+        switch ($format) {
+            case 'html_extended':
+                $view                  = new View('@CustomAlerts/htmlTriggeredAlerts');
+                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
+                $view->hasConditions   = count(array_filter($triggeredAlerts, function ($alert) {
+                    return !empty($alert['report_condition']);
+                }));
+                $view->extended        = true;
+
+                return $view->render();
+
+            case 'html':
+                $view                  = new View('@CustomAlerts/htmlTriggeredAlerts');
+                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
+                $view->hasConditions   = count(array_filter($triggeredAlerts, function ($alert) {
+                    return !empty($alert['report_condition']);
+                }));
+                $view->extended        = false;
+
+                return $view->render();
+
+            case 'sms':
+
+                $view                  = new View('@CustomAlerts/smsTriggeredAlerts');
+                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
+
+                return $view->render();
+
+            case 'text':
+
+                $view                  = new View('@CustomAlerts/textTriggeredAlerts');
+                $view->triggeredAlerts = $this->enrichTriggeredAlerts($triggeredAlerts);
+
+                return $view->render();
+        }
+
+        throw new \Exception('Unsupported format');
     }
 
     protected function enrichTriggeredAlerts($triggeredAlerts)
@@ -285,19 +205,19 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
         }
 
         foreach ($triggeredAlerts as &$alert) {
-            $idSite = $alert['idsite'];
-            $metric = $alert['metric'];
-            $report = $alert['report'];
+            $idSite     = $alert['idsite'];
+            $metric     = $alert['metric'];
+            $report     = $alert['report'];
             $cachedSite = $cached[$idSite];
 
-            $alert['value_old']    = (int) $alert['value_old'] == $alert['value_old'] ? (int) $alert['value_old'] : $alert['value_old'];
-            $alert['value_new']    = (int) $alert['value_new'] == $alert['value_new'] ? (int) $alert['value_new'] : $alert['value_new'];
-            $alert['reportName']   = null;
-            $alert['dimension']    = null;
-            $alert['reportMetric'] = !empty($cachedSite['metric'][$report][$metric]) ? $cachedSite['metric'][$report][$metric] : null;
+            $alert['value_old']           = (int)$alert['value_old'] == $alert['value_old'] ? (int)$alert['value_old'] : $alert['value_old'];
+            $alert['value_new']           = (int)$alert['value_new'] == $alert['value_new'] ? (int)$alert['value_new'] : $alert['value_new'];
+            $alert['reportName']          = null;
+            $alert['dimension']           = null;
+            $alert['reportMetric']        = !empty($cachedSite['metric'][$report][$metric]) ? $cachedSite['metric'][$report][$metric] : null;
             $alert['reportConditionName'] = null;
-            $alert['siteName']     = $cached[$idSite]['siteName'];
-            $alert['ts_triggered'] = $this->getPrettyDateForSite($alert['ts_triggered'], $alert['period'], $cachedSite['siteTimezone']);
+            $alert['siteName']            = $cached[$idSite]['siteName'];
+            $alert['ts_triggered']        = $this->getPrettyDateForSite($alert['ts_triggered'], $alert['period'], $cachedSite['siteTimezone']);
 
             if (!empty($cachedSite['report'][$report])) {
                 $reportMetadata = $cachedSite['report'][$report];
@@ -305,7 +225,7 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
                 $alert['reportName'] = $reportMetadata['name'];
                 $alert['dimension']  = !empty($reportMetadata['dimension']) ? $reportMetadata['dimension'] : null;
 
-                $conditionTranslation = array_search($alert['report_condition'], Processor::getGroupConditions(), true);
+                $conditionTranslation         = array_search($alert['report_condition'], Processor::getGroupConditions(), true);
                 $alert['reportConditionName'] = $conditionTranslation ? Piwik::translate($conditionTranslation) : null;
             }
         }
@@ -323,5 +243,83 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
         $prettyDate = $period->getLocalizedShortString();
 
         return $prettyDate;
+    }
+
+    public function addNewAlert()
+    {
+        $view = new View('@CustomAlerts/addNewAlert');
+        $this->setGeneralVariablesView($view);
+        $this->addBasicCreateAndEditVariables($view, null);
+
+        $view->currentSite = array('id' => $this->idSite, 'name' => $this->site->getName());
+
+        return $view->render();
+    }
+
+    private function addBasicCreateAndEditVariables($view, $alert)
+    {
+        $view->alert = $alert;
+
+        $alertGroupConditions = array();
+        foreach (Processor::getGroupConditions() as $condName => $condValue) {
+            $alertGroupConditions[] = array('key' => $condValue, 'value' => Piwik::translate($condName));
+        }
+
+        $view->alertGroupConditions = $alertGroupConditions;
+
+        $comparablesDates = array();
+        foreach (Processor::getComparablesDates() as $period => $comparablesDatesPeriod) {
+            $comparablesDates[$period] = array();
+            foreach ($comparablesDatesPeriod as $compDateTranslation => $key) {
+                $comparablesDates[$period][] = array('key' => (string)$key, 'value' => Piwik::translate($compDateTranslation));
+            }
+        }
+
+        $view->currentUserEmail = Piwik::getCurrentUserEmail();
+        $view->comparablesDates = $comparablesDates;
+        $view->reportMetadata   = $this->findReportMetadata($alert);
+        $view->supportsSMS      = $this->supportsSms();
+        $view->periodOptions    = array(
+            array('key' => 'day', 'value' => Piwik::translate('Intl_PeriodDay')),
+            array('key' => 'week', 'value' => Piwik::translate('Intl_PeriodWeek')),
+            array('key' => 'month', 'value' => Piwik::translate('Intl_PeriodMonth')),
+        );
+
+        $numbers = (new \Piwik\Plugins\MobileMessaging\Model())->getActivatedPhoneNumbers(Piwik::getCurrentUserLogin());
+
+        $phoneNumbers = array();
+        if (!empty($numbers)) {
+            foreach ($numbers as $number) {
+                $phoneNumbers[$number] = $number;
+            }
+        }
+
+        $view->phoneNumbers = $phoneNumbers;
+
+        $metricConditionOptions = array();
+        foreach (Processor::getMetricConditions() as $condName => $condValue) {
+            $metricConditionOptions[] = array('key' => $condValue, 'value' => Piwik::translate($condName));
+        }
+        $view->metricConditionOptions = $metricConditionOptions;
+    }
+
+    private function supportsSms()
+    {
+        return PluginManager::getInstance()->isPluginActivated('MobileMessaging');
+    }
+
+    public function editAlert()
+    {
+        $idAlert = Common::getRequestVar('idAlert', null, 'int');
+
+        $view = new View('@CustomAlerts/editAlert');
+        $this->setGeneralVariablesView($view);
+
+        $alert             = API::getInstance()->getAlert($idAlert);
+        $view->currentSite = array('id' => $this->findSiteId($alert), 'name' => $this->findSiteName($alert));
+
+        $this->addBasicCreateAndEditVariables($view, $alert);
+
+        return $view->render();
     }
 }

@@ -3,10 +3,8 @@
 /**
  * Matomo - free/libre analytics platform
  *
- * @link https://matomo.org
+ * @link    https://matomo.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html Gpl v3 or later
- * @version $Id$
- *
  */
 
 namespace Piwik\Plugins\CustomAlerts;
@@ -24,15 +22,30 @@ use Piwik\Site;
  */
 class Processor
 {
+    /**
+     * @var ProcessedReport
+     */
+    private $processedReport;
+    /**
+     * @var Validator
+     */
+    private $validator;
+
+    public function __construct(ProcessedReport $processedReport, Validator $validator)
+    {
+        $this->processedReport = $processedReport;
+        $this->validator       = $validator;
+    }
+
     public static function getComparablesDates()
     {
         return array(
-            'day' => array(
+            'day'   => array(
                 'CustomAlerts_DayComparedToPreviousWeek' => 7,
                 'CustomAlerts_DayComparedToPreviousDay'  => 1,
                 'CustomAlerts_DayComparedToPreviousYear' => 365,
             ),
-            'week' => array(
+            'week'  => array(
                 'CustomAlerts_WeekComparedToPreviousWeek' => 1,
             ),
             'month' => array(
@@ -45,56 +58,50 @@ class Processor
     public static function getGroupConditions()
     {
         return array(
-            'CustomAlerts_MatchesAnyExpression' => 'matches_any',
-            'CustomAlerts_OperationIs'      => 'matches_exactly',
-            'CustomAlerts_OperationIsNot'   => 'does_not_match_exactly',
+            'CustomAlerts_MatchesAnyExpression'          => 'matches_any',
+            'CustomAlerts_OperationIs'                   => 'matches_exactly',
+            'CustomAlerts_OperationIsNot'                => 'does_not_match_exactly',
             'CustomAlerts_MatchesRegularExpression'      => 'matches_regex',
             'CustomAlerts_DoesNotMatchRegularExpression' => 'does_not_match_regex',
-            'CustomAlerts_OperationContains'         => 'contains',
-            'CustomAlerts_OperationDoesNotContain'   => 'does_not_contain',
-            'CustomAlerts_StartsWith'       => 'starts_with',
-            'CustomAlerts_DoesNotStartWith' => 'does_not_start_with',
-            'CustomAlerts_EndsWith'         => 'ends_with',
-            'CustomAlerts_DoesNotEndWith'   => 'does_not_end_with',
+            'CustomAlerts_OperationContains'             => 'contains',
+            'CustomAlerts_OperationDoesNotContain'       => 'does_not_contain',
+            'CustomAlerts_StartsWith'                    => 'starts_with',
+            'CustomAlerts_DoesNotStartWith'              => 'does_not_start_with',
+            'CustomAlerts_EndsWith'                      => 'ends_with',
+            'CustomAlerts_DoesNotEndWith'                => 'does_not_end_with',
         );
     }
 
     public static function getMetricConditions()
     {
         return array(
-            'CustomAlerts_IsLessThan'     => 'less_than',
-            'CustomAlerts_IsGreaterThan'  => 'greater_than',
-            'CustomAlerts_DecreasesMoreThan' => 'decrease_more_than',
-            'CustomAlerts_IncreasesMoreThan' => 'increase_more_than',
+            'CustomAlerts_IsLessThan'                  => 'less_than',
+            'CustomAlerts_IsGreaterThan'               => 'greater_than',
+            'CustomAlerts_DecreasesMoreThan'           => 'decrease_more_than',
+            'CustomAlerts_IncreasesMoreThan'           => 'increase_more_than',
             'CustomAlerts_PercentageDecreasesMoreThan' => 'percentage_decrease_more_than',
             'CustomAlerts_PercentageIncreasesMoreThan' => 'percentage_increase_more_than',
         );
     }
 
-    /**
-     * @var ProcessedReport
-     */
-    private $processedReport;
-
-    /**
-     * @var Validator
-     */
-    private $validator;
-
-    public function __construct(ProcessedReport $processedReport, Validator $validator)
-    {
-        $this->processedReport = $processedReport;
-        $this->validator = $validator;
-    }
-
     public function processAlerts($period, $idSite)
-	{
+    {
         $alerts = $this->getAllAlerts($period);
 
-		foreach ($alerts as $alert) {
-			$this->processAlert($alert, $idSite);
-		}
-	}
+        foreach ($alerts as $alert) {
+            $this->processAlert($alert, $idSite);
+        }
+    }
+
+    private function getAllAlerts($period)
+    {
+        return $this->getModel()->getAllAlertsForPeriod($period);
+    }
+
+    private function getModel()
+    {
+        return new Model();
+    }
 
     protected function processAlert($alert, $idSite)
     {
@@ -149,73 +156,86 @@ class Processor
         return true;
     }
 
-    private function needsBothValuesToTrigger($alert)
+    /**
+     * @param array $alert
+     * @param int   $idSite
+     * @param int   $subPeriodN
+     *
+     * @return array
+     */
+    public function getValueForAlertInPast($alert, $idSite, $subPeriodN)
     {
-        $comparisons = array(
-            'decrease_more_than',
-            'increase_more_than',
-            'percentage_decrease_more_than',
-            'percentage_increase_more_than'
+        $report = Context::changeIdSite($idSite, function () use ($idSite, $alert) {
+            return $this->processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
+        });
+
+        if (empty($report)) {
+            throw new \Exception("Could not find report for alert '{$alert['report']}'.");
+        }
+
+        $dateInPast = $this->getDateForAlertInPast($idSite, $alert['period'], $subPeriodN);
+
+        $params = array(
+            'format'                 => 'original',
+            'idSite'                 => $idSite,
+            'period'                 => $alert['period'],
+            'date'                   => $dateInPast,
+            'flat'                   => 1,
+            'disable_queued_filters' => 1,
+            'filter_limit'           => -1
         );
 
-        return in_array($alert['metric_condition'], $comparisons);
+        if (!empty($report['parameters'])) {
+            $params = array_merge($params, $report['parameters']);
+        }
+
+        $subtableId = DataTable\Manager::getInstance()->getMostRecentTableId();
+
+        $table = ApiRequest::processRequest($report['module'] . '.' . $report['action'], $params, $default = []);
+
+        $value = $this->aggregateToOneValue($table, $alert['metric'], $alert['report_condition'], $alert['report_matched']);
+
+        DataTable\Manager::getInstance()->deleteAll($subtableId);
+
+        return $value;
     }
 
-    protected function shouldBeTriggered($alert, $valueNew, $valueOld)
+    private function getDateForAlertInPast($idSite, $period, $subPeriodN)
     {
-        if ($this->needsBothValuesToTrigger($alert) && empty($valueOld) && empty($valueNew)) {
-            return false;
+        $timezone = Site::getTimezoneFor($idSite);
+        $date     = Date::now();
+        $date     = Date::factory($date->getDatetime(), $timezone);
+
+        if ($subPeriodN) {
+            $date = $date->subPeriod($subPeriodN, $period);
         }
 
-        if (!empty($valueOld)) {
-            $percentage = ((($valueNew / $valueOld) * 100) - 100);
-        } else {
-            $percentage = $valueNew;
-        }
-
-        $metricMatched = floatval($alert['metric_matched']);
-
-        switch ($alert['metric_condition']) {
-            case 'greater_than':
-                return ($valueNew > $metricMatched);
-            case 'less_than':
-                return ($valueNew < $metricMatched);
-            case 'decrease_more_than':
-                return (($valueOld - $valueNew) > $metricMatched);
-            case 'increase_more_than':
-                return (($valueNew - $valueOld) > $metricMatched);
-            case 'percentage_decrease_more_than':
-                return ((-1 * $metricMatched) > $percentage && $percentage < 0);
-            case 'percentage_increase_more_than':
-                return ($metricMatched < $percentage && $percentage >= 0);
-        }
-
-        throw new \Exception('Metric condition is not supported');
+        return $date->toString();
     }
 
     /**
-     * @param DataTable $dataTable DataTable
-     * @param string $metric       Metric to fetch from row.
-     * @param string $filterCond   Condition to filter for.
-     * @param string $filterValue  Value to find
+     * @param DataTable $dataTable   DataTable
+     * @param string    $metric      Metric to fetch from row.
+     * @param string    $filterCond  Condition to filter for.
+     * @param string    $filterValue Value to find
      *
      * @return mixed
      */
-	protected function aggregateToOneValue($dataTable, $metric, $filterCond = '', $filterValue = '')
-	{
-		if (!empty($filterValue)) {
+    protected function aggregateToOneValue($dataTable, $metric, $filterCond = '', $filterValue = '')
+    {
+        if (!empty($filterValue)) {
             $this->filterDataTable($dataTable, $filterCond, $filterValue);
-		}
+        }
 
-		if ($dataTable->getRowsCount() > 1) {
-			$dataTable->filter('Truncate', array(0, null, $metric));
-		}
+        if ($dataTable->getRowsCount() > 1) {
+            $dataTable->filter('Truncate', array(0, null, $metric));
+        }
 
         $dataTable->applyQueuedFilters();
 
-		$dataRow = $dataTable->getFirstRow();
+        $dataRow = $dataTable->getFirstRow();
 
-		if (!$dataRow) {
+        if (!$dataRow) {
             return null;
         }
 
@@ -226,7 +246,7 @@ class Processor
         }
 
         return $value;
-	}
+    }
 
     /**
      * @param $dataTable
@@ -238,7 +258,7 @@ class Processor
     {
         $invert = false;
 
-        $value  = Common::unsanitizeInputValue($value);
+        $value = Common::unsanitizeInputValue($value);
         if ('matches_regex' != $condition && 'does_not_match_regex' != $condition) {
             $value = str_replace(array('?', '+', '*'), array('\?', '\+', '\*'), $value);
         }
@@ -289,76 +309,53 @@ class Processor
         $dataTable->filter('Pattern', array('label', $pattern, $invert));
     }
 
-    private function getDateForAlertInPast($idSite, $period, $subPeriodN)
+    protected function shouldBeTriggered($alert, $valueNew, $valueOld)
     {
-        $timezone = Site::getTimezoneFor($idSite);
-        $date     = Date::now();
-        $date     = Date::factory($date->getDatetime(), $timezone);
-
-        if ($subPeriodN) {
-            $date = $date->subPeriod($subPeriodN, $period);
+        if ($this->needsBothValuesToTrigger($alert) && empty($valueOld) && empty($valueNew)) {
+            return false;
         }
 
-        return $date->toString();
+        if (!empty($valueOld)) {
+            $percentage = ((($valueNew / $valueOld) * 100) - 100);
+        } else {
+            $percentage = $valueNew;
+        }
+
+        $metricMatched = floatval($alert['metric_matched']);
+
+        switch ($alert['metric_condition']) {
+            case 'greater_than':
+                return ($valueNew > $metricMatched);
+            case 'less_than':
+                return ($valueNew < $metricMatched);
+            case 'decrease_more_than':
+                return (($valueOld - $valueNew) > $metricMatched);
+            case 'increase_more_than':
+                return (($valueNew - $valueOld) > $metricMatched);
+            case 'percentage_decrease_more_than':
+                return ((-1 * $metricMatched) > $percentage && $percentage < 0);
+            case 'percentage_increase_more_than':
+                return ($metricMatched < $percentage && $percentage >= 0);
+        }
+
+        throw new \Exception('Metric condition is not supported');
     }
 
-    /**
-     * @param  array  $alert
-     * @param  int    $idSite
-     * @param  int    $subPeriodN
-     *
-     * @return array
-     */
-    public function getValueForAlertInPast($alert, $idSite, $subPeriodN)
+    private function needsBothValuesToTrigger($alert)
     {
-        $report = Context::changeIdSite($idSite, function () use ($idSite, $alert) {
-            return $this->processedReport->getReportMetadataByUniqueId($idSite, $alert['report']);
-        });
-
-        if (empty($report)) {
-            throw new \Exception("Could not find report for alert '{$alert['report']}'.");
-        }
-
-        $dateInPast = $this->getDateForAlertInPast($idSite, $alert['period'], $subPeriodN);
-
-        $params = array(
-            'format' => 'original',
-            'idSite' => $idSite,
-            'period' => $alert['period'],
-            'date'   => $dateInPast,
-            'flat'   => 1,
-            'disable_queued_filters' => 1,
-            'filter_limit' => -1
+        $comparisons = array(
+            'decrease_more_than',
+            'increase_more_than',
+            'percentage_decrease_more_than',
+            'percentage_increase_more_than'
         );
 
-        if (!empty($report['parameters'])) {
-            $params = array_merge($params, $report['parameters']);
-        }
-
-        $subtableId = DataTable\Manager::getInstance()->getMostRecentTableId();
-
-        $table = ApiRequest::processRequest($report['module'] . '.' . $report['action'], $params, $default = []);
-
-        $value   = $this->aggregateToOneValue($table, $alert['metric'], $alert['report_condition'], $alert['report_matched']);
-
-        DataTable\Manager::getInstance()->deleteAll($subtableId);
-
-        return $value;
+        return in_array($alert['metric_condition'], $comparisons);
     }
 
     protected function triggerAlert($alert, $idSite, $valueNew, $valueOld)
     {
         $this->getModel()->triggerAlert($alert['idalert'], $idSite, $valueNew, $valueOld, Date::now()->getDatetime());
-    }
-
-    private function getAllAlerts($period)
-    {
-        return $this->getModel()->getAllAlertsForPeriod($period);
-    }
-
-    private function getModel()
-    {
-        return new Model();
     }
 
 }

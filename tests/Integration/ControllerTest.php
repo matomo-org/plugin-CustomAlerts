@@ -83,6 +83,53 @@ FORMATTED;
         $this->assertEquals($expected, $rendered);
     }
 
+    /**
+     * @return array
+     */
+    private function getTriggeredAlerts()
+    {
+        return array(
+            $this->buildAlert(1, 'MyName1'),
+            $this->buildAlert(2, 'MyName2'),
+        );
+    }
+
+    private function buildAlert(
+        $id,
+        $name,
+        $period = 'week',
+        $idSite = 1,
+        $siteName = 'Piwik test',
+        $login = 'superUserLogin',
+        $metric = 'nb_visits',
+        $metricCondition = 'decrease_more_than',
+        $metricMatched = 5000,
+        $report = 'MultiSites_getOne',
+        $reportCondition = 'matches_exactly',
+        $reportMatched = 'Piwik'
+    )
+    {
+        return array(
+            'idalert'           => $id,
+            'idsite'            => $idSite,
+            'name'              => $name,
+            'period'            => $period,
+            'login'             => $login,
+            'report'            => $report,
+            'report_condition'  => $reportCondition,
+            'report_matched'    => $reportMatched,
+            'metric'            => $metric,
+            'metric_condition'  => $metricCondition,
+            'metric_matched'    => $metricMatched,
+            'additional_emails' => array('test5@example.com'),
+            'phone_numbers'     => array('+1234567890', '232'),
+            'email_me'          => 1,
+            'value_new'         => '4493.000',
+            'value_old'         => '228.128',
+            'ts_triggered'      => time()
+        );
+    }
+
     public function test_formatAlerts_asSms()
     {
         $alerts = $this->getTriggeredAlerts();
@@ -288,52 +335,6 @@ FORMATTED;
         self::assertIsInt($alerts[4]['value_new']);
 
         $this->assertEquals($alerts, $enriched);
-    }
-
-    private function buildAlert(
-        $id,
-        $name,
-        $period = 'week',
-        $idSite = 1,
-        $siteName = 'Piwik test',
-        $login = 'superUserLogin',
-        $metric = 'nb_visits',
-        $metricCondition = 'decrease_more_than',
-        $metricMatched = 5000,
-        $report = 'MultiSites_getOne',
-        $reportCondition = 'matches_exactly',
-        $reportMatched = 'Piwik'
-    ) {
-        return array(
-            'idalert'           => $id,
-            'idsite'            => $idSite,
-            'name'              => $name,
-            'period'            => $period,
-            'login'             => $login,
-            'report'            => $report,
-            'report_condition'  => $reportCondition,
-            'report_matched'    => $reportMatched,
-            'metric'            => $metric,
-            'metric_condition'  => $metricCondition,
-            'metric_matched'    => $metricMatched,
-            'additional_emails' => array('test5@example.com'),
-            'phone_numbers'     => array('+1234567890', '232'),
-            'email_me'          => 1,
-            'value_new'         => '4493.000',
-            'value_old'         => '228.128',
-            'ts_triggered'      => time()
-        );
-    }
-
-    /**
-     * @return array
-     */
-    private function getTriggeredAlerts()
-    {
-        return array(
-            $this->buildAlert(1, 'MyName1'),
-            $this->buildAlert(2, 'MyName2'),
-        );
     }
 
 }

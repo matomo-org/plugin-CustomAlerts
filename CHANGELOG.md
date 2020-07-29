@@ -1,5 +1,6 @@
 ## Changelog
 
+* 4.0.0 Compatibility with Matomo 4.0
 * 3.0.1: Email alerts: beautiful email design 
 * 3.0.0: Compatibility with Piwik 3.0
 * 0.1.22: Improved the look of some form elements

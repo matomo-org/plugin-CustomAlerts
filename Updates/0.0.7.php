@@ -2,7 +2,7 @@
 /**
  * Matomo - free/libre analytics platform
  *
- * @link https://matomo.org
+ * @link    https://matomo.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  *
  */
@@ -27,6 +27,11 @@ class Updates_0_0_7 extends Updates
         $this->migration = $factory;
     }
 
+    public function doUpdate(Updater $updater)
+    {
+        $updater->executeMigrations(__FILE__, $this->getMigrations($updater));
+    }
+
     public function getMigrations(Updater $updater)
     {
         return array(
@@ -35,10 +40,5 @@ class Updates_0_0_7 extends Updates
                 'value_new' => 'DECIMAL (20,3) DEFAULT NULL'
             ))->addErrorCodeToIgnore(Updater\Migration\Db::ERROR_CODE_TABLE_NOT_EXISTS),
         );
-    }
-
-    public function doUpdate(Updater $updater)
-    {
-        $updater->executeMigrations(__FILE__, $this->getMigrations($updater));
     }
 }

@@ -18,7 +18,7 @@ use Piwik\Tests\Framework\Fixture;
 class CustomAlerts extends Fixture
 {
     public $dateTime = '2010-01-03 11:22:33';
-    public $idSite   = 1;
+    public $idSite = 1;
 
     public function setUp(): void
     {
@@ -52,12 +52,6 @@ class CustomAlerts extends Fixture
         $this->triggerAlert(4, 10, 5, '2013-10-16 03:21:17');
     }
 
-    private function triggerAlert($idAlert, $valueNew, $valueOld, $datetime)
-    {
-        $model = new Model();
-        $model->triggerAlert($idAlert, $this->idSite, $valueNew, $valueOld, $datetime);
-    }
-
     private function createAlert($name, $period, $idSites, $metric, $report, $login = false)
     {
         if (false === $login) {
@@ -74,5 +68,11 @@ class CustomAlerts extends Fixture
 
         $model = new Model();
         $model->createAlert($name, $idSites, $login, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $comparedTo = 1, $report, 'matches_exactly', $reportMatched);
+    }
+
+    private function triggerAlert($idAlert, $valueNew, $valueOld, $datetime)
+    {
+        $model = new Model();
+        $model->triggerAlert($idAlert, $this->idSite, $valueNew, $valueOld, $datetime);
     }
 }

@@ -3,10 +3,8 @@
 /**
  * Matomo - free/libre analytics platform
  *
- * @link https://matomo.org
+ * @link    https://matomo.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html Gpl v3 or later
- * @version $Id$
- *
  */
 
 namespace Piwik\Plugins\CustomAlerts;
@@ -21,20 +19,20 @@ use Piwik\Plugins\SitesManager\API as SitesManagerApi;
 class CustomAlerts extends \Piwik\Plugin
 {
 
-	public function registerEvents()
-	{
-		return array(
-		    'MobileMessaging.deletePhoneNumber' => 'removePhoneNumberFromAllAlerts',
-		    'AssetManager.getJavaScriptFiles'   => 'getJavaScriptFiles',
-		    'AssetManager.getStylesheetFiles'   => 'getStylesheetFiles',
-            'API.Request.dispatch'              => 'checkApiPermission',
-            'Request.dispatch'                  => 'checkControllerPermission',
+    public function registerEvents()
+    {
+        return array(
+            'MobileMessaging.deletePhoneNumber'      => 'removePhoneNumberFromAllAlerts',
+            'AssetManager.getJavaScriptFiles'        => 'getJavaScriptFiles',
+            'AssetManager.getStylesheetFiles'        => 'getStylesheetFiles',
+            'API.Request.dispatch'                   => 'checkApiPermission',
+            'Request.dispatch'                       => 'checkControllerPermission',
             'Translate.getClientSideTranslationKeys' => 'getClientSideTranslationKeys',
-            'UsersManager.deleteUser'           => 'deleteAlertsForLogin',
-            'SitesManager.deleteSite.end'       => 'deleteAlertsForSite',
-            'Db.getTablesInstalled'             => 'getTablesInstalled'
-		);
-	}
+            'UsersManager.deleteUser'                => 'deleteAlertsForLogin',
+            'SitesManager.deleteSite.end'            => 'deleteAlertsForSite',
+            'Db.getTablesInstalled'                  => 'getTablesInstalled'
+        );
+    }
 
     /**
      * Register the new tables, so Matomo knows about them.
@@ -55,6 +53,11 @@ class CustomAlerts extends \Piwik\Plugin
         }
     }
 
+    private function checkPermission()
+    {
+        Piwik::checkUserIsNotAnonymous();
+    }
+
     public function checkControllerPermission($module, $action)
     {
         if ($module != 'CustomAlerts') {
@@ -68,11 +71,6 @@ class CustomAlerts extends \Piwik\Plugin
         $this->checkPermission();
     }
 
-    private function checkPermission()
-    {
-        Piwik::checkUserIsNotAnonymous();
-    }
-
     public function install()
     {
         Model::install();
@@ -83,15 +81,15 @@ class CustomAlerts extends \Piwik\Plugin
         Model::uninstall();
     }
 
-	public function getJavaScriptFiles(&$jsFiles)
-	{
-		$jsFiles[] = "plugins/CustomAlerts/angularjs/managecustomalerts/managecustomalerts.controller.js";
-	}
+    public function getJavaScriptFiles(&$jsFiles)
+    {
+        $jsFiles[] = "plugins/CustomAlerts/angularjs/managecustomalerts/managecustomalerts.controller.js";
+    }
 
-	public function getStylesheetFiles(&$cssFiles)
-	{
-		$cssFiles[] = "plugins/CustomAlerts/stylesheets/alerts.less";
-	}
+    public function getStylesheetFiles(&$cssFiles)
+    {
+        $cssFiles[] = "plugins/CustomAlerts/stylesheets/alerts.less";
+    }
 
     public function deleteAlertsForLogin($userLogin)
     {
@@ -105,9 +103,22 @@ class CustomAlerts extends \Piwik\Plugin
         }
     }
 
+    private function getModel()
+    {
+        return new Model();
+    }
+
+    /**
+     * @return array
+     */
+    private function getAllAlerts()
+    {
+        return $this->getModel()->getAllAlerts();
+    }
+
     public function deleteAlertsForSite($idSite)
     {
-        $model  = $this->getModel();
+        $model = $this->getModel();
         $model->deleteTriggeredAlertsForSite($idSite);
 
         $alerts = $this->getAllAlerts();
@@ -177,18 +188,5 @@ class CustomAlerts extends \Piwik\Plugin
     {
         $translations[] = 'General_Value';
         $translations[] = 'CustomAlerts_InvalidMetricValue';
-    }
-
-    private function getModel()
-    {
-        return new Model();
-    }
-
-    /**
-     * @return array
-     */
-    private function getAllAlerts()
-    {
-        return $this->getModel()->getAllAlerts();
     }
 }

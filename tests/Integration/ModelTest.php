@@ -31,6 +31,29 @@ class ModelTest extends BaseTest
         $this->setUser();
     }
 
+    private function createAlert(
+        $name,
+        $period = 'week',
+        $idSites = null,
+        $metric = 'nb_visits',
+        $report = 'MultiSites_getOne',
+        $login = 'superUserLogin'
+    )
+    {
+        if (is_null($idSites)) {
+            $idSites = $this->idSite;
+        }
+        if (!is_array($idSites)) {
+            $idSites = array($idSites);
+        }
+
+        $emails       = array('test1@example.com', 'test2@example.com');
+        $phoneNumbers = array('0123456789');
+
+        $id = $this->model->createAlert($name, $idSites, $login, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $comparedTo = 1, $report, 'matches_exactly', 'Piwik');
+        return $id;
+    }
+
     public function test_install_ShouldNotFailAndActuallyCreateTheDatabases()
     {
         $this->assertContainTables(array('alert', 'alert_site', 'alert_triggered'));
@@ -45,6 +68,27 @@ class ModelTest extends BaseTest
         $this->assertCount(20, $columns);
     }
 
+    private function assertContainTables($expectedTables)
+    {
+        $tableNames = $this->getCurrentAvailableTableNames();
+
+        foreach ($expectedTables as $expectedTable) {
+            self::assertTrue(in_array(Common::prefixTable($expectedTable), $tableNames));
+        }
+    }
+
+    private function getCurrentAvailableTableNames()
+    {
+        $tables = Db::fetchAll('show tables');
+
+        $tableNames = array();
+        foreach ($tables as $table) {
+            $tableNames[] = array_shift($table);
+        }
+
+        return $tableNames;
+    }
+
     public function test_uninstall_ShouldNotFailAndRemovesAllAlertTables()
     {
         Model::uninstall();
@@ -54,12 +98,62 @@ class ModelTest extends BaseTest
         Model::install();
     }
 
+    private function assertNotContainTables($expectedTables)
+    {
+        $tableNames = $this->getCurrentAvailableTableNames();
+
+        foreach ($expectedTables as $expectedTable) {
+            self::assertTrue(!in_array(Common::prefixTable($expectedTable), $tableNames));
+        }
+    }
+
     public function test_addAlert_ShouldCreateANewAlert()
     {
         $id = $this->createAlert('MyCustomAlert', 'week');
         $this->assertGreaterThan(3, $id);
 
         $this->assertIsAlert($id, 'MyCustomAlert', 'week');
+    }
+
+    private function assertIsAlert(
+        $id,
+        $name,
+        $period = 'week',
+        $idSites = null,
+        $login = 'superUserLogin',
+        $metric = 'nb_visits',
+        $metricCondition = 'less_than',
+        $metricMatched = 5,
+        $report = 'MultiSites_getOne',
+        $reportCondition = 'matches_exactly',
+        $reportMatched = 'Piwik'
+    )
+    {
+        if (is_null($idSites)) {
+            $idSites = array($this->idSite);
+        }
+
+        $alert = $this->model->getAlert($id);
+
+        $expected = array(
+            'idalert'           => $id,
+            'name'              => $name,
+            'login'             => $login,
+            'period'            => $period,
+            'report'            => $report,
+            'report_condition'  => $reportCondition,
+            'report_matched'    => $reportMatched,
+            'metric'            => $metric,
+            'metric_condition'  => $metricCondition,
+            'metric_matched'    => $metricMatched,
+            'email_me'          => 0,
+            'additional_emails' => array('test1@example.com', 'test2@example.com'),
+            'phone_numbers'     => array('0123456789'),
+            'compared_to'       => 1,
+            'id_sites'          => $idSites,
+        );
+
+        $this->assertEquals($expected, $alert);
     }
 
     public function test_addAlert_ShouldIncreaseId()
@@ -75,6 +169,30 @@ class ModelTest extends BaseTest
         $this->assertEquals(2, $id);
 
         $this->assertIsAlert(2, 'MyCustomAlert', 'day', array(1));
+    }
+
+    private function editAlert(
+        $id,
+        $name,
+        $period = 'week',
+        $idSites = null,
+        $metric = 'nb_visits',
+        $report = 'MultiSites_getOne'
+    )
+    {
+        if (is_null($idSites)) {
+            $idSites = $this->idSite;
+        }
+        if (!is_array($idSites)) {
+            $idSites = array($idSites);
+        }
+
+        $emails       = array('test1@example.com', 'test2@example.com');
+        $phoneNumbers = array('0123456789');
+
+        $id = $this->model->updateAlert($id, $name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, 'less_than',
+            5, $comparedTo = 1, $report, 'matches_exactly', 'Piwik');
+        return $id;
     }
 
     public function test_setSiteId_ShouldUpdateExistingSiteIds()
@@ -291,121 +409,6 @@ class ModelTest extends BaseTest
 
         $this->assertEquals(1, $alerts[0]['idtriggered']);
         $this->assertEquals(3, $alerts[1]['idtriggered']);
-    }
-
-    private function assertContainTables($expectedTables)
-    {
-        $tableNames = $this->getCurrentAvailableTableNames();
-
-        foreach ($expectedTables as $expectedTable) {
-            self::assertTrue(in_array(Common::prefixTable($expectedTable), $tableNames));
-        }
-    }
-
-    private function assertNotContainTables($expectedTables)
-    {
-        $tableNames = $this->getCurrentAvailableTableNames();
-
-        foreach ($expectedTables as $expectedTable) {
-            self::assertTrue(!in_array(Common::prefixTable($expectedTable), $tableNames));
-        }
-    }
-
-    private function getCurrentAvailableTableNames()
-    {
-        $tables = Db::fetchAll('show tables');
-
-        $tableNames = array();
-        foreach ($tables as $table) {
-            $tableNames[] = array_shift($table);
-        }
-
-        return $tableNames;
-    }
-
-    private function createAlert(
-        $name,
-        $period = 'week',
-        $idSites = null,
-        $metric = 'nb_visits',
-        $report = 'MultiSites_getOne',
-        $login = 'superUserLogin'
-    ) {
-        if (is_null($idSites)) {
-            $idSites = $this->idSite;
-        }
-        if (!is_array($idSites)) {
-            $idSites = array($idSites);
-        }
-
-        $emails       = array('test1@example.com', 'test2@example.com');
-        $phoneNumbers = array('0123456789');
-
-        $id = $this->model->createAlert($name, $idSites, $login, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $comparedTo = 1, $report, 'matches_exactly', 'Piwik');
-        return $id;
-    }
-
-    private function editAlert(
-        $id,
-        $name,
-        $period = 'week',
-        $idSites = null,
-        $metric = 'nb_visits',
-        $report = 'MultiSites_getOne'
-    ) {
-        if (is_null($idSites)) {
-            $idSites = $this->idSite;
-        }
-        if (!is_array($idSites)) {
-            $idSites = array($idSites);
-        }
-
-        $emails       = array('test1@example.com', 'test2@example.com');
-        $phoneNumbers = array('0123456789');
-
-        $id = $this->model->updateAlert($id, $name, $idSites, $period, 0, $emails, $phoneNumbers, $metric, 'less_than',
-            5, $comparedTo = 1, $report, 'matches_exactly', 'Piwik');
-        return $id;
-    }
-
-    private function assertIsAlert(
-        $id,
-        $name,
-        $period = 'week',
-        $idSites = null,
-        $login = 'superUserLogin',
-        $metric = 'nb_visits',
-        $metricCondition = 'less_than',
-        $metricMatched = 5,
-        $report = 'MultiSites_getOne',
-        $reportCondition = 'matches_exactly',
-        $reportMatched = 'Piwik'
-    ) {
-        if (is_null($idSites)) {
-            $idSites = array($this->idSite);
-        }
-
-        $alert = $this->model->getAlert($id);
-
-        $expected = array(
-            'idalert'           => $id,
-            'name'              => $name,
-            'login'             => $login,
-            'period'            => $period,
-            'report'            => $report,
-            'report_condition'  => $reportCondition,
-            'report_matched'    => $reportMatched,
-            'metric'            => $metric,
-            'metric_condition'  => $metricCondition,
-            'metric_matched'    => $metricMatched,
-            'email_me'          => 0,
-            'additional_emails' => array('test1@example.com', 'test2@example.com'),
-            'phone_numbers'     => array('0123456789'),
-            'compared_to'       => 1,
-            'id_sites'          => $idSites,
-        );
-
-        $this->assertEquals($expected, $alert);
     }
 
 }
