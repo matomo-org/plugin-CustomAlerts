@@ -18,7 +18,6 @@ use Piwik\Mail;
 use Piwik\Period;
 use Piwik\Piwik;
 use Piwik\Plugin\Manager as PluginManager;
-use Piwik\Plugins\MobileMessaging\API as APIMobileMessaging;
 use Piwik\Plugins\UsersManager\API as UsersManagerApi;
 use Piwik\Site;
 use Piwik\View;

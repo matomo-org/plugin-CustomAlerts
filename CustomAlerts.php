@@ -12,7 +12,6 @@
 namespace Piwik\Plugins\CustomAlerts;
 
 use Piwik\Common;
-use Piwik\Db;
 use Piwik\Piwik;
 use Piwik\Plugins\SitesManager\API as SitesManagerApi;
 

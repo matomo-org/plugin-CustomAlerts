@@ -10,8 +10,8 @@ namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
 use Piwik\Plugins\CustomAlerts\API;
 use Piwik\Plugins\CustomAlerts\Model;
-use Piwik\Tests\Framework\Mock\FakeAccess;
 use Piwik\Tests\Framework\Fixture;
+use Piwik\Tests\Framework\Mock\FakeAccess;
 use Piwik\Tests\Framework\TestCase\IntegrationTestCase;
 
 /**

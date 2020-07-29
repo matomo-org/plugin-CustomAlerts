@@ -12,13 +12,11 @@ namespace Piwik\Plugins\CustomAlerts;
 
 use Piwik\Common;
 use Piwik\Date;
-use Piwik\Db;
 use Piwik\Period;
 use Piwik\Piwik;
 use Piwik\Plugin\Manager as PluginManager;
 use Piwik\Plugins\API\ProcessedReport;
 use Piwik\Plugins\SitesManager\API as SitesManagerApi;
-use Piwik\Plugins\MobileMessaging\API as APIMobileMessaging;
 use Piwik\Site;
 use Piwik\View;
 

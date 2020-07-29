@@ -11,9 +11,9 @@ namespace Piwik\Plugins\CustomAlerts;
 
 use Piwik\Common;
 use Piwik\Updater;
-use Piwik\Updates;
-use Piwik\Updater\Migration\Factory as MigrationFactory;
 use Piwik\Updater\Migration\Db as DbMigration;
+use Piwik\Updater\Migration\Factory as MigrationFactory;
+use Piwik\Updates;
 
 /**
  */

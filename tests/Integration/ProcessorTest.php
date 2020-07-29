@@ -10,8 +10,8 @@ namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
 use Piwik\Common;
 use Piwik\Container\StaticContainer;
-use Piwik\DataTable\Row;
 use Piwik\DataTable;
+use Piwik\DataTable\Row;
 use Piwik\Date;
 use Piwik\Plugins\CustomAlerts\Processor;
 use Piwik\Tests\Framework\Fixture;
