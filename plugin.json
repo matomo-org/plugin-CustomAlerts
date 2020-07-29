@@ -7,18 +7,18 @@
     },
     "authors": [
         {
-            "name": "Piwik",
-            "email": "hello@piwik.org",
-            "homepage": "http://piwik.org"
+            "name": "Matomo",
+            "email": "hello@matomo.org",
+            "homepage": "https://matomo.org"
         }
     ],
     "support": {
-        "issues": "https://github.com/piwik/plugin-CustomAlerts/issues",
-        "forum": "https://forum.piwik.org",
-        "source": "https://github.com/piwik/plugin-CustomAlerts",
-        "wiki": "https://github.com/piwik/plugin-CustomAlerts/wiki"
+        "issues": "https://github.com/matomo-org/plugin-CustomAlerts/issues",
+        "forum": "https://forum.matomo.org",
+        "source": "https://github.com/matomo-org/plugin-CustomAlerts",
+        "wiki": "https://github.com/matomo-org/plugin-CustomAlerts/wiki"
     },
     "license": "GPL v3+",
     "keywords": ["alerts", "notification", "report", "monitoring"],
-    "homepage": "http://piwik.org"
+    "homepage": "https://matomo.org"
 }
