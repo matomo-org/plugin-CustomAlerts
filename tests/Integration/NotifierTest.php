@@ -261,10 +261,10 @@ Hello,=0A=0AThe triggered alerts are listed in the table below. To adjust y=';
         return [
             'observers.global' => \DI\add([
                 [
-                    'Test.Mail.send', function (PHPMailer $mail) {
-                    $this->mail = $mail;
-                    $this->mail->preSend();
-                }
+                    'Test.Mail.send', \DI\value(function (PHPMailer $mail) {
+                        $this->mail = $mail;
+                        $this->mail->preSend();
+                    })
                 ],
             ]),
         ];
