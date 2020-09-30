@@ -1,4 +1,4 @@
-# Matomo CustomAlerts Plugin 
+# Matomo CustomAlerts Plugin - An Amazing Project
 
 [![Build Status](https://travis-ci.org/matomo-org/plugin-CustomAlerts.png?branch=4.x-dev)](https://travis-ci.org/matomo-org/plugin-CustomAlerts)
 ## Description
