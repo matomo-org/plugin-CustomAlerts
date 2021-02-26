@@ -46,8 +46,8 @@
         "DoesNotStartWith": "begint niet met",
         "EndsWith": "eindigt met",
         "DoesNotEndWith": "eindigt niet met",
-        "IsLessThan": "is kleiner dan",
-        "IsGreaterThan": "is groter dan",
+        "IsLessThan": "is minder dan",
+        "IsGreaterThan": "is meer dan",
         "DecreasesMoreThan": "neemt meer af dan",
         "IncreasesMoreThan": "neemt meer toe dan",
         "PercentageDecreasesMoreThan": "%% neemt meer af dan",
@@ -67,9 +67,9 @@
         "MobileMessagingPluginNotActivated": "De MobileMessaging plugin is nodig om SMS melding te sturen. Deze kan geactiveerd worden via %1$splugin instellingen pagina %2$s.",
         "When": "als",
         "ComparedToThe": "vergeleken met de",
-        "YouCanChoosePeriodFrom": "Je kunt kiezen uit de volgende opties",
-        "PeriodDayDescription": "Dag - Elke dag rond middernacht verzonden",
+        "YouCanChoosePeriodFrom": "U kunt uit de volgende opties kiezen",
+        "PeriodDayDescription": "Dag - wordt elke dag rond middernacht verzonden",
         "PeriodWeekDescription": "Week - wordt elke maandag rond middernacht verzonden",
-        "PeriodMonthDescription": "Maand - Verzonden elke 1e van de maand rond middernacht"
+        "PeriodMonthDescription": "Maand - wordt elke 1e van de maand rond middernacht verzonden"
     }
 }
