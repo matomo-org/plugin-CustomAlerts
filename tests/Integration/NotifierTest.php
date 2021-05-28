@@ -112,8 +112,8 @@ Content-Transfer-Encoding: quoted-printable
 Hello,=0A=0AThe triggered alerts are listed in the table below. To adjust y=';
 
         $renderedBody = html_entity_decode($this->mail->createBody(), ENT_COMPAT | ENT_HTML401, 'UTF-8');
-        $this->assertStringContainsString($expectedHtml, $renderedBody);
-        $this->assertStringContainsString($expectedText, $renderedBody);
+        $this->assertStringContainsString(str_replace("\n", PHPMailer::getLE(), $expectedHtml), $renderedBody);
+        $this->assertStringContainsString(str_replace("\n", PHPMailer::getLE(), $expectedText), $renderedBody);
         $this->assertEquals(array('test@example.com'), array_keys($mail->getRecipients()));
     }
 
