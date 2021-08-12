@@ -81,7 +81,7 @@
                     self.alert.report = reportApiMethod;
                 }
 
-                options.push({key: reportApiMethod, value: reportMetadata.name});
+                options.push({key: reportApiMethod, value: reportMetadata.name, group: reportMetadata.category});
 
                 if (reportApiMethod == self.alert.report) {
                     updateMetrics(reportMetadata.metrics);
