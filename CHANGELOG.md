@@ -1,5 +1,6 @@
 ## Changelog
 
+* 4.0.2 Improve report selector when defining a custom alert
 * 4.0.0 Compatibility with Matomo 4.0
 * 3.0.6: Do not pass trigger=archivephp to API method calls.
 * 3.0.1: Email alerts: beautiful email design 
