@@ -48,7 +48,6 @@
         "OperationDoesNotContain": "Ay hindi naglalaman",
         "OperationIs": "ay",
         "OperationIsNot": "Ay hindi",
-        "ParmeterIsTooLong": "",
         "ScheduledReportsPluginNotActivated": "Ang Scheduled Reports plugin ay kailangan upang makagawa at makapag edit ng mga alerts. Maaari mong e-activate ito sa pamamagitan ng pag access sa %1$s plugin settings page %2$s.",
         "SmsAlertContent": "%1$s ay na-trigger para sa website %4$s bilang sukatan %2$s sa ulat na %3$s%5$s.",
         "SmsAlertFromName": "Bagong Alerto",
