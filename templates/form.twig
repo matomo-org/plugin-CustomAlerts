@@ -70,10 +70,10 @@
             </div>
         {% endif %}
 
-        <div piwik-field uicontrol="select" name="report"
+        <div piwik-field uicontrol="expandable-select" name="report"
              ng-model="manageAlerts.alert.report"
              ng-change="manageAlerts.changeReport()"
-             title="{{ 'CustomAlerts_ThisAppliesTo'|translate|e('html_attr') }}"
+             title="{{ 'CustomAlerts_ThisAppliesTo'|translate|e('html_attr') }}: {{ '{{ manageAlerts.actualReportMetadata.name }}' }}"
              introduction="{{ 'CustomAlerts_AlertCondition'|translate|e('html_attr') }}"
              options="manageAlerts.reportOptions"
              {% if reportMetadata and alert %}value="{{ alert.report|e('html_attr') }}"{% endif %}>
