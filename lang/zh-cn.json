@@ -50,7 +50,7 @@
         "OperationDoesNotContain": "不含",
         "OperationIs": "是",
         "OperationIsNot": "不是",
-        "ParmeterIsTooLong": "%1$s太长了，最大允许%2$d个字符。",
+        "ParmeterIsTooLong": "%1$s 太長。最多允許 %2$d 字元。",
         "PercentageDecreasesMoreThan": "下降超过 %%",
         "PercentageIncreasesMoreThan": "增加超过 %%",
         "PeriodDayDescription": "日-每天午夜左右发送",
