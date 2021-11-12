@@ -27,6 +27,10 @@
 
         var reportValuesAutoComplete = null;
 
+        $timeout(function () {
+          self.changeReport();
+        });
+
         this.changeReport = function () {
             this.isLoadingReport = true;
 
