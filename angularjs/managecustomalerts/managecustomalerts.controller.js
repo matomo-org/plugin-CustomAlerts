@@ -28,7 +28,9 @@
         var reportValuesAutoComplete = null;
 
         $timeout(function () {
-          self.changeReport();
+          if (self.alert) {
+            self.changeReport();
+          }
         });
 
         this.changeReport = function () {
