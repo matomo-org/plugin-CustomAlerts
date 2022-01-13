@@ -50,6 +50,8 @@
         "OperationIs": "er",
         "OperationIsNot": "er ikke",
         "ParmeterIsTooLong": "%1$s er for langt. Maks antall tegn er %2$d.",
+        "PercentageDecreasesMoreThan": "%% minker mer enn",
+        "PercentageIncreasesMoreThan": "%% øker mer enn",
         "PluginDescription": "Varslingsutvidelsen lar deg definere tilpassede varsler for rapporter og måltall som er tilgjengelige i Matomo.",
         "ScheduledReportsPluginNotActivated": "Utvidelsen ScheduledReports kreves for å lage eller redigere varslinger. Du kan aktivere det ved å gå til %1$ssiden for utvidelser%2$s.",
         "SmsAlertContent": "%1$s har blitt utløst for nettstedet %4$s siden måltallet %2$s i rapporten %3$s %5$s.",
