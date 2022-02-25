@@ -8,6 +8,7 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
+use Piwik\Scheduler\RetryableException;
 use Piwik\Site;
 
 class Tasks extends \Piwik\Plugin\Tasks
@@ -33,6 +34,7 @@ class Tasks extends \Piwik\Plugin\Tasks
         $alerts  = new CustomAlerts();
         $siteIds = $alerts->getSiteIdsHavingAlerts();
 
+        $scheduledTime = $this->daily('runAlertsDaily', 3);
         foreach ($siteIds as $idSite) {
             $timezoneForSite = Site::getTimezoneFor($idSite);
 
@@ -65,6 +67,14 @@ class Tasks extends \Piwik\Plugin\Tasks
     private function runAlerts($period, $idSite)
     {
         $this->processor->processAlerts($period, (int) $idSite);
-        $this->notifier->sendNewAlerts($period, (int) $idSite);
+        try {
+            $this->notifier->sendNewAlerts($period, (int) $idSite);
+        } catch (\Exception $e) {
+            if (class_exists('\Piwik\Scheduler\RetryableException')) {
+                throw new \Piwik\Scheduler\RetryableException($e->getMessage());
+            } else {
+                throw $e;
+            }
+        }
     }
 }
