@@ -52,6 +52,9 @@
         "ParmeterIsTooLong": "%1$s er for langt. Maks antall tegn er %2$d.",
         "PercentageDecreasesMoreThan": "%% minker mer enn",
         "PercentageIncreasesMoreThan": "%% øker mer enn",
+        "PeriodDayDescription": "Dag - Sendt hver dag rundt midnatt",
+        "PeriodMonthDescription": "Måned - Sendes den første i måneden rundt midnatt",
+        "PeriodWeekDescription": "Uke - Sendt hver mandag rundt midnatt",
         "PluginDescription": "Varslingsutvidelsen lar deg definere tilpassede varsler for rapporter og måltall som er tilgjengelige i Matomo.",
         "ScheduledReportsPluginNotActivated": "Utvidelsen ScheduledReports kreves for å lage eller redigere varslinger. Du kan aktivere det ved å gå til %1$ssiden for utvidelser%2$s.",
         "SmsAlertContent": "%1$s har blitt utløst for nettstedet %4$s siden måltallet %2$s i rapporten %3$s %5$s.",
@@ -65,6 +68,7 @@
         "ValuePercentageDecreasedMoreThan": "minket mer enn %1$s%%, fra %2$s til %3$s",
         "ValuePercentageIncreasedMoreThan": "økte mer enn %1$s%%, fra %2$s til %3$s",
         "WeekComparedToPreviousWeek": "uken før",
-        "When": "når"
+        "When": "når",
+        "YouCanChoosePeriodFrom": "Du kan velge blandt følgende alternativer"
     }
 }
