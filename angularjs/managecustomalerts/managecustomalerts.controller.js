@@ -248,6 +248,7 @@
                 flat: 1,
                 filter_limit: -1,
                 showColumns: metric,
+                language: 'en',
                 apiModule: apiModule,
                 apiAction: apiAction,
                 idSite: self.alert.site.id,
