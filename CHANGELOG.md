@@ -1,5 +1,6 @@
 ## Changelog
 
+* 4.0.4 Fixed autocomplete for country to trigger alerts
 * 4.0.3 Grouped alert condition select in UI
 * 4.0.2 Improve report selector when defining a custom alert
 * 4.0.0 Compatibility with Matomo 4.0
