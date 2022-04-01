@@ -83,7 +83,6 @@ class CustomAlerts extends \Piwik\Plugin
 
     public function getJavaScriptFiles(&$jsFiles)
     {
-        $jsFiles[] = "plugins/CustomAlerts/angularjs/managecustomalerts/managecustomalerts.controller.js";
     }
 
     public function getStylesheetFiles(&$cssFiles)
@@ -188,5 +187,24 @@ class CustomAlerts extends \Piwik\Plugin
     {
         $translations[] = 'General_Value';
         $translations[] = 'CustomAlerts_InvalidMetricValue';
+        $translations[] = 'General_Report';
+        $translations[] = 'CustomAlerts_NoAlertsDefined';
+        $translations[] = 'CustomAlerts_CreateNewAlert';
+        $translations[] = 'CustomAlerts_AlertsHistory';
+        $translations[] = 'CustomAlerts_AlertName';
+        $translations[] = 'CustomAlerts_ApplyTo';
+        $translations[] = 'ScheduledReports_SendReportTo';
+        $translations[] = 'ScheduledReports_SentToMe';
+        $translations[] = 'ScheduledReports_AlsoSendReportToTheseEmails';
+        $translations[] = 'CustomAlerts_ThisAppliesTo';
+        $translations[] = 'CustomAlerts_AlertCondition';
+        $translations[] = 'CustomAlerts_When';
+        $translations[] = 'CustomAlerts_AlertMeWhen';
+        $translations[] = 'CustomAlerts_ComparedToThe';
+        $translations[] = 'CustomAlerts_YouCanChoosePeriodFrom';
+        $translations[] = 'CustomAlerts_PeriodDayDescription';
+        $translations[] = 'CustomAlerts_PeriodWeekDescription';
+        $translations[] = 'CustomAlerts_PeriodMonthDescription';
+        $translations[] = 'MobileMessaging_PhoneNumbers';
     }
 }
