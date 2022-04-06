@@ -37,6 +37,7 @@
         "MailAlertSubject": "Nytt varsel for nettsted %1$s [%2$s]",
         "MailEnd": "God analyse!",
         "MailText": "De utløste varslene er opplistet i tabellen nedenfor. For å justere dine varslingsinnstillinger, vennligst logg inn og gå til Varslinger-siden.",
+        "MailTextForSiteOnDate": "Utløste varsler for %1$s på %2$s listes opp i tabellen nedenfor. For å justere dine egendefinerte varselsinnstillinger kan du logge inn og gjøre endringer i varselssiden.",
         "ManageAlerts": "Håndter tilpassede varslinger",
         "MatchesAnyExpression": "matcher alle",
         "MatchesRegularExpression": "matcher regex",
