@@ -5,16 +5,6 @@
   alerts="{{ alerts|default(null)|json_encode|e('html_attr') }}"
 ></div>
 
-<div class="tableActionBar">
-    <a href="{{ linkTo({'module': 'CustomAlerts', 'action': 'addNewAlert'}) }}">
-        <span class="icon-add"></span>
-        {{ 'CustomAlerts_CreateNewAlert'|translate }}
-    </a>
-    <a href="{{ linkTo({'module': 'CustomAlerts', 'action': 'historyTriggeredAlerts'}) }}">
-        <span class="icon-table"></span> {{ 'CustomAlerts_AlertsHistory'|translate }}
-    </a>
-</div>
-
 <div class="ui-confirm" id="confirm">
     <h2>{{ 'CustomAlerts_AreYouSureDeleteAlert'|translate }}</h2>
     <input role="yes" type="button" value="{{ 'General_Yes'|translate }}"/>

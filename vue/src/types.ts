@@ -16,7 +16,7 @@ interface Alert {
   metric: string;
   metric_condition: string;
   metric_matched: string;
-  compared_to: number;
+  compared_to: number|string;
   email_me: number|boolean;
   additional_emails: string[];
   phone_numbers: string[];

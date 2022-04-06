@@ -4,11 +4,6 @@
   @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
 -->
 
-<todo>
-- get to build
-- test in UI
-</todo>
-
 <template>
   <div v-form>
     <div>
@@ -25,8 +20,9 @@
       <Field
         uicontrol="site"
         name="idSite"
-        :model-value="actualAlert.id_sites?.[0]"
-        @update:model-value="actualAlert.id_sites[0] = $event.id; changeReport()"
+        :model-value="{ id: actualAlert.id_sites?.[0], name: actualCurrentSite.name }"
+        @update:model-value="actualAlert.id_sites = [$event.id]; actualCurrentSite = $event;
+          changeReport()"
         :title="translate('General_Website')"
         :introduction="translate('CustomAlerts_ApplyTo')"
       >
@@ -38,9 +34,9 @@
     >
       {{ translate('CustomAlerts_YouCanChoosePeriodFrom') }}:
       <ul>
-        <li>&amp;bull; {{ translate('CustomAlerts_PeriodDayDescription') }}</li>
-        <li>&amp;bull; {{ translate('CustomAlerts_PeriodWeekDescription') }}</li>
-        <li>&amp;bull; {{ translate('CustomAlerts_PeriodMonthDescription') }}</li>
+        <li>&bull; {{ translate('CustomAlerts_PeriodDayDescription') }}</li>
+        <li>&bull; {{ translate('CustomAlerts_PeriodWeekDescription') }}</li>
+        <li>&bull; {{ translate('CustomAlerts_PeriodMonthDescription') }}</li>
       </ul>
     </div>
     <div>
@@ -76,7 +72,7 @@
     </div>
     <span v-if="supportsSMS">
       <SelectPhoneNumbers
-        :phone-numbers="phoneNumbers"
+        :phone-numbers="phoneNumbers || []"
         v-model="actualAlert.phone_numbers"
       />
     </span>
@@ -95,7 +91,7 @@
         :model-value="actualAlert.report"
         @update:model-value="actualAlert.report = $event; changeReport()"
         :options="reportOptions"
-        :title="`${translate('CustomAlerts_ThisAppliesTo')}: ${actualReportMetadata.name}`"
+        :title="`${translate('CustomAlerts_ThisAppliesTo')}: ${actualReportMetadata?.name}`"
         :introduction="translate('CustomAlerts_AlertCondition')"
       >
       </Field>
@@ -158,7 +154,7 @@
           <Field
             uicontrol="select"
             name="metricCondition"
-            :model-value="actualAlert.metricCondition"
+            :model-value="actualAlert.metric_condition"
             @update:model-value="actualAlert.metric_condition = $event"
             :full-width="true"
             :options="metricConditionOptions"
@@ -180,13 +176,13 @@
         </div>
       </div>
     </div>
-    <div v-for="(period, comparablesDatesPeriod) in comparablesDates" :key="period">
+    <div v-for="(comparablesDatesPeriod, period) in comparablesDates" :key="period">
       <Field
         uicontrol="select"
         name="compared_to"
         v-show="period === actualAlert.period && isComparable"
         v-model="comparedTo[period]"
-        :disabled="comparablesDatesPeriod.length <= 1"
+        :disabled="Object.keys(comparablesDatesPeriod).length <= 1"
         :options="comparablesDatesPeriod"
         :introduction="translate('CustomAlerts_ComparedToThe')"
       >
@@ -217,6 +213,7 @@ import {
   Alert,
   ActivityIndicator,
   MatomoUrl,
+  SiteRef,
 } from 'CoreHome';
 import { Form, Field, SaveButton } from 'CorePluginsAdmin';
 import { SelectPhoneNumbers } from 'MobileMessaging';
@@ -225,7 +222,7 @@ import { Alert as AlertType } from '../types';
 interface Option {
   key: string;
   value: string;
-  group: string;
+  group?: string;
 }
 
 interface ReportMetadata {
@@ -251,6 +248,7 @@ interface EditAlertState {
   reportValuesAutoComplete: unknown[]|null;
   actualAlert: AlertType;
   comparedTo: Record<string, string>;
+  actualCurrentSite: SiteRef;
 }
 
 function isBlockedReportApiMethod(apiMethodUniqueId: string) {
@@ -275,10 +273,7 @@ export default defineComponent({
       required: true,
     },
     supportsSMS: Boolean,
-    phoneNumbers: {
-      type: [Array, Object],
-      required: true,
-    },
+    phoneNumbers: [Array, Object],
     reportMetadata: Object,
     alertGroupConditions: {
       type: Array,
@@ -304,9 +299,16 @@ export default defineComponent({
     Form,
   },
   data(): EditAlertState {
-    const comparedTo: Record<string, string> = {};
+    const currentSite = this.currentSite as SiteRef;
+    const alert = this.alert as AlertType;
+    const reportMetadata = this.reportMetadata as ReportMetadata;
+
+    // set comparedTo for each comparison (defaulting to first available value)
+    const comparedTo: Record<string, string> = Object.fromEntries(
+      Object.entries(this.comparablesDates).map(([period, dates]) => [period, dates?.[0]?.key]),
+    );
     if (this.alert) {
-      comparedTo[this.alert.period] = this.alert.compared_to;
+      comparedTo[this.alert.period] = `${alert.compared_to}`;
     }
 
     return {
@@ -314,10 +316,14 @@ export default defineComponent({
       isLoadingReport: false,
       showReportConditionField: false,
       reportOptions: [],
-      actualReportMetadata: null,
+      actualReportMetadata: reportMetadata,
       reportValuesAutoComplete: null,
-      actualAlert: this.alert ? { ...(this.alert as AlertType) } : {} as unknown as AlertType,
+      actualAlert: alert ? { ...alert } : {
+        period: 'day',
+        id_sites: [currentSite?.id || Matomo.idSite],
+      } as unknown as AlertType,
       comparedTo,
+      actualCurrentSite: currentSite,
     };
   },
   watch: {
@@ -346,6 +352,8 @@ export default defineComponent({
     },
   },
   created() {
+    this.changeReport();
+
     setTimeout(() => {
       $(this.$refs.reportValue as HTMLInputElement).find('input').autocomplete({
         source: this.getValuesForReportAndMetric.bind(this),
@@ -446,7 +454,7 @@ export default defineComponent({
         language: 'en',
         apiModule,
         apiAction,
-        idSite: this.actualAlert.id_sites[0],
+        idSite: this.actualAlert.id_sites?.[0],
         format: 'JSON',
       }).then((data) => {
         if (data?.reportData) {
@@ -502,18 +510,18 @@ export default defineComponent({
         metricValue: this.actualAlert.metric_matched,
         emailMe: this.actualAlert.email_me ? 1 : 0,
         additionalEmails: this.actualAlert.additional_emails || [''],
-        phoneNumbers: this.actualAlert.phone_numbers || [''],
+        phoneNumbers: this.actualAlert.phone_numbers?.length || [''],
         reportUniqueId: this.actualAlert.report,
         reportCondition: this.actualAlert.report_condition,
         reportValue: this.actualAlert.report_matched,
         idSites: this.actualAlert.id_sites,
-        comparedTo: this.actualAlert.compared_to,
+        comparedTo: this.comparedTo[this.actualAlert.period],
       };
     },
-    isMetricValueInvalid() {
+    isMetricValueInvalid(): boolean {
       return !$.isNumeric(this.actualAlert.metric_matched);
     },
-    mobileMessagingNotActivated() {
+    mobileMessagingNotActivated(): string {
       const link = `?${MatomoUrl.stringify({
         ...MatomoUrl.urlParsed.value,
         module: 'CorePluginsAdmin',
@@ -526,7 +534,7 @@ export default defineComponent({
         '</a>',
       );
     },
-    cancelLink() {
+    cancelLink(): string {
       const backlink = `?${MatomoUrl.stringify({
         ...MatomoUrl.urlParsed.value,
         module: 'CustomAlerts',
@@ -538,24 +546,24 @@ export default defineComponent({
         '</a>',
       );
     },
-    metricOptions() {
+    metricOptions(): Option[] {
       return Object.entries(this.actualReportMetadata?.metrics || {}).map(([key, value]) => ({
         key,
         value,
       }));
     },
-    hasReportDimension() {
+    hasReportDimension(): boolean {
       return !!this.actualReportMetadata?.dimension;
     },
-    reportConditionTitle() {
+    reportConditionTitle(): string {
       const dim = this.actualReportMetadata?.dimension;
       return `${translate('CustomAlerts_When')} <span>${dim}</span>`;
     },
-    isComparable() {
+    isComparable(): boolean {
       const condition = this.actualAlert.metric_condition;
-      return condition && condition.indexOf('_more_than') !== -1;
+      return !!condition && condition.indexOf('_more_than') !== -1;
     },
-    metricDescription() {
+    metricDescription(): string {
       const condition = this.actualAlert.metric_condition;
       const { metric } = this.actualAlert;
 

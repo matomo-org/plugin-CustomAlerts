@@ -10,7 +10,7 @@
     current-user-email="{{ currentUserEmail|default(null)|json_encode|e('html_attr') }}"
     supports-s-m-s="{{ supportsSMS|default(null)|json_encode|e('html_attr') }}"
     mobile-macro="{{ mobileMacro|default(null)|json_encode|e('html_attr') }}"
-    phone-numbers="{{ phoneNumbers|default(null)|json_encode|e('html_attr') }}"
+    phone-numbers="{{ phoneNumbers|default([])|json_encode|e('html_attr') }}"
     report-metadata="{{ reportMetadata|default(null)|json_encode|e('html_attr') }}"
     alert-group-conditions="{{ alertGroupConditions|default(null)|json_encode|e('html_attr') }}"
     metric-condition-options="{{ metricConditionOptions|default(null)|json_encode|e('html_attr') }}"
