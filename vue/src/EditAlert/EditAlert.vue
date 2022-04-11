@@ -78,9 +78,9 @@
     </span>
     <div class="row" v-else>
       <div class="col s12">
-        <Alert>
+        <Alert severity="info">
           <strong>{{ translate('MobileMessaging_PhoneNumbers') }}</strong>:
-          {{ mobileMessagingNotActivated }}
+          <span v-html="$sanitize(mobileMessagingNotActivated)"></span>
         </Alert>
       </div>
     </div>
@@ -214,10 +214,12 @@ import {
   ActivityIndicator,
   MatomoUrl,
   SiteRef,
+  useExternalPluginComponent,
 } from 'CoreHome';
 import { Form, Field, SaveButton } from 'CorePluginsAdmin';
-import { SelectPhoneNumbers } from 'MobileMessaging';
 import { Alert as AlertType } from '../types';
+
+const SelectPhoneNumbers = useExternalPluginComponent('MobileMessaging', 'SelectPhoneNumbers');
 
 interface Option {
   key: string;
