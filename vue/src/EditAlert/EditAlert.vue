@@ -511,8 +511,10 @@ export default defineComponent({
         metricCondition: this.actualAlert.metric_condition,
         metricValue: this.actualAlert.metric_matched,
         emailMe: this.actualAlert.email_me ? 1 : 0,
-        additionalEmails: this.actualAlert.additional_emails || [''],
-        phoneNumbers: this.actualAlert.phone_numbers?.length || [''],
+        additionalEmails: this.actualAlert.additional_emails?.length
+          ? this.actualAlert.additional_emails : [''],
+        phoneNumbers: this.actualAlert.phone_numbers?.length
+          ? this.actualAlert.phone_numbers : [''],
         reportUniqueId: this.actualAlert.report,
         reportCondition: this.actualAlert.report_condition,
         reportValue: this.actualAlert.report_matched,
