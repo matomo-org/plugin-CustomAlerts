@@ -27,7 +27,7 @@
         </tr>
         <tr v-for="alert in alerts" :key="alert.idalert">
           <td class="name">{{ alert.name }}</td>
-          <td class="site">{{ alert.siteName }}</td>
+          <td class="site">{{ decode(alert.siteName) }}</td>
           <td class="period">{{ lcfirst(alert.period) }}</td>
           <td class="reportName">{{ alert.reportName || '-' }}</td>
           <td class="edit">
@@ -106,6 +106,9 @@ export default defineComponent({
         ...MatomoUrl.urlParsed.value,
         ...params,
       })}`;
+    },
+    decode(s: string) {
+      return Matomo.helper.htmlDecode(s);
     },
   },
 });

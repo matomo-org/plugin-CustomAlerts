@@ -325,7 +325,11 @@ export default defineComponent({
         id_sites: [currentSite?.id || Matomo.idSite],
       } as unknown as AlertType,
       comparedTo,
-      actualCurrentSite: currentSite,
+      actualCurrentSite: {
+        id: currentSite.id,
+        // in PHP, currentSite's name is the value in the DB, which is encoded
+        name: Matomo.helper.htmlDecode(currentSite.name),
+      },
     };
   },
   watch: {
