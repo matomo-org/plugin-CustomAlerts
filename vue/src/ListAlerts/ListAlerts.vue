@@ -28,7 +28,7 @@
         <tr v-for="alert in alerts" :key="alert.idalert">
           <td class="name">{{ alert.name }}</td>
           <td class="site">{{ decode(alert.siteName) }}</td>
-          <td class="period">{{ lcfirst(alert.period) }}</td>
+          <td class="period">{{ translate(`Intl_Period${ucfirst(alert.period)}`) }}</td>
           <td class="reportName">{{ alert.reportName || '-' }}</td>
           <td class="edit">
             <a
@@ -98,7 +98,7 @@ export default defineComponent({
         },
       });
     },
-    lcfirst(s: string) {
+    ucfirst(s: string) {
       return `${s[0].toUpperCase()}${s.substr(1)}`;
     },
     linkTo(params: QueryParameters) {
