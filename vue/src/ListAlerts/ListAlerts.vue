@@ -28,7 +28,7 @@
         <tr v-for="alert in alerts" :key="alert.idalert">
           <td class="name">{{ alert.name }}</td>
           <td class="site">{{ decode(alert.siteName) }}</td>
-          <td class="period">{{ translate(`Intl_Period${ucfirst(alert.period)}`) }}</td>
+          <td class="period">{{ ucfirst(translate(`Intl_Period${ucfirst(alert.period)}`)) }}</td>
           <td class="reportName">{{ alert.reportName || '-' }}</td>
           <td class="edit">
             <a
