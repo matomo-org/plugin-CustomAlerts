@@ -1,61 +1,9 @@
 {% import '@CustomAlerts/macros.twig' as alertsMacro %}
 
-<table piwik-content-table ng-controller="ManagecustomalertsController as manageAlerts">
-    <thead>
-    <tr>
-        <th>{{ 'General_Name'|translate }}</th>
-        <th>{{ 'General_Website'|translate }}</th>
-        <th>{{ 'General_Period'|translate }}</th>
-        <th>{{ 'General_Report'|translate }}</th>
-        <th>{{ 'General_Edit'|translate }}</th>
-        <th>{{ 'General_Delete'|translate }}</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% if not alerts %}
-        <tr>
-            <td colspan="6">
-                <br/>
-                {{ 'CustomAlerts_NoAlertsDefined'|translate }}
-                <br/><br/>
-            </td>
-        </tr>
-    {% else %}
-        {% for alert in alerts %}
-            <tr>
-                <td class="name">{{ alert.name }}</td>
-                <td class="site">{{ alert.siteName|rawSafeDecoded }}</td>
-                <td class="period">{{ alert.period|capitalize }}</td>
-                <td class="reportName">{{ alert.reportName|default('-')|rawSafeDecoded }}</td>
-                <td class="edit">
-                    <a href="{{ linkTo({'module': 'CustomAlerts', 'action': 'editAlert', 'idAlert': alert.idalert}) }}"
-                       class="table-action"
-                       title="{{ 'General_Edit'|translate|e('html_attr') }}"
-                    ><span class="icon-edit"></span></a>
-                </td>
-                <td class="delete">
-                    <button
-                            id="{{ alert.idalert|e('html_attr') }}"
-                            ng-click="manageAlerts.deleteAlert({{ alert.idalert|e('html_attr') }})"
-                            class="deleteAlert table-action"
-                            title="{{ 'General_Delete'|translate|e('html_attr') }}"
-                    ><span class="icon-delete"></span></button>
-                </td>
-            </tr>
-        {% endfor %}
-    {% endif %}
-    </tbody>
-</table>
-
-<div class="tableActionBar">
-    <a href="{{ linkTo({'module': 'CustomAlerts', 'action': 'addNewAlert'}) }}">
-        <span class="icon-add"></span>
-        {{ 'CustomAlerts_CreateNewAlert'|translate }}
-    </a>
-    <a href="{{ linkTo({'module': 'CustomAlerts', 'action': 'historyTriggeredAlerts'}) }}">
-        <span class="icon-table"></span> {{ 'CustomAlerts_AlertsHistory'|translate }}
-    </a>
-</div>
+<div
+  vue-entry="CustomAlerts.ListAlerts"
+  alerts="{{ alerts|default(null)|json_encode|e('html_attr') }}"
+></div>
 
 <div class="ui-confirm" id="confirm">
     <h2>{{ 'CustomAlerts_AreYouSureDeleteAlert'|translate }}</h2>

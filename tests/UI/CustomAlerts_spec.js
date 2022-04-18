@@ -36,7 +36,7 @@ describe("CustomAlerts", function () {
     it('should save changed alert', async function () {
         // only check if name was changed in list, no need to make a screenshot
         await page.type('#alertName', ' changed');
-        await page.click('[piwik-save-button]');
+        await page.click('.matomo-save-button');
         await page.waitForNetworkIdle();
         await page.waitForFunction('$(".pageWrap td:contains(\'Test Alert 1 changed\')").length > 0');
     });
