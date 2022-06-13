@@ -3,7 +3,7 @@
 {% set fontStyle = 'color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Cantarell, "Helvetica Neue", sans-serif; '%}
 {% set styleTableHeader = "padding:13px 0 13px 10px;text-align: left;font-weight:normal;font-size: 15px;" ~ fontStyle %}
 {% set styleTableCell = "border-bottom:1px solid rgb(231,231,231);font-size: 15px;" ~ fontStyle %}
-<table {% if not extended %}style='width:100%;border-collapse: collapse; border:1px solid rgb(231,231,231); padding:5px;  margin:30px 0;{{fontStyle}}' class="tableForm dataTable entityTable card-table"{% endif %}>
+<table {% if not extended %}style='width:100%;border-collapse: collapse; border:1px solid rgb(231,231,231); padding:5px;  margin:30px 0;{{fontStyle}}' class="tableForm dataTable card entityTable card-table"{% else %}class="card entityTable card-table"{% endif %}>
     <thead {% if not extended %}style="background-color:#f2f2f2;color:#0d0d0d;"{% endif %}>
     <tr>
         <th {% if not extended %}style="{{styleTableHeader}}"{% endif %}>{{ 'CustomAlerts_AlertName'|translate }}</th>
