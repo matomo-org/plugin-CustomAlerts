@@ -161,7 +161,7 @@ FORMATTED;
         $rendered = $this->controller->formatAlerts($alerts, 'html');
 
         $expected = <<<FORMATTED
-<table style='width:100%;border-collapse: collapse; border:1px solid rgb(231,231,231); padding:5px;  margin:30px 0;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; ' class="tableForm dataTable entityTable card-table">
+<table style='width:100%;border-collapse: collapse; border:1px solid rgb(231,231,231); padding:5px;  margin:30px 0;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; ' class="tableForm dataTable card entityTable card-table">
     <thead style="background-color:#f2f2f2;color:#0d0d0d;">
     <tr>
         <th style="padding:13px 0 13px 10px;text-align: left;font-weight:normal;font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; ">Alert Name</th>
@@ -205,7 +205,7 @@ FORMATTED;
         $rendered = $this->controller->formatAlerts($alerts, 'html');
 
         $expected = <<<FORMATTED
-<table style='width:100%;border-collapse: collapse; border:1px solid rgb(231,231,231); padding:5px;  margin:30px 0;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; ' class="tableForm dataTable entityTable card-table">
+<table style='width:100%;border-collapse: collapse; border:1px solid rgb(231,231,231); padding:5px;  margin:30px 0;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; ' class="tableForm dataTable card entityTable card-table">
     <thead style="background-color:#f2f2f2;color:#0d0d0d;">
     <tr>
         <th style="padding:13px 0 13px 10px;text-align: left;font-weight:normal;font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; ">Alert Name</th>
