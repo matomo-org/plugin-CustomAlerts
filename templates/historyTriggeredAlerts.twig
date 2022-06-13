@@ -4,16 +4,9 @@
 
 {% block content %}
 
-    <div class="alerts" piwik-content-block
-         content-title="{{ 'CustomAlerts_AlertsHistory'|translate|e('html_attr') }}">
+    <div
+        vue-entry="CustomAlerts.HistoryTriggeredAlerts"
+        alerts-formatted="{{ alertsFormatted|json_encode|e('html_attr') }}"
+    ></div>
 
-        {{ alertsFormatted|raw }}
-
-        <div class="tableActionBar">
-            <a href="{{ linkTo({'module': 'CustomAlerts', 'action': 'index'}) }}">
-                <span class="icon-table"></span> {{ 'CustomAlerts_ManageAlerts'|translate }}
-            </a>
-        </div>
-
-    </div>
 {% endblock %}

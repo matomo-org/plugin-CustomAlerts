@@ -3,9 +3,9 @@
 {% set title %}{{ 'CustomAlerts_ManageAlerts'|translate }}{% endset %}
 
 {% block content %}
-    <div piwik-content-block class="alerts"
-         content-title="{{ title|e('html_attr') }}">
-
-        {% include "@CustomAlerts/list.twig" %}
-    </div>
+    <div
+        vue-entry="CustomAlerts.ListAlertsPage"
+        content-title="{{ title|json_encode|e('html_attr') }}"
+        alerts="{{ alerts|default(null)|json_encode|e('html_attr') }}"
+    ></div>
 {% endblock %}
