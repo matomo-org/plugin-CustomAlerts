@@ -932,19 +932,18 @@ var _window = window,
 EditAlertvue_type_script_lang_ts.render = EditAlertvue_type_template_id_663a7046_render
 
 /* harmony default export */ var EditAlert = (EditAlertvue_type_script_lang_ts);
-// CONCATENATED MODULE: ./node_modules/@vue/cli-plugin-babel/node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/@vue/cli-plugin-babel/node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/@vue/cli-service/node_modules/vue-loader-v16/dist/templateLoader.js??ref--6!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader-v16/dist??ref--0-1!./plugins/CustomAlerts/vue/src/HistoryTriggeredAlerts/HistoryTriggeredAlerts.vue?vue&type=template&id=21a47480
+// CONCATENATED MODULE: ./node_modules/@vue/cli-plugin-babel/node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/@vue/cli-plugin-babel/node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/@vue/cli-service/node_modules/vue-loader-v16/dist/templateLoader.js??ref--6!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader-v16/dist??ref--0-1!./plugins/CustomAlerts/vue/src/HistoryTriggeredAlerts/HistoryTriggeredAlerts.vue?vue&type=template&id=50fdd954
 
-var HistoryTriggeredAlertsvue_type_template_id_21a47480_hoisted_1 = ["innerHTML"];
-var HistoryTriggeredAlertsvue_type_template_id_21a47480_hoisted_2 = {
+var HistoryTriggeredAlertsvue_type_template_id_50fdd954_hoisted_1 = {
   class: "tableActionBar"
 };
-var HistoryTriggeredAlertsvue_type_template_id_21a47480_hoisted_3 = ["href"];
+var HistoryTriggeredAlertsvue_type_template_id_50fdd954_hoisted_2 = ["href"];
 
-var HistoryTriggeredAlertsvue_type_template_id_21a47480_hoisted_4 = /*#__PURE__*/Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("span", {
+var HistoryTriggeredAlertsvue_type_template_id_50fdd954_hoisted_3 = /*#__PURE__*/Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("span", {
   class: "icon-table"
 }, null, -1);
 
-function HistoryTriggeredAlertsvue_type_template_id_21a47480_render(_ctx, _cache, $props, $setup, $data, $options) {
+function HistoryTriggeredAlertsvue_type_template_id_50fdd954_render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_ContentBlock = Object(external_commonjs_vue_commonjs2_vue_root_Vue_["resolveComponent"])("ContentBlock");
 
   return Object(external_commonjs_vue_commonjs2_vue_root_Vue_["openBlock"])(), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createBlock"])(_component_ContentBlock, {
@@ -952,27 +951,20 @@ function HistoryTriggeredAlertsvue_type_template_id_21a47480_render(_ctx, _cache
     "content-title": _ctx.translate('CustomAlerts_AlertsHistory')
   }, {
     default: Object(external_commonjs_vue_commonjs2_vue_root_Vue_["withCtx"])(function () {
-      return [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", {
-        innerHTML: _ctx.$sanitize(_ctx.alertsFormatted)
-      }, null, 8, HistoryTriggeredAlertsvue_type_template_id_21a47480_hoisted_1), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", HistoryTriggeredAlertsvue_type_template_id_21a47480_hoisted_2, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("a", {
+      return [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["renderSlot"])(_ctx.$slots, "default"), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", HistoryTriggeredAlertsvue_type_template_id_50fdd954_hoisted_1, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("a", {
         href: _ctx.customAlertsIndexLink
-      }, [HistoryTriggeredAlertsvue_type_template_id_21a47480_hoisted_4, Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createTextVNode"])(" " + Object(external_commonjs_vue_commonjs2_vue_root_Vue_["toDisplayString"])(_ctx.translate('CustomAlerts_ManageAlerts')), 1)], 8, HistoryTriggeredAlertsvue_type_template_id_21a47480_hoisted_3)])];
+      }, [HistoryTriggeredAlertsvue_type_template_id_50fdd954_hoisted_3, Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createTextVNode"])(" " + Object(external_commonjs_vue_commonjs2_vue_root_Vue_["toDisplayString"])(_ctx.translate('CustomAlerts_ManageAlerts')), 1)], 8, HistoryTriggeredAlertsvue_type_template_id_50fdd954_hoisted_2)])];
     }),
-    _: 1
+    _: 3
   }, 8, ["content-title"]);
 }
-// CONCATENATED MODULE: ./plugins/CustomAlerts/vue/src/HistoryTriggeredAlerts/HistoryTriggeredAlerts.vue?vue&type=template&id=21a47480
+// CONCATENATED MODULE: ./plugins/CustomAlerts/vue/src/HistoryTriggeredAlerts/HistoryTriggeredAlerts.vue?vue&type=template&id=50fdd954
 
 // CONCATENATED MODULE: ./node_modules/@vue/cli-plugin-typescript/node_modules/cache-loader/dist/cjs.js??ref--14-0!./node_modules/babel-loader/lib!./node_modules/@vue/cli-plugin-typescript/node_modules/ts-loader??ref--14-2!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader-v16/dist??ref--0-1!./plugins/CustomAlerts/vue/src/HistoryTriggeredAlerts/HistoryTriggeredAlerts.vue?vue&type=script&lang=ts
 
 
 /* harmony default export */ var HistoryTriggeredAlertsvue_type_script_lang_ts = (Object(external_commonjs_vue_commonjs2_vue_root_Vue_["defineComponent"])({
-  props: {
-    alertsFormatted: {
-      type: String,
-      required: true
-    }
-  },
+  props: {},
   components: {
     ContentBlock: external_CoreHome_["ContentBlock"]
   },
@@ -991,7 +983,7 @@ function HistoryTriggeredAlertsvue_type_template_id_21a47480_render(_ctx, _cache
 
 
 
-HistoryTriggeredAlertsvue_type_script_lang_ts.render = HistoryTriggeredAlertsvue_type_template_id_21a47480_render
+HistoryTriggeredAlertsvue_type_script_lang_ts.render = HistoryTriggeredAlertsvue_type_template_id_50fdd954_render
 
 /* harmony default export */ var HistoryTriggeredAlerts = (HistoryTriggeredAlertsvue_type_script_lang_ts);
 // CONCATENATED MODULE: ./node_modules/@vue/cli-plugin-babel/node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/@vue/cli-plugin-babel/node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/@vue/cli-service/node_modules/vue-loader-v16/dist/templateLoader.js??ref--6!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/@vue/cli-service/node_modules/vue-loader-v16/dist??ref--0-1!./plugins/CustomAlerts/vue/src/ListAlerts/ListAlertsPage.vue?vue&type=template&id=1a8fe452

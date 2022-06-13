@@ -6,7 +6,8 @@
 
     <div
         vue-entry="CustomAlerts.HistoryTriggeredAlerts"
-        alerts-formatted="{{ alertsFormatted|json_encode|e('html_attr') }}"
-    ></div>
+    >
+        {{ alertsFormatted|raw }}
+    </div>
 
 {% endblock %}

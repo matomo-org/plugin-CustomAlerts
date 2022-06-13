@@ -9,7 +9,7 @@
     class="alerts"
     :content-title="translate('CustomAlerts_AlertsHistory')"
   >
-    <div v-html="$sanitize(alertsFormatted)"></div>
+    <slot></slot>
 
     <div class="tableActionBar">
       <a :href="customAlertsIndexLink">
@@ -24,17 +24,12 @@ import { defineComponent } from 'vue';
 import { ContentBlock, MatomoUrl } from 'CoreHome';
 
 export default defineComponent({
-  props: {
-    alertsFormatted: {
-      type: String,
-      required: true,
-    },
-  },
+  props: {},
   components: {
     ContentBlock,
   },
   computed: {
-    customAlertsIndexLink() {
+    customAlertsIndexLink(): string {
       return `?${MatomoUrl.stringify({
         ...MatomoUrl.urlParsed.value,
         module: 'CustomAlerts',
