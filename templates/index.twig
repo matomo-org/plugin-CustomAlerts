@@ -5,7 +5,7 @@
 {% block content %}
     <div
         vue-entry="CustomAlerts.ListAlertsPage"
-        content-title="{{ title|json_encode|e('html_attr') }}"
-        alerts="{{ alerts|default(null)|json_encode|e('html_attr') }}"
+        content-title="{{ title|json_encode }}"
+        alerts="{{ alerts|default(null)|json_encode }}"
     ></div>
 {% endblock %}
