@@ -5,202 +5,207 @@
 -->
 
 <template>
-  <div v-form>
-    <div>
-      <Field
-        uicontrol="text"
-        name="alertName"
-        v-model="actualAlert.name"
-        :maxlength="100"
-        :title="translate('CustomAlerts_AlertName')"
+  <ContentBlock
+    class="alerts"
+    :content-title="headline"
+  >
+    <div v-form>
+      <div>
+        <Field
+          uicontrol="text"
+          name="alertName"
+          v-model="actualAlert.name"
+          :maxlength="100"
+          :title="translate('CustomAlerts_AlertName')"
+        >
+        </Field>
+      </div>
+      <div>
+        <Field
+          uicontrol="site"
+          name="idSite"
+          :model-value="{ id: actualAlert.id_sites?.[0], name: actualCurrentSite.name }"
+          @update:model-value="actualAlert.id_sites = [$event.id]; actualCurrentSite = $event;
+            changeReport()"
+          :title="translate('General_Website')"
+          :introduction="translate('CustomAlerts_ApplyTo')"
+        >
+        </Field>
+      </div>
+      <div
+        id="customAlertPeriodHelp"
+        class="inline-help-node"
       >
-      </Field>
-    </div>
-    <div>
-      <Field
-        uicontrol="site"
-        name="idSite"
-        :model-value="{ id: actualAlert.id_sites?.[0], name: actualCurrentSite.name }"
-        @update:model-value="actualAlert.id_sites = [$event.id]; actualCurrentSite = $event;
-          changeReport()"
-        :title="translate('General_Website')"
-        :introduction="translate('CustomAlerts_ApplyTo')"
+        {{ translate('CustomAlerts_YouCanChoosePeriodFrom') }}:
+        <ul>
+          <li>&bull; {{ translate('CustomAlerts_PeriodDayDescription') }}</li>
+          <li>&bull; {{ translate('CustomAlerts_PeriodWeekDescription') }}</li>
+          <li>&bull; {{ translate('CustomAlerts_PeriodMonthDescription') }}</li>
+        </ul>
+      </div>
+      <div>
+        <Field
+          uicontrol="select"
+          name="period"
+          inline-help="#customAlertPeriodHelp"
+          :model-value="actualAlert.period"
+          @update:model-value="actualAlert.period = $event; changeReport()"
+          :title="translate('General_Period')"
+          :options="periodOptions"
+        >
+        </Field>
+      </div>
+      <div>
+        <Field
+          uicontrol="checkbox"
+          name="report_email_me"
+          v-model="actualAlert.email_me"
+          :introduction="translate('ScheduledReports_SendReportTo')"
+          :title="`${translate('ScheduledReports_SentToMe')} (${currentUserEmail})`"
+        >
+        </Field>
+      </div>
+      <div>
+        <Field
+          uicontrol="textarea"
+          v-model="actualAlert.additional_emails"
+          var-type="array"
+          :title="translate('ScheduledReports_AlsoSendReportToTheseEmails')"
+        >
+        </Field>
+      </div>
+      <span v-if="supportsSMS">
+        <SelectPhoneNumbers
+          :phone-numbers="phoneNumbers || []"
+          v-model="actualAlert.phone_numbers"
+        />
+      </span>
+      <div class="row" v-else>
+        <div class="col s12">
+          <Alert severity="info">
+            <strong>{{ translate('MobileMessaging_PhoneNumbers') }}</strong>:
+            <span v-html="$sanitize(mobileMessagingNotActivated)"></span>
+          </Alert>
+        </div>
+      </div>
+      <div>
+        <Field
+          uicontrol="expandable-select"
+          name="report"
+          :model-value="actualAlert.report"
+          @update:model-value="actualAlert.report = $event; changeReport()"
+          :options="reportOptions"
+          :title="`${translate('CustomAlerts_ThisAppliesTo')}: ${actualReportMetadata?.name}`"
+          :introduction="translate('CustomAlerts_AlertCondition')"
+        >
+        </Field>
+      </div>
+      <div
+        class="row"
+        v-show="isLoadingReport"
       >
-      </Field>
-    </div>
-    <div
-      id="customAlertPeriodHelp"
-      class="inline-help-node"
-    >
-      {{ translate('CustomAlerts_YouCanChoosePeriodFrom') }}:
-      <ul>
-        <li>&bull; {{ translate('CustomAlerts_PeriodDayDescription') }}</li>
-        <li>&bull; {{ translate('CustomAlerts_PeriodWeekDescription') }}</li>
-        <li>&bull; {{ translate('CustomAlerts_PeriodMonthDescription') }}</li>
-      </ul>
-    </div>
-    <div>
-      <Field
-        uicontrol="select"
-        name="period"
-        inline-help="#customAlertPeriodHelp"
-        :model-value="actualAlert.period"
-        @update:model-value="actualAlert.period = $event; changeReport()"
-        :title="translate('General_Period')"
-        :options="periodOptions"
+        <div class="col s12">
+          <ActivityIndicator :loading="isLoadingReport" />
+        </div>
+      </div>
+      <div
+        class="row conditionAndValue"
+        v-show="hasReportDimension"
       >
-      </Field>
-    </div>
-    <div>
-      <Field
-        uicontrol="checkbox"
-        name="report_email_me"
-        v-model="actualAlert.email_me"
-        :introduction="translate('ScheduledReports_SendReportTo')"
-        :title="`${translate('ScheduledReports_SentToMe')} (${currentUserEmail})`"
-      >
-      </Field>
-    </div>
-    <div>
-      <Field
-        uicontrol="textarea"
-        v-model="actualAlert.additional_emails"
-        var-type="array"
-        :title="translate('ScheduledReports_AlsoSendReportToTheseEmails')"
-      >
-      </Field>
-    </div>
-    <span v-if="supportsSMS">
-      <SelectPhoneNumbers
-        :phone-numbers="phoneNumbers || []"
-        v-model="actualAlert.phone_numbers"
+        <div class="col s12 m6">
+          <div>
+            <Field
+              uicontrol="select"
+              name="reportCondition"
+              v-model="actualAlert.report_condition"
+              :full-width="true"
+              :title="reportConditionTitle"
+              :options="alertGroupConditions"
+            />
+          </div>
+        </div>
+        <div class="col s12 m6">
+          <div class="ui-autocomplete-input" ref="reportValue">
+            <Field
+              uicontrol="text"
+              role="textbox"
+              name="reportValue"
+              v-show="actualAlert.report_condition !== 'matches_any'"
+              v-model="actualAlert.report_matched"
+              :full-width="true"
+              :autocomplete="false"
+              :maxlength="255"
+              :title="translate('General_Value')"
+            >
+            </Field>
+          </div>
+        </div>
+      </div>
+      <div>
+        <Field
+          uicontrol="select"
+          name="metric"
+          :model-value="actualAlert.metric"
+          @update:model-value="actualAlert.metric = $event"
+          :options="metricOptions"
+          :introduction="translate('CustomAlerts_AlertMeWhen')"
+        >
+        </Field>
+      </div>
+      <div class="row conditionAndValue">
+        <div class="col s12 m6">
+          <div>
+            <Field
+              uicontrol="select"
+              name="metricCondition"
+              :model-value="actualAlert.metric_condition"
+              @update:model-value="actualAlert.metric_condition = $event"
+              :full-width="true"
+              :options="metricConditionOptions"
+            >
+            </Field>
+          </div>
+        </div>
+        <div class="col s12 m6">
+          <div>
+            <Field
+              uicontrol="text"
+              name="metricValue"
+              :class="{ invalid: isMetricValueInvalid }"
+              v-model="actualAlert.metric_matched"
+              :title="`<span>${metricDescription}</span>`"
+              :full-width="true"
+            >
+            </Field>
+          </div>
+        </div>
+      </div>
+      <div v-for="(comparablesDatesPeriod, period) in comparablesDates" :key="period">
+        <Field
+          uicontrol="select"
+          name="compared_to"
+          v-show="period === actualAlert.period && isComparable"
+          v-model="comparedTo[period]"
+          :disabled="Object.keys(comparablesDatesPeriod).length <= 1"
+          :options="comparablesDatesPeriod"
+          :introduction="translate('CustomAlerts_ComparedToThe')"
+        >
+        </Field>
+      </div>
+      <SaveButton
+        v-if="actualAlert?.idalert"
+        @click="updateAlert(actualAlert.idalert)"
+        :saving="isLoading"
       />
-    </span>
-    <div class="row" v-else>
-      <div class="col s12">
-        <Alert severity="info">
-          <strong>{{ translate('MobileMessaging_PhoneNumbers') }}</strong>:
-          <span v-html="$sanitize(mobileMessagingNotActivated)"></span>
-        </Alert>
+      <SaveButton
+        v-else
+        @click="createAlert()"
+        :saving="isLoading"
+      />
+      <div class="entityCancel" v-html="$sanitize(cancelLink)">
       </div>
     </div>
-    <div>
-      <Field
-        uicontrol="expandable-select"
-        name="report"
-        :model-value="actualAlert.report"
-        @update:model-value="actualAlert.report = $event; changeReport()"
-        :options="reportOptions"
-        :title="`${translate('CustomAlerts_ThisAppliesTo')}: ${actualReportMetadata?.name}`"
-        :introduction="translate('CustomAlerts_AlertCondition')"
-      >
-      </Field>
-    </div>
-    <div
-      class="row"
-      v-show="isLoadingReport"
-    >
-      <div class="col s12">
-        <ActivityIndicator :loading="isLoadingReport" />
-      </div>
-    </div>
-    <div
-      class="row conditionAndValue"
-      v-show="hasReportDimension"
-    >
-      <div class="col s12 m6">
-        <div>
-          <Field
-            uicontrol="select"
-            name="reportCondition"
-            v-model="actualAlert.report_condition"
-            :full-width="true"
-            :title="reportConditionTitle"
-            :options="alertGroupConditions"
-          />
-        </div>
-      </div>
-      <div class="col s12 m6">
-        <div class="ui-autocomplete-input" ref="reportValue">
-          <Field
-            uicontrol="text"
-            role="textbox"
-            name="reportValue"
-            v-show="actualAlert.report_condition !== 'matches_any'"
-            v-model="actualAlert.report_matched"
-            :full-width="true"
-            :autocomplete="false"
-            :maxlength="255"
-            :title="translate('General_Value')"
-          >
-          </Field>
-        </div>
-      </div>
-    </div>
-    <div>
-      <Field
-        uicontrol="select"
-        name="metric"
-        :model-value="actualAlert.metric"
-        @update:model-value="actualAlert.metric = $event"
-        :options="metricOptions"
-        :introduction="translate('CustomAlerts_AlertMeWhen')"
-      >
-      </Field>
-    </div>
-    <div class="row conditionAndValue">
-      <div class="col s12 m6">
-        <div>
-          <Field
-            uicontrol="select"
-            name="metricCondition"
-            :model-value="actualAlert.metric_condition"
-            @update:model-value="actualAlert.metric_condition = $event"
-            :full-width="true"
-            :options="metricConditionOptions"
-          >
-          </Field>
-        </div>
-      </div>
-      <div class="col s12 m6">
-        <div>
-          <Field
-            uicontrol="text"
-            name="metricValue"
-            :class="{ invalid: isMetricValueInvalid }"
-            v-model="actualAlert.metric_matched"
-            :title="`<span>${metricDescription}</span>`"
-            :full-width="true"
-          >
-          </Field>
-        </div>
-      </div>
-    </div>
-    <div v-for="(comparablesDatesPeriod, period) in comparablesDates" :key="period">
-      <Field
-        uicontrol="select"
-        name="compared_to"
-        v-show="period === actualAlert.period && isComparable"
-        v-model="comparedTo[period]"
-        :disabled="Object.keys(comparablesDatesPeriod).length <= 1"
-        :options="comparablesDatesPeriod"
-        :introduction="translate('CustomAlerts_ComparedToThe')"
-      >
-      </Field>
-    </div>
-    <SaveButton
-      v-if="actualAlert?.idalert"
-      @click="updateAlert(actualAlert.idalert)"
-      :saving="isLoading"
-    />
-    <SaveButton
-      v-else
-      @click="createAlert()"
-      :saving="isLoading"
-    />
-    <div class="entityCancel" v-html="$sanitize(cancelLink)">
-    </div>
-  </div>
+  </ContentBlock>
 </template>
 
 <script lang="ts">
@@ -215,6 +220,7 @@ import {
   MatomoUrl,
   SiteRef,
   useExternalPluginComponent,
+  ContentBlock,
 } from 'CoreHome';
 import { Form, Field, SaveButton } from 'CorePluginsAdmin';
 import { Alert as AlertType } from '../types';
@@ -262,6 +268,10 @@ const { $ } = window;
 export default defineComponent({
   props: {
     alert: Object,
+    headline: {
+      type: String,
+      required: true,
+    },
     currentSite: {
       type: Object,
       required: true,
@@ -296,6 +306,7 @@ export default defineComponent({
     ActivityIndicator,
     SaveButton,
     SelectPhoneNumbers,
+    ContentBlock,
   },
   directives: {
     Form,

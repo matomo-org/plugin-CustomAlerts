@@ -7,3 +7,7 @@
 
 export { default as ListAlerts } from './ListAlerts/ListAlerts.vue';
 export { default as EditAlert } from './EditAlert/EditAlert.vue';
+export {
+  default as HistoryTriggeredAlerts,
+} from './HistoryTriggeredAlerts/HistoryTriggeredAlerts.vue';
+export { default as ListAlertsPage } from './ListAlerts/ListAlertsPage.vue';

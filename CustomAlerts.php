@@ -207,5 +207,9 @@ class CustomAlerts extends \Piwik\Plugin
         $translations[] = 'CustomAlerts_PeriodMonthDescription';
         $translations[] = 'MobileMessaging_PhoneNumbers';
         $translations[] = 'CustomAlerts_MobileMessagingPluginNotActivated';
+        $translations[] = 'CustomAlerts_ManageAlerts';
+        $translations[] = 'CustomAlerts_AreYouSureDeleteAlert';
+        $translations[] = 'General_Yes';
+        $translations[] = 'General_No';
     }
 }
