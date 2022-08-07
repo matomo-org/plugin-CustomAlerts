@@ -1,1 +1,10 @@
-{}
+{
+    "CustomAlerts": {
+        "AccessException": "Anda bukan pemilik Makluman dengan ID %d",
+        "Alert": "Amaran",
+        "AlertCondition": "Keadaan Makluman",
+        "AlertDoesNotExist": "Makluman dengan ID %d tidak wujud!",
+        "AlertMeWhen": "Maklumkan saya bila",
+        "AlertName": "Nama Makluman"
+    }
+}
