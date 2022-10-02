@@ -36,7 +36,7 @@
         "MailAlertContent": "%1$s har blivit triggat som mätvärde %2$s i rapport %3$s %4$s.",
         "MailAlertSubject": "Ny påminnelse för webbsida %1$s [%2$s]",
         "MailEnd": "Glad analysering!",
-        "MailText": "De triggade påminnelserna är listade nedan. För att justera dina påminnelser var snäll och tillåt påminnelser på din Påminnelser sida",
+        "MailText": "De utlösta varningarna anges i tabellen nedan. Om du vill justera dina anpassade varningsinställningar loggar du in och går till sidan Varningar.",
         "MailTextForSiteOnDate": "Varningarna för %1$s på %2$s listas i tabellen nedan. För att ändra dina inställningar för anpassade varningar, logga in och gå till sidan för anpassade varningar.",
         "ManageAlerts": "Hantera Specifika Påminnelser",
         "MatchesAnyExpression": "Matchar någon",
