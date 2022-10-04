@@ -2,14 +2,15 @@
     "CustomAlerts": {
         "Alert": "Сповіщення",
         "Alerts": "Сповіщення",
-        "PluginDescription": "Плагін Сповіщення дозволяє визначати спеціальні сповіщення на будь-якому звіті та показнику, доступних у Matomo.",
         "CreateNewAlert": "Створити нове сповіщення",
-        "SmsAlertFromName": "Нове сповіщення",
         "DayComparedToPreviousDay": "попередній день",
         "DayComparedToPreviousWeek": "того ж дня тижнем раніше",
         "DayComparedToPreviousYear": "того ж дня в попередньому році",
-        "WeekComparedToPreviousWeek": "попередній тиждень",
         "MonthComparedToPreviousMonth": "попередній місяць",
-        "MonthComparedToPreviousYear": "той же місяць роком раніше"
+        "MonthComparedToPreviousYear": "той же місяць роком раніше",
+        "ParmeterIsTooLong": "%1$s задовге. Дозволено до %2$d символів.",
+        "PluginDescription": "Плагін Сповіщення дозволяє визначати спеціальні сповіщення на будь-якому звіті та показнику, доступних у Matomo.",
+        "SmsAlertFromName": "Нове сповіщення",
+        "WeekComparedToPreviousWeek": "попередній тиждень"
     }
 }
