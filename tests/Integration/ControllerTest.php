@@ -305,7 +305,7 @@ FORMATTED;
         $alerts[1]['value_old']           = 228;
         $alerts[1]['value_new']           = 1;
         $alerts[1]['siteName']            = 'Piwik test';
-        $alerts[1]['ts_triggered']        = 'Jan 6 – 12, 2014';
+        $alerts[1]['ts_triggered']        = 'Jan 6 – 12, 2014';
         self::assertIsInt($alerts[1]['value_old']);
         self::assertIsInt($alerts[1]['value_new']);
         $alerts[2]['reportName']          = 'Page URLs';
