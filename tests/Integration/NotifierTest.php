@@ -168,7 +168,7 @@ Hello,=0A=0AThe triggered alerts are listed in the table below. To adjust y=';
 
     public function test_sendAlertsPerEmailToRecipient_shouldUseDifferentSubjectDependingOnPeriod()
     {
-        $this->assertDateInSubject('week', 'week December 21 – 27, 2009');
+        $this->assertDateInSubject('week', 'week December 21 - 27, 2009');
         $this->assertDateInSubject('day', 'Thursday, December 31, 2009');
         $this->assertDateInSubject('month', 'December 2009');
     }
@@ -180,8 +180,8 @@ Hello,=0A=0AThe triggered alerts are listed in the table below. To adjust y=';
         $mail = new Mail();
         $this->notifier->sendAlertsPerEmailToRecipient($alerts, $mail, 'test@example.com', $period, 1);
 
-        $expected = 'New alert for website Piwik test [' . str_replace('–', '-', $expectedDate) . ']';
-        $this->assertEquals($mail->getSubject(), $expected);
+        $expected = 'New alert for website Piwik test [' . $expectedDate . ']';
+        $this->assertEquals($expected, $mail->getSubject());
     }
 
     public function test_sendNewAlerts()
