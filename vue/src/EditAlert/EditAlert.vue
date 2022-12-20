@@ -133,7 +133,7 @@
               v-show="actualAlert.report_condition !== 'matches_any'"
               v-model="actualAlert.report_matched"
               :full-width="true"
-              :autocomplete="false"
+              :autocomplete="'off'"
               :maxlength="255"
               :title="translate('General_Value')"
             >
