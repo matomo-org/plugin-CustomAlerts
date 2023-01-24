@@ -129,6 +129,7 @@ class ValidatorTest extends BaseTest
 
     public function test_checkName_ShouldNotFail_IfNameIsNotEmpty()
     {
+        self::expectNotToPerformAssertions();
         $this->validator->checkName('b');
     }
 

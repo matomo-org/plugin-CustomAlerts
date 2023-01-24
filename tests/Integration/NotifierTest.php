@@ -14,6 +14,7 @@ use Piwik\Mail;
 use Piwik\Plugin;
 use Piwik\Plugins\CustomAlerts\Notifier;
 use Piwik\Tests\Framework\Fixture;
+use Piwik\Version;
 
 class CustomNotifier extends Notifier
 {
@@ -168,7 +169,12 @@ Hello,=0A=0AThe triggered alerts are listed in the table below. To adjust y=';
 
     public function test_sendAlertsPerEmailToRecipient_shouldUseDifferentSubjectDependingOnPeriod()
     {
-        $this->assertDateInSubject('week', 'week December 21 - 27, 2009');
+        if (version_compare(Version::VERSION, '4.13.0-rc1', '<')) {
+            // intl format changed in 4.13.0
+            $this->assertDateInSubject('week', 'week December 21 - 27, 2009');
+        } else {
+            $this->assertDateInSubject('week', 'week December 21 - 27, 2009');
+        }
         $this->assertDateInSubject('day', 'Thursday, December 31, 2009');
         $this->assertDateInSubject('month', 'December 2009');
     }
