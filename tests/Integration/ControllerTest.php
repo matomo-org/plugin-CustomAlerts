@@ -14,6 +14,7 @@ use Piwik\Plugin;
 use Piwik\Plugins\CustomAlerts\Controller;
 use Piwik\SettingsPiwik;
 use Piwik\Tests\Framework\Fixture;
+use Piwik\Version;
 
 class CustomController extends Controller
 {
@@ -306,6 +307,10 @@ FORMATTED;
         $alerts[1]['value_new']           = 1;
         $alerts[1]['siteName']            = 'Piwik test';
         $alerts[1]['ts_triggered']        = 'Jan 6 – 12, 2014';
+        if (version_compare(Version::VERSION, '4.13.0-rc1', '<')) {
+            // intl format changed in 4.13.0
+            $alerts[1]['ts_triggered'] = 'Jan 6 – 12, 2014';
+        }
         self::assertIsInt($alerts[1]['value_old']);
         self::assertIsInt($alerts[1]['value_new']);
         $alerts[2]['reportName']          = 'Page URLs';
