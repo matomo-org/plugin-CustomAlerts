@@ -71,10 +71,10 @@ class ControllerTest extends BaseTest
 
         $expected = <<<FORMATTED
 MyName1 has been triggered as the metric Visits in report Single Website dashboard decreased more than 5000 from 228.128 to 4493.
->> Edit Alert ${host}index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday
+>> Edit Alert {$host}index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday
 
 MyName2 has been triggered as the metric Visits in report Single Website dashboard decreased more than 5000 from 228.128 to 4493.
->> Edit Alert ${host}index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday
+>> Edit Alert {$host}index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday
 
 
 FORMATTED;
@@ -173,14 +173,14 @@ FORMATTED;
     </thead>
     <tbody>
     <tr>
-        <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;"><a style="color:#439fe0; text-decoration:none;" href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday">MyName1</a></td>
+        <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;"><a style="color:#439fe0; text-decoration:none;" href="{$host}index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday">MyName1</a></td>
                 <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;">Single Website dashboard</td>
         <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;">Website is 'Piwik'</td>
         <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;padding:17px 10px;">Visits decreased more than 5000 from 228.128 to 4493</td>
     </tr>
 
     <tr>
-        <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;"><a style="color:#439fe0; text-decoration:none;" href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday">MyName2</a></td>
+        <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;"><a style="color:#439fe0; text-decoration:none;" href="{$host}index.php?module=CustomAlerts&action=editAlert&idAlert=2&idSite=1&period=week&date=yesterday">MyName2</a></td>
                 <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;">Single Website dashboard</td>
         <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;">Website is 'Piwik'</td>
         <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;padding:17px 10px;">Visits decreased more than 5000 from 228.128 to 4493</td>
@@ -216,7 +216,7 @@ FORMATTED;
     </thead>
     <tbody>
     <tr>
-        <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;"><a style="color:#439fe0; text-decoration:none;" href="${host}index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday">My Alert</a></td>
+        <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;"><a style="color:#439fe0; text-decoration:none;" href="{$host}index.php?module=CustomAlerts&action=editAlert&idAlert=1&idSite=1&period=week&date=yesterday">My Alert</a></td>
                 <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;">Single Website dashboard</td>
         <td style="border-bottom:1px solid rgb(231,231,231);font-size: 15px;color:#0d0d0d;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Oxygen-Sans, Cantarell, &quot;Helvetica Neue&quot;, sans-serif; padding:17px 0 17px 10px;padding:17px 10px;">Visits decreased more than 5000 from 228.128 to 4493</td>
     </tr>
