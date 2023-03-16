@@ -29,7 +29,7 @@
         "InvalidMetricCondition": "Warunek wskaźnika nie jest poprawną wartością",
         "InvalidMetricValue": "Wartość wskaźnika musi być liczbą",
         "InvalidPeriod": "Podano nieprawidłowy okres!",
-        "InvalidReport": "Nieprawidłowo podany raport",
+        "InvalidReport": "Nieprawidłowo podany raport!",
         "InvalidReportCondition": "Zgłoszony warunek nie jest prawidłową wartością",
         "IsGreaterThan": "jest większe niż",
         "IsLessThan": "jest mniejsze niż",
@@ -44,7 +44,7 @@
         "MobileMessagingPluginNotActivated": "Wtyczka MobileMessaging jest niezbędna do wysyłania alarmów SMS. Możesz ją aktywować poprzez przejście do %1$sustawień wtyczki%2$s.",
         "MonthComparedToPreviousMonth": "poprzedni miesiąc",
         "MonthComparedToPreviousYear": "ten sam miesiąc w poprzednim roku",
-        "NoAlertsDefined": "Nie utworzono jeszcze żadnych alarmów, utworzyć je teraz?",
+        "NoAlertsDefined": "Nie utworzyłeś jeszcze żadnych alarmów, utwórz je teraz!",
         "NoTriggeredAlerts": "Nie ma jeszcze wyzwalanych alarmów",
         "OperationContains": "zawiera",
         "OperationDoesNotContain": "niezawiera",
@@ -53,6 +53,9 @@
         "ParmeterIsTooLong": "%1$s jest zbyt długi. Maksymalnie może być %2$d znaków.",
         "PercentageDecreasesMoreThan": "%% maleje poniżej",
         "PercentageIncreasesMoreThan": "%% wzrasta powyżej",
+        "PeriodDayDescription": "Dzień - Wysyłane codziennie około północy",
+        "PeriodMonthDescription": "Miesiąc - wysyłane każdego 1 dnia miesiąca około północy",
+        "PeriodWeekDescription": "Tydzień - Wysyłane w każdy poniedziałek około północy",
         "PluginDescription": "Wtyczka Alarmy pozwala na zdefiniowanie indywidualnych alarmów dla dowolnego raportu i wskaźnika dostępnego w Matomo.",
         "ScheduledReportsPluginNotActivated": "Wtyczka Zaplanowane Raporty jest niezbędna do stworzenia lub edytowania alarmów. Możesz ją aktywować poprzez przejście do %1$sustawień wtyczki%2$s.",
         "SmsAlertContent": "%1$s został wyzwolony dla serwisu %4$s, ponieważ wskaźnik %2$s w raporcie %3$s %5$s.",
@@ -66,6 +69,7 @@
         "ValuePercentageDecreasedMoreThan": "zmalało o ponad %1$s %% z %2$s do %3$s",
         "ValuePercentageIncreasedMoreThan": "wzrosło o ponad %1$s%% z %2$s do %3$s",
         "WeekComparedToPreviousWeek": "poprzedni tydzień",
-        "When": "kiedy"
+        "When": "kiedy",
+        "YouCanChoosePeriodFrom": "Można wybrać spośród następujących opcji"
     }
 }
