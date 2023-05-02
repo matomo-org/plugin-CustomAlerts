@@ -265,9 +265,9 @@ Hello,=0A=0AThe triggered alerts are listed in the table below. To adjust y=';
     public function provideContainerConfig()
     {
         return [
-            'observers.global' => \DI\add([
+            'observers.global' => \Piwik\DI::add([
                 [
-                    'Test.Mail.send', \DI\value(function (PHPMailer $mail) {
+                    'Test.Mail.send', \Piwik\DI::value(function (PHPMailer $mail) {
                         $this->mail = $mail;
                         $this->mail->preSend();
                     })
