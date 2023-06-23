@@ -1,9 +1,9 @@
 {
     "CustomAlerts": {
-        "AccessException": "%d kodlu uyarının sahibi değilsiniz",
+        "AccessException": "%d kimlikli uyarının sahibi değilsiniz",
         "Alert": "Uyarı",
         "AlertCondition": "Uyarı durumu",
-        "AlertDoesNotExist": "%d kodlu bir uyarı bulunamadı!",
+        "AlertDoesNotExist": "%d kimlikli uyarı bulunamadı!",
         "AlertMeWhen": "Şu olduğunda beni uyar",
         "AlertName": "Uyarı adı",
         "Alerts": "Uyarılar",
