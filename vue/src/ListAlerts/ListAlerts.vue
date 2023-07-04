@@ -32,14 +32,14 @@
           <td class="reportName">{{ alert.reportName || '-' }}</td>
           <td class="edit">
             <a
-              class="table-action"
+              class="table-action icon-edit"
               :href="linkTo({
                 'module': 'CustomAlerts',
                 'action': 'editAlert',
                 'idAlert': alert.idalert,
               })"
               :title="translate('General_Edit')"
-            ><span class="icon-edit" /></a>
+            ></a>
           </td>
           <td class="delete">
             <button
