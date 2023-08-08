@@ -1,5 +1,6 @@
 ## Changelog
 
+* 5.0.1 Compatibility with Matomo 5.0.0-b4
 * 5.0.0 Compatibility with Matomo 5.0
 * 4.1.0 Migrate AngularJS to Vue
 * 4.0.4 Fixed autocomplete for country to trigger alerts
