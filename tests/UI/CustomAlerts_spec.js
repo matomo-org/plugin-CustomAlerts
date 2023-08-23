@@ -50,13 +50,9 @@ describe("CustomAlerts", function () {
 
     it('should reload alert conditions when site is changed back', async function () {
         await page.evaluate(function() {
-          $('.siteSelector .dropdown li:contains("Piwik test"):first').click();
+            $('.siteSelector .dropdown li:contains("Piwik test"):first').click();
         });
         await page.waitForNetworkIdle();
-        await page.evaluate(function() {
-          $('.expandableSelector .select-wrapper').click();
-          $('.expandableSelector li:contains("Goals"):first:parent .secondLevel').show();
-        });
         await page.waitForNetworkIdle();
         const elem = await page.$('.pageWrap');
         await page.waitForTimeout(350); // wait for animation
