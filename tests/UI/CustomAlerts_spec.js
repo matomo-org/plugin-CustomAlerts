@@ -33,8 +33,41 @@ describe("CustomAlerts", function () {
         expect(await elem.screenshot()).to.matchImage('edit');
     });
 
+    it('should reload alert conditions when site is changed', async function () {
+        await page.evaluate(function() {
+            $('.siteSelector .dropdown li:contains("Piwik test"):last').click();
+        });
+        await page.waitForNetworkIdle();
+        await page.evaluate(function() {
+            $('.expandableSelector .select-wrapper').click();
+            $('.expandableSelector li:contains("Goals"):first:parent .secondLevel').show();
+        });
+        await page.waitForNetworkIdle();
+        const elem = await page.$('.pageWrap');
+        await page.waitForTimeout(350); // wait for animation
+        expect(await elem.screenshot()).to.matchImage('alert_condition_reloaded_site2');
+    });
+
+    it('should reload alert conditions when site is changed back', async function () {
+        await page.evaluate(function() {
+          $('.siteSelector .dropdown li:contains("Piwik test"):first').click();
+        });
+        await page.waitForNetworkIdle();
+        await page.evaluate(function() {
+          $('.expandableSelector .select-wrapper').click();
+          $('.expandableSelector li:contains("Goals"):first:parent .secondLevel').show();
+        });
+        await page.waitForNetworkIdle();
+        const elem = await page.$('.pageWrap');
+        await page.waitForTimeout(350); // wait for animation
+        expect(await elem.screenshot()).to.matchImage('alert_condition_reloaded_site1');
+    });
+
     it('should save changed alert', async function () {
         // only check if name was changed in list, no need to make a screenshot
+        await page.evaluate(function() {
+            $('.expandableSelector .select-wrapper').click();
+        });
         await page.type('#alertName', ' changed');
         await page.click('.matomo-save-button');
         await page.waitForNetworkIdle();

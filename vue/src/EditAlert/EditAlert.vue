@@ -491,7 +491,7 @@ export default defineComponent({
         method: 'API.getReportMetadata',
         date: Matomo.currentDateString,
         period: this.actualAlert.period,
-        idSites: this.actualAlert.id_sites,
+        idSite: this.actualAlert.id_sites?.[0],
         filter_limit: '-1',
       }).then((data) => {
         this.renderForm(data);
