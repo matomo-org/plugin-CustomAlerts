@@ -1,5 +1,6 @@
 ## Changelog
 
+* 4.1.1 Fixed alert conditions not reloading on site change
 * 4.1.0 Migrate AngularJS to Vue
 * 4.0.4 Fixed autocomplete for country to trigger alerts
 * 4.0.3 Grouped alert condition select in UI

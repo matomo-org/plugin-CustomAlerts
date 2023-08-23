@@ -11,6 +11,7 @@ namespace Piwik\Plugins\CustomAlerts\tests\Fixtures;
 use Piwik\Piwik;
 use Piwik\Plugins\CustomAlerts\Model;
 use Piwik\Tests\Framework\Fixture;
+use Piwik\Plugins\Goals\API;
 
 /**
  * Tracks custom events
@@ -32,6 +33,13 @@ class CustomAlerts extends Fixture
         if (!self::siteCreated($idSite = 1)) {
             self::createWebsite($this->dateTime);
         }
+
+        // tests run in UTC, the Tracker in UTC
+        if (!self::siteCreated($idSite = 2)) {
+            self::createWebsite($this->dateTime);
+        }
+
+        API::getInstance()->addGoal($idSite, 'Goal for idSite 2', 'title', 'normal title', 'exact', true, 50, true);
     }
 
     private function addAlerts()
