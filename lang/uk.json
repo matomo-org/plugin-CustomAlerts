@@ -1,7 +1,7 @@
 {
     "CustomAlerts": {
-        "Alert": "Сповіщення",
-        "Alerts": "Сповіщення",
+        "Alert": "Оповіщення",
+        "Alerts": "Оповіщення",
         "CreateNewAlert": "Створити нове сповіщення",
         "DayComparedToPreviousDay": "попередній день",
         "DayComparedToPreviousWeek": "того ж дня тижнем раніше",
