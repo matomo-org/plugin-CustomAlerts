@@ -13,24 +13,33 @@ describe("CustomAlerts", function () {
 
     var generalParams = 'idSite=1&period=year&date=2012-08-09';
 
+    async function screenshotPageWrap() {
+        await page.evaluate(function () {
+            $('#secondNavBar').css('visibility', 'hidden'); // hide navbar so shadow isn't shown on screenshot
+        });
+        const pageWrap = await page.$('.pageWrap');
+        const screenshot = await pageWrap.screenshot();
+        await page.evaluate(function () {
+            $('#secondNavBar').css('visibility', 'visible'); // show navbar again
+        });
+        return screenshot;
+    }
+
     it('should load the triggered custom alerts list correctly', async function () {
         await page.goto("?" + generalParams + "&module=CustomAlerts&action=historyTriggeredAlerts&idSite=1&period=day&date=yesterday");
-        var elem = await page.$('.pageWrap');
-        expect(await elem.screenshot()).to.matchImage('list_triggered');
+        expect(await screenshotPageWrap()).to.matchImage('list_triggered');
     });
 
     it('should load the custom alerts list correctly', async function () {
         await page.goto("?" + generalParams + "&module=CustomAlerts&action=index&idSite=1&period=day&date=yesterday");
-        var elem = await page.$('.pageWrap');
-        expect(await elem.screenshot()).to.matchImage('list');
+        expect(await screenshotPageWrap()).to.matchImage('list');
     });
 
     it('should load custom alerts edit screen', async function () {
         await page.click('tbody tr:first-child td.edit a');
         await page.waitForNetworkIdle();
-        const elem = await page.$('.pageWrap');
         await page.waitForTimeout(350); // wait for animation
-        expect(await elem.screenshot()).to.matchImage('edit');
+        expect(await screenshotPageWrap()).to.matchImage('edit');
     });
 
     it('should reload alert conditions when site is changed', async function () {
@@ -43,9 +52,8 @@ describe("CustomAlerts", function () {
             $('.expandableSelector li:contains("Goals"):first:parent .secondLevel').show();
         });
         await page.waitForNetworkIdle();
-        const elem = await page.$('.pageWrap');
         await page.waitForTimeout(350); // wait for animation
-        expect(await elem.screenshot()).to.matchImage('alert_condition_reloaded_site2');
+        expect(await screenshotPageWrap()).to.matchImage('alert_condition_reloaded_site2');
     });
 
     it('should reload alert conditions when site is changed back', async function () {
@@ -54,9 +62,8 @@ describe("CustomAlerts", function () {
         });
         await page.waitForNetworkIdle();
         await page.waitForNetworkIdle();
-        const elem = await page.$('.pageWrap');
         await page.waitForTimeout(350); // wait for animation
-        expect(await elem.screenshot()).to.matchImage('alert_condition_reloaded_site1');
+        expect(await screenshotPageWrap()).to.matchImage('alert_condition_reloaded_site1');
     });
 
     it('should save changed alert', async function () {
