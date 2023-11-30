@@ -1,1 +1,14 @@
-{}
+{
+    "CustomAlerts": {
+        "AccessException": "Zu ez zara %d IDa duen alertaren jabea",
+        "Alert": "Alerta",
+        "AlertCondition": "Alertaren baldintza",
+        "AlertDoesNotExist": "%d IDa duen alerta ez da existitzen!",
+        "AlertMeWhen": "Noiz jakinarazi:",
+        "AlertName": "Alertaren izena",
+        "Alerts": "Alertak",
+        "ApplyTo": "Aplikatu honi",
+        "AreYouSureDeleteAlert": "Ziur zaude alerta hau ezabatu nahi duzula?",
+        "CancelAndReturnToAlerts": "Utzi eta %1$sitzuli alerten zerrendara%2$s"
+    }
+}
