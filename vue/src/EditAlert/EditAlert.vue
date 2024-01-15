@@ -97,6 +97,7 @@
           :options="reportOptions"
           :title="`${translate('CustomAlerts_ThisAppliesTo')}: ${actualReportMetadata?.name}`"
           :introduction="translate('CustomAlerts_AlertCondition')"
+          :inline-help="thisAppliesToInlineHelp"
         >
         </Field>
       </div>
@@ -562,6 +563,19 @@ export default defineComponent({
       return translate(
         'General_OrCancel',
         `<a class="entityCancelLink" href="${backlink}">`,
+        '</a>',
+      );
+    },
+    thisAppliesToInlineHelp(): string {
+      const link1 = 'https://matomo.org/guide/manage-matomo/custom-alerts/';
+      const link2 = 'https://matomo.org/faq/general/examples-of-custom-alerts#events';
+      return translate(
+        'CustomAlerts_ThisAppliesToHelp',
+        `<a target="_blank" href="${link1}" rel="noreferrer noopener">`,
+        '</a>',
+        '<strong>',
+        '</strong>',
+        `<a target="_blank" href="${link2}" rel="noreferrer noopener">`,
         '</a>',
       );
     },
