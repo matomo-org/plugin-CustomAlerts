@@ -62,6 +62,7 @@
         "SmsAlertFromName": "Nova alerta",
         "StartsWith": "comença per",
         "ThisAppliesTo": "Això s'aplica a l'informe",
+        "ThisAppliesToHelp": "Podeu utilitzar molts tipus diferents de condicions d'alerta. %1$sFeu clic aquí%2$s per obtenir més informació sobre la configuració d'alertes personalitzades. Per obtenir informació sobre les %3$salertes activades per esdeveniments%4$s, %5$s feu clic aquí%6$s.",
         "ValueDecreasedMoreThan": "ha disminuït més d'un %1$s de %2$s a %3$s",
         "ValueIncreasedMoreThan": "ha augmentat més d'un %1$s de %2$s a %3$s",
         "ValueIsGreaterThan": "és %2$s, que és més gran que %1$s",
