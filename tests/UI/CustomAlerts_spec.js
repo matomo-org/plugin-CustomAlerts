@@ -14,14 +14,8 @@ describe("CustomAlerts", function () {
     var generalParams = 'idSite=1&period=year&date=2012-08-09';
 
     async function screenshotPageWrap() {
-        await page.evaluate(function () {
-            $('#secondNavBar').css('visibility', 'hidden'); // hide navbar so shadow isn't shown on screenshot
-        });
         const pageWrap = await page.$('.pageWrap');
         const screenshot = await pageWrap.screenshot();
-        await page.evaluate(function () {
-            $('#secondNavBar').css('visibility', 'visible'); // show navbar again
-        });
         return screenshot;
     }
 
