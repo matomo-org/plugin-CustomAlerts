@@ -62,6 +62,7 @@
         "SmsAlertFromName": "Uyarı ekle",
         "StartsWith": "şununla başlayan",
         "ThisAppliesTo": "Bunlar rapora uygulanan",
+        "ThisAppliesToHelp": "Birçok farklı türde uyarı durumu kullanabilirsiniz. Özel uyarılar oluşturma hakkında daha fazla bilgi edinmek için %1$sburaya tıklayın%2$s. %3$sEtkinlik tetiklemeli uyarılar%4$s hakkında bilgi edinmek için %5$sburaya tıklayın%6$s.",
         "ValueDecreasedMoreThan": "%2$s ile %3$s arasında %1$s değerinden daha fazla azaldı",
         "ValueIncreasedMoreThan": "%2$s ile %3$s arasında %1$s değerinden daha fazla arttı",
         "ValueIsGreaterThan": "%2$s, %1$s değerinden büyük",
