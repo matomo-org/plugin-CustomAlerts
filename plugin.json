@@ -1,7 +1,7 @@
 {
     "name": "CustomAlerts",
     "description": "Create custom Alerts to be notified of important changes on your website or app! ",
-    "version": "5.0.2",
+    "version": "5.0.3",
     "require": {
         "matomo": ">=5.0.0-b1,<6.0.0-b1"
     },

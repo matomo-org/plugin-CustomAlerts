@@ -1,5 +1,6 @@
 ## Changelog
 
+* 5.0.3 Added inline help to mention events filter FAQ
 * 5.0.2 Fixed alert conditions not reloading on site change
 * 5.0.1 Compatibility with Matomo 5.0.0-b4
 * 5.0.0 Compatibility with Matomo 5.0
