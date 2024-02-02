@@ -62,6 +62,7 @@
         "SmsAlertFromName": "Ny påminnelse",
         "StartsWith": "börjar med",
         "ThisAppliesTo": "Det här läggs till på rapporten",
+        "ThisAppliesToHelp": "Du kan använda många olika typer av larmförhållanden. %1$sKlicka här%2$s för att lära dig mer om hur du ställer in anpassade larm. För att lära dig mer om %3$sHändelseutlösta larm%4$s, %5$sklicka här%6$s.",
         "ValueDecreasedMoreThan": "minskade med mer än %1$s från %2$s till %3$s",
         "ValueIncreasedMoreThan": "Ökar med mer än %1$s från %2$s till %3$s",
         "ValueIsGreaterThan": "är %2$s vilket är större än %1$s",
