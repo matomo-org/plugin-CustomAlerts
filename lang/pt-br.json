@@ -62,6 +62,7 @@
         "SmsAlertFromName": "Novo alerta",
         "StartsWith": "começa com",
         "ThisAppliesTo": "Isso aplica-se ao relatório",
+        "ThisAppliesToHelp": "Você pode usar muitos tipos diferentes de condições de alerta. %1$sClique aqui%2$s para aprender mais sobre a configuração de alertas personalizados. Para aprender sobre %3$salertas acionados por eventos%4$s, %5$sclique aqui%6$s.",
         "ValueDecreasedMoreThan": "reduziu mais que %1$s, de %2$s para %3$s",
         "ValueIncreasedMoreThan": "aumentou mais que %1$s, de %2$s para %3$s",
         "ValueIsGreaterThan": "é %2$s que é maior do que %1$s",
