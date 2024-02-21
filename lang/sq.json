@@ -62,6 +62,7 @@
         "SmsAlertFromName": "Sinjalizim i Ri",
         "StartsWith": "fillon me",
         "ThisAppliesTo": "Kjo vlen për raportin",
+        "ThisAppliesToHelp": "Mund të përdorni mjaft lloje të ndryshme kushtesh sinjalizimi. %1$sKlikoni këtu%2$s, që të mësoni më tepër rreth ujdisjes së sinjalizimeve vetjake. Që të mësoni mbi %3$sSinjalizime të shkaktuar nga akte%4$s, %5$sklikoni këtu%6$s.",
         "ValueDecreasedMoreThan": "u ul me më tepër se %1$s nga %2$s deri më %3$s",
         "ValueIncreasedMoreThan": "u rrit me më shumë se %1$s nga %2$s deri më %3$s",
         "ValueIsGreaterThan": "është %2$s, që është më shumë se %1$s",
