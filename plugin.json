@@ -20,5 +20,6 @@
     },
     "license": "GPL v3+",
     "keywords": ["alerts", "notification", "report", "monitoring"],
-    "homepage": "https://matomo.org"
+    "homepage": "https://matomo.org",
+    "category": "database"
 }
