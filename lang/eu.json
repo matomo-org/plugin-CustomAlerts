@@ -62,6 +62,7 @@
         "SmsAlertFromName": "Alerta berria",
         "StartsWith": "honekin hasten da",
         "ThisAppliesTo": "Honek txostenari eragiten dio",
+        "ThisAppliesToHelp": "Alerten hainbat baldintza mota erabili ditzakezu. %1$sEgin klik hemen%2$s alerta pertsonalizatuak nola konfiguratu ikasteko. %3$sGertaerek abiarazitako alertei%4$s buruz ikasteko, %5$segin klik hemen%6$s.",
         "ValueDecreasedMoreThan": "%1$s baino gehiago txikiagotu da %2$s(e)tik %3$s(e)ra",
         "ValueIncreasedMoreThan": "%1$s baino gehiago handiagotu da %2$s(e)tik %3$s(e)ra",
         "ValueIsGreaterThan": "%2$s denean, zeina %1$s baino handiagoa den",
