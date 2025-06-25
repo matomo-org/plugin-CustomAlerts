@@ -1,5 +1,6 @@
 ## Changelog
 
+* 5.0.7 - 2025-07-07 Textual changes
 * 5.0.6 - 2024-09-23 Added check if reports used by alert are done archiving and retry if not archived
 * 5.0.5 Combined all the actions into one column
 * 5.0.4 Added plugin category for Marketplace

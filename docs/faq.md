@@ -6,7 +6,7 @@ Here is the complete list of features that are included in this project:
 
 * Define new Alert ("Big drop in purchases")
 * Select a website on which the Alert is defined
-* Receive an alert by email (email will contain Alert description + link to Piwik dashboard URL for the given website ID and period).
+* Receive an alert by email (email will contain Alert description + link to Matomo dashboard URL for the given website ID and period).
 * Receive an alert by SMS (SMS will contain Alert description and numbers that triggered the Alert)
 * Select the Alert period: should it be daily, weekly or monthly?
 * Select the report (Websites, Keywords, Countries, general stats)
@@ -15,7 +15,7 @@ Here is the complete list of features that are included in this project:
 
 __What reports are available to the Alert system?__
 
-You can create an alert for any available report in Piwik. Plugins can define new reports which will be automatically picked up by Alerts.
+You can create an alert for any available report in Matomo. Plugins can define new reports which will be automatically picked up by Alerts.
 
 __What alert conditions are available?__
 
