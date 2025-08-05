@@ -17,6 +17,43 @@ use Piwik\Site;
 /**
  *
  * @method static \Piwik\Plugins\CustomAlerts\API getInstance()
+ *
+ * @OA\Schema(
+ *      schema="alert",
+ *      title="Alert",
+ *      type="object",
+ *      @OA\Property(
+ *          property="idAlert",
+ *          description="ID of the alert",
+ *          type="integer",
+ *      ),
+ *      @OA\Property(
+ *          property="name",
+ *          description="Name of the alert",
+ *          type="string",
+ *      ),
+ *      @OA\Property(
+ *          property="login",
+ *          description="Name of the login or username to which the alert belongs",
+ *          type="string",
+ *      ),
+ *      @OA\Property(
+ *          property="period",
+ *          description="Name of the period such as day, week, or month",
+ *          type="string",
+ *      ),
+ *      @OA\Property(
+ *          property="report",
+ *          description="Name of the report which the alert monitors",
+ *          type="string",
+ *      ),
+ *      @OA\Property(
+ *          property="idSites",
+ *          description="IDs of the sites",
+ *          type="array",
+ *          @OA\Items(type="integer")
+ *      )
+ *  )
  */
 class API extends \Piwik\Plugin\API
 {
@@ -41,6 +78,59 @@ class API extends \Piwik\Plugin\API
      * @param int $subPeriodN
      *
      * @return array
+     *
+     * @OA\Get(
+     *     path="/index.php?method=CustomAlerts.getValuesForAlertInPast",
+     *     operationId="CustomAlerts.getValuesForAlertInPast",
+     *     tags={"CustomAlerts"},
+     *     @OA\Parameter(ref="#/components/parameters/module"),
+     *     @OA\Parameter(ref="#/components/parameters/format"),
+     *     @OA\Parameter(
+     *         name="idAlert",
+     *         in="query",
+     *         description="The ID of the alert",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="subPeriodN",
+     *         in="query",
+     *         description="The number to subtract from the current (0) period",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="The collection of sites their the matching result for the specified period",
+     *         @OA\JsonContent(
+     *              type="array",
+     *              @OA\Items(
+     *                  type="object",
+     *                  @OA\Property(
+     *                      property="idSite",
+     *                      description="ID of the site",
+     *                      type="integer",
+     *                  ),
+     *                  @OA\Property(
+     *                      property="value",
+     *                      description="Value of the alert for specific site",
+     *                      type="array",
+     *                      @OA\Items(
+     *                          oneOf={
+     *                              @OA\Schema(type="string"),
+     *                              @OA\Schema(type="integer"),
+     *                              @OA\Schema(type="object")
+     *                          }
+     *                      )
+     *                  )
+     *              )
+     *         )
+     *     )
+     * )
      */
     public function getValuesForAlertInPast($idAlert, $subPeriodN)
     {
@@ -64,6 +154,28 @@ class API extends \Piwik\Plugin\API
      *
      * @return array
      * @throws \Exception In case alert does not exist or user has no permission to access alert.
+     *
+     * @OA\Get(
+     *      path="/index.php?method=CustomAlerts.getAlert",
+     *      operationId="CustomAlerts.getAlert",
+     *      tags={"CustomAlerts"},
+     *      @OA\Parameter(ref="#/components/parameters/module"),
+     *      @OA\Parameter(ref="#/components/parameters/format"),
+     *      @OA\Parameter(
+     *          name="idAlert",
+     *          in="query",
+     *          description="The ID of the alert",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response="200",
+     *          description="The properties of the requested alert",
+     *          @OA\JsonContent(ref="#/components/schemas/alert")
+     *      )
+     *  )
      */
     public function getAlert($idAlert)
     {
@@ -90,6 +202,32 @@ class API extends \Piwik\Plugin\API
      * @param bool  $ifSuperUserReturnAllAlerts
      *
      * @return array
+     *
+     * @OA\Get(
+     *     path="/index.php?method=CustomAlerts.getAlerts",
+     *     operationId="CustomAlerts.getAlerts",
+     *     tags={"CustomAlerts"},
+     *     @OA\Parameter(ref="#/components/parameters/module"),
+     *     @OA\Parameter(ref="#/components/parameters/format"),
+     *     @OA\Parameter(
+     *         name="idSites",
+     *         in="query",
+     *         description="The IDs of the sites to filter alerts by",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="array",
+     *             @OA\Items(type="integer")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response="200",
+     *         description="A collection of alerts matching the sites",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/alert")
+     *         )
+     *     )
+     * )
      */
     public function getAlerts($idSites, $ifSuperUserReturnAllAlerts = false)
     {
