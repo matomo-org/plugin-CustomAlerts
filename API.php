@@ -585,15 +585,7 @@ class API extends \Piwik\Plugin\API
      *     tags={"CustomAlerts"},
      *     @OA\Parameter(ref="#/components/parameters/module"),
      *     @OA\Parameter(ref="#/components/parameters/format"),
-     *     @OA\Parameter(
-     *         name="idAlert",
-     *         in="query",
-     *         description="The ID of the alert",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer"
-     *         )
-     *     ),
+     *     @OA\Parameter(ref="#/components/parameters/idAlert"),
      *     @OA\Response(
      *         response="200",
      *         description="200 response without body"
@@ -621,16 +613,7 @@ class API extends \Piwik\Plugin\API
      *     tags={"CustomAlerts"},
      *     @OA\Parameter(ref="#/components/parameters/module"),
      *     @OA\Parameter(ref="#/components/parameters/format"),
-     *     @OA\Parameter(
-     *         name="idSites",
-     *         in="query",
-     *         description="The IDs of the sites to filter alerts by",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="array",
-     *             @OA\Items(type="integer")
-     *         )
-     *     ),
+     *     @OA\Parameter(ref="#/components/parameters/alertIdSites"),
      *     @OA\Response(
      *         response="200",
      *         description="A collection of alerts matching the sites",
