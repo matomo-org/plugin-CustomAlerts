@@ -282,7 +282,7 @@ class CustomAlerts extends \Piwik\Plugin
         if ($alertMedium === 'email' && empty($parameters['emailMe']) && empty($parameters['additionalEmails'])) {
             throw new \Exception(Piwik::translate('CustomAlerts_InvalidEmailReportParameter'));
         } elseif ($alertMedium === 'mobile' && empty($parameters['phoneNumbers'])) {
-            if (defined('PIWIK_TEST_MODE') && PIWIK_TEST_MODE && !defined('PIWIK_TEST_CHECK_PHONE_NUMBERS')) {
+            if (defined('PIWIK_TEST_MODE') && PIWIK_TEST_MODE) {
                 return;
             }
             throw new \Exception(Piwik::translate('CustomAlerts_InvalidPhoneNumberReportParameter'));
