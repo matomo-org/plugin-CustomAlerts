@@ -76,6 +76,7 @@
         "FinalTaskRetryWarning": "Final retry of alerts task. Unable to process the following alerts: %1$s",
         "MediumEmail": "Email",
         "MediumMobile": "Mobile",
+        "MediumSlack": "Slack",
         "MediumTitle": "Send alerts via",
         "MediumDescription": "Select the medium to send alerts.",
         "EmptyReportMediums": "Report mediums cannot be empty.",

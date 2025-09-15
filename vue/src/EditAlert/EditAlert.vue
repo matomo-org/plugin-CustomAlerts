@@ -104,6 +104,13 @@
           </div>
         </div>
       </div>
+      <div v-if="actualAlert.report_mediums && actualAlert.report_mediums.includes('slack')">
+        <SelectSlackChannel
+            :model-value="slackChannelID || ''"
+            :is-slack-oauth-token-added="true"
+            v-model="actualAlert.slack_channel_id"
+        />
+      </div>
       <div>
         <Field
           uicontrol="expandable-select"
@@ -243,6 +250,7 @@ import { Form, Field, SaveButton } from 'CorePluginsAdmin';
 import { Alert as AlertType } from '../types';
 
 const SelectPhoneNumbers = useExternalPluginComponent('MobileMessaging', 'SelectPhoneNumbers');
+const SelectSlackChannel = useExternalPluginComponent('Slack', 'SelectSlackChannel');
 
 interface Option {
   key: string;
@@ -307,6 +315,7 @@ export default defineComponent({
     },
     supportsSMS: Boolean,
     phoneNumbers: [Array, Object],
+    slackChannelID: String,
     reportMetadata: Object,
     alertGroupConditions: {
       type: Array,
@@ -327,6 +336,7 @@ export default defineComponent({
     ActivityIndicator,
     SaveButton,
     SelectPhoneNumbers,
+    SelectSlackChannel,
     ContentBlock,
   },
   directives: {
@@ -552,6 +562,7 @@ export default defineComponent({
           ? this.actualAlert.additional_emails : [''],
         phoneNumbers: this.actualAlert.phone_numbers?.length
           ? this.actualAlert.phone_numbers : [''],
+        slackChannelID: this.actualAlert?.slack_channel_id ? this.actualAlert.slack_channel_id : '',
         reportUniqueId: this.actualAlert.report,
         reportCondition: this.actualAlert.report_condition,
         reportValue: this.actualAlert.report_matched,

@@ -277,62 +277,66 @@ var external_CoreHome_ = __webpack_require__("19dc");
 ListAlertsvue_type_script_lang_ts.render = render
 
 /* harmony default export */ var ListAlerts = (ListAlertsvue_type_script_lang_ts);
-// CONCATENATED MODULE: ./node_modules/@vue/cli-plugin-babel/node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/@vue/cli-plugin-babel/node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/@vue/cli-service/node_modules/vue-loader-v16/dist/templateLoader.js??ref--6!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/@vue/cli-service/node_modules/vue-loader-v16/dist??ref--1-1!./plugins/CustomAlerts/vue/src/EditAlert/EditAlert.vue?vue&type=template&id=1a3b439a
+// CONCATENATED MODULE: ./node_modules/@vue/cli-plugin-babel/node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/@vue/cli-plugin-babel/node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/@vue/cli-service/node_modules/vue-loader-v16/dist/templateLoader.js??ref--6!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/@vue/cli-service/node_modules/vue-loader-v16/dist??ref--1-1!./plugins/CustomAlerts/vue/src/EditAlert/EditAlert.vue?vue&type=template&id=2582ddcd
 
-const EditAlertvue_type_template_id_1a3b439a_hoisted_1 = {
+const EditAlertvue_type_template_id_2582ddcd_hoisted_1 = {
   id: "customAlertPeriodHelp",
   class: "inline-help-node"
 };
-const EditAlertvue_type_template_id_1a3b439a_hoisted_2 = {
+const EditAlertvue_type_template_id_2582ddcd_hoisted_2 = {
   key: 0
 };
-const EditAlertvue_type_template_id_1a3b439a_hoisted_3 = {
+const EditAlertvue_type_template_id_2582ddcd_hoisted_3 = {
   key: 1
 };
-const EditAlertvue_type_template_id_1a3b439a_hoisted_4 = {
+const EditAlertvue_type_template_id_2582ddcd_hoisted_4 = {
   key: 0
 };
-const EditAlertvue_type_template_id_1a3b439a_hoisted_5 = {
+const EditAlertvue_type_template_id_2582ddcd_hoisted_5 = {
   key: 1,
   class: "row"
 };
-const EditAlertvue_type_template_id_1a3b439a_hoisted_6 = {
+const EditAlertvue_type_template_id_2582ddcd_hoisted_6 = {
   class: "col s12"
 };
-const EditAlertvue_type_template_id_1a3b439a_hoisted_7 = ["innerHTML"];
-const EditAlertvue_type_template_id_1a3b439a_hoisted_8 = {
+const EditAlertvue_type_template_id_2582ddcd_hoisted_7 = ["innerHTML"];
+const EditAlertvue_type_template_id_2582ddcd_hoisted_8 = {
+  key: 2
+};
+const EditAlertvue_type_template_id_2582ddcd_hoisted_9 = {
   class: "row"
 };
-const EditAlertvue_type_template_id_1a3b439a_hoisted_9 = {
+const EditAlertvue_type_template_id_2582ddcd_hoisted_10 = {
   class: "col s12"
 };
-const EditAlertvue_type_template_id_1a3b439a_hoisted_10 = {
+const EditAlertvue_type_template_id_2582ddcd_hoisted_11 = {
   class: "row conditionAndValue"
 };
-const EditAlertvue_type_template_id_1a3b439a_hoisted_11 = {
+const EditAlertvue_type_template_id_2582ddcd_hoisted_12 = {
   class: "col s12 m6"
 };
-const EditAlertvue_type_template_id_1a3b439a_hoisted_12 = {
+const EditAlertvue_type_template_id_2582ddcd_hoisted_13 = {
   class: "col s12 m6"
 };
-const EditAlertvue_type_template_id_1a3b439a_hoisted_13 = {
+const EditAlertvue_type_template_id_2582ddcd_hoisted_14 = {
   class: "ui-autocomplete-input",
   ref: "reportValue"
 };
-const EditAlertvue_type_template_id_1a3b439a_hoisted_14 = {
+const EditAlertvue_type_template_id_2582ddcd_hoisted_15 = {
   class: "row conditionAndValue"
 };
-const EditAlertvue_type_template_id_1a3b439a_hoisted_15 = {
+const EditAlertvue_type_template_id_2582ddcd_hoisted_16 = {
   class: "col s12 m6"
 };
-const EditAlertvue_type_template_id_1a3b439a_hoisted_16 = {
+const EditAlertvue_type_template_id_2582ddcd_hoisted_17 = {
   class: "col s12 m6"
 };
-const EditAlertvue_type_template_id_1a3b439a_hoisted_17 = ["innerHTML"];
-function EditAlertvue_type_template_id_1a3b439a_render(_ctx, _cache, $props, $setup, $data, $options) {
+const EditAlertvue_type_template_id_2582ddcd_hoisted_18 = ["innerHTML"];
+function EditAlertvue_type_template_id_2582ddcd_render(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_Field = Object(external_commonjs_vue_commonjs2_vue_root_Vue_["resolveComponent"])("Field");
   const _component_SelectPhoneNumbers = Object(external_commonjs_vue_commonjs2_vue_root_Vue_["resolveComponent"])("SelectPhoneNumbers");
   const _component_Alert = Object(external_commonjs_vue_commonjs2_vue_root_Vue_["resolveComponent"])("Alert");
+  const _component_SelectSlackChannel = Object(external_commonjs_vue_commonjs2_vue_root_Vue_["resolveComponent"])("SelectSlackChannel");
   const _component_ActivityIndicator = Object(external_commonjs_vue_commonjs2_vue_root_Vue_["resolveComponent"])("ActivityIndicator");
   const _component_SaveButton = Object(external_commonjs_vue_commonjs2_vue_root_Vue_["resolveComponent"])("SaveButton");
   const _component_ContentBlock = Object(external_commonjs_vue_commonjs2_vue_root_Vue_["resolveComponent"])("ContentBlock");
@@ -364,7 +368,7 @@ function EditAlertvue_type_template_id_1a3b439a_render(_ctx, _cache, $props, $se
         }),
         title: _ctx.translate('General_Website'),
         introduction: _ctx.translate('CustomAlerts_ApplyTo')
-      }, null, 8, ["model-value", "title", "introduction"])]), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_1a3b439a_hoisted_1, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createTextVNode"])(Object(external_commonjs_vue_commonjs2_vue_root_Vue_["toDisplayString"])(_ctx.translate('CustomAlerts_YouCanChoosePeriodFrom')) + ": ", 1), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("ul", null, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("li", null, "• " + Object(external_commonjs_vue_commonjs2_vue_root_Vue_["toDisplayString"])(_ctx.translate('CustomAlerts_PeriodDayDescription')), 1), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("li", null, "• " + Object(external_commonjs_vue_commonjs2_vue_root_Vue_["toDisplayString"])(_ctx.translate('CustomAlerts_PeriodWeekDescription')), 1), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("li", null, "• " + Object(external_commonjs_vue_commonjs2_vue_root_Vue_["toDisplayString"])(_ctx.translate('CustomAlerts_PeriodMonthDescription')), 1)])]), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", null, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_Field, {
+      }, null, 8, ["model-value", "title", "introduction"])]), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_2582ddcd_hoisted_1, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createTextVNode"])(Object(external_commonjs_vue_commonjs2_vue_root_Vue_["toDisplayString"])(_ctx.translate('CustomAlerts_YouCanChoosePeriodFrom')) + ": ", 1), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("ul", null, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("li", null, "• " + Object(external_commonjs_vue_commonjs2_vue_root_Vue_["toDisplayString"])(_ctx.translate('CustomAlerts_PeriodDayDescription')), 1), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("li", null, "• " + Object(external_commonjs_vue_commonjs2_vue_root_Vue_["toDisplayString"])(_ctx.translate('CustomAlerts_PeriodWeekDescription')), 1), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("li", null, "• " + Object(external_commonjs_vue_commonjs2_vue_root_Vue_["toDisplayString"])(_ctx.translate('CustomAlerts_PeriodMonthDescription')), 1)])]), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", null, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_Field, {
         uicontrol: "select",
         name: "period",
         "inline-help": "#customAlertPeriodHelp",
@@ -386,7 +390,7 @@ function EditAlertvue_type_template_id_1a3b439a_render(_ctx, _cache, $props, $se
         "onUpdate:modelValue": _cache[3] || (_cache[3] = $event => {
           _ctx.actualAlert.report_mediums = $event;
         })
-      }, null, 8, ["title", "inline-help", "options", "model-value"])]), _ctx.actualAlert.report_mediums && _ctx.actualAlert.report_mediums.includes('email') ? (Object(external_commonjs_vue_commonjs2_vue_root_Vue_["openBlock"])(), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementBlock"])("div", EditAlertvue_type_template_id_1a3b439a_hoisted_2, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", null, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_Field, {
+      }, null, 8, ["title", "inline-help", "options", "model-value"])]), _ctx.actualAlert.report_mediums && _ctx.actualAlert.report_mediums.includes('email') ? (Object(external_commonjs_vue_commonjs2_vue_root_Vue_["openBlock"])(), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementBlock"])("div", EditAlertvue_type_template_id_2582ddcd_hoisted_2, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", null, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_Field, {
         uicontrol: "checkbox",
         name: "report_email_me",
         modelValue: _ctx.actualAlert.email_me,
@@ -399,22 +403,27 @@ function EditAlertvue_type_template_id_1a3b439a_render(_ctx, _cache, $props, $se
         "onUpdate:modelValue": _cache[5] || (_cache[5] = $event => _ctx.actualAlert.additional_emails = $event),
         "var-type": "array",
         title: _ctx.translate('ScheduledReports_AlsoSendReportToTheseEmails')
-      }, null, 8, ["modelValue", "title"])])])) : Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createCommentVNode"])("", true), _ctx.actualAlert.report_mediums && _ctx.actualAlert.report_mediums.includes('mobile') ? (Object(external_commonjs_vue_commonjs2_vue_root_Vue_["openBlock"])(), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementBlock"])("div", EditAlertvue_type_template_id_1a3b439a_hoisted_3, [_ctx.supportsSMS ? (Object(external_commonjs_vue_commonjs2_vue_root_Vue_["openBlock"])(), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementBlock"])("span", EditAlertvue_type_template_id_1a3b439a_hoisted_4, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_SelectPhoneNumbers, {
+      }, null, 8, ["modelValue", "title"])])])) : Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createCommentVNode"])("", true), _ctx.actualAlert.report_mediums && _ctx.actualAlert.report_mediums.includes('mobile') ? (Object(external_commonjs_vue_commonjs2_vue_root_Vue_["openBlock"])(), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementBlock"])("div", EditAlertvue_type_template_id_2582ddcd_hoisted_3, [_ctx.supportsSMS ? (Object(external_commonjs_vue_commonjs2_vue_root_Vue_["openBlock"])(), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementBlock"])("span", EditAlertvue_type_template_id_2582ddcd_hoisted_4, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_SelectPhoneNumbers, {
         "phone-numbers": _ctx.phoneNumbers || [],
         modelValue: _ctx.actualAlert.phone_numbers,
         "onUpdate:modelValue": _cache[6] || (_cache[6] = $event => _ctx.actualAlert.phone_numbers = $event)
-      }, null, 8, ["phone-numbers", "modelValue"])])) : (Object(external_commonjs_vue_commonjs2_vue_root_Vue_["openBlock"])(), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementBlock"])("div", EditAlertvue_type_template_id_1a3b439a_hoisted_5, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_1a3b439a_hoisted_6, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_Alert, {
+      }, null, 8, ["phone-numbers", "modelValue"])])) : (Object(external_commonjs_vue_commonjs2_vue_root_Vue_["openBlock"])(), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementBlock"])("div", EditAlertvue_type_template_id_2582ddcd_hoisted_5, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_2582ddcd_hoisted_6, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_Alert, {
         severity: "info"
       }, {
         default: Object(external_commonjs_vue_commonjs2_vue_root_Vue_["withCtx"])(() => [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("strong", null, Object(external_commonjs_vue_commonjs2_vue_root_Vue_["toDisplayString"])(_ctx.translate('MobileMessaging_PhoneNumbers')), 1), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createTextVNode"])(": "), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("span", {
           innerHTML: _ctx.$sanitize(_ctx.mobileMessagingNotActivated)
-        }, null, 8, EditAlertvue_type_template_id_1a3b439a_hoisted_7)]),
+        }, null, 8, EditAlertvue_type_template_id_2582ddcd_hoisted_7)]),
         _: 1
-      })])]))])) : Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createCommentVNode"])("", true), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", null, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_Field, {
+      })])]))])) : Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createCommentVNode"])("", true), _ctx.actualAlert.report_mediums && _ctx.actualAlert.report_mediums.includes('slack') ? (Object(external_commonjs_vue_commonjs2_vue_root_Vue_["openBlock"])(), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementBlock"])("div", EditAlertvue_type_template_id_2582ddcd_hoisted_8, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_SelectSlackChannel, {
+        "model-value": _ctx.slackChannelID || '',
+        "is-slack-oauth-token-added": true,
+        modelValue: _ctx.actualAlert.slack_channel_id,
+        "onUpdate:modelValue": _cache[7] || (_cache[7] = $event => _ctx.actualAlert.slack_channel_id = $event)
+      }, null, 8, ["model-value", "modelValue"])])) : Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createCommentVNode"])("", true), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", null, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_Field, {
         uicontrol: "expandable-select",
         name: "report",
         "model-value": _ctx.actualAlert.report,
-        "onUpdate:modelValue": _cache[7] || (_cache[7] = $event => {
+        "onUpdate:modelValue": _cache[8] || (_cache[8] = $event => {
           _ctx.actualAlert.report = $event;
           _ctx.changeReport();
         }),
@@ -422,22 +431,22 @@ function EditAlertvue_type_template_id_1a3b439a_render(_ctx, _cache, $props, $se
         title: `${_ctx.translate('CustomAlerts_ThisAppliesTo')}: ${(_ctx$actualReportMeta = _ctx.actualReportMetadata) === null || _ctx$actualReportMeta === void 0 ? void 0 : _ctx$actualReportMeta.name}`,
         introduction: _ctx.translate('CustomAlerts_AlertCondition'),
         "inline-help": _ctx.thisAppliesToInlineHelp
-      }, null, 8, ["model-value", "options", "title", "introduction", "inline-help"])]), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["withDirectives"])(Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_1a3b439a_hoisted_8, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_1a3b439a_hoisted_9, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_ActivityIndicator, {
+      }, null, 8, ["model-value", "options", "title", "introduction", "inline-help"])]), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["withDirectives"])(Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_2582ddcd_hoisted_9, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_2582ddcd_hoisted_10, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_ActivityIndicator, {
         loading: _ctx.isLoadingReport
-      }, null, 8, ["loading"])])], 512), [[external_commonjs_vue_commonjs2_vue_root_Vue_["vShow"], _ctx.isLoadingReport]]), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["withDirectives"])(Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_1a3b439a_hoisted_10, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_1a3b439a_hoisted_11, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", null, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_Field, {
+      }, null, 8, ["loading"])])], 512), [[external_commonjs_vue_commonjs2_vue_root_Vue_["vShow"], _ctx.isLoadingReport]]), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["withDirectives"])(Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_2582ddcd_hoisted_11, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_2582ddcd_hoisted_12, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", null, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_Field, {
         uicontrol: "select",
         name: "reportCondition",
         modelValue: _ctx.actualAlert.report_condition,
-        "onUpdate:modelValue": _cache[8] || (_cache[8] = $event => _ctx.actualAlert.report_condition = $event),
+        "onUpdate:modelValue": _cache[9] || (_cache[9] = $event => _ctx.actualAlert.report_condition = $event),
         "full-width": true,
         title: _ctx.reportConditionTitle,
         options: _ctx.alertGroupConditions
-      }, null, 8, ["modelValue", "title", "options"])])]), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_1a3b439a_hoisted_12, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_1a3b439a_hoisted_13, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["withDirectives"])(Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_Field, {
+      }, null, 8, ["modelValue", "title", "options"])])]), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_2582ddcd_hoisted_13, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_2582ddcd_hoisted_14, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["withDirectives"])(Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_Field, {
         uicontrol: "text",
         role: "textbox",
         name: "reportValue",
         modelValue: _ctx.actualAlert.report_matched,
-        "onUpdate:modelValue": _cache[9] || (_cache[9] = $event => _ctx.actualAlert.report_matched = $event),
+        "onUpdate:modelValue": _cache[10] || (_cache[10] = $event => _ctx.actualAlert.report_matched = $event),
         "full-width": true,
         autocomplete: 'off',
         maxlength: 255,
@@ -446,24 +455,24 @@ function EditAlertvue_type_template_id_1a3b439a_render(_ctx, _cache, $props, $se
         uicontrol: "select",
         name: "metric",
         "model-value": _ctx.actualAlert.metric,
-        "onUpdate:modelValue": _cache[10] || (_cache[10] = $event => _ctx.actualAlert.metric = $event),
+        "onUpdate:modelValue": _cache[11] || (_cache[11] = $event => _ctx.actualAlert.metric = $event),
         options: _ctx.metricOptions,
         introduction: _ctx.translate('CustomAlerts_AlertMeWhen')
-      }, null, 8, ["model-value", "options", "introduction"])]), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_1a3b439a_hoisted_14, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_1a3b439a_hoisted_15, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", null, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_Field, {
+      }, null, 8, ["model-value", "options", "introduction"])]), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_2582ddcd_hoisted_15, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_2582ddcd_hoisted_16, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", null, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_Field, {
         uicontrol: "select",
         name: "metricCondition",
         "model-value": _ctx.actualAlert.metric_condition,
-        "onUpdate:modelValue": _cache[11] || (_cache[11] = $event => _ctx.actualAlert.metric_condition = $event),
+        "onUpdate:modelValue": _cache[12] || (_cache[12] = $event => _ctx.actualAlert.metric_condition = $event),
         "full-width": true,
         options: _ctx.metricConditionOptions
-      }, null, 8, ["model-value", "options"])])]), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_1a3b439a_hoisted_16, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", null, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_Field, {
+      }, null, 8, ["model-value", "options"])])]), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", EditAlertvue_type_template_id_2582ddcd_hoisted_17, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", null, [Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createVNode"])(_component_Field, {
         uicontrol: "text",
         name: "metricValue",
         class: Object(external_commonjs_vue_commonjs2_vue_root_Vue_["normalizeClass"])({
           invalid: _ctx.isMetricValueInvalid
         }),
         modelValue: _ctx.actualAlert.metric_matched,
-        "onUpdate:modelValue": _cache[12] || (_cache[12] = $event => _ctx.actualAlert.metric_matched = $event),
+        "onUpdate:modelValue": _cache[13] || (_cache[13] = $event => _ctx.actualAlert.metric_matched = $event),
         title: `<span>${_ctx.metricDescription}</span>`,
         "full-width": true
       }, null, 8, ["class", "modelValue", "title"])])])]), (Object(external_commonjs_vue_commonjs2_vue_root_Vue_["openBlock"])(true), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementBlock"])(external_commonjs_vue_commonjs2_vue_root_Vue_["Fragment"], null, Object(external_commonjs_vue_commonjs2_vue_root_Vue_["renderList"])(_ctx.comparablesDates, (comparablesDatesPeriod, period) => {
@@ -479,22 +488,22 @@ function EditAlertvue_type_template_id_1a3b439a_render(_ctx, _cache, $props, $se
           introduction: _ctx.translate('CustomAlerts_ComparedToThe')
         }, null, 8, ["modelValue", "onUpdate:modelValue", "disabled", "options", "introduction"]), [[external_commonjs_vue_commonjs2_vue_root_Vue_["vShow"], period === _ctx.actualAlert.period && _ctx.isComparable]])]);
       }), 128)), (_ctx$actualAlert = _ctx.actualAlert) !== null && _ctx$actualAlert !== void 0 && _ctx$actualAlert.idalert ? (Object(external_commonjs_vue_commonjs2_vue_root_Vue_["openBlock"])(), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createBlock"])(_component_SaveButton, {
-        key: 2,
-        onClick: _cache[13] || (_cache[13] = $event => _ctx.updateAlert(_ctx.actualAlert.idalert)),
+        key: 3,
+        onClick: _cache[14] || (_cache[14] = $event => _ctx.updateAlert(_ctx.actualAlert.idalert)),
         saving: _ctx.isLoading
       }, null, 8, ["saving"])) : (Object(external_commonjs_vue_commonjs2_vue_root_Vue_["openBlock"])(), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createBlock"])(_component_SaveButton, {
-        key: 3,
-        onClick: _cache[14] || (_cache[14] = $event => _ctx.createAlert()),
+        key: 4,
+        onClick: _cache[15] || (_cache[15] = $event => _ctx.createAlert()),
         saving: _ctx.isLoading
       }, null, 8, ["saving"])), Object(external_commonjs_vue_commonjs2_vue_root_Vue_["createElementVNode"])("div", {
         class: "entityCancel",
         innerHTML: _ctx.$sanitize(_ctx.cancelLink)
-      }, null, 8, EditAlertvue_type_template_id_1a3b439a_hoisted_17)])), [[_directive_form]])];
+      }, null, 8, EditAlertvue_type_template_id_2582ddcd_hoisted_18)])), [[_directive_form]])];
     }),
     _: 1
   }, 8, ["content-title"]);
 }
-// CONCATENATED MODULE: ./plugins/CustomAlerts/vue/src/EditAlert/EditAlert.vue?vue&type=template&id=1a3b439a
+// CONCATENATED MODULE: ./plugins/CustomAlerts/vue/src/EditAlert/EditAlert.vue?vue&type=template&id=2582ddcd
 
 // EXTERNAL MODULE: external "CorePluginsAdmin"
 var external_CorePluginsAdmin_ = __webpack_require__("a5a2");
@@ -504,6 +513,7 @@ var external_CorePluginsAdmin_ = __webpack_require__("a5a2");
 
 
 const SelectPhoneNumbers = Object(external_CoreHome_["useExternalPluginComponent"])('MobileMessaging', 'SelectPhoneNumbers');
+const SelectSlackChannel = Object(external_CoreHome_["useExternalPluginComponent"])('Slack', 'SelectSlackChannel');
 function isBlockedReportApiMethod(apiMethodUniqueId) {
   return apiMethodUniqueId === 'MultiSites_getOne' || apiMethodUniqueId === 'MultiSites_getAll';
 }
@@ -535,6 +545,7 @@ const {
     },
     supportsSMS: Boolean,
     phoneNumbers: [Array, Object],
+    slackChannelID: String,
     reportMetadata: Object,
     alertGroupConditions: {
       type: Array,
@@ -555,6 +566,7 @@ const {
     ActivityIndicator: external_CoreHome_["ActivityIndicator"],
     SaveButton: external_CorePluginsAdmin_["SaveButton"],
     SelectPhoneNumbers,
+    SelectSlackChannel,
     ContentBlock: external_CoreHome_["ContentBlock"]
   },
   directives: {
@@ -752,7 +764,7 @@ const {
   },
   computed: {
     apiParameters() {
-      var _this$actualAlert$add, _this$actualAlert$pho;
+      var _this$actualAlert$add, _this$actualAlert$pho, _this$actualAlert;
       return {
         idAlert: this.actualAlert.idalert,
         format: 'json',
@@ -763,6 +775,7 @@ const {
         emailMe: this.actualAlert.email_me ? 1 : 0,
         additionalEmails: (_this$actualAlert$add = this.actualAlert.additional_emails) !== null && _this$actualAlert$add !== void 0 && _this$actualAlert$add.length ? this.actualAlert.additional_emails : [''],
         phoneNumbers: (_this$actualAlert$pho = this.actualAlert.phone_numbers) !== null && _this$actualAlert$pho !== void 0 && _this$actualAlert$pho.length ? this.actualAlert.phone_numbers : [''],
+        slackChannelID: (_this$actualAlert = this.actualAlert) !== null && _this$actualAlert !== void 0 && _this$actualAlert.slack_channel_id ? this.actualAlert.slack_channel_id : '',
         reportUniqueId: this.actualAlert.report,
         reportCondition: this.actualAlert.report_condition,
         reportValue: this.actualAlert.report_matched,
@@ -838,7 +851,7 @@ const {
 
 
 
-EditAlertvue_type_script_lang_ts.render = EditAlertvue_type_template_id_1a3b439a_render
+EditAlertvue_type_script_lang_ts.render = EditAlertvue_type_template_id_2582ddcd_render
 
 /* harmony default export */ var EditAlert = (EditAlertvue_type_script_lang_ts);
 // CONCATENATED MODULE: ./node_modules/@vue/cli-plugin-babel/node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/@vue/cli-plugin-babel/node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/@vue/cli-service/node_modules/vue-loader-v16/dist/templateLoader.js??ref--6!./node_modules/@vue/cli-service/node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/@vue/cli-service/node_modules/vue-loader-v16/dist??ref--1-1!./plugins/CustomAlerts/vue/src/HistoryTriggeredAlerts/HistoryTriggeredAlerts.vue?vue&type=template&id=50fdd954
