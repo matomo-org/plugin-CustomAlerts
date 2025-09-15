@@ -73,6 +73,14 @@
         "When": "when",
         "YouCanChoosePeriodFrom": "You can choose from the following options",
         "TaskRetryExceptionMessage": "The following alerts were unable to process because archiving is not complete for the associated reports: %1$s",
-        "FinalTaskRetryWarning": "Final retry of alerts task. Unable to process the following alerts: %1$s"
+        "FinalTaskRetryWarning": "Final retry of alerts task. Unable to process the following alerts: %1$s",
+        "MediumEmail": "Email",
+        "MediumMobile": "Mobile",
+        "MediumTitle": "Send alerts via",
+        "MediumDescription": "Select the medium to send alerts.",
+        "EmptyReportMediums": "Report mediums cannot be empty.",
+        "InvalidReportMediums": "Invalid report mediums value. Allowed values are %1$s.",
+        "InvalidEmailReportParameter": "Please select \"Send to me\" or specify valid email addresses to email the report.",
+        "InvalidPhoneNumberReportParameter": "Phone numbers cannot be empty."
     }
 }

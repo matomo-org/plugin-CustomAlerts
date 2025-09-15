@@ -762,7 +762,7 @@ class ProcessorTest extends BaseTest
         $emails       = ['test1@example.com', 'test2@example.com'];
         $phoneNumbers = ['0123456789'];
 
-        return $this->alertModel->createAlert($name, $idSites, $login, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $comparedTo = 1, $report, 'matches_exactly', 'Piwik');
+        return $this->alertModel->createAlert($name, $idSites, $login, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $comparedTo = 1, $report, 'matches_exactly', 'Piwik', ['email', 'mobile']);
     }
 
     private function getTestTask(): Task

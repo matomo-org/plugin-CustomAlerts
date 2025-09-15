@@ -276,12 +276,13 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
         $view->currentUserEmail = Piwik::getCurrentUserEmail();
         $view->comparablesDates = $comparablesDates;
         $view->reportMetadata   = $this->findReportMetadata($alert);
-        $view->supportsSMS      = $this->supportsSms();
+        $view->supportsSMS      = $this->supportsPlugin('MobileMessaging');
         $view->periodOptions    = array(
             array('key' => 'day', 'value' => Piwik::translate('Intl_PeriodDay')),
             array('key' => 'week', 'value' => Piwik::translate('Intl_PeriodWeek')),
             array('key' => 'month', 'value' => Piwik::translate('Intl_PeriodMonth')),
         );
+        $view->alertReportMediumOptions = CustomAlerts::getReportMediumOptions();
 
         $numbers = (new \Piwik\Plugins\MobileMessaging\Model())->getActivatedPhoneNumbers(Piwik::getCurrentUserLogin());
 
@@ -301,9 +302,9 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
         $view->metricConditionOptions = $metricConditionOptions;
     }
 
-    private function supportsSms()
+    private function supportsPlugin(string $pluginName): bool
     {
-        return PluginManager::getInstance()->isPluginActivated('MobileMessaging');
+        return PluginManager::getInstance()->isPluginActivated($pluginName);
     }
 
     public function editAlert()

@@ -201,7 +201,8 @@ class ModelTest extends BaseTest
             $comparedTo = 1,
             $report,
             'matches_exactly',
-            'Piwik'
+            'Piwik',
+            ['email', 'mobile']
         );
         return $id;
     }

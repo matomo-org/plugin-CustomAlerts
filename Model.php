@@ -29,6 +29,7 @@ class Model
                        `report` VARCHAR(150) NOT NULL ,
                        `report_condition` VARCHAR(50) ,
                        `report_matched` VARCHAR(255) ,
+                       `report_mediums` TEXT ,
                        `metric` VARCHAR(150) NOT NULL ,
                        `metric_condition` VARCHAR(50) NOT NULL ,
                        `metric_matched` FLOAT NOT NULL ,
@@ -58,6 +59,7 @@ class Model
 			              `report` VARCHAR(150) NOT NULL ,
 			              `report_condition` VARCHAR(50) ,
 			              `report_matched` VARCHAR(1000) ,
+			              `report_mediums` TEXT ,
 			              `metric` VARCHAR(150) NOT NULL ,
 			              `metric_condition` VARCHAR(50) NOT NULL ,
 			              `metric_matched` FLOAT NOT NULL ,
@@ -123,6 +125,7 @@ class Model
         foreach ($alerts as &$alert) {
             $alert['additional_emails'] = json_decode($alert['additional_emails']);
             $alert['phone_numbers']     = json_decode($alert['phone_numbers']);
+            $alert['report_mediums']     = json_decode($alert['report_mediums']);
             $alert['email_me']          = (int)$alert['email_me'];
             $alert['compared_to']       = (int)$alert['compared_to'];
             $alert['id_sites']          = $this->getDefinedSiteIds($alert['idalert']);
@@ -247,11 +250,12 @@ class Model
      * @param string $reportUniqueId
      * @param string $reportCondition
      * @param string $reportValue
+     * @param array $reportMediums
      *
      * @return int ID of new Alert
      * @throws \Exception
      */
-    public function createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue)
+    public function createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums)
     {
         $idAlert = $this->getNextAlertId();
 
@@ -269,7 +273,8 @@ class Model
             'report'            => $reportUniqueId,
             'compared_to'       => $comparedTo,
             'report_condition'  => $reportCondition,
-            'report_matched'    => $reportValue
+            'report_matched'    => $reportValue,
+            'report_mediums'    => json_encode($reportMediums)
         );
 
         $db = $this->getDb();
@@ -326,11 +331,12 @@ class Model
      * @param string $reportUniqueId
      * @param string $reportCondition
      * @param string $reportValue
+     * @param array $reportMediums
      *
      * @return int
      * @throws \Exception
      */
-    public function updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue)
+    public function updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums)
     {
         $alert = array(
             'name'              => $name,
@@ -344,7 +350,8 @@ class Model
             'report'            => $reportUniqueId,
             'compared_to'       => $comparedTo,
             'report_condition'  => $reportCondition,
-            'report_matched'    => $reportValue
+            'report_matched'    => $reportValue,
+            'report_mediums'    => json_encode($reportMediums),
         );
 
         $db = $this->getDb();
@@ -374,7 +381,7 @@ class Model
     {
         $alert = $this->getAlert($idAlert);
 
-        $keysToKeep = array('idalert', 'name', 'login', 'period', 'metric', 'metric_condition', 'metric_matched', 'report', 'report_condition', 'report_matched', 'compared_to', 'email_me', 'additional_emails', 'phone_numbers');
+        $keysToKeep = array('idalert', 'name', 'login', 'period', 'metric', 'metric_condition', 'metric_matched', 'report', 'report_condition', 'report_matched', 'report_mediums', 'compared_to', 'email_me', 'additional_emails', 'phone_numbers');
 
         $triggeredAlert = array();
         foreach ($keysToKeep as $key) {
@@ -389,6 +396,7 @@ class Model
         $triggeredAlert['idsite']            = $idSite;
         $triggeredAlert['additional_emails'] = json_encode($triggeredAlert['additional_emails']);
         $triggeredAlert['phone_numbers']     = json_encode($triggeredAlert['phone_numbers']);
+        $triggeredAlert['report_mediums']     = json_encode($triggeredAlert['report_mediums']);
 
         $db = $this->getDb();
         $db->insert(

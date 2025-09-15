@@ -23,6 +23,7 @@ interface Alert {
   id_sites: (string|number)[];
   reportName: string;
   siteName: string;
+  report_mediums: string[];
 }
 
 export { Alert };

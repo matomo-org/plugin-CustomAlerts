@@ -57,35 +57,51 @@
       </div>
       <div>
         <Field
-          uicontrol="checkbox"
-          name="report_email_me"
-          v-model="actualAlert.email_me"
-          :introduction="translate('ScheduledReports_SendReportTo')"
-          :title="`${translate('ScheduledReports_SentToMe')} (${currentUserEmail})`"
-        >
-        </Field>
-      </div>
-      <div>
-        <Field
-          uicontrol="textarea"
-          v-model="actualAlert.additional_emails"
-          var-type="array"
-          :title="translate('ScheduledReports_AlsoSendReportToTheseEmails')"
-        >
-        </Field>
-      </div>
-      <span v-if="supportsSMS">
-        <SelectPhoneNumbers
-          :phone-numbers="phoneNumbers || []"
-          v-model="actualAlert.phone_numbers"
+            uicontrol="multiselect"
+            name="report_mediums"
+            id="report_mediums"
+            :title="translate('CustomAlerts_MediumTitle')"
+            :inline-help="translate('CustomAlerts_MediumDescription')"
+            :options="alertReportMediumOptions"
+            :model-value="actualAlert.report_mediums"
+            @update:model-value="actualAlert.report_mediums = $event;"
         />
-      </span>
-      <div class="row" v-else>
-        <div class="col s12">
-          <Alert severity="info">
-            <strong>{{ translate('MobileMessaging_PhoneNumbers') }}</strong>:
-            <span v-html="$sanitize(mobileMessagingNotActivated)"></span>
-          </Alert>
+      </div>
+      <div v-if="actualAlert.report_mediums && actualAlert.report_mediums.includes('email')">
+        <div>
+          <Field
+            uicontrol="checkbox"
+            name="report_email_me"
+            v-model="actualAlert.email_me"
+            :introduction="translate('ScheduledReports_SendReportTo')"
+            :title="`${translate('ScheduledReports_SentToMe')} (${currentUserEmail})`"
+          >
+          </Field>
+        </div>
+        <div>
+          <Field
+            uicontrol="textarea"
+            v-model="actualAlert.additional_emails"
+            var-type="array"
+            :title="translate('ScheduledReports_AlsoSendReportToTheseEmails')"
+          >
+          </Field>
+        </div>
+      </div>
+      <div v-if="actualAlert.report_mediums && actualAlert.report_mediums.includes('mobile')">
+        <span v-if="supportsSMS">
+          <SelectPhoneNumbers
+            :phone-numbers="phoneNumbers || []"
+            v-model="actualAlert.phone_numbers"
+          />
+        </span>
+        <div class="row" v-else>
+          <div class="col s12">
+            <Alert severity="info">
+              <strong>{{ translate('MobileMessaging_PhoneNumbers') }}</strong>:
+              <span v-html="$sanitize(mobileMessagingNotActivated)"></span>
+            </Alert>
+          </div>
         </div>
       </div>
       <div>
@@ -281,6 +297,10 @@ export default defineComponent({
       type: Array,
       required: true,
     },
+    alertReportMediumOptions: {
+      type: Array,
+      required: true,
+    },
     currentUserEmail: {
       type: String,
       required: true,
@@ -335,6 +355,7 @@ export default defineComponent({
       actualAlert: alert ? { ...alert } : {
         period: 'day',
         id_sites: [currentSite?.id || Matomo.idSite],
+        alerts_medium: ['email'],
       } as unknown as AlertType,
       comparedTo,
       actualCurrentSite: {
@@ -534,6 +555,7 @@ export default defineComponent({
         reportUniqueId: this.actualAlert.report,
         reportCondition: this.actualAlert.report_condition,
         reportValue: this.actualAlert.report_matched,
+        reportMediums: this.actualAlert.report_mediums,
         idSites: this.actualAlert.id_sites,
         comparedTo: this.comparedTo[this.actualAlert.period],
       };
