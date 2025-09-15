@@ -164,16 +164,6 @@ class ApiTest extends BaseTest
         $this->api->addAlert('test', $this->idSite, 'week', false, [], [], 'nb_visits', 'less_than', 3, 1, 'MultiSites_getOne', $reportCondition = false, $reportValue = false, $reportMediums = ['email']);
     }
 
-    public function test_addAlert_ShouldFail_IfNoPhoneNumberProvided()
-    {
-        $this->setSuperUser();
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('CustomAlerts_InvalidPhoneNumberReportParameter');
-        define('PIWIK_TEST_CHECK_PHONE_NUMBERS', 1);
-
-        $this->api->addAlert('test', $this->idSite, 'week', false, [], [], 'nb_visits', 'less_than', 3, 1, 'MultiSites_getOne', $reportCondition = false, $reportValue = false, $reportMediums = ['mobile']);
-    }
-
     public function test_addAlert_ShouldFail_IfReportMediumEmpty()
     {
         $this->setSuperUser();

@@ -184,8 +184,8 @@ class API extends \Piwik\Plugin\API
     private function checkAlert($idSites, $name, $period, &$emailMe, &$additionalEmails, &$phoneNumbers, $metricCondition, $metricValue, $comparedTo, $reportCondition, $reportUniqueId, $reportMediums)
     {
         Piwik::checkUserHasViewAccess($idSites);
-        $additionalEmails = in_array('email', $reportMediums) ? $this->filterAdditionalEmails($additionalEmails): [];
-        $phoneNumbers = in_array('mobile', $reportMediums) ? $this->filterPhoneNumbers($phoneNumbers): [];
+        $additionalEmails = in_array('email', $reportMediums) ? $this->filterAdditionalEmails($additionalEmails) : [];
+        $phoneNumbers = in_array('mobile', $reportMediums) ? $this->filterPhoneNumbers($phoneNumbers) : [];
         $emailMe = in_array('email', $reportMediums) && $emailMe;
 
         $this->validator->checkName($name);
