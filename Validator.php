@@ -121,6 +121,20 @@ class Validator
         }
     }
 
+    public function checkReportMediums(array $reportMediums)
+    {
+        $allowedMediums = $this->getAllowedMediums();
+        if (empty($reportMediums)) {
+            throw new Exception(Piwik::translate('CustomAlerts_EmptyReportMediums'));
+        }
+
+        foreach ($reportMediums as $reportMedium) {
+            if (!in_array($reportMedium, $allowedMediums)) {
+                throw new Exception(Piwik::translate('CustomAlerts_InvalidReportMediums', [implode(', ', $allowedMediums)]));
+            }
+        }
+    }
+
     public function checkComparedTo($period, $comparedTo)
     {
         if (!self::isValidComparableDate($period, $comparedTo)) {
@@ -164,5 +178,18 @@ class Validator
         if (Piwik::getCurrentUserLogin() != $alert['login']) {
             throw new Exception(Piwik::translate('CustomAlerts_AccessException', $alert['idalert']));
         }
+    }
+
+    private function getAllowedMediums(): array
+    {
+        $allowedMediums = CustomAlerts::getReportMediumOptions();
+        $allowedMediumList = [];
+        foreach ($allowedMediums as $allowedMedium) {
+            if (!$allowedMedium['disabled']) {
+                $allowedMediumList[] = $allowedMedium['key'];
+            }
+        }
+
+        return $allowedMediumList;
     }
 }

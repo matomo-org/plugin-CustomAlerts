@@ -128,15 +128,14 @@ class API extends \Piwik\Plugin\API
      * @param int         $comparedTo
      * @param bool|string $reportCondition
      * @param bool|string $reportValue
+     * @param array       $reportMediums
      * @return int ID of new Alert
      */
-    public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false)
+    public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false, array $reportMediums = [])
     {
         $idSites          = Site::getIdSitesFromIdSitesString($idSites);
-        $additionalEmails = $this->filterAdditionalEmails($additionalEmails);
-        $phoneNumbers     = $this->filterPhoneNumbers($phoneNumbers);
 
-        $this->checkAlert($idSites, $name, $period, $additionalEmails, $metricCondition, $metric, $comparedTo, $reportCondition, $reportUniqueId);
+        $this->checkAlert($idSites, $name, $period, $emailMe, $additionalEmails, $phoneNumbers, $metricCondition, $metric, $comparedTo, $reportCondition, $reportUniqueId, $reportMediums);
 
         $name  = Common::unsanitizeInputValue($name);
         $login = Piwik::getCurrentUserLogin();
@@ -148,7 +147,7 @@ class API extends \Piwik\Plugin\API
 
         $metricValue = Common::forceDotAsSeparatorForDecimalPoint((float)$metricValue);
 
-        return $this->getModel()->createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue);
+        return $this->getModel()->createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums);
     }
 
     private function filterAdditionalEmails($additionalEmails)
@@ -182,21 +181,29 @@ class API extends \Piwik\Plugin\API
         return array_values($phoneNumbers);
     }
 
-    private function checkAlert($idSites, $name, $period, $additionalEmails, $metricCondition, $metricValue, $comparedTo, $reportCondition, $reportUniqueId)
+    private function checkAlert($idSites, $name, $period, &$emailMe, &$additionalEmails, &$phoneNumbers, $metricCondition, $metricValue, $comparedTo, $reportCondition, $reportUniqueId, $reportMediums)
     {
         Piwik::checkUserHasViewAccess($idSites);
+        $additionalEmails = in_array('email', $reportMediums) ? $this->filterAdditionalEmails($additionalEmails) : [];
+        $phoneNumbers = in_array('mobile', $reportMediums) ? $this->filterPhoneNumbers($phoneNumbers) : [];
+        $emailMe = in_array('email', $reportMediums) && $emailMe;
 
         $this->validator->checkName($name);
         $this->validator->checkPeriod($period);
         $this->validator->checkComparedTo($period, $comparedTo);
         $this->validator->checkMetricCondition($metricCondition);
         $this->validator->checkReportCondition($reportCondition);
+        $this->validator->checkReportMediums($reportMediums);
 
         foreach ($idSites as $idSite) {
             $this->validator->checkApiMethodAndMetric($idSite, $reportUniqueId, $metricValue);
         }
 
         $this->validator->checkAdditionalEmails($additionalEmails);
+
+        foreach ($reportMediums as $reportMedium) {
+            Piwik::postEvent('CustomAlerts.validateReportParameters', [get_defined_vars(), $reportMedium]);
+        }
     }
 
     /**
@@ -216,19 +223,18 @@ class API extends \Piwik\Plugin\API
      * @param int         $comparedTo
      * @param bool|string $reportCondition
      * @param bool|string $reportValue
+     * @param array       $reportMediums
      *
      * @return boolean
      */
-    public function editAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false)
+    public function editAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false, array $reportMediums = [])
     {
         // make sure alert exists and user has permission to read
         $this->getAlert($idAlert);
 
         $idSites          = Site::getIdSitesFromIdSitesString($idSites);
-        $additionalEmails = $this->filterAdditionalEmails($additionalEmails);
-        $phoneNumbers     = $this->filterPhoneNumbers($phoneNumbers);
 
-        $this->checkAlert($idSites, $name, $period, $additionalEmails, $metricCondition, $metric, $comparedTo, $reportCondition, $reportUniqueId);
+        $this->checkAlert($idSites, $name, $period, $emailMe, $additionalEmails, $phoneNumbers, $metricCondition, $metric, $comparedTo, $reportCondition, $reportUniqueId, $reportMediums);
 
         $name = Common::unsanitizeInputValue($name);
 
@@ -239,7 +245,7 @@ class API extends \Piwik\Plugin\API
 
         $metricValue = Common::forceDotAsSeparatorForDecimalPoint((float)$metricValue);
 
-        return $this->getModel()->updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue);
+        return $this->getModel()->updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums);
     }
 
     /**

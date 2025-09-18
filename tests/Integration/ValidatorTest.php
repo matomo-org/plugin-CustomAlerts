@@ -273,4 +273,24 @@ class ValidatorTest extends BaseTest
         $this->assertNull($this->validator->checkComparedTo('week', 1));
         $this->assertNull($this->validator->checkComparedTo('month', 12));
     }
+
+    public function testCheckReportMediumsShouldFailIfEmpty()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_EmptyReportMediums');
+        $this->validator->checkReportMediums([]);
+    }
+
+    public function testCheckReportMediumsShouldFailIfInvalid()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_InvalidReportMediums');
+        $this->validator->checkReportMediums(['aa']);
+    }
+
+    public function testCheckReportMediumsShouldNotFailIfValid()
+    {
+        $this->assertNull($this->validator->checkReportMediums(['email']));
+        $this->assertNull($this->validator->checkReportMediums(['email', 'mobile']));
+    }
 }

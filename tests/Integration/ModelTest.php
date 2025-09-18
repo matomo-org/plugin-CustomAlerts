@@ -49,7 +49,7 @@ class ModelTest extends BaseTest
         $emails       = array('test1@example.com', 'test2@example.com');
         $phoneNumbers = array('0123456789');
 
-        $id = $this->model->createAlert($name, $idSites, $login, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $comparedTo = 1, $report, 'matches_exactly', 'Piwik');
+        $id = $this->model->createAlert($name, $idSites, $login, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $comparedTo = 1, $report, 'matches_exactly', 'Piwik', ['email', 'mobile']);
         return $id;
     }
 
@@ -58,13 +58,13 @@ class ModelTest extends BaseTest
         $this->assertContainTables(array('alert', 'alert_site', 'alert_triggered'));
 
         $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert'));
-        $this->assertCount(14, $columns);
+        $this->assertCount(15, $columns);
 
         $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert_site'));
         $this->assertCount(2, $columns);
 
         $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert_triggered'));
-        $this->assertCount(20, $columns);
+        $this->assertCount(21, $columns);
     }
 
     private function assertContainTables($expectedTables)
@@ -149,6 +149,7 @@ class ModelTest extends BaseTest
             'phone_numbers'     => array('0123456789'),
             'compared_to'       => 1,
             'id_sites'          => $idSites,
+            'report_mediums'    => ['email', 'mobile'],
         );
 
         $this->assertEquals($expected, $alert);
@@ -201,7 +202,8 @@ class ModelTest extends BaseTest
             $comparedTo = 1,
             $report,
             'matches_exactly',
-            'Piwik'
+            'Piwik',
+            ['email', 'mobile']
         );
         return $id;
     }
@@ -320,7 +322,8 @@ class ModelTest extends BaseTest
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers'     => array('0123456789'),
             'email_me'          => 0,
-            'id_sites'          => array(1, 2)
+            'id_sites'          => array(1, 2),
+            'report_mediums'    => ['email', 'mobile']
         );
 
         $this->assertEquals(array($expected), $triggeredAlerts);

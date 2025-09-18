@@ -12,6 +12,7 @@ namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 use Piwik\Container\StaticContainer;
 use Piwik\Date;
 use Piwik\Piwik;
+use Piwik\Plugin\Manager as PluginManager;
 use Piwik\Plugins\CustomAlerts\CustomAlerts;
 use Piwik\Scheduler\Task;
 use Piwik\Scheduler\Timetable;
@@ -89,6 +90,11 @@ class CustomAlertsTest extends BaseTest
             $login = Piwik::getCurrentUserLogin();
         }
 
+        $mediums = ['email'];
+        if (!empty($phoneNumbers)) {
+            $mediums[] = 'mobile';
+        }
+
         $id = $this->model->createAlert(
             $name,
             $idSites,
@@ -103,7 +109,8 @@ class CustomAlertsTest extends BaseTest
             $comparedTo = 7,
             $report,
             'matches_exactly',
-            'Piwik'
+            'Piwik',
+            $mediums
         );
 
         return $this->model->getAlert($id);
@@ -261,5 +268,22 @@ class CustomAlertsTest extends BaseTest
         $task = $this->getTestTask(true);
         $this->plugin->endingScheduledTask($task);
         $this->checkOptionStringValue();
+    }
+
+    public function testGetReportMediumOptions()
+    {
+        $this->assertEquals([
+            ['key' => 'email', 'value' => 'CustomAlerts_MediumEmail', 'disabled' => false],
+            ['key' => 'mobile', 'value' => 'CustomAlerts_MediumMobile', 'disabled' => false],
+        ], CustomAlerts::getReportMediumOptions());
+    }
+
+    public function testGetReportMediumOptionsWhenMobileMessagingPluginDisabled()
+    {
+        PluginManager::getInstance()->deactivatePlugin('MobileMessaging');
+        $this->assertEquals([
+            ['key' => 'email', 'value' => 'CustomAlerts_MediumEmail', 'disabled' => false],
+            ['key' => 'mobile', 'value' => 'CustomAlerts_MediumMobile', 'disabled' => true],
+        ], CustomAlerts::getReportMediumOptions());
     }
 }

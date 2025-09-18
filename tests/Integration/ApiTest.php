@@ -60,7 +60,8 @@ class ApiTest extends BaseTest
             $comparedTo,
             $report,
             $reportCondition,
-            'Piwik'
+            'Piwik',
+            ['email', 'mobile']
         );
         return $id;
     }
@@ -154,6 +155,33 @@ class ApiTest extends BaseTest
         $this->createAlert('InvalidEmail', 'week', null, 'nb_visits', 'MultiSites_getOne', 'less_than', 'matches_any', array('test@example.com', 'inv+34i32s?y', 'test2@example.com'));
     }
 
+    public function test_addAlert_ShouldFail_IfNoEmailProvided()
+    {
+        $this->setSuperUser();
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_InvalidEmailReportParameter');
+
+        $this->api->addAlert('test', $this->idSite, 'week', false, [], [], 'nb_visits', 'less_than', 3, 1, 'MultiSites_getOne', $reportCondition = false, $reportValue = false, $reportMediums = ['email']);
+    }
+
+    public function test_addAlert_ShouldFail_IfReportMediumEmpty()
+    {
+        $this->setSuperUser();
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_EmptyReportMediums');
+
+        $this->api->addAlert('test', $this->idSite, 'week', true, [], [], 'nb_visits', 'less_than', 3, 1, 'MultiSites_getOne', $reportCondition = false, $reportValue = false, $reportMediums = []);
+    }
+
+    public function test_addAlert_ShouldFail_IfReportMediumInvalid()
+    {
+        $this->setSuperUser();
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_InvalidReportMediums');
+
+        $this->api->addAlert('test', $this->idSite, 'week', true, [], [], 'nb_visits', 'less_than', 3, 1, 'MultiSites_getOne', $reportCondition = false, $reportValue = false, $reportMediums = ['emailSms']);
+    }
+
     public function test_addAlert_ShouldCreateANewAlert()
     {
         $this->setSuperUser();
@@ -198,7 +226,8 @@ class ApiTest extends BaseTest
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers'     => array(),
             'compared_to'       => 1,
-            'id_sites'          => $idSites
+            'id_sites'          => $idSites,
+            'report_mediums'     => ['email', 'mobile']
         );
 
         $this->assertEquals($expected, $alert);
@@ -245,7 +274,8 @@ class ApiTest extends BaseTest
             $comparedTo,
             $report,
             $reportCondition,
-            'Piwik'
+            'Piwik',
+            ['email', 'mobile']
         );
         return $id;
     }
@@ -552,7 +582,8 @@ class ApiTest extends BaseTest
             'phone_numbers'     => array(),
             'email_me'          => 0,
             'compared_to'       => 1,
-            'id_sites'          => array(1, 2)
+            'id_sites'          => array(1, 2),
+            'report_mediums'    => array('email', 'mobile')
         );
 
         $this->assertEquals(array($expected), $triggeredAlerts);

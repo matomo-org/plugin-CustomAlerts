@@ -12,6 +12,7 @@ namespace Piwik\Plugins\CustomAlerts;
 use Piwik\Common;
 use Piwik\Container\StaticContainer;
 use Piwik\Piwik;
+use Piwik\Plugin\Manager as PluginManager;
 use Piwik\Plugins\SitesManager\API as SitesManagerApi;
 use Piwik\Scheduler\Task;
 
@@ -44,6 +45,7 @@ class CustomAlerts extends \Piwik\Plugin
             'Db.getTablesInstalled'                  => 'getTablesInstalled',
             'ScheduledTasks.execute'                 => 'startingScheduledTask',
             'ScheduledTasks.execute.end'             => 'endingScheduledTask',
+            'CustomAlerts.validateReportParameters'  => 'validateReportParameters',
         );
     }
 
@@ -175,7 +177,8 @@ class CustomAlerts extends \Piwik\Plugin
                     $alert['compared_to'],
                     $alert['report'],
                     $alert['report_condition'],
-                    $alert['report_matched']
+                    $alert['report_matched'],
+                    $alert['report_mediums']
                 );
             }
         }
@@ -262,5 +265,27 @@ class CustomAlerts extends \Piwik\Plugin
         $translations[] = 'CustomAlerts_ThisAppliesToHelp';
         $translations[] = 'General_Yes';
         $translations[] = 'General_No';
+        $translations[] = 'CustomAlerts_MediumTitle';
+        $translations[] = 'CustomAlerts_MediumDescription';
+    }
+
+    public static function getReportMediumOptions(): array
+    {
+        return [
+            ['key' => 'email', 'value' => Piwik::translate('CustomAlerts_MediumEmail'), 'disabled' => false],
+            ['key' => 'mobile', 'value' => Piwik::translate('CustomAlerts_MediumMobile'), 'disabled' => !PluginManager::getInstance()->isPluginActivated('MobileMessaging')],
+        ];
+    }
+
+    public function validateReportParameters($parameters, $alertMedium)
+    {
+        if ($alertMedium === 'email' && empty($parameters['emailMe']) && empty($parameters['additionalEmails'])) {
+            throw new \Exception(Piwik::translate('CustomAlerts_InvalidEmailReportParameter'));
+        } elseif ($alertMedium === 'mobile' && empty($parameters['phoneNumbers'])) {
+            if (defined('PIWIK_TEST_MODE') && PIWIK_TEST_MODE) {
+                return;
+            }
+            throw new \Exception(Piwik::translate('CustomAlerts_InvalidPhoneNumberReportParameter'));
+        }
     }
 }

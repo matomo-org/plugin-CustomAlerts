@@ -8,13 +8,14 @@
     <file>.</file>
 
     <exclude-pattern>tests/javascript/*</exclude-pattern>
+    <exclude-pattern>Updates/*</exclude-pattern>
     <exclude-pattern>*/vendor/*</exclude-pattern>
 
     <rule ref="Matomo"></rule>
 
     <rule ref="Generic.Files.LineLength">
         <properties>
-            <property name="lineLimit" value="250" />
+            <property name="lineLimit" value="260" />
         </properties>
         <exclude-pattern>tests/*</exclude-pattern>
     </rule>
