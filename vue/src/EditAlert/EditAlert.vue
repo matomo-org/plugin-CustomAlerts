@@ -55,7 +55,7 @@
         >
         </Field>
       </div>
-      <div>
+      <div class="report-mediums">
         <Field
             uicontrol="multiselect"
             name="report_mediums"
