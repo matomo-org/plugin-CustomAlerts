@@ -45,8 +45,8 @@ class Updates_5_1_0 extends Updates
         return array(
             $this->migration->db->addColumn('alert', 'report_mediums', 'TEXT NOT NULL', 'report_matched'),
             $this->migration->db->addColumn('alert_triggered', 'report_mediums', 'TEXT NOT NULL', 'report_matched'),
-            $this->migration->db->addColumn('alert', 'slack_channel_id', 'VARCHAR(1000) NULL', 'phone_numbers'),
-            $this->migration->db->addColumn('alert_triggered', 'slack_channel_id', 'VARCHAR(1000) NULL', 'phone_numbers'),
+            $this->migration->db->addColumn('alert', 'slack_channel_id', 'TEXT NULL', 'phone_numbers'),
+            $this->migration->db->addColumn('alert_triggered', 'slack_channel_id', 'TEXT NULL', 'phone_numbers'),
             $this->migration->db->sql("UPDATE `$alertTableName` set report_mediums=CASE WHEN (email_me=1 OR additional_emails!='[]') AND phone_numbers!='[]' THEN '$emailPhoneJson' WHEN (email_me=1 OR additional_emails!='[]') AND phone_numbers='[]' THEN '$emailJson' WHEN (email_me!=1 AND additional_emails='[]') AND phone_numbers!='[]' THEN '$phoneJson' ELSE '$emptyJson' END"),
             $this->migration->db->sql("UPDATE `$alertTriggeredTableName` set report_mediums=CASE WHEN (email_me=1 OR additional_emails!='[]') AND phone_numbers!='[]' THEN '$emailPhoneJson' WHEN (email_me=1 OR additional_emails!='[]') AND phone_numbers='[]' THEN '$emailJson' WHEN (email_me!=1 AND additional_emails='[]') AND phone_numbers!='[]' THEN '$phoneJson' ELSE '$emptyJson' END"),
         );

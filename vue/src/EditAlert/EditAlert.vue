@@ -106,8 +106,8 @@
       </div>
       <div v-if="actualAlert.report_mediums && actualAlert.report_mediums.includes('slack')">
         <SelectSlackChannel
-            :model-value="slackChannelID || ''"
-            :is-slack-oauth-token-added="true"
+            :model-value="actualAlert.slack_channel_id || ''"
+            :is-slack-oauth-token-added="isSlackOauthTokenAdded"
             v-model="actualAlert.slack_channel_id"
         />
       </div>
@@ -315,7 +315,7 @@ export default defineComponent({
     },
     supportsSMS: Boolean,
     phoneNumbers: [Array, Object],
-    slackChannelID: String,
+    isSlackOauthTokenAdded: Boolean,
     reportMetadata: Object,
     alertGroupConditions: {
       type: Array,

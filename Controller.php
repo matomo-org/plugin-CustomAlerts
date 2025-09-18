@@ -10,6 +10,7 @@
 namespace Piwik\Plugins\CustomAlerts;
 
 use Piwik\Common;
+use Piwik\Container\StaticContainer;
 use Piwik\Date;
 use Piwik\Period;
 use Piwik\Piwik;
@@ -277,6 +278,13 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
         $view->comparablesDates = $comparablesDates;
         $view->reportMetadata   = $this->findReportMetadata($alert);
         $view->supportsSMS      = $this->supportsPlugin('MobileMessaging');
+        $supportsSlack          = $this->supportsPlugin('Slack');
+        $isSlackOAuthTokenAdded = false;
+        if ($supportsSlack) {
+            $slackSettings = StaticContainer::get(\Piwik\Plugins\Slack\SystemSettings::class);
+            $isSlackOAuthTokenAdded = !empty($slackSettings->slackOauthToken->getValue());
+        }
+        $view->isSlackOAuthTokenAdded = $isSlackOAuthTokenAdded;
         $view->periodOptions    = array(
             array('key' => 'day', 'value' => Piwik::translate('Intl_PeriodDay')),
             array('key' => 'week', 'value' => Piwik::translate('Intl_PeriodWeek')),

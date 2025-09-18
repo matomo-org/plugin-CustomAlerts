@@ -178,7 +178,8 @@ class CustomAlerts extends \Piwik\Plugin
                     $alert['report'],
                     $alert['report_condition'],
                     $alert['report_matched'],
-                    $alert['report_mediums']
+                    $alert['report_mediums'],
+                    $alert['slack_channel_id']
                 );
             }
         }

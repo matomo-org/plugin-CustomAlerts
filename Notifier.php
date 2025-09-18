@@ -45,6 +45,8 @@ class Notifier extends \Piwik\Plugin
             $this->sendAlertsPerSmsToRecipient($alerts, new \Piwik\Plugins\MobileMessaging\Model(), $phoneNumber);
         }
 
+        Piwik::postEvent('CustomAlerts.sendNewAlerts', [$triggeredAlerts]);
+
         foreach ($triggeredAlerts as $triggeredAlert) {
             $this->markAlertAsSent($triggeredAlert);
         }

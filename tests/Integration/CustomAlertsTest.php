@@ -110,7 +110,8 @@ class CustomAlertsTest extends BaseTest
             $report,
             'matches_exactly',
             'Piwik',
-            $mediums
+            $mediums,
+            ''
         );
 
         return $this->model->getAlert($id);
@@ -275,6 +276,7 @@ class CustomAlertsTest extends BaseTest
         $this->assertEquals([
             ['key' => 'email', 'value' => 'CustomAlerts_MediumEmail', 'disabled' => false],
             ['key' => 'mobile', 'value' => 'CustomAlerts_MediumMobile', 'disabled' => false],
+            ['key' => 'slack', 'value' => 'CustomAlerts_MediumSlack', 'disabled' => true],
         ], CustomAlerts::getReportMediumOptions());
     }
 
