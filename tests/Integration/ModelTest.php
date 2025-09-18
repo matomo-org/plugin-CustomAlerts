@@ -323,6 +323,7 @@ class ModelTest extends BaseTest
             'value_old'         => 48.519,
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers'     => array('0123456789'),
+            'slack_channel_id'  => '',
             'email_me'          => 0,
             'id_sites'          => array(1, 2),
             'report_mediums'    => ['email', 'mobile']
