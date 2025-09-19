@@ -37,7 +37,7 @@ class Model
                        `email_me` BOOLEAN NOT NULL DEFAULT '0',
                        `additional_emails` TEXT ,
                        `phone_numbers` TEXT ,
-                       `slack_channel_id` TEXT ";
+                       `slack_channel_id` VARCHAR(50) NULL ";
 
         DbHelper::createTable('alert', $tableAlert);
 
@@ -68,7 +68,7 @@ class Model
 			              `email_me` BOOLEAN NOT NULL  DEFAULT '0',
 			              `additional_emails` TEXT ,
 			              `phone_numbers` TEXT ,
-			              `slack_channel_id` TEXT ,
+			              `slack_channel_id` VARCHAR(50) NULL ,
 			              PRIMARY KEY (idtriggered)";
 
         DbHelper::createTable('alert_triggered', $tableAlertLog);
