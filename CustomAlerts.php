@@ -178,7 +178,8 @@ class CustomAlerts extends \Piwik\Plugin
                     $alert['report'],
                     $alert['report_condition'],
                     $alert['report_matched'],
-                    $alert['report_mediums']
+                    $alert['report_mediums'],
+                    $alert['slack_channel_id']
                 );
             }
         }
@@ -274,6 +275,7 @@ class CustomAlerts extends \Piwik\Plugin
         return [
             ['key' => 'email', 'value' => Piwik::translate('CustomAlerts_MediumEmail'), 'disabled' => false],
             ['key' => 'mobile', 'value' => Piwik::translate('CustomAlerts_MediumMobile'), 'disabled' => !PluginManager::getInstance()->isPluginActivated('MobileMessaging')],
+            ['key' => 'slack', 'value' => Piwik::translate('CustomAlerts_MediumSlack'), 'disabled' => !PluginManager::getInstance()->isPluginActivated('Slack')],
         ];
     }
 

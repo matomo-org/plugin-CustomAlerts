@@ -36,7 +36,8 @@ class Model
                        `compared_to` SMALLINT (4) UNSIGNED NOT NULL DEFAULT 1 ,
                        `email_me` BOOLEAN NOT NULL DEFAULT '0',
                        `additional_emails` TEXT ,
-                       `phone_numbers` TEXT ";
+                       `phone_numbers` TEXT ,
+                       `slack_channel_id` VARCHAR(50) NULL ";
 
         DbHelper::createTable('alert', $tableAlert);
 
@@ -67,6 +68,7 @@ class Model
 			              `email_me` BOOLEAN NOT NULL  DEFAULT '0',
 			              `additional_emails` TEXT ,
 			              `phone_numbers` TEXT ,
+			              `slack_channel_id` VARCHAR(50) NULL ,
 			              PRIMARY KEY (idtriggered)";
 
         DbHelper::createTable('alert_triggered', $tableAlertLog);
@@ -251,11 +253,12 @@ class Model
      * @param string $reportCondition
      * @param string $reportValue
      * @param array $reportMediums
+     * @param string $slackChannelID
      *
      * @return int ID of new Alert
      * @throws \Exception
      */
-    public function createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums)
+    public function createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums, $slackChannelID)
     {
         $idAlert = $this->getNextAlertId();
 
@@ -274,7 +277,8 @@ class Model
             'compared_to'       => $comparedTo,
             'report_condition'  => $reportCondition,
             'report_matched'    => $reportValue,
-            'report_mediums'    => json_encode($reportMediums)
+            'report_mediums'    => json_encode($reportMediums),
+            'slack_channel_id'  => $slackChannelID
         );
 
         $db = $this->getDb();
@@ -332,11 +336,12 @@ class Model
      * @param string $reportCondition
      * @param string $reportValue
      * @param array $reportMediums
+     * @param string $slackChannelID
      *
      * @return int
      * @throws \Exception
      */
-    public function updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums)
+    public function updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums, $slackChannelID)
     {
         $alert = array(
             'name'              => $name,
@@ -352,6 +357,7 @@ class Model
             'report_condition'  => $reportCondition,
             'report_matched'    => $reportValue,
             'report_mediums'    => json_encode($reportMediums),
+            'slack_channel_id'  => $slackChannelID
         );
 
         $db = $this->getDb();
@@ -381,7 +387,7 @@ class Model
     {
         $alert = $this->getAlert($idAlert);
 
-        $keysToKeep = array('idalert', 'name', 'login', 'period', 'metric', 'metric_condition', 'metric_matched', 'report', 'report_condition', 'report_matched', 'report_mediums', 'compared_to', 'email_me', 'additional_emails', 'phone_numbers');
+        $keysToKeep = array('idalert', 'name', 'login', 'period', 'metric', 'metric_condition', 'metric_matched', 'report', 'report_condition', 'report_matched', 'report_mediums', 'compared_to', 'email_me', 'additional_emails', 'phone_numbers', 'slack_channel_id');
 
         $triggeredAlert = array();
         foreach ($keysToKeep as $key) {
@@ -396,7 +402,7 @@ class Model
         $triggeredAlert['idsite']            = $idSite;
         $triggeredAlert['additional_emails'] = json_encode($triggeredAlert['additional_emails']);
         $triggeredAlert['phone_numbers']     = json_encode($triggeredAlert['phone_numbers']);
-        $triggeredAlert['report_mediums']     = json_encode($triggeredAlert['report_mediums']);
+        $triggeredAlert['report_mediums']    = json_encode($triggeredAlert['report_mediums']);
 
         $db = $this->getDb();
         $db->insert(

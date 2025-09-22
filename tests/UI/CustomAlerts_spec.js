@@ -36,6 +36,14 @@ describe("CustomAlerts", function () {
         expect(await screenshotPageWrap()).to.matchImage('edit');
     });
 
+    it('should show the report mediums', async function () {
+        await page.click('.report-mediums .select-dropdown');
+        await page.waitForNetworkIdle();
+        await page.waitForTimeout(350); // wait for animation
+        expect(await screenshotPageWrap()).to.matchImage('report_mediums');
+        await page.click('.report-mediums .select-dropdown');
+    });
+
     it('should reload alert conditions when site is changed', async function () {
         await page.evaluate(function() {
             $('.siteSelector .dropdown li:contains("Piwik test"):last').click();

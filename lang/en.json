@@ -76,11 +76,12 @@
         "FinalTaskRetryWarning": "Final retry of alerts task. Unable to process the following alerts: %1$s",
         "MediumEmail": "Email",
         "MediumMobile": "Mobile",
+        "MediumSlack": "Slack",
         "MediumTitle": "Send alerts via",
-        "MediumDescription": "Select the medium to send alerts.",
-        "EmptyReportMediums": "Report mediums cannot be empty.",
+        "MediumDescription": "Choose how you want to receive alerts when this custom alert is triggered.",
+        "EmptyReportMediums": "At least one delivery method must be selected.",
         "InvalidReportMediums": "Invalid report mediums value. Allowed values are %1$s.",
         "InvalidEmailReportParameter": "Please select \"Send to me\" or specify valid email addresses to email the report.",
-        "InvalidPhoneNumberReportParameter": "Phone numbers cannot be empty."
+        "InvalidPhoneNumberReportParameter": "Phone numbers cannot be empty. Please activate at least one phone number by accessing the Mobile Messaging settings page."
     }
 }

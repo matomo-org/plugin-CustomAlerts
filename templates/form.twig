@@ -9,6 +9,7 @@
   supports-s-m-s="{{ supportsSMS|default(null)|json_encode }}"
   mobile-macro="{{ mobileMacro|default(null)|json_encode }}"
   phone-numbers="{{ phoneNumbers|default([])|json_encode }}"
+  is-slack-oauth-token-added="{{ isSlackOAuthTokenAdded|default(null)|json_encode }}"
   report-metadata="{{ reportMetadata|default(null)|json_encode }}"
   alert-group-conditions="{{ alertGroupConditions|default(null)|json_encode }}"
   metric-condition-options="{{ metricConditionOptions|default(null)|json_encode }}"

@@ -20,6 +20,7 @@ interface Alert {
   email_me: number|boolean;
   additional_emails: string[];
   phone_numbers: string[];
+  slack_channel_id: string;
   id_sites: (string|number)[];
   reportName: string;
   siteName: string;
