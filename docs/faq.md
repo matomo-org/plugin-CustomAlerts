@@ -8,7 +8,7 @@ Here is the complete list of features that are included in this project:
 * Select a website on which the Alert is defined
 * Receive an alert by email (email will contain Alert description + link to Matomo dashboard URL for the given website ID and period).
 * Receive an alert by SMS (SMS will contain the Alert description and numbers that triggered the Alert)
-* Receive an alert by Slack (Slack will contain the Alert description and numbers that triggered the Alert)
+* Receive an alert by Slack (Slack post will contain the Alert description and numbers that triggered the Alert)
 * Select the Alert period: should it be daily, weekly or monthly?
 * Select the report (Websites, Keywords, Countries, general stats)
 * Define Metrics (visits, page view, avg. visit duration, Goal 1 conversions, total goal conversions, etc.)
