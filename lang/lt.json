@@ -3,7 +3,8 @@
         "Alert": "Signalas",
         "Alerts": "Signalai",
         "CreateNewAlert": "Sukurti naują signalą",
-        "SmsAlertFromName": "Naujas signalas",
-        "MailEnd": "Smagaus analizavimo!"
+        "MailEnd": "Smagaus analizavimo!",
+        "MediumEmail": "El. paštas",
+        "SmsAlertFromName": "Naujas signalas"
     }
 }
