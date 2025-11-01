@@ -41,6 +41,8 @@
         "ManageAlerts": "カスタムアラートの管理",
         "MatchesAnyExpression": "すべてに一致",
         "MatchesRegularExpression": "正規表現に一致します",
+        "MediumEmail": "メール",
+        "MediumMobile": "モバイル",
         "MobileMessagingPluginNotActivated": "MobileMessaging プラグインは、 SMS アラートを送信する必要があります。 %1$splugin settings page%2$s にアクセスすることによって、それを有効化できます。",
         "MonthComparedToPreviousMonth": "前の月",
         "MonthComparedToPreviousYear": "去年の同じ月",
