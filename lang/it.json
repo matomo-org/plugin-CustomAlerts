@@ -41,6 +41,8 @@
         "ManageAlerts": "Gestisci gli Avvisi Personalizzati",
         "MatchesAnyExpression": "corrisponde in tutto",
         "MatchesRegularExpression": "corrisponde all'espressione regolare",
+        "MediumEmail": "Email",
+        "MediumMobile": "Dispositivo mobile",
         "MobileMessagingPluginNotActivated": "Per inviare avvisi SMS è richiesto il plugin MobileMessaging. Puoi attivarlo accedendo alla %1$spagina impostazioni plugins%2$s.",
         "MonthComparedToPreviousMonth": "mese precedente",
         "MonthComparedToPreviousYear": "stesso mese dell'anno precedente",
