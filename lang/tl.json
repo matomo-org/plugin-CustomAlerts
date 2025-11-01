@@ -39,6 +39,8 @@
         "ManageAlerts": "Pamahalaan ang mga Custom na Alerto",
         "MatchesAnyExpression": "tumutugma sa anumang",
         "MatchesRegularExpression": "tumutugma sa regular expression",
+        "MediumEmail": "Email",
+        "MediumMobile": "Mobile",
         "MobileMessagingPluginNotActivated": "Ang MobileMessaging plugin ay kinakailangan na upang magpadala ng mga alerts sa SMS. Maaari mo itong i-activate sa pamamagitan ng pag-access sa %1$spahina ng plugin settings%2$s.",
         "MonthComparedToPreviousMonth": "nakaraang buwan",
         "MonthComparedToPreviousYear": "Parehong buwan sa nakaraang taon",
