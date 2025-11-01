@@ -42,6 +42,8 @@
         "ManageAlerts": "Benutzerdefinierte Benachrichtigungen verwalten",
         "MatchesAnyExpression": "entspricht allen",
         "MatchesRegularExpression": "entspricht einem regulären Ausdruck",
+        "MediumEmail": "E-Mail",
+        "MediumMobile": "Mobil",
         "MobileMessagingPluginNotActivated": "Das MobileMessaging-Plugin wird benötigt, um SMS Benachrichtigungen zu versenden. Sie können es aktivieren, indem Sie die %1$sPlugin Einstellungen Seite%2$s besuchen.",
         "MonthComparedToPreviousMonth": "vorheriger Monat",
         "MonthComparedToPreviousYear": "gleicher Monat im vorherigen Jahr",
