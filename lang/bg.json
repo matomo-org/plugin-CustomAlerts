@@ -41,6 +41,8 @@
         "ManageAlerts": "Управление на персонализирани известия",
         "MatchesAnyExpression": "съвпада с всеки",
         "MatchesRegularExpression": "съвпада с регулярен израз",
+        "MediumEmail": "Имейл",
+        "MediumMobile": "Мобилен",
         "MobileMessagingPluginNotActivated": "Плъгинът MobileMessaging е необходим за изпращане на SMS сигнали. Можете да го активирате, като влезете в %1$sстраницата с настройки на плъгина%2$s.",
         "MonthComparedToPreviousMonth": "предишен месец",
         "MonthComparedToPreviousYear": "същия месец на предходната година",
