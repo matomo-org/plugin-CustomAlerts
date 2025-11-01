@@ -1,6 +1,8 @@
 {
     "CustomAlerts": {
         "Alert": "Varovanie",
-        "Alerts": "Varovania"
+        "Alerts": "Varovania",
+        "MediumEmail": "E-mail",
+        "MediumMobile": "Mobil"
     }
 }
