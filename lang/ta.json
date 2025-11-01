@@ -42,6 +42,8 @@
         "ManageAlerts": "அடிப்படை விழிப்பூட்டல்களை நிர்வகி",
         "MatchesAnyExpression": "ஏதேனும் பொருந்தும்",
         "MatchesRegularExpression": "வழக்கமான வெளிப்பாட்டுடன் பொருந்துகிறது",
+        "MediumEmail": "மின்னஞ்சல்",
+        "MediumMobile": "கைபேசி",
         "MobileMessagingPluginNotActivated": "எச்எம்எச் விழிப்பூட்டல்களை அனுப்ப மொபைல்மெசேசிங் சொருகி தேவை. %1$splugin அமைப்புகள் பக்கம் %2$s ஐ அணுகுவதன் மூலம் அதை செயல்படுத்தலாம்.",
         "MonthComparedToPreviousMonth": "கடந்த மாதம்",
         "MonthComparedToPreviousYear": "கடந்த ஆண்டின் இதே மாதம்",
