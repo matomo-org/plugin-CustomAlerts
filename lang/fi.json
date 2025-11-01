@@ -40,6 +40,8 @@
         "ManageAlerts": "Hallinnoi mukautettuja hälytyksiä",
         "MatchesAnyExpression": "vastaa mitä tahansa",
         "MatchesRegularExpression": "vastaa täsmällisesti",
+        "MediumEmail": "Sähköposti",
+        "MediumMobile": "Mobiili",
         "MobileMessagingPluginNotActivated": "MobileMessaging-lisäosa on välttämätön SMS-hälytyksien lähettämistä varten. Voit ottaa sen käyttöön sivulta %1$sliitännäisten asetukset%2$s.",
         "MonthComparedToPreviousMonth": "edellinen kuukausi",
         "MonthComparedToPreviousYear": "sama kuukausi edelliseltä vuodelta",
