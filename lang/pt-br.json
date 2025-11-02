@@ -41,6 +41,8 @@
         "ManageAlerts": "Gerenciar alertas personalizados",
         "MatchesAnyExpression": "corresponde a qualquer",
         "MatchesRegularExpression": "corresponde a expressão regular",
+        "MediumEmail": "E-mail",
+        "MediumMobile": "Móvel",
         "MobileMessagingPluginNotActivated": "O plugin MobileMessaging é necessário para enviar alertas por SMS. Você pode ativá-lo acessando a %1$spágina de configuração do plugin%2$s.",
         "MonthComparedToPreviousMonth": "mês anterior",
         "MonthComparedToPreviousYear": "mesmo mês no ano anterior",

@@ -41,6 +41,8 @@
         "ManageAlerts": "Håndter tilpassede varslinger",
         "MatchesAnyExpression": "matcher alle",
         "MatchesRegularExpression": "matcher regex",
+        "MediumEmail": "E-post",
+        "MediumMobile": "Mobil",
         "MobileMessagingPluginNotActivated": "Utvidelsen MobileMessaging kreves for å sende SMS-varslinger. Du kan aktivere det ved å gå til %1$ssiden for utvidelser%2$s.",
         "MonthComparedToPreviousMonth": "måneden før",
         "MonthComparedToPreviousYear": "samme måned året før",

@@ -41,6 +41,8 @@
         "ManageAlerts": "自訂警報管理",
         "MatchesAnyExpression": "符合任何",
         "MatchesRegularExpression": "符合正規表示式",
+        "MediumEmail": "Email",
+        "MediumMobile": "行動裝置",
         "MobileMessagingPluginNotActivated": "必須要啟用 MobileMessaging 外掛才能寄送簡訊警報。你可以在%1$s外掛管理%2$s頁面啟用它。",
         "MonthComparedToPreviousMonth": "上個月",
         "MonthComparedToPreviousYear": "去年的這個月",

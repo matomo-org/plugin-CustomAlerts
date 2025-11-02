@@ -39,6 +39,8 @@
         "ManageAlerts": "Administreaza Alertele Customizate",
         "MatchesAnyExpression": "se potriveste cu oricare",
         "MatchesRegularExpression": "se potriveste cu expresia regulata",
+        "MediumEmail": "Email",
+        "MediumMobile": "Mobil",
         "MobileMessagingPluginNotActivated": "Pluging-ul MobileMessaging este necesar pentru a trimite alerte SMS.Il poti activa accessand %1$ssetarile paginii plugin%2$s.",
         "MonthComparedToPreviousMonth": "luna precedenta",
         "MonthComparedToPreviousYear": "aceeasi luna in anul anterior",

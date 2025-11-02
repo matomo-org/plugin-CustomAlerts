@@ -1,1 +1,6 @@
-{}
+{
+    "CustomAlerts": {
+        "MediumEmail": "이메일",
+        "MediumMobile": "모바일"
+    }
+}

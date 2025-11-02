@@ -41,6 +41,8 @@
         "ManageAlerts": "Upravljanje vašim upozorenjima",
         "MatchesAnyExpression": "se poklapa sa",
         "MatchesRegularExpression": "zadovoljava regularan izraz",
+        "MediumEmail": "Mejl",
+        "MediumMobile": "Mobilni",
         "MobileMessagingPluginNotActivated": "Dodatak Mobilne poruke je neophodan za slanje SMS upozorenja. Možete da ga aktivirate na stranici %1$spodešavanje dodataka%2$s.",
         "MonthComparedToPreviousMonth": "prethodni mesec",
         "MonthComparedToPreviousYear": "isti mesec prethodne godine",

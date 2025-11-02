@@ -3,13 +3,15 @@
         "Alert": "Paziņojums",
         "Alerts": "Paziņojumi",
         "CreateNewAlert": "Izveidot jaunu paziņojumu",
-        "SmsAlertFromName": "Jauns paziņojums",
+        "EditAlert": "Izmainīt paziņojumu",
         "MailAlertSubject": "Jauns paziņojums priekš mājaslapas %1$s [%2$s]",
         "MailEnd": "Priecīgu analizēšanu!",
-        "OperationIs": "ir",
-        "OperationIsNot": "nav",
+        "MediumEmail": "E-pasta adrese",
+        "MediumMobile": "Mobilā",
         "OperationContains": "satur",
         "OperationDoesNotContain": "nesatur",
-        "EditAlert": "Izmainīt paziņojumu"
+        "OperationIs": "ir",
+        "OperationIsNot": "nav",
+        "SmsAlertFromName": "Jauns paziņojums"
     }
 }

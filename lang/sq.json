@@ -42,6 +42,8 @@
         "ManageAlerts": "Administroni Sinjalizime Vetjake",
         "MatchesAnyExpression": "ka përputhje me çfarëdo",
         "MatchesRegularExpression": "ka përputhje me shprehje të rregullt",
+        "MediumEmail": "Email",
+        "MediumMobile": "Celular",
         "MobileMessagingPluginNotActivated": "Që të mund të dërgohen sinjalizime me SMS, lypset shtojca MobileMessaging. Mund ta aktivizoni duke hyrë te %1$sfaqja e rregullimeve të shtojcës%2$s.",
         "MonthComparedToPreviousMonth": "muaji i mëparshëm",
         "MonthComparedToPreviousYear": "i njëjti muaj vitin e shkuar",

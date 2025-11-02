@@ -42,6 +42,8 @@
         "ManageAlerts": "Aangepaste alarmen beheren",
         "MatchesAnyExpression": "komt overeen met elke",
         "MatchesRegularExpression": "komt overeen met reguliere expressie",
+        "MediumEmail": "E-mailadres",
+        "MediumMobile": "Mobiel",
         "MobileMessagingPluginNotActivated": "De MobileMessaging plugin is nodig om SMS melding te sturen. Deze kan geactiveerd worden via %1$splugin instellingen pagina %2$s.",
         "MonthComparedToPreviousMonth": "vorige maand",
         "MonthComparedToPreviousYear": "zelfde maand in het vorige jaar",

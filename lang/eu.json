@@ -41,6 +41,8 @@
         "ManageAlerts": "Kudeatu alerta pertsonalizatuak",
         "MatchesAnyExpression": "hauetako edozeinekin bat dator",
         "MatchesRegularExpression": "adierazpen erregularrarekin bat dator",
+        "MediumEmail": "E-posta",
+        "MediumMobile": "Mugikorra",
         "MobileMessagingPluginNotActivated": "MobileMessaging plugina behar da SMS alertak bidaltzeko. %1$sPluginen ezarpenen orria%2$s erabiliz aktibatu dezakezu.",
         "MonthComparedToPreviousMonth": "aurreko hilabetea",
         "MonthComparedToPreviousYear": "aurreko urteko hilabete berdina",

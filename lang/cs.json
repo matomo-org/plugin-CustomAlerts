@@ -41,6 +41,8 @@
         "ManageAlerts": "Správa vlastních upozornění",
         "MatchesAnyExpression": "odpovídá některému",
         "MatchesRegularExpression": "odpovídá regulárnímu výrazu",
+        "MediumEmail": "E-mail",
+        "MediumMobile": "Mobil",
         "MobileMessagingPluginNotActivated": "Pro odesílání SMS upozornění je vyžadován zásuvný modul MobileMessaging. Můžete ho povolit na stránce %1$snastavení zásuvných modulů%2$s.",
         "MonthComparedToPreviousMonth": "předchozí měsíc",
         "MonthComparedToPreviousYear": "stejný měsíc v předchozím roce",

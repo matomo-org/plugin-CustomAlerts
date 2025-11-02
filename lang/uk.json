@@ -6,6 +6,8 @@
         "DayComparedToPreviousDay": "попередній день",
         "DayComparedToPreviousWeek": "того ж дня тижнем раніше",
         "DayComparedToPreviousYear": "того ж дня в попередньому році",
+        "MediumEmail": "Електронна пошта",
+        "MediumMobile": "Мобільний застосунок",
         "MonthComparedToPreviousMonth": "попередній місяць",
         "MonthComparedToPreviousYear": "той же місяць роком раніше",
         "ParmeterIsTooLong": "%1$s задовге. Дозволено до %2$d символів.",

@@ -41,6 +41,8 @@
         "ManageAlerts": "Kelola Peringatan Khusus",
         "MatchesAnyExpression": "cocok dengan",
         "MatchesRegularExpression": "cocok dengan ekspresi reguler",
+        "MediumEmail": "Surel",
+        "MediumMobile": "Seluler",
         "MobileMessagingPluginNotActivated": "Pengaya MobileMessaging diperlukan untuk mengirim peringatan SMS. Anda dapat mengaktifkannya dengan mengakses %1$shalaman pengaturan pengaya%2$s.",
         "MonthComparedToPreviousMonth": "bulan sebelumnya",
         "MonthComparedToPreviousYear": "bulan yang sama di tahun sebelumnya",

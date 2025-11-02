@@ -41,6 +41,8 @@
         "ManageAlerts": "કસ્ટમ ચેતવણીઓ મેનેજ કરો",
         "MatchesAnyExpression": "કોઈપણ સાથે મેળ ખાય છે",
         "MatchesRegularExpression": "રેગ્યુલર એક્સપ્રેશન સાથે મેળ ખાય છે",
+        "MediumEmail": "ઇમેઇલ",
+        "MediumMobile": "મોબાઈલ",
         "MobileMessagingPluginNotActivated": "SMS ચેતવણીઓ મોકલવા માટે MobileMessaging પ્લગઇન જરૂરી છે. તમે %1$sપ્લગઇન સેટિંગ્સ પૃષ્ઠ%2$s ને ઍક્સેસ કરીને તેને સક્રિય કરી શકો છો.",
         "MonthComparedToPreviousMonth": "પાછલા મહિને",
         "MonthComparedToPreviousYear": "પાછલા વર્ષના સમાન મહિનામાં",

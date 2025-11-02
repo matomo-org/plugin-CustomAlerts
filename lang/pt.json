@@ -41,6 +41,8 @@
         "ManageAlerts": "Gerir alertas personalizados",
         "MatchesAnyExpression": "corresponde a qualquer",
         "MatchesRegularExpression": "corresponde à expressão regular",
+        "MediumEmail": "E-mail",
+        "MediumMobile": "Móvel",
         "MobileMessagingPluginNotActivated": "A extensão MobileMessaging é obrigatória para enviar alertas por SMS. Pode ativar a mesma acedendo à %1$spágina de definições da extensão%2$s.",
         "MonthComparedToPreviousMonth": "mês anterior",
         "MonthComparedToPreviousYear": "mesmo mês no ano anterior",

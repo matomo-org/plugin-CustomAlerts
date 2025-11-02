@@ -41,6 +41,8 @@
         "ManageAlerts": "管理自定义提醒",
         "MatchesAnyExpression": "匹配任何",
         "MatchesRegularExpression": "正则表达式匹配",
+        "MediumEmail": "电子邮箱",
+        "MediumMobile": "移动设备",
         "MobileMessagingPluginNotActivated": "移动通讯插件需要发送短信提醒。您可以在访问%1$s插件设置页面%2$s来启用它。",
         "MonthComparedToPreviousMonth": "上月",
         "MonthComparedToPreviousYear": "上一年的同月",

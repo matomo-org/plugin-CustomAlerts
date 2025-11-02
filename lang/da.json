@@ -40,6 +40,8 @@
         "ManageAlerts": "Administrer tilpassede notifikationer",
         "MatchesAnyExpression": "svarer til alle",
         "MatchesRegularExpression": "matcher regulært udtryk",
+        "MediumEmail": "E-mail",
+        "MediumMobile": "Mobil",
         "MobileMessagingPluginNotActivated": "Mobil-besked programudvidelsen er nødvendig for at sende sms-beskeder. Du kan aktivere den ved at gå til %1$sindstillinger for programudvidelser%2$s",
         "MonthComparedToPreviousMonth": "forrige måned",
         "MonthComparedToPreviousYear": "samme måned i det foregående år",

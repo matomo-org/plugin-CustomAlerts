@@ -1,1 +1,5 @@
-{}
+{
+    "CustomAlerts": {
+        "MediumEmail": "ఈమెయిలు"
+    }
+}
