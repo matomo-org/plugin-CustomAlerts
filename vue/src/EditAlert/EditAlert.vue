@@ -111,6 +111,13 @@
             v-model="actualAlert.slack_channel_id"
         />
       </div>
+      <div v-if="actualAlert.report_mediums && actualAlert.report_mediums.includes('teams')">
+        <SelectMicrosoftTeamsWebhookUrl
+            :is-required-fields-set="true"
+            :model-value="actualAlert.ms_teams_webhook_url || ''"
+            v-model="actualAlert.ms_teams_webhook_url"
+        />
+      </div>
       <div>
         <Field
           uicontrol="expandable-select"
@@ -251,6 +258,7 @@ import { Alert as AlertType } from '../types';
 
 const SelectPhoneNumbers = useExternalPluginComponent('MobileMessaging', 'SelectPhoneNumbers');
 const SelectSlackChannel = useExternalPluginComponent('Slack', 'SelectSlackChannel');
+const SelectMicrosoftTeamsWebhookUrl = useExternalPluginComponent('MicrosoftTeams', 'SelectMicrosoftTeamsWebhookUrl');
 
 interface Option {
   key: string;
@@ -337,6 +345,7 @@ export default defineComponent({
     SaveButton,
     SelectPhoneNumbers,
     SelectSlackChannel,
+    SelectMicrosoftTeamsWebhookUrl,
     ContentBlock,
   },
   directives: {
@@ -563,6 +572,7 @@ export default defineComponent({
         phoneNumbers: this.actualAlert.phone_numbers?.length
           ? this.actualAlert.phone_numbers : [''],
         slackChannelID: this.actualAlert?.slack_channel_id ? this.actualAlert.slack_channel_id : '',
+        msTeamsWebhookUrl: this.actualAlert?.ms_teams_webhook_url ? this.actualAlert.ms_teams_webhook_url : '',
         reportUniqueId: this.actualAlert.report,
         reportCondition: this.actualAlert.report_condition,
         reportValue: this.actualAlert.report_matched,

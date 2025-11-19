@@ -76,7 +76,7 @@ class CustomAlerts extends Fixture
         }
 
         $model = new Model();
-        $model->createAlert($name, $idSites, $login, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $comparedTo = 1, $report, 'matches_exactly', $reportMatched, ['email', 'mobile'], '');
+        $model->createAlert($name, $idSites, $login, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $comparedTo = 1, $report, 'matches_exactly', $reportMatched, ['email', 'mobile'], '', '');
     }
 
     private function triggerAlert($idAlert, $valueNew, $valueOld, $datetime)

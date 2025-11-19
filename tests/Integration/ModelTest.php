@@ -49,7 +49,7 @@ class ModelTest extends BaseTest
         $emails       = array('test1@example.com', 'test2@example.com');
         $phoneNumbers = array('0123456789');
 
-        $id = $this->model->createAlert($name, $idSites, $login, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $comparedTo = 1, $report, 'matches_exactly', 'Piwik', ['email', 'mobile'], '');
+        $id = $this->model->createAlert($name, $idSites, $login, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $comparedTo = 1, $report, 'matches_exactly', 'Piwik', ['email', 'mobile'], '', '');
         return $id;
     }
 
@@ -58,13 +58,13 @@ class ModelTest extends BaseTest
         $this->assertContainTables(array('alert', 'alert_site', 'alert_triggered'));
 
         $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert'));
-        $this->assertCount(16, $columns);
+        $this->assertCount(17, $columns);
 
         $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert_site'));
         $this->assertCount(2, $columns);
 
         $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert_triggered'));
-        $this->assertCount(22, $columns);
+        $this->assertCount(23, $columns);
     }
 
     private function assertContainTables($expectedTables)
@@ -148,6 +148,7 @@ class ModelTest extends BaseTest
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers'     => array('0123456789'),
             'slack_channel_id'  => '',
+            'ms_teams_webhook_url'  => '',
             'compared_to'       => 1,
             'id_sites'          => $idSites,
             'report_mediums'    => ['email', 'mobile'],
@@ -205,7 +206,8 @@ class ModelTest extends BaseTest
             'matches_exactly',
             'Piwik',
             ['email', 'mobile'],
-            ''
+            '',
+            '',
         );
         return $id;
     }
@@ -324,6 +326,7 @@ class ModelTest extends BaseTest
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers'     => array('0123456789'),
             'slack_channel_id'  => '',
+            'ms_teams_webhook_url'  => '',
             'email_me'          => 0,
             'id_sites'          => array(1, 2),
             'report_mediums'    => ['email', 'mobile']

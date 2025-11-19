@@ -62,6 +62,7 @@ class ApiTest extends BaseTest
             $reportCondition,
             'Piwik',
             ['email', 'mobile'],
+            '',
             ''
         );
         return $id;
@@ -227,6 +228,7 @@ class ApiTest extends BaseTest
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers'     => array(),
             'slack_channel_id'  => '',
+            'ms_teams_webhook_url'  => '',
             'compared_to'       => 1,
             'id_sites'          => $idSites,
             'report_mediums'     => ['email', 'mobile']
@@ -583,6 +585,7 @@ class ApiTest extends BaseTest
             'additional_emails' => array('test1@example.com', 'test2@example.com'),
             'phone_numbers'     => array(),
             'slack_channel_id'  => '',
+            'ms_teams_webhook_url'  => '',
             'email_me'          => 0,
             'compared_to'       => 1,
             'id_sites'          => array(1, 2),
