@@ -207,7 +207,7 @@ class ModelTest extends BaseTest
             'Piwik',
             ['email', 'mobile'],
             '',
-            '',
+            ''
         );
         return $id;
     }

@@ -289,6 +289,7 @@ class CustomAlertsTest extends BaseTest
             ['key' => 'email', 'value' => 'CustomAlerts_MediumEmail', 'disabled' => false],
             ['key' => 'mobile', 'value' => 'CustomAlerts_MediumMobile', 'disabled' => true],
             ['key' => 'slack', 'value' => 'CustomAlerts_MediumSlack', 'disabled' => true],
+            ['key' => 'teams', 'value' => 'CustomAlerts_MediumMicrosoftTeams', 'disabled' => true],
         ], CustomAlerts::getReportMediumOptions());
     }
 }
