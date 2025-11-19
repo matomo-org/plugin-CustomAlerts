@@ -112,7 +112,7 @@ class CustomAlertsTest extends BaseTest
             'Piwik',
             $mediums,
             '',
-            '',
+            ''
         );
 
         return $this->model->getAlert($id);
