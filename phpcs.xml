@@ -15,7 +15,7 @@
 
     <rule ref="Generic.Files.LineLength">
         <properties>
-            <property name="lineLimit" value="300" />
+            <property name="lineLimit" value="350" />
         </properties>
         <exclude-pattern>tests/*</exclude-pattern>
     </rule>

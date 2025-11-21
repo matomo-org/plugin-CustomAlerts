@@ -21,6 +21,7 @@ interface Alert {
   additional_emails: string[];
   phone_numbers: string[];
   slack_channel_id: string;
+  ms_teams_webhook_url: string;
   id_sites: (string|number)[];
   reportName: string;
   siteName: string;

@@ -37,7 +37,8 @@ class Model
                        `email_me` BOOLEAN NOT NULL DEFAULT '0',
                        `additional_emails` TEXT ,
                        `phone_numbers` TEXT ,
-                       `slack_channel_id` VARCHAR(50) NULL ";
+                       `slack_channel_id` VARCHAR(50) NULL ,
+                       `ms_teams_webhook_url` VARCHAR(500) NULL ";
 
         DbHelper::createTable('alert', $tableAlert);
 
@@ -69,6 +70,7 @@ class Model
 			              `additional_emails` TEXT ,
 			              `phone_numbers` TEXT ,
 			              `slack_channel_id` VARCHAR(50) NULL ,
+			              `ms_teams_webhook_url` VARCHAR(500) NULL ,
 			              PRIMARY KEY (idtriggered)";
 
         DbHelper::createTable('alert_triggered', $tableAlertLog);
@@ -254,11 +256,12 @@ class Model
      * @param string $reportValue
      * @param array $reportMediums
      * @param string $slackChannelID
+     * @param string $msTeamsWebhookUrl
      *
      * @return int ID of new Alert
      * @throws \Exception
      */
-    public function createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums, $slackChannelID)
+    public function createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums, $slackChannelID, $msTeamsWebhookUrl)
     {
         $idAlert = $this->getNextAlertId();
 
@@ -278,7 +281,8 @@ class Model
             'report_condition'  => $reportCondition,
             'report_matched'    => $reportValue,
             'report_mediums'    => json_encode($reportMediums),
-            'slack_channel_id'  => $slackChannelID
+            'slack_channel_id'  => $slackChannelID,
+            'ms_teams_webhook_url'  => $msTeamsWebhookUrl,
         );
 
         $db = $this->getDb();
@@ -337,11 +341,12 @@ class Model
      * @param string $reportValue
      * @param array $reportMediums
      * @param string $slackChannelID
+     * @param string $msTeamsWebhookUrl
      *
      * @return int
      * @throws \Exception
      */
-    public function updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums, $slackChannelID)
+    public function updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums, $slackChannelID, $msTeamsWebhookUrl)
     {
         $alert = array(
             'name'              => $name,
@@ -357,7 +362,8 @@ class Model
             'report_condition'  => $reportCondition,
             'report_matched'    => $reportValue,
             'report_mediums'    => json_encode($reportMediums),
-            'slack_channel_id'  => $slackChannelID
+            'slack_channel_id'  => $slackChannelID,
+            'ms_teams_webhook_url'  => $msTeamsWebhookUrl,
         );
 
         $db = $this->getDb();
@@ -387,7 +393,7 @@ class Model
     {
         $alert = $this->getAlert($idAlert);
 
-        $keysToKeep = array('idalert', 'name', 'login', 'period', 'metric', 'metric_condition', 'metric_matched', 'report', 'report_condition', 'report_matched', 'report_mediums', 'compared_to', 'email_me', 'additional_emails', 'phone_numbers', 'slack_channel_id');
+        $keysToKeep = array('idalert', 'name', 'login', 'period', 'metric', 'metric_condition', 'metric_matched', 'report', 'report_condition', 'report_matched', 'report_mediums', 'compared_to', 'email_me', 'additional_emails', 'phone_numbers', 'slack_channel_id', 'ms_teams_webhook_url');
 
         $triggeredAlert = array();
         foreach ($keysToKeep as $key) {

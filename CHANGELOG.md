@@ -1,5 +1,6 @@
 ## Changelog
 
+* 5.2.0 - 2025-11-24 - Added ability to send alerts to a Microsoft Teams channel
 * 5.1.0 - 2025-09-29 Refactored UI to support different mediums to alert and changes to alert via Slack
 * 5.0.7 - 2025-07-07 Textual changes
 * 5.0.6 - 2024-09-23 Added check if reports used by alert are done archiving and retry if not archived

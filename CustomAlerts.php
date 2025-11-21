@@ -179,7 +179,8 @@ class CustomAlerts extends \Piwik\Plugin
                     $alert['report_condition'],
                     $alert['report_matched'],
                     $alert['report_mediums'],
-                    $alert['slack_channel_id']
+                    $alert['slack_channel_id'],
+                    $alert['ms_teams_webhook_url']
                 );
             }
         }
@@ -276,6 +277,7 @@ class CustomAlerts extends \Piwik\Plugin
             ['key' => 'email', 'value' => Piwik::translate('CustomAlerts_MediumEmail'), 'disabled' => false],
             ['key' => 'mobile', 'value' => Piwik::translate('CustomAlerts_MediumMobile'), 'disabled' => !PluginManager::getInstance()->isPluginActivated('MobileMessaging')],
             ['key' => 'slack', 'value' => Piwik::translate('CustomAlerts_MediumSlack'), 'disabled' => !PluginManager::getInstance()->isPluginActivated('Slack')],
+            ['key' => 'teams', 'value' => Piwik::translate('CustomAlerts_MediumMicrosoftTeams'), 'disabled' => !PluginManager::getInstance()->isPluginActivated('MicrosoftTeams')],
         ];
     }
 
