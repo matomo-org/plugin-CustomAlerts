@@ -374,7 +374,7 @@ export default defineComponent({
       actualAlert: alert ? { ...alert } : {
         period: 'day',
         id_sites: [currentSite?.id || Matomo.idSite],
-        alerts_medium: ['email'],
+        report_mediums: ['email'],
       } as unknown as AlertType,
       comparedTo,
       actualCurrentSite: {
