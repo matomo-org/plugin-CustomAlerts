@@ -1,5 +1,6 @@
 ## Changelog
 
+* 5.2.1 - 2025-12-08 - Fixes default value showing up as empty entry for alert_mediums
 * 5.2.0 - 2025-11-24 - Added ability to send alerts to a Microsoft Teams channel
 * 5.1.0 - 2025-09-29 Refactored UI to support different mediums to alert and changes to alert via Slack
 * 5.0.7 - 2025-07-07 Textual changes
