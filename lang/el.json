@@ -48,6 +48,7 @@
         "MatchesRegularExpression": "ταιριάζει με κανονική έκφραση",
         "MediumDescription": "Επιλέξτε πώς θέλετε να λαμβάνετε τις ειδοποιήσεις όταν συμβαίνει αυτή η προσαρμοσμένη ειδοποίηση.",
         "MediumEmail": "Email",
+        "MediumMicrosoftTeams": "Ομάδες",
         "MediumMobile": "Κινητό",
         "MediumSlack": "Slack",
         "MediumTitle": "Αποστολή ειδοποιήσεων μέσω",
