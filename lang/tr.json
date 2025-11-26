@@ -48,6 +48,7 @@
         "MatchesRegularExpression": "şu kurallı ifadeye uyan",
         "MediumDescription": "Bu özel uyarı tetiklendiğinde uyarıların nasıl gönderileceğini seçin.",
         "MediumEmail": "E-posta",
+        "MediumMicrosoftTeams": "Takımlar",
         "MediumMobile": "Mobil",
         "MediumSlack": "Slack",
         "MediumTitle": "Uyarıların gönderileceği kanal",
