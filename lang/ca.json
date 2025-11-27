@@ -48,6 +48,7 @@
         "MatchesRegularExpression": "coincideix amb l'expressió regular",
         "MediumDescription": "Trieu com voleu rebre alertes quan s'activi aquesta alerta personalitzada.",
         "MediumEmail": "e-mail",
+        "MediumMicrosoftTeams": "Equips",
         "MediumMobile": "Mòbil",
         "MediumSlack": "Slack",
         "MediumTitle": "Enviar alertes a través de",
