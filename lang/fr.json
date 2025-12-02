@@ -22,7 +22,7 @@
         "DoesNotMatchRegularExpression": "ne correspond pas à l'expression régulière",
         "DoesNotStartWith": "ne commence pas par",
         "EditAlert": "Modifier l'alerte",
-        "EmptyReportMediums": "Au moins une méthode de livraison doit être sélectionnée.",
+        "EmptyReportMediums": "Au moins une méthode d'envoi doit être sélectionnée.",
         "EndsWith": "se termine par",
         "FinalTaskRetryWarning": "Dernière tentative de la tâche d'alertes. Impossible de traiter les alertes suivantes : %1$s",
         "IncreasesMoreThan": "augmente plus de",
