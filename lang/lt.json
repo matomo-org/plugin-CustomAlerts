@@ -3,8 +3,13 @@
         "Alert": "Signalas",
         "Alerts": "Signalai",
         "CreateNewAlert": "Sukurti naują signalą",
+        "DoesNotEndWith": "nesibaigia",
+        "EndsWith": "baigiasi",
+        "IsLessThan": "yra mažesnis už",
         "MailEnd": "Smagaus analizavimo!",
         "MediumEmail": "El. paštas",
+        "OperationDoesNotContain": "savyje neturi",
+        "OperationIsNot": "nėra",
         "SmsAlertFromName": "Naujas signalas"
     }
 }
