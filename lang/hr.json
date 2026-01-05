@@ -48,6 +48,7 @@
         "MatchesRegularExpression": "poklapa se s regularnim izrazom",
         "MediumDescription": "Odaberi kako želiš primati upozorenja kada se aktivira ovo prilagođeno upozorenje.",
         "MediumEmail": "E-Mail",
+        "MediumMicrosoftTeams": "Timovi",
         "MediumMobile": "Mobitel",
         "MediumSlack": "Slack",
         "MediumTitle": "Šalji upozorenja putem",
