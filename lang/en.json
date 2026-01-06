@@ -39,6 +39,7 @@
         "MailText": "The triggered alerts are listed in the table below. To adjust your custom alert settings, please sign in and access the Alerts page.",
         "MailTextForSiteOnDate": "The triggered alerts for %1$s on %2$s are listed in the table below. To adjust your custom alert settings, please sign in and access the Alerts page.",
         "ManageAlerts": "Manage Custom Alerts",
+        "Tooltip": "Get notified instantly when metrics vary from expected patterns. Receive alerts through Email, SMS, Slack, or Microsoft Teams by selecting your preferred channel when creating or editing an alert.",
         "MatchesAnyExpression": "matches any",
         "MatchesRegularExpression": "matches regular expression",
         "MobileMessagingPluginNotActivated": "The MobileMessaging plugin is required to send SMS alerts. You can activate it by accessing the %1$splugin settings page%2$s.",

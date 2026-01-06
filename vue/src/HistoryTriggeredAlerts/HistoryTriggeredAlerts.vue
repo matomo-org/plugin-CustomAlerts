@@ -13,6 +13,7 @@
 
     <div class="tableActionBar">
       <a :href="customAlertsIndexLink">
+
         <span class="icon-table"></span> {{ translate('CustomAlerts_ManageAlerts') }}
       </a>
     </div>

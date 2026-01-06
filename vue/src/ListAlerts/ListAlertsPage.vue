@@ -9,6 +9,7 @@
     class="alerts"
     :content-title="title"
   >
+    <p>{{ translate('CustomAlerts_Tooltip')}}</p>
     <ListAlerts :alerts="alerts"/>
 
     <div class="ui-confirm" id="confirm">
@@ -30,6 +31,7 @@ export default defineComponent({
       type: String,
       required: true,
     },
+
     alerts: {
       type: Array,
       default() { return []; },
