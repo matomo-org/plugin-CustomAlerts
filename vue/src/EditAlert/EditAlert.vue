@@ -9,6 +9,7 @@
     class="alerts"
     :content-title="headline"
   >
+    <p>{{ translate('CustomAlerts_CreateTooltip')}}</p>
     <div v-form>
       <div>
         <Field
@@ -61,7 +62,7 @@
             name="report_mediums"
             id="report_mediums"
             :title="translate('CustomAlerts_MediumTitle')"
-            :inline-help="translate('CustomAlerts_MediumDescription')"
+            :inline-help="translate('CustomAlerts_MediumTooltip')"
             :options="alertReportMediumOptions"
             :model-value="actualAlert.report_mediums"
             @update:model-value="actualAlert.report_mediums = $event;"
