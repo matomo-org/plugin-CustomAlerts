@@ -31,7 +31,6 @@ export default defineComponent({
       type: String,
       required: true,
     },
-
     alerts: {
       type: Array,
       default() { return []; },
