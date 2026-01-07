@@ -271,7 +271,7 @@ class CustomAlerts extends \Piwik\Plugin
         $translations[] = 'CustomAlerts_MediumDescription';
         $translations[] = 'CustomAlerts_ManageTooltip';
         $translations[] = 'CustomAlerts_CreateTooltip';
-        $translations[] = 'CustomAlerts_MediumTooltip';
+        $translations[] = 'General_LearnMore';
     }
 
     public static function getReportMediumOptions(): array

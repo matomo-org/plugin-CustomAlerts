@@ -253,6 +253,7 @@ import {
   SiteRef,
   useExternalPluginComponent,
   ContentBlock,
+  externalLink,
 } from 'CoreHome';
 import { Form, Field, SaveButton } from 'CorePluginsAdmin';
 import { Alert as AlertType } from '../types';
@@ -624,12 +625,12 @@ export default defineComponent({
       );
     },
     getDeliveryMediumInlineTooltip(): string {
-      const link = 'https://matomo.org/faq/general/create-and-manage-custom-alerts/';
-      return translate(
-        'CustomAlerts_MediumTooltip',
-        `<a href="${link}" rel="noreferrer noopener" target="_blank">`,
+      const link = translate(
+        'General_LearnMore',
+        externalLink('https://matomo.org/faq/general/create-and-manage-custom-alerts/'),
         '</a>',
       );
+      return `${translate('CustomAlerts_CreateTooltip')} ${link}`;
     },
     metricOptions(): Option[] {
       return Object.entries(this.actualReportMetadata?.metrics || {}).map(([key, value]) => ({
