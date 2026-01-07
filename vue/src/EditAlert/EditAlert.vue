@@ -62,7 +62,7 @@
             name="report_mediums"
             id="report_mediums"
             :title="translate('CustomAlerts_MediumTitle')"
-            :inline-help="getDeliveryMediumInlineTooltip"
+            :inline-help="$sanitize(getDeliveryMediumInlineTooltip)"
             :options="alertReportMediumOptions"
             :model-value="actualAlert.report_mediums"
             @update:model-value="actualAlert.report_mediums = $event;"
