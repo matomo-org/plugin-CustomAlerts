@@ -62,7 +62,7 @@
             name="report_mediums"
             id="report_mediums"
             :title="translate('CustomAlerts_MediumTitle')"
-            :inline-help="translate('CustomAlerts_MediumTooltip')"
+            :inline-help="getDeliveryMediumInlineTooltip"
             :options="alertReportMediumOptions"
             :model-value="actualAlert.report_mediums"
             @update:model-value="actualAlert.report_mediums = $event;"
@@ -620,6 +620,14 @@ export default defineComponent({
         '<strong>',
         '</strong>',
         `<a target="_blank" href="${link2}" rel="noreferrer noopener">`,
+        '</a>',
+      );
+    },
+    getDeliveryMediumInlineTooltip(): string {
+      const link = 'https://matomo.org/faq/general/create-and-manage-custom-alerts/';
+      return translate(
+        'CustomAlerts_MediumTooltip',
+        `<a href="${link}" rel="noreferrer noopener" target="_blank">`,
         '</a>',
       );
     },
