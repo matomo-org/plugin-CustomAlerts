@@ -625,12 +625,7 @@ export default defineComponent({
       );
     },
     getDeliveryMediumInlineTooltip(): string {
-      const link = translate(
-        'General_LearnMore',
-        externalLink('https://matomo.org/faq/general/create-and-manage-custom-alerts/'),
-        '</a>',
-      );
-      return `${translate('CustomAlerts_CreateTooltip')} ${link}`;
+      return `${translate('CustomAlerts_CreateTooltip')} ${externalLink('https://matomo.org/faq/general/create-and-manage-custom-alerts/')}  ${translate('CoreAdminHome_LearnMore')}.`;
     },
     metricOptions(): Option[] {
       return Object.entries(this.actualReportMetadata?.metrics || {}).map(([key, value]) => ({
