@@ -33,6 +33,7 @@
         "InvalidReportCondition": "Kondisi laporan bukanlah nilai yang valid",
         "IsGreaterThan": "lebih besar dari",
         "IsLessThan": "kurang dari",
+        "LearnMore": "Pelajari",
         "MailAlertContent": "%1$s telah dipicu sebagai metrik %2$s dalam laporan %3$s %4$s.",
         "MailAlertSubject": "Peringatan baru untuk situs web %1$s [%2$s]",
         "MailEnd": "Selamat menganalisis!",
