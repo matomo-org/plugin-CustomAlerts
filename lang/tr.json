@@ -38,6 +38,7 @@
         "InvalidReportMediums": "Rapor ortam değeri geçersiz. İzin verilen değerler %1$s.",
         "IsGreaterThan": "şundan büyük olan",
         "IsLessThan": "şundan küçük olan",
+        "LearnMore": "Ayrıntılı bilgi alın",
         "MailAlertContent": "%3$s %4$s raporundaki %2$s ölçütü için %1$s tetiklendi.",
         "MailAlertSubject": "%1$s [%2$s] sitesi için yeni uyarı",
         "MailEnd": "İstatistiklerin tadını çıkarın!",
