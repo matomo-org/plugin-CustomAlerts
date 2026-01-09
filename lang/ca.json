@@ -38,6 +38,7 @@
         "InvalidReportMediums": "Valor de suport d'informe no vàlid. Els valors permesos són %1$s.",
         "IsGreaterThan": "és més gran que",
         "IsLessThan": "és menys que",
+        "LearnMore": "Aprèn més",
         "MailAlertContent": "%1$s s'ha activat com a mètrica %2$s a l'informe %3$s %4$s.",
         "MailAlertSubject": "Nova alerta per al lloc web %1$s [%2$s]",
         "MailEnd": "Feliç anàlisi!",
