@@ -33,6 +33,7 @@
         "InvalidReportCondition": "報表條件的值無效",
         "IsGreaterThan": "多於",
         "IsLessThan": "少於",
+        "LearnMore": "学到更多",
         "MailAlertContent": "%1$s 已觸發，因為報表 %3$s 中的數據 %2$s %4$s。",
         "MailAlertSubject": "%1$s 的新警報 [%2$s]",
         "MailEnd": "分析快樂！",
