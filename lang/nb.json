@@ -33,6 +33,7 @@
         "InvalidReportCondition": "Rapportbetingelsen er ikke en gyldig verdi",
         "IsGreaterThan": "er større enn",
         "IsLessThan": "er mindre enn",
+        "LearnMore": "Lær mer",
         "MailAlertContent": "%1$s har blitt utløst siden måltallet %2$s i rapporten %3$s %4$s.",
         "MailAlertSubject": "Nytt varsel for nettsted %1$s [%2$s]",
         "MailEnd": "God analyse!",
