@@ -34,6 +34,7 @@
         "InvalidReportCondition": "Voorwaarde rapport is geen geldige waarde",
         "IsGreaterThan": "is meer dan",
         "IsLessThan": "is minder dan",
+        "LearnMore": "Meer weten",
         "MailAlertContent": "%1$s is geactiveerd als de meetwaarde %2$s in rapport %3$s %4$s.",
         "MailAlertSubject": "Nieuw alarm voor website %1$s [%2$s]",
         "MailEnd": "Veel plezier met analyseren!",
