@@ -38,6 +38,7 @@
         "InvalidReportMediums": "Ogiltigt värde för rapportmedium. Tillåtna värden är %1$s.",
         "IsGreaterThan": "är större än",
         "IsLessThan": "är mindre än",
+        "LearnMore": "Läs mer",
         "MailAlertContent": "%1$s har triggats som mätvärde %2$s i rapport %3$s %4$s.",
         "MailAlertSubject": "Ny varning för webbplats %1$s [%2$s]",
         "MailEnd": "Glad analysering!",
