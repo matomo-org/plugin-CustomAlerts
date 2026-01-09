@@ -33,6 +33,7 @@
         "InvalidReportCondition": "レポート条件が有効な値ではありません",
         "IsGreaterThan": "はより大きい",
         "IsLessThan": "はより小さい",
+        "LearnMore": "もっと詳しく知る",
         "MailAlertContent": "レポート %3$s %4$s のメトリック %2$s として %1$s がトリガされました。",
         "MailAlertSubject": "ウェブサイト %1$s [%2$s] に対する新しいアラート",
         "MailEnd": "ハッピーな解析を！",
