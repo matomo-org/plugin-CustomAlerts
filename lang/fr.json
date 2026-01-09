@@ -38,6 +38,7 @@
         "InvalidReportMediums": "Valeur invalide pour le moyen de rapport. Les valeurs autorisées sont %1$s.",
         "IsGreaterThan": "est supérieur à",
         "IsLessThan": "est inférieur à",
+        "LearnMore": "En savoir plus",
         "MailAlertContent": "%1$s a été déclenchée car la métrique %2$s du rapport %3$s %4$s.",
         "MailAlertSubject": "Nouvelle alerte pour le site web %1$s [%2$s]",
         "MailEnd": "Bonne analyse !",
