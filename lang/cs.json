@@ -33,6 +33,7 @@
         "InvalidReportCondition": "Podmínka hlášení není platná hodnota",
         "IsGreaterThan": "je větší než",
         "IsLessThan": "je menší než",
+        "LearnMore": "Další informace",
         "MailAlertContent": "%1$s bylo vyvoláno, protože měření %2$s ve hlášení %3$s %4$s.",
         "MailAlertSubject": "Nové upozornění pro stránky %1$s [%2$s]",
         "MailEnd": "Šťastné analyzování!",
