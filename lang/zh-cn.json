@@ -33,6 +33,7 @@
         "InvalidReportCondition": "报告条件不是有效值",
         "IsGreaterThan": "大于",
         "IsLessThan": "小于",
+        "LearnMore": "了解更多",
         "MailAlertContent": "在报告%3$s %4$s中，%1$s被作为度量%2$s触发。",
         "MailAlertSubject": "网站%1$s有新的警报 [%2$s]",
         "MailEnd": "祝分析得开心！",
