@@ -33,6 +33,7 @@
         "InvalidReportCondition": "રિપોર્ટ શરત માન્ય મૂલ્ય નથી",
         "IsGreaterThan": "કરતાં વધારે છે",
         "IsLessThan": "કરતા ઓછું છે",
+        "LearnMore": "વધુ જાણો",
         "MailAlertContent": "રિપોર્ટ %3$s %4$s માં મેટ્રિક %2$s તરીકે %1$s ને ટ્રિગર કરવામાં આવ્યું છે.",
         "MailAlertSubject": "વેબસાઇટ %1$s [%2$s] માટે નવી ચેતવણી",
         "MailEnd": "હેપી વિશ્લેષણ!",
