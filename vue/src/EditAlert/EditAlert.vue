@@ -9,6 +9,7 @@
     class="alerts"
     :content-title="headline"
   >
+    <p>{{ translate('CustomAlerts_CreateTooltip')}}</p>
     <div v-form>
       <div>
         <Field
@@ -61,7 +62,7 @@
             name="report_mediums"
             id="report_mediums"
             :title="translate('CustomAlerts_MediumTitle')"
-            :inline-help="translate('CustomAlerts_MediumDescription')"
+            :inline-help="$sanitize(getDeliveryMediumInlineTooltip)"
             :options="alertReportMediumOptions"
             :model-value="actualAlert.report_mediums"
             @update:model-value="actualAlert.report_mediums = $event;"
@@ -252,6 +253,7 @@ import {
   SiteRef,
   useExternalPluginComponent,
   ContentBlock,
+  externalLink,
 } from 'CoreHome';
 import { Form, Field, SaveButton } from 'CorePluginsAdmin';
 import { Alert as AlertType } from '../types';
@@ -621,6 +623,9 @@ export default defineComponent({
         `<a target="_blank" href="${link2}" rel="noreferrer noopener">`,
         '</a>',
       );
+    },
+    getDeliveryMediumInlineTooltip(): string {
+      return `${translate('CustomAlerts_CreateTooltip')} ${externalLink('https://matomo.org/faq/general/create-and-manage-custom-alerts/')}  ${translate('CustomAlerts_LearnMore')}.`;
     },
     metricOptions(): Option[] {
       return Object.entries(this.actualReportMetadata?.metrics || {}).map(([key, value]) => ({

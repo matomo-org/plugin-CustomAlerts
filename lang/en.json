@@ -83,6 +83,9 @@
         "EmptyReportMediums": "At least one delivery method must be selected.",
         "InvalidReportMediums": "Invalid report mediums value. Allowed values are %1$s.",
         "InvalidEmailReportParameter": "Please select \"Send to me\" or specify valid email addresses to email the report.",
-        "InvalidPhoneNumberReportParameter": "Phone numbers cannot be empty. Please activate at least one phone number by accessing the Mobile Messaging settings page."
+        "InvalidPhoneNumberReportParameter": "Phone numbers cannot be empty. Please activate at least one phone number by accessing the Mobile Messaging settings page.",
+        "ManageTooltip": "Get notified instantly when metrics vary from expected patterns. Receive alerts through Email, SMS, Slack, or Microsoft Teams by selecting your preferred channel when creating or editing an alert.",
+        "CreateTooltip": "You can send alerts via Email, SMS, Slack, or Microsoft Teams. Choose your preferred delivery method when creating or editing an alert.",
+        "LearnMore": "Learn more"
     }
 }

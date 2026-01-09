@@ -9,6 +9,7 @@
     class="alerts"
     :content-title="title"
   >
+    <p>{{ translate('CustomAlerts_ManageTooltip') }}</p>
     <ListAlerts :alerts="alerts"/>
 
     <div class="ui-confirm" id="confirm">
