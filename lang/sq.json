@@ -38,6 +38,7 @@
         "InvalidReportMediums": "Vlera të pavlefshme mediash raportimi. Vlerat e lejuara janë %1$s.",
         "IsGreaterThan": "është më e madhe se",
         "IsLessThan": "është më e vogël se",
+        "LearnMore": "Mësoni më tepër",
         "MailAlertContent": "%1$s është shkaktuar si vlera %2$s në raportin %3$s %4$s.",
         "MailAlertSubject": "Sinjalizim i ri për sajtin %1$s [%2$s]",
         "MailEnd": "Analizim të mbarë!",
