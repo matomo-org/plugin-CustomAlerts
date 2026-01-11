@@ -33,6 +33,7 @@
         "InvalidReportCondition": "Txostenaren baldintza ez da baliozko balioa",
         "IsGreaterThan": "hau baino handiagoa da",
         "IsLessThan": "hau baino txikiagoa da",
+        "LearnMore": "Ikasi gehiago",
         "MailAlertContent": "%1$s abiarazi da %3$s %4$s txosteneko %2$s metrika bezala.",
         "MailAlertSubject": "%1$s webgunearentzako alerta berria [%2$s]",
         "MailEnd": "Ondo pasa analizatzen!",

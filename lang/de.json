@@ -35,6 +35,7 @@
         "InvalidReportCondition": "Bericht-Bedingung ist kein gültiger Wert",
         "IsGreaterThan": "ist größer als",
         "IsLessThan": "ist kleiner als",
+        "LearnMore": "Mehr dazu",
         "MailAlertContent": "%1$s wurde registriert als %2$s im Report %3$s %4$s.",
         "MailAlertSubject": "Neue Benachrichtigung für Webseite %1$s [%2$s]",
         "MailEnd": "Viel Spaß beim Analysieren!",

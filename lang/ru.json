@@ -33,6 +33,7 @@
         "InvalidReportCondition": "Статус отчета не является действительным значением",
         "IsGreaterThan": "больше чем",
         "IsLessThan": "меньше чем",
+        "LearnMore": "Узнать больше",
         "MailAlertContent": "%1$s сработал, так как метрика %2$s в отчете %3$s %4$s.",
         "MailAlertSubject": "Новое оповещение для веб-сайта %1$s [%2$s]",
         "MailEnd": "Удачного анализа!",

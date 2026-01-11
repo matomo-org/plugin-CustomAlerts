@@ -33,6 +33,7 @@
         "InvalidReportCondition": "Zgłoszony warunek nie jest prawidłową wartością",
         "IsGreaterThan": "jest większe niż",
         "IsLessThan": "jest mniejsze niż",
+        "LearnMore": "Dowiedz się więcej",
         "MailAlertContent": "%1$s został wywołany przez wskaźnik %2$s w raporcie %3$s %4$s.",
         "MailAlertSubject": "Nowy alarm dla serwisu %1$s [%2$s]",
         "MailEnd": "Powodzenia!",

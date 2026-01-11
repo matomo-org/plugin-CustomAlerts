@@ -33,6 +33,7 @@
         "InvalidReportCondition": "Raportin tila ei ole pätevä arvo",
         "IsGreaterThan": "on suurempi kuin",
         "IsLessThan": "on vähemmän kuin",
+        "LearnMore": "Lisätietoa",
         "MailAlertContent": "%1$s on nyt valittu mitta-arvo %2$s raportissa %3$s %4$s.",
         "MailAlertSubject": "Uusi hälytys sivustolle %1$s [%2$s]",
         "MailEnd": "Mukavaa analysointia!",

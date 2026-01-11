@@ -33,6 +33,7 @@
         "InvalidReportCondition": "Условието на отчета не е валидна стойност",
         "IsGreaterThan": "е по-голямо от",
         "IsLessThan": "е по-малко от",
+        "LearnMore": "Научете повече",
         "MailAlertContent": "%1$s е била задействана като стойност %2$s в доклад %3$s %4$s.",
         "MailAlertSubject": "Ново известие за сайт %1$s [%2$s]",
         "MailEnd": "Приятно анализиране!",

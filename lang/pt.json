@@ -33,6 +33,7 @@
         "InvalidReportCondition": "A condição do relatório não é um valor válido",
         "IsGreaterThan": "é maior que",
         "IsLessThan": "é menor que",
+        "LearnMore": "Saber mais",
         "MailAlertContent": "%1$s foi despoletado como a métrica %2$s no relatório %3$s %4$s.",
         "MailAlertSubject": "Novo alerta para o site %1$s [%2$s]",
         "MailEnd": "Boas análises!",
