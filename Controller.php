@@ -282,7 +282,7 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
         $isSlackOAuthTokenAdded = false;
         if ($supportsSlack && class_exists(\Piwik\Plugins\Slack\SystemSettings::class)) {
             $slackSettings = StaticContainer::get(\Piwik\Plugins\Slack\SystemSettings::class);
-            $isSlackOAuthTokenAdded = $slackSettings && !empty($slackSettings->slackOauthToken->getValue());
+            $isSlackOAuthTokenAdded = !empty($slackSettings->slackOauthToken->getValue());
         }
         $view->isSlackOAuthTokenAdded = $isSlackOAuthTokenAdded;
         $view->periodOptions    = array(
