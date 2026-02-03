@@ -1,5 +1,5 @@
 parameters:
-    level: 5
+    level: 1
     phpVersion: 70200
     tmpDir: /tmp/phpstan/CustomAlerts/main
     paths:
