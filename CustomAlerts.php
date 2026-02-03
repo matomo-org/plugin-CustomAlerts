@@ -313,8 +313,5 @@ class CustomAlerts extends \Piwik\Plugin
                 $model->deleteAlertSitesForSites($alertId, $idSites);
             }
         }
-
-
-
     }
 }
