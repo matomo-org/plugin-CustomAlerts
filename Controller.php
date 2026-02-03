@@ -118,7 +118,7 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
 
         $idSites = $this->getSiteIdsHavingAccess();
         $alerts  = API::getInstance()->getTriggeredAlerts($idSites);
-        array_slice($alerts, 0, 100);
+        $alerts = array_slice($alerts, 0, 100);
         $alerts = array_reverse($alerts);
 
         $view->alertsFormatted = $this->formatAlerts($alerts, 'html_extended');
@@ -280,9 +280,9 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
         $view->supportsSMS      = $this->supportsPlugin('MobileMessaging');
         $supportsSlack          = $this->supportsPlugin('Slack');
         $isSlackOAuthTokenAdded = false;
-        if ($supportsSlack) {
+        if ($supportsSlack && class_exists(\Piwik\Plugins\Slack\SystemSettings::class)) {
             $slackSettings = StaticContainer::get(\Piwik\Plugins\Slack\SystemSettings::class);
-            $isSlackOAuthTokenAdded = !empty($slackSettings->slackOauthToken->getValue());
+            $isSlackOAuthTokenAdded = $slackSettings && !empty($slackSettings->slackOauthToken->getValue());
         }
         $view->isSlackOAuthTokenAdded = $isSlackOAuthTokenAdded;
         $view->periodOptions    = array(

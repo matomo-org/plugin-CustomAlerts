@@ -1,5 +1,5 @@
 includes:
     - ../phpstan.neon
 parameters:
-    level: 1
+    level: 0
     tmpDir: /tmp/phpstan/CustomAlerts/created

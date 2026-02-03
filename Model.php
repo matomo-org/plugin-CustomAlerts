@@ -112,7 +112,7 @@ class Model
 
     /**
      * @param $idSites
-     * @return array
+     * @return string
      */
     protected function getInnerSiteQuery($idSites)
     {
@@ -141,7 +141,7 @@ class Model
     private function getDefinedSiteIds($idAlert)
     {
         $sql   = "SELECT idsite FROM " . Common::prefixTable('alert_site') . " WHERE idalert = ?";
-        $sites = Db::fetchAll($sql, $idAlert, \PDO::FETCH_COLUMN);
+        $sites = Db::fetchAll($sql, $idAlert);
 
         $idSites = array();
         foreach ($sites as $site) {
