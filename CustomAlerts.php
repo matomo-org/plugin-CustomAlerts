@@ -41,7 +41,7 @@ class CustomAlerts extends \Piwik\Plugin
             'Request.dispatch'                       => 'checkControllerPermission',
             'Translate.getClientSideTranslationKeys' => 'getClientSideTranslationKeys',
             'UsersManager.deleteUser'                => 'deleteAlertsForLogin',
-            'UsersManager.removeSiteAccess'          => 'removeSiteAccessForUser',
+            'UsersManager.removeSiteAccess'          => 'removeAlertsForUser',
             'SitesManager.deleteSite.end'            => 'deleteAlertsForSite',
             'Db.getTablesInstalled'                  => 'getTablesInstalled',
             'ScheduledTasks.execute'                 => 'startingScheduledTask',
@@ -298,7 +298,7 @@ class CustomAlerts extends \Piwik\Plugin
     }
 
 
-    public function removeSiteAccessForUser($userLogin, $idSites)
+    public function removeAlertsForUser($userLogin, $idSites)
     {
         $model = $this->getModel();
         $alerts = $model->getAlerts($idSites, $userLogin);
