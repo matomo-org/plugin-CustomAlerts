@@ -41,6 +41,7 @@ class CustomAlerts extends \Piwik\Plugin
             'Request.dispatch'                       => 'checkControllerPermission',
             'Translate.getClientSideTranslationKeys' => 'getClientSideTranslationKeys',
             'UsersManager.deleteUser'                => 'deleteAlertsForLogin',
+            'UsersManager.removeSiteAccess'          => 'removeSiteAccessForUser',
             'SitesManager.deleteSite.end'            => 'deleteAlertsForSite',
             'Db.getTablesInstalled'                  => 'getTablesInstalled',
             'ScheduledTasks.execute'                 => 'startingScheduledTask',
@@ -294,5 +295,26 @@ class CustomAlerts extends \Piwik\Plugin
             }
             throw new \Exception(Piwik::translate('CustomAlerts_InvalidPhoneNumberReportParameter'));
         }
+    }
+
+
+    public function removeSiteAccessForUser($userLogin, $idSites)
+    {
+        $model = $this->getModel();
+        $alerts = $model->getAlerts($idSites, $userLogin);
+
+        foreach ($alerts as $alert) {
+            $alertId = $alert['idalert'];
+            $alertSites = $alert['id_sites'];
+            if (count($alertSites) === 1 || empty(array_diff($alertSites, $idSites))) {
+                $model->deleteAlert($alertId);
+            } else {
+                $model->deleteTriggeredAlertsForUser($alertId, $userLogin);
+                $model->deleteAlertSitesForSites($alertId, $idSites);
+            }
+        }
+
+
+
     }
 }

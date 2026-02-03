@@ -453,4 +453,21 @@ class Model
     {
         $this->getDb()->query("DELETE FROM " . Common::prefixTable("alert_triggered") . " WHERE idsite = ?", $idSite);
     }
+
+    public function deleteTriggeredAlertsForUser($idAlert, $login)
+    {
+        $db = $this->getDb();
+        $db->query("DELETE FROM " . Common::prefixTable("alert_triggered") . " WHERE idalert = ? AND login = ?", array($idAlert, $login));
+    }
+
+    public function deleteAlertSitesForSites($idAlert, $idSites)
+    {
+        $db = $this->getDb();
+        $placeholders = Common::getSqlStringFieldsArray($idSites);
+        $bind = array_merge(array($idAlert), $idSites);
+        $db->query(
+            "DELETE FROM " . Common::prefixTable("alert_site") . " WHERE idalert = ? AND idsite in (" . $placeholders . " )",
+            $bind
+        );
+    }
 }
