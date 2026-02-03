@@ -300,6 +300,10 @@ class CustomAlerts extends \Piwik\Plugin
 
     public function removeAlertsForUser($userLogin, $idSites)
     {
+        if (empty($idSites) || empty($userLogin)) {
+            return;
+        }
+
         $model = $this->getModel();
         $alerts = $model->getAlerts($idSites, $userLogin);
 
