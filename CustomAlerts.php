@@ -41,6 +41,7 @@ class CustomAlerts extends \Piwik\Plugin
             'Request.dispatch'                       => 'checkControllerPermission',
             'Translate.getClientSideTranslationKeys' => 'getClientSideTranslationKeys',
             'UsersManager.deleteUser'                => 'deleteAlertsForLogin',
+            'UsersManager.removeSiteAccess'          => 'removeAlertsForUser',
             'SitesManager.deleteSite.end'            => 'deleteAlertsForSite',
             'Db.getTablesInstalled'                  => 'getTablesInstalled',
             'ScheduledTasks.execute'                 => 'startingScheduledTask',
@@ -293,6 +294,38 @@ class CustomAlerts extends \Piwik\Plugin
                 return;
             }
             throw new \Exception(Piwik::translate('CustomAlerts_InvalidPhoneNumberReportParameter'));
+        }
+    }
+
+
+    /**
+     * Remove alerts associated with user
+     *
+     * If an alert is related to multiple sites that aren't in idSites, we
+     * won't delete the alert, just remove the alert_site link and triggers
+     *
+     * @param string $userLogin Username of user who had access removed
+     * @param array<string> $idSites List of website IDs
+     * @return void
+     */
+    public function removeAlertsForUser($userLogin, $idSites): void
+    {
+        if (empty($idSites) || empty($userLogin)) {
+            return;
+        }
+
+        $model = $this->getModel();
+        $alerts = $model->getAlerts($idSites, $userLogin);
+
+        foreach ($alerts as $alert) {
+            $alertId = $alert['idalert'];
+            $alertSites = $alert['id_sites'];
+            if (empty(array_diff($alertSites, $idSites))) {
+                $model->deleteAlert($alertId);
+            } else {
+                $model->deleteTriggeredAlertsForUserAndSites($alertId, $idSites, $userLogin);
+                $model->deleteAlertSitesForSites($alertId, $idSites);
+            }
         }
     }
 }

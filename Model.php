@@ -112,7 +112,7 @@ class Model
 
     /**
      * @param $idSites
-     * @return array
+     * @return string
      */
     protected function getInnerSiteQuery($idSites)
     {
@@ -141,7 +141,7 @@ class Model
     private function getDefinedSiteIds($idAlert)
     {
         $sql   = "SELECT idsite FROM " . Common::prefixTable('alert_site') . " WHERE idalert = ?";
-        $sites = Db::fetchAll($sql, $idAlert, \PDO::FETCH_COLUMN);
+        $sites = Db::fetchAll($sql, $idAlert);
 
         $idSites = array();
         foreach ($sites as $site) {
@@ -452,5 +452,27 @@ class Model
     public function deleteTriggeredAlertsForSite($idSite)
     {
         $this->getDb()->query("DELETE FROM " . Common::prefixTable("alert_triggered") . " WHERE idsite = ?", $idSite);
+    }
+
+    public function deleteTriggeredAlertsForUserAndSites($idAlert, $idSites, $login)
+    {
+        $db = $this->getDb();
+        $placeholders = Common::getSqlStringFieldsArray($idSites);
+        $bind = array_merge(array($idAlert, $login), $idSites);
+        $db->query(
+            "DELETE FROM " . Common::prefixTable("alert_triggered") . " WHERE idalert = ? AND login = ? AND idsite in (" . $placeholders . " )",
+            $bind
+        );
+    }
+
+    public function deleteAlertSitesForSites($idAlert, $idSites)
+    {
+        $db = $this->getDb();
+        $placeholders = Common::getSqlStringFieldsArray($idSites);
+        $bind = array_merge(array($idAlert), $idSites);
+        $db->query(
+            "DELETE FROM " . Common::prefixTable("alert_site") . " WHERE idalert = ? AND idsite in (" . $placeholders . " )",
+            $bind
+        );
     }
 }
