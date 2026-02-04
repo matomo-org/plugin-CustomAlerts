@@ -444,7 +444,7 @@ class ModelTest extends BaseTest
         $alerts = $this->model->getTriggeredAlerts(array($this->idSite, $this->idSite2), 'userA');
         $this->assertCount(3, $alerts);
 
-        $this->model->deleteTriggeredAlertsForUser($alertIdA, 'userA');
+        $this->model->deleteTriggeredAlertsForUserAndSites($alertIdA, array($this->idSite, $this->idSite2), 'userA');
 
         $alerts = $this->model->getTriggeredAlerts(array($this->idSite, $this->idSite2), 'userA');
         $this->assertCount(1, $alerts);
