@@ -302,10 +302,10 @@ class CustomAlerts extends \Piwik\Plugin
      * Remove alerts associated with user
      *
      * If an alert is related to multiple sites that aren't in idSites, we
-     * won't delete the site, just remove the alert_site link and triggers
+     * won't delete the alert, just remove the alert_site link and triggers
      *
-     * @param string $userLogin Username of
-     * @param array<string> $idSites
+     * @param string $userLogin Username of user who had access removed
+     * @param array<string> $idSites List of website IDs
      * @return void
      */
     public function removeAlertsForUser($userLogin, $idSites): void
