@@ -298,7 +298,17 @@ class CustomAlerts extends \Piwik\Plugin
     }
 
 
-    public function removeAlertsForUser($userLogin, $idSites)
+    /**
+     * Remove alerts associated with user
+     *
+     * If an alert is related to multiple sites that aren't in idSites, we
+     * won't delete the site, just remove the alert_site link and triggers
+     *
+     * @param string $userLogin Username of
+     * @param array<string> $idSites
+     * @return void
+     */
+    public function removeAlertsForUser($userLogin, $idSites): void
     {
         if (empty($idSites) || empty($userLogin)) {
             return;
@@ -313,7 +323,7 @@ class CustomAlerts extends \Piwik\Plugin
             if (count($alertSites) === 1 || empty(array_diff($alertSites, $idSites))) {
                 $model->deleteAlert($alertId);
             } else {
-                $model->deleteTriggeredAlertsForUser($alertId, $userLogin);
+                $model->deleteTriggeredAlertsForUserAndSites($alertId, $idSites, $userLogin);
                 $model->deleteAlertSitesForSites($alertId, $idSites);
             }
         }
