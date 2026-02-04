@@ -320,7 +320,7 @@ class CustomAlerts extends \Piwik\Plugin
         foreach ($alerts as $alert) {
             $alertId = $alert['idalert'];
             $alertSites = $alert['id_sites'];
-            if (count($alertSites) === 1 || empty(array_diff($alertSites, $idSites))) {
+            if (empty(array_diff($alertSites, $idSites))) {
                 $model->deleteAlert($alertId);
             } else {
                 $model->deleteTriggeredAlertsForUserAndSites($alertId, $idSites, $userLogin);
