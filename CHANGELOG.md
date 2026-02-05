@@ -1,5 +1,6 @@
 ## Changelog
 
+* 5.2.3 - 2026-02-05 - Alerts now get deleted when a user's site access is revoked
 * 5.2.2 - 2026-01-19 - Added tooltips in add/edit alerts, manage alerts & in the inline text for the delivery method 
 * 5.2.1 - 2025-12-08 - Fixes default value showing up as empty entry for alert_mediums
 * 5.2.0 - 2025-11-24 - Added ability to send alerts to a Microsoft Teams channel
