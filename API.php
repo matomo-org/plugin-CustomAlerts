@@ -271,7 +271,7 @@ class API extends \Piwik\Plugin\API
     /**
      * Get triggered alerts.
      *
-     * @param int[] idSites
+     * @param int[] $idSites
      *
      * @return array
      */

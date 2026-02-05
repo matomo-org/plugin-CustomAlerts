@@ -431,6 +431,47 @@ class ModelTest extends BaseTest
         $this->assertEquals(3, $alerts[1]['idtriggered']);
     }
 
+    public function test_deleteTriggeredAlertsForUser_shouldRemoveOnlyMatchingAlertAndLogin()
+    {
+        $alertIdA = $this->createAlert('UserAlertA', 'day', array($this->idSite, $this->idSite2), 'nb_visits', 'MultiSites_getOne', 'userA');
+        $alertIdB = $this->createAlert('UserAlertB', 'day', array($this->idSite), 'nb_visits', 'MultiSites_getOne', 'userA');
+
+        $now = Date::now()->getDatetime();
+        $this->model->triggerAlert($alertIdA, $this->idSite, 11, 5, $now);
+        $this->model->triggerAlert($alertIdA, $this->idSite2, 12, 6, $now);
+        $this->model->triggerAlert($alertIdB, $this->idSite, 13, 7, $now);
+
+        $alerts = $this->model->getTriggeredAlerts(array($this->idSite, $this->idSite2), 'userA');
+        $this->assertCount(3, $alerts);
+
+        $this->model->deleteTriggeredAlertsForUserAndSites($alertIdA, array($this->idSite, $this->idSite2), 'userA');
+
+        $alerts = $this->model->getTriggeredAlerts(array($this->idSite, $this->idSite2), 'userA');
+        $this->assertCount(1, $alerts);
+        $this->assertEquals($alertIdB, $alerts[0]['idalert']);
+    }
+
+    public function test_deleteAlertSitesForSites_shouldRemoveOnlySpecifiedSites()
+    {
+        $alertId = $this->createAlert('SiteAlert', 'week', array($this->idSite, $this->idSite2));
+
+        $this->model->deleteAlertSitesForSites($alertId, array($this->idSite2));
+
+        $alert = $this->model->getAlert($alertId);
+        $expectedSites = array($this->idSite);
+        $actualSites = $alert['id_sites'];
+        sort($expectedSites);
+        sort($actualSites);
+        $this->assertEquals($expectedSites, $actualSites);
+
+        $otherAlert = $this->model->getAlert(2);
+        $expectedOtherSites = array($this->idSite, $this->idSite2);
+        $actualOtherSites = $otherAlert['id_sites'];
+        sort($expectedOtherSites);
+        sort($actualOtherSites);
+        $this->assertEquals($expectedOtherSites, $actualOtherSites);
+    }
+
     public function testGetTriggeredAlertsFromPastNHours()
     {
         $now = Date::now();

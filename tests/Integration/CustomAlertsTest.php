@@ -200,6 +200,26 @@ class CustomAlertsTest extends BaseTest
         $this->assertEquals('Initial6', $alerts[2]['name']);
     }
 
+    public function test_removeSiteAccessEventRemovesAlertsForSitesAndLogin()
+    {
+        $this->createAlert('DeleteMe', array(), array(1), 'userLogin');
+
+        $this->assertCount(1, $this->model->getAlerts(array(1), 'userLogin'));
+        Piwik::postEvent('UsersManager.removeSiteAccess', array('userLogin', array(1)));
+        $this->assertCount(0, $this->model->getAlerts(array(1), 'userLogin'));
+    }
+
+    public function test_removeSiteAccessEventRemovesSiteAndTriggersButKeepsAlert()
+    {
+        $alert = $this->createAlert('KeepMe', array(), array(1, 2), 'userLogin');
+        $this->model->triggerAlert($alert['idalert'], 1, 99, 48, Date::now()->getDatetime());
+
+        Piwik::postEvent('UsersManager.removeSiteAccess', array('userLogin', array(1)));
+
+        $this->assertNotNull($this->model->getAlert($alert['idalert']));
+        $this->assertCount(0, $this->model->getTriggeredAlerts(array(1), 'userLogin'));
+    }
+
     public function testStartingScheduledTask()
     {
         $this->checkOptionStringValue(true);
