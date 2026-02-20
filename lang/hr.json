@@ -38,6 +38,7 @@
         "InvalidReportMediums": "Nevaljana vrijednost za medije izvještaja. Dozvoljene vrijednosti su %1$s.",
         "IsGreaterThan": "je veće od",
         "IsLessThan": "je manje od",
+        "LearnMore": "Saznaj više",
         "MailAlertContent": "%1$s je aktiviran kao mjerni podatak %2$s u izveštaju %3$s %4$s.",
         "MailAlertSubject": "Novo upozorenje za web-stranicu %1$s [%2$s]",
         "MailEnd": "Sretno s analiziranjem podataka!",
