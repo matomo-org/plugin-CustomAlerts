@@ -120,6 +120,7 @@ class API extends \Piwik\Plugin\API
      * @param string|array $idSites Website ID(s) to query.
      *                              Accepts comma-separated IDs, "all", numeric IDs as strings, or ["all"].
      * @param 'day'|'week'|'month' $period Alert period.
+     *                                     Allowed values: day, week, month.
      * @param bool $emailMe Whether to send email notifications to the current user.
      * @param list<string> $additionalEmails Additional email recipients.
      * @param list<string> $phoneNumbers Mobile Messaging recipients.
@@ -138,6 +139,7 @@ class API extends \Piwik\Plugin\API
      *                                      starts_with, does_not_start_with, ends_with, does_not_end_with.
      * @param false|string $reportValue Value used by $reportCondition.
      * @param list<'email'|'mobile'|'slack'|'teams'> $reportMediums Delivery channels.
+     *                                                Allowed values: email, mobile, slack, teams.
      * @param string $slackChannelID Slack channel ID when "slack" medium is enabled.
      * @param string $msTeamsWebhookUrl Microsoft Teams webhook URL when "teams" medium is enabled.
      * @return int ID of the newly created alert.
@@ -227,6 +229,7 @@ class API extends \Piwik\Plugin\API
      * @param string|array $idSites Website ID(s) to query.
      *                              Accepts comma-separated IDs, "all", numeric IDs as strings, or ["all"].
      * @param 'day'|'week'|'month' $period Alert period.
+     *                                     Allowed values: day, week, month.
      * @param bool $emailMe Whether to send email notifications to the current user.
      * @param list<string> $additionalEmails Additional email recipients.
      * @param list<string> $phoneNumbers Mobile Messaging recipients.
@@ -245,6 +248,7 @@ class API extends \Piwik\Plugin\API
      *                                      starts_with, does_not_start_with, ends_with, does_not_end_with.
      * @param false|string $reportValue Value used by $reportCondition.
      * @param list<'email'|'mobile'|'slack'|'teams'> $reportMediums Delivery channels.
+     *                                                Allowed values: email, mobile, slack, teams.
      * @param string $slackChannelID Slack channel ID when "slack" medium is enabled.
      * @param string $msTeamsWebhookUrl Microsoft Teams webhook URL when "teams" medium is enabled.
      *
