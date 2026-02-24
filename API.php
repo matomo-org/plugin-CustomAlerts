@@ -37,10 +37,10 @@ class API extends \Piwik\Plugin\API
      * weeks and subPeriodN is "7" it will return the value for the week 7 weeks ago. Set subPeriodN to "0" to test the
      * current day/week/month.
      *
-     * @param int $idAlert
-     * @param int $subPeriodN
+     * @param int $idAlert Alert ID to evaluate.
+     * @param int $subPeriodN Number of periods in the past to evaluate. Use 0 for the current period.
      *
-     * @return list<array{idSite: int, value: mixed}>
+     * @return list<array{idSite: int, value: mixed}> Alert values grouped by site.
      */
     public function getValuesForAlertInPast($idAlert, $subPeriodN)
     {
@@ -60,9 +60,9 @@ class API extends \Piwik\Plugin\API
     /**
      * Returns a single alert.
      *
-     * @param int $idAlert
+     * @param int $idAlert Alert ID to fetch.
      *
-     * @return array{id_sites: list<int>} & array<string, mixed>
+     * @return array{id_sites: list<int>} & array<string, mixed> Alert definition.
      * @throws \Exception In case alert does not exist or user has no permission to access alert.
      */
     public function getAlert($idAlert)
@@ -86,11 +86,11 @@ class API extends \Piwik\Plugin\API
     /**
      * Returns the Alerts that are defined on the idSites given.
      *
-     * @param string|list<int|string> $idSites Website ID(s) to query.
-     *                                         Accepts comma-separated IDs, "all", numeric IDs as strings, or ["all"].
+     * @param string|array $idSites Website ID(s) to query.
+     *                              Accepts comma-separated IDs, "all", numeric IDs as strings, or ["all"].
      * @param bool $ifSuperUserReturnAllAlerts Whether to return all users' alerts when the current user is super user.
      *
-     * @return list<array<string, mixed>>
+     * @return list<array<string, mixed>> Alerts accessible to the current user.
      */
     public function getAlerts($idSites, $ifSuperUserReturnAllAlerts = false)
     {
@@ -116,11 +116,11 @@ class API extends \Piwik\Plugin\API
     /**
      * Creates an Alert for given website(s).
      *
-     * @param string $name
-     * @param string|list<int|string> $idSites Website ID(s) to query.
-     *                                         Accepts comma-separated IDs, "all", numeric IDs as strings, or ["all"].
+     * @param string $name Alert name.
+     * @param string|array $idSites Website ID(s) to query.
+     *                              Accepts comma-separated IDs, "all", numeric IDs as strings, or ["all"].
      * @param 'day'|'week'|'month' $period Alert period.
-     * @param bool $emailMe
+     * @param bool $emailMe Whether to send email notifications to the current user.
      * @param list<string> $additionalEmails Additional email recipients.
      * @param list<string> $phoneNumbers Mobile Messaging recipients.
      * @param string $metric Metric unique ID (for example nb_uniq_visits, sum_visit_length).
@@ -140,7 +140,7 @@ class API extends \Piwik\Plugin\API
      * @param list<'email'|'mobile'|'slack'|'teams'> $reportMediums Delivery channels.
      * @param string $slackChannelID Slack channel ID when "slack" medium is enabled.
      * @param string $msTeamsWebhookUrl Microsoft Teams webhook URL when "teams" medium is enabled.
-     * @return int ID of new Alert
+     * @return int ID of the newly created alert.
      */
     public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false, array $reportMediums = [], string $slackChannelID = '', string $msTeamsWebhookUrl = '')
     {
@@ -222,12 +222,12 @@ class API extends \Piwik\Plugin\API
     /**
      * Edits an Alert for given website(s).
      *
-     * @param int $idAlert
+     * @param int $idAlert Alert ID to update.
      * @param string $name Name of alert.
-     * @param string|list<int|string> $idSites Website ID(s) to query.
-     *                                         Accepts comma-separated IDs, "all", numeric IDs as strings, or ["all"].
+     * @param string|array $idSites Website ID(s) to query.
+     *                              Accepts comma-separated IDs, "all", numeric IDs as strings, or ["all"].
      * @param 'day'|'week'|'month' $period Alert period.
-     * @param bool $emailMe
+     * @param bool $emailMe Whether to send email notifications to the current user.
      * @param list<string> $additionalEmails Additional email recipients.
      * @param list<string> $phoneNumbers Mobile Messaging recipients.
      * @param string $metric Metric unique ID (for example nb_uniq_visits, sum_visit_length).
@@ -274,8 +274,8 @@ class API extends \Piwik\Plugin\API
     /**
      * Delete alert by id.
      *
-     * @param int $idAlert
-     * @throws \Exception
+     * @param int $idAlert Alert ID to delete.
+     * @throws \Exception In case alert does not exist or user has no permission to access alert.
      */
     public function deleteAlert($idAlert)
     {
@@ -288,10 +288,10 @@ class API extends \Piwik\Plugin\API
     /**
      * Get triggered alerts.
      *
-     * @param string|list<int|string> $idSites Website ID(s) to query.
-     *                                         Accepts comma-separated IDs, "all", numeric IDs as strings, or ["all"].
+     * @param string|array $idSites Website ID(s) to query.
+     *                              Accepts comma-separated IDs, "all", numeric IDs as strings, or ["all"].
      *
-     * @return list<array<string, mixed>>
+     * @return list<array<string, mixed>> Triggered alerts for the current user and requested sites.
      */
     public function getTriggeredAlerts($idSites)
     {
