@@ -15,7 +15,7 @@ use Piwik\Piwik;
 use Piwik\Site;
 
 /**
- *
+ * Provides API methods to create, update, fetch, and delete custom alerts.
  * @method static \Piwik\Plugins\CustomAlerts\API getInstance()
  */
 class API extends \Piwik\Plugin\API
@@ -40,7 +40,7 @@ class API extends \Piwik\Plugin\API
      * @param int $idAlert
      * @param int $subPeriodN
      *
-     * @return array
+     * @return list<array{idSite: int, value: mixed}>
      */
     public function getValuesForAlertInPast($idAlert, $subPeriodN)
     {
@@ -62,7 +62,7 @@ class API extends \Piwik\Plugin\API
      *
      * @param int $idAlert
      *
-     * @return array
+     * @return array{id_sites: list<int>} & array<string, mixed>
      * @throws \Exception In case alert does not exist or user has no permission to access alert.
      */
     public function getAlert($idAlert)
@@ -86,10 +86,11 @@ class API extends \Piwik\Plugin\API
     /**
      * Returns the Alerts that are defined on the idSites given.
      *
-     * @param array $idSites
-     * @param bool  $ifSuperUserReturnAllAlerts
+     * @param string|list<int|string> $idSites Website ID(s) to query.
+     *                                         Accepts comma-separated IDs, "all", numeric IDs as strings, or ["all"].
+     * @param bool $ifSuperUserReturnAllAlerts Whether to return all users' alerts when the current user is super user.
      *
-     * @return array
+     * @return list<array<string, mixed>>
      */
     public function getAlerts($idSites, $ifSuperUserReturnAllAlerts = false)
     {
@@ -115,22 +116,30 @@ class API extends \Piwik\Plugin\API
     /**
      * Creates an Alert for given website(s).
      *
-     * @param string      $name
-     * @param mixed       $idSites
-     * @param string      $period
-     * @param bool        $emailMe
-     * @param array       $additionalEmails
-     * @param array       $phoneNumbers
-     * @param string      $metric (nb_uniq_visits, sum_visit_length, ..)
-     * @param string      $metricCondition
-     * @param float       $metricValue
-     * @param string      $reportUniqueId
-     * @param int         $comparedTo
-     * @param bool|string $reportCondition
-     * @param bool|string $reportValue
-     * @param array       $reportMediums
-     * @param string      $slackChannelID
-     * @param string      $msTeamsWebhookUrl
+     * @param string $name
+     * @param string|list<int|string> $idSites Website ID(s) to query.
+     *                                         Accepts comma-separated IDs, "all", numeric IDs as strings, or ["all"].
+     * @param 'day'|'week'|'month' $period Alert period.
+     * @param bool $emailMe
+     * @param list<string> $additionalEmails Additional email recipients.
+     * @param list<string> $phoneNumbers Mobile Messaging recipients.
+     * @param string $metric Metric unique ID (for example nb_uniq_visits, sum_visit_length).
+     * @param string $metricCondition Metric comparison condition.
+     *                                Allowed values: less_than, greater_than, decrease_more_than,
+     *                                increase_more_than, percentage_decrease_more_than,
+     *                                percentage_increase_more_than.
+     * @param float|int|string $metricValue Metric to check for the selected report.
+     * @param int $comparedTo Number of prior periods to compare against.
+     *                        Allowed values by period: day => 1, 7, 365; week => 1; month => 1, 12.
+     * @param string $reportUniqueId Report unique ID in format module_action.
+     * @param false|string $reportCondition Group condition to apply.
+     *                                      Allowed values: matches_any, matches_exactly, does_not_match_exactly,
+     *                                      matches_regex, does_not_match_regex, contains, does_not_contain,
+     *                                      starts_with, does_not_start_with, ends_with, does_not_end_with.
+     * @param false|string $reportValue Value used by $reportCondition.
+     * @param list<'email'|'mobile'|'slack'|'teams'> $reportMediums Delivery channels.
+     * @param string $slackChannelID Slack channel ID when "slack" medium is enabled.
+     * @param string $msTeamsWebhookUrl Microsoft Teams webhook URL when "teams" medium is enabled.
      * @return int ID of new Alert
      */
     public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false, array $reportMediums = [], string $slackChannelID = '', string $msTeamsWebhookUrl = '')
@@ -213,25 +222,33 @@ class API extends \Piwik\Plugin\API
     /**
      * Edits an Alert for given website(s).
      *
-     * @param             $idAlert
-     * @param string      $name    Name of Alert
-     * @param mixed       $idSites Single int or array of ints of idSites.
-     * @param string      $period  Period the alert is defined on.
-     * @param bool        $emailMe
-     * @param array       $additionalEmails
-     * @param array       $phoneNumbers
-     * @param string      $metric  (nb_uniq_visits, sum_visit_length, ..)
-     * @param string      $metricCondition
-     * @param float       $metricValue
-     * @param string      $reportUniqueId
-     * @param int         $comparedTo
-     * @param bool|string $reportCondition
-     * @param bool|string $reportValue
-     * @param array       $reportMediums
-     * @param string      $slackChannelID
-     * @param string      $msTeamsWebhookUrl
+     * @param int $idAlert
+     * @param string $name Name of alert.
+     * @param string|list<int|string> $idSites Website ID(s) to query.
+     *                                         Accepts comma-separated IDs, "all", numeric IDs as strings, or ["all"].
+     * @param 'day'|'week'|'month' $period Alert period.
+     * @param bool $emailMe
+     * @param list<string> $additionalEmails Additional email recipients.
+     * @param list<string> $phoneNumbers Mobile Messaging recipients.
+     * @param string $metric Metric unique ID (for example nb_uniq_visits, sum_visit_length).
+     * @param string $metricCondition Metric comparison condition.
+     *                                Allowed values: less_than, greater_than, decrease_more_than,
+     *                                increase_more_than, percentage_decrease_more_than,
+     *                                percentage_increase_more_than.
+     * @param float|int|string $metricValue Metric to check for the selected report.
+     * @param int $comparedTo Number of prior periods to compare against.
+     *                        Allowed values by period: day => 1, 7, 365; week => 1; month => 1, 12.
+     * @param string $reportUniqueId Report unique ID in format module_action.
+     * @param false|string $reportCondition Group condition to apply.
+     *                                      Allowed values: matches_any, matches_exactly, does_not_match_exactly,
+     *                                      matches_regex, does_not_match_regex, contains, does_not_contain,
+     *                                      starts_with, does_not_start_with, ends_with, does_not_end_with.
+     * @param false|string $reportValue Value used by $reportCondition.
+     * @param list<'email'|'mobile'|'slack'|'teams'> $reportMediums Delivery channels.
+     * @param string $slackChannelID Slack channel ID when "slack" medium is enabled.
+     * @param string $msTeamsWebhookUrl Microsoft Teams webhook URL when "teams" medium is enabled.
      *
-     * @return boolean
+     * @return int Updated alert ID.
      */
     public function editAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false, array $reportMediums = [], string $slackChannelID = '', string $msTeamsWebhookUrl = '')
     {
@@ -271,9 +288,10 @@ class API extends \Piwik\Plugin\API
     /**
      * Get triggered alerts.
      *
-     * @param int[] $idSites
+     * @param string|list<int|string> $idSites Website ID(s) to query.
+     *                                         Accepts comma-separated IDs, "all", numeric IDs as strings, or ["all"].
      *
-     * @return array
+     * @return list<array<string, mixed>>
      */
     public function getTriggeredAlerts($idSites)
     {
