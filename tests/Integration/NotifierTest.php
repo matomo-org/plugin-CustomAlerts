@@ -211,67 +211,50 @@ Hello,=0A=0AThe triggered alerts are listed in the table below. To adjust y=';
 
         $mock->setTriggeredAlerts($alerts);
 
-        $mock->expects($this->at(0))
+        $expectedEmailCalls = [
+            [$alerts, 'test5@example.com'],
+            [[$alerts[0], $alerts[2]], 'test1@example.com'],
+            [[$alerts[1]], 'test2@example.com'],
+            [[$alerts[3]], 'test3@example.com'],
+        ];
+        $mock->expects($this->exactly(count($expectedEmailCalls)))
             ->method('sendAlertsPerEmailToRecipient')
-            ->with(
-                $this->equalTo($alerts),
-                $this->isInstanceOf('\Piwik\Mail'),
-                $this->equalTo('test5@example.com'),
-                $this->equalTo($period),
-                $this->equalTo($idSite)
-            );
+            ->willReturnCallback(function ($actualAlerts, $mail, $recipient, $actualPeriod, $actualIdSite) use (&$expectedEmailCalls, $period, $idSite) {
+                [$expectedAlerts, $expectedRecipient] = array_shift($expectedEmailCalls);
 
-        $mock->expects($this->at(1))
-            ->method('sendAlertsPerEmailToRecipient')
-            ->with(
-                $this->equalTo(array($alerts[0], $alerts[2])),
-                $this->isInstanceOf('\Piwik\Mail'),
-                $this->equalTo('test1@example.com'),
-                $this->equalTo($period),
-                $this->equalTo($idSite)
-            );
+                $this->assertSame($expectedAlerts, $actualAlerts);
+                $this->assertInstanceOf('\Piwik\Mail', $mail);
+                $this->assertSame($expectedRecipient, $recipient);
+                $this->assertSame($period, $actualPeriod);
+                $this->assertSame($idSite, $actualIdSite);
+            });
 
-        $mock->expects($this->at(2))
-            ->method('sendAlertsPerEmailToRecipient')
-            ->with(
-                $this->equalTo(array($alerts[1])),
-                $this->isInstanceOf('\Piwik\Mail'),
-                $this->equalTo('test2@example.com'),
-                $this->equalTo($period),
-                $this->equalTo($idSite)
-            );
-
-        $mock->expects($this->at(3))
-            ->method('sendAlertsPerEmailToRecipient')
-            ->with(
-                $this->equalTo(array($alerts[3])),
-                $this->isInstanceOf('\Piwik\Mail'),
-                $this->equalTo('test3@example.com'),
-                $this->equalTo($period),
-                $this->equalTo($idSite)
-            );
-
-        $mock->expects($this->at(4))
+        $expectedSmsCalls = [
+            [[$alerts[0], $alerts[1], $alerts[3]], '+1234567890'],
+            [$alerts, '232'],
+        ];
+        $mock->expects($this->exactly(count($expectedSmsCalls)))
             ->method('sendAlertsPerSmsToRecipient')
-            ->with(
-                $this->equalTo(array($alerts[0], $alerts[1], $alerts[3])),
-                $this->isInstanceOf('\Piwik\Plugins\MobileMessaging\Model'),
-                $this->equalTo('+1234567890')
-            );
+            ->willReturnCallback(function ($actualAlerts, $mobileMessagingModel, $phoneNumber) use (&$expectedSmsCalls) {
+                [$expectedAlerts, $expectedPhoneNumber] = array_shift($expectedSmsCalls);
 
-        $mock->expects($this->at(5))
-            ->method('sendAlertsPerSmsToRecipient')
-            ->with(
-                $this->equalTo($alerts),
-                $this->isInstanceOf('\Piwik\Plugins\MobileMessaging\Model'),
-                $this->equalTo('232')
-            );
+                $this->assertSame($expectedAlerts, $actualAlerts);
+                $this->assertInstanceOf('\Piwik\Plugins\MobileMessaging\Model', $mobileMessagingModel);
+                $this->assertEquals($expectedPhoneNumber, $phoneNumber);
+            });
 
-        foreach ($alerts as $index => $alert) {
-            $mock->expects($this->at(6 + $index))->method('markAlertAsSent')->with($this->equalTo($alert));
-        }
+        $expectedMarkedAlerts = $alerts;
+        $mock->expects($this->exactly(count($expectedMarkedAlerts)))
+            ->method('markAlertAsSent')
+            ->willReturnCallback(function ($actualAlert) use (&$expectedMarkedAlerts) {
+                $this->assertSame(array_shift($expectedMarkedAlerts), $actualAlert);
+            });
 
         $mock->sendNewAlerts($period, $idSite);
+
+        $this->assertSame([], $expectedEmailCalls);
+        $this->assertSame([], $expectedSmsCalls);
+        $this->assertSame([], $expectedMarkedAlerts);
     }
 
     public function provideContainerConfig()

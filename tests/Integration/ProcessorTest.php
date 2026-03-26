@@ -488,45 +488,53 @@ class ProcessorTest extends BaseTest
             ->getMock();
 
         $idSite = 1;
-        $processorMock->expects($this->at(0))
+        $expectedGetValueCalls = [
+            [$alert, $idSite, 1, 13],
+            [$alert, $idSite, 13, 10],
+        ];
+        $processorMock->expects($this->exactly(count($expectedGetValueCalls)))
             ->method('getValueForAlertInPast')
-            ->with($this->equalTo($alert), $this->equalTo($idSite), $this->equalTo(1))
-            ->will($this->returnValue(13));
+            ->willReturnCallback(function ($actualAlert, $actualIdSite, $actualSubPeriodN) use (&$expectedGetValueCalls) {
+                [$expectedAlert, $expectedIdSite, $expectedSubPeriodN, $returnValue] = array_shift($expectedGetValueCalls);
 
-        $processorMock->expects($this->at(1))
-            ->method('getValueForAlertInPast')
-            ->with($this->equalTo($alert), $this->equalTo($idSite), $this->equalTo(13))
-            ->will($this->returnValue(10));
+                $this->assertSame($expectedAlert, $actualAlert);
+                $this->assertSame($expectedIdSite, $actualIdSite);
+                $this->assertSame($expectedSubPeriodN, $actualSubPeriodN);
+
+                return $returnValue;
+            });
 
         $processorMock->expects($this->never())->method('triggerAlert');
 
-        $processorMock->expects($this->exactly(2))
-            ->method('getValueForAlertInPast');
-
         $processorMock->processAlert($alert, $idSite);
+        $this->assertSame([], $expectedGetValueCalls);
 
         $idSite        = 2;
         $processorMock = $this->getMockBuilder('Piwik\Plugins\CustomAlerts\tests\Integration\CustomProcessor')
             ->setMethods($methods)
             ->getMock();
-        $processorMock->expects($this->at(0))
+        $expectedGetValueCalls = [
+            [$alert, $idSite, 1, 15],
+            [$alert, $idSite, 13, 10],
+        ];
+        $processorMock->expects($this->exactly(count($expectedGetValueCalls)))
             ->method('getValueForAlertInPast')
-            ->with($this->equalTo($alert), $this->equalTo($idSite), $this->equalTo(1))
-            ->will($this->returnValue(15));
+            ->willReturnCallback(function ($actualAlert, $actualIdSite, $actualSubPeriodN) use (&$expectedGetValueCalls) {
+                [$expectedAlert, $expectedIdSite, $expectedSubPeriodN, $returnValue] = array_shift($expectedGetValueCalls);
 
-        $processorMock->expects($this->at(1))
-            ->method('getValueForAlertInPast')
-            ->with($this->equalTo($alert), $this->equalTo($idSite), $this->equalTo(13))
-            ->will($this->returnValue(10));
+                $this->assertSame($expectedAlert, $actualAlert);
+                $this->assertSame($expectedIdSite, $actualIdSite);
+                $this->assertSame($expectedSubPeriodN, $actualSubPeriodN);
 
-        $processorMock->expects($this->exactly(2))
-            ->method('getValueForAlertInPast');
+                return $returnValue;
+            });
 
         $processorMock->expects($this->once())
             ->method('triggerAlert')
             ->with($this->equalTo($alert), $this->equalTo($idSite), $this->equalTo(15), $this->equalTo(10));
 
         $processorMock->processAlert($alert, $idSite);
+        $this->assertSame([], $expectedGetValueCalls);
     }
 
     private function buildAlert(
@@ -603,20 +611,27 @@ class ProcessorTest extends BaseTest
         $processorMock = $this->getMockBuilder('Piwik\Plugins\CustomAlerts\tests\Integration\CustomProcessor')
             ->setMethods($methods)
             ->getMock();
-        $processorMock->expects($this->at(0))
+        $expectedGetValueCalls = [
+            [$alert, 1, 1, 15],
+            [$alert, 1, 8, 10],
+        ];
+        $processorMock->expects($this->exactly(count($expectedGetValueCalls)))
             ->method('getValueForAlertInPast')
-            ->with($this->equalTo($alert), $this->equalTo(1), $this->equalTo(1))
-            ->will($this->returnValue(15));
+            ->willReturnCallback(function ($actualAlert, $actualIdSite, $actualSubPeriodN) use (&$expectedGetValueCalls) {
+                [$expectedAlert, $expectedIdSite, $expectedSubPeriodN, $returnValue] = array_shift($expectedGetValueCalls);
 
-        $processorMock->expects($this->at(1))
-            ->method('getValueForAlertInPast')
-            ->with($this->equalTo($alert), $this->equalTo(1), $this->equalTo(8))
-            ->will($this->returnValue(10));
+                $this->assertSame($expectedAlert, $actualAlert);
+                $this->assertSame($expectedIdSite, $actualIdSite);
+                $this->assertSame($expectedSubPeriodN, $actualSubPeriodN);
+
+                return $returnValue;
+            });
 
         $processorMock->expects($this->never())
             ->method('triggerAlert');
 
         $processorMock->processAlert($alert, 1);
+        $this->assertSame([], $expectedGetValueCalls);
     }
 
     public function test_shouldBeTriggered_ShouldFail_IfInvalidConditionGiven()
