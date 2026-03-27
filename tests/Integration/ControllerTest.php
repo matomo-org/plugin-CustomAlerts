@@ -228,6 +228,20 @@ FORMATTED;
         $this->assertEquals($expected, $rendered, "Got following HTML response: " . var_export($rendered, true));
     }
 
+    public function test_formatAlerts_asHtml_shouldEscapeReportMatched()
+    {
+        $payload = '<img src=x onerror=alert(1)>';
+        $alerts = array(
+            $this->buildAlert(1, 'MyName1', 'week', 1, 'Piwik test', 'superUserLogin', 'nb_visits', 'decrease_more_than', 5000, 'MultiSites_getOne', 'matches_exactly', $payload)
+        );
+
+        $rendered = $this->controller->formatAlerts($alerts, 'html');
+
+        $this->assertStringContainsString("Website is '&lt;img src=x onerror=alert(1)&gt;'", $rendered);
+        $this->assertStringNotContainsString("'{$payload}'", $rendered);
+        $this->assertStringNotContainsString("<img src=x onerror=alert(1)>", $rendered);
+    }
+
     public function test_enrichTriggeredAlerts_shouldEnrichAlerts_IfReportExistsAndMetricIsValid()
     {
         $timestamp = 1389824417;
