@@ -1,5 +1,6 @@
 ## Changelog
 
+* 5.2.5 - 2026-03-30 - Added escaping for report_matched value
 * 5.2.4 - 2026-03-02 - Updated API documentation
 * 5.2.3 - 2026-02-05 - Alerts now get deleted when a user's site access is revoked
 * 5.2.2 - 2026-01-19 - Added tooltips in add/edit alerts, manage alerts & in the inline text for the delivery method 
