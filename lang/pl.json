@@ -43,6 +43,7 @@
         "MatchesAnyExpression": "dopasuj jakikolwiek",
         "MatchesRegularExpression": "dopasowanie do wyrażenia regularnego",
         "MediumEmail": "E-mail",
+        "MediumMicrosoftTeams": "Zespoły",
         "MediumMobile": "Przenośny",
         "MobileMessagingPluginNotActivated": "Wtyczka MobileMessaging jest niezbędna do wysyłania alarmów SMS. Możesz ją aktywować poprzez przejście do %1$sustawień wtyczki%2$s.",
         "MonthComparedToPreviousMonth": "poprzedni miesiąc",
