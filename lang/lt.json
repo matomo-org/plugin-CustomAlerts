@@ -10,6 +10,7 @@
         "MailEnd": "Smagaus analizavimo!",
         "MediumEmail": "El. paštas",
         "OperationDoesNotContain": "savyje neturi",
+        "OperationIs": "yra",
         "OperationIsNot": "nėra",
         "SmsAlertFromName": "Naujas signalas"
     }
