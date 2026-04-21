@@ -15,7 +15,9 @@ use Piwik\Piwik;
 use Piwik\Site;
 
 /**
- * Provides API methods to create, update, fetch, and delete custom alerts.
+ * Exposes Custom Alerts API endpoints for managing alert definitions and reading triggered alert data.
+ * These methods let callers create, update, fetch, delete, and evaluate alerts for one or more sites.
+ *
  * @method static \Piwik\Plugins\CustomAlerts\API getInstance()
  */
 class API extends \Piwik\Plugin\API
@@ -33,12 +35,12 @@ class API extends \Piwik\Plugin\API
     }
 
     /**
-     * Calculates the alert value for each site for the given days/weeks/months in past. If the period of the alert is
-     * weeks and subPeriodN is "7" it will return the value for the week 7 weeks ago. Set subPeriodN to "0" to test the
-     * current day/week/month.
+     * Returns the computed alert value for each site linked to an alert for a past or current period.
+     * Use 0 to evaluate the current period, 1 for the previous matching period, and so on.
      *
      * @param int $idAlert Alert ID to evaluate.
-     * @param int $subPeriodN Number of periods in the past to evaluate. Use 0 for the current period.
+     * @param int|string $subPeriodN Number of periods in the past to evaluate.
+     *                               Use 0 for the current day, week, or month.
      *
      * @return list<array{idSite: int, value: mixed}> Alert values grouped by site.
      */
@@ -58,12 +60,11 @@ class API extends \Piwik\Plugin\API
     }
 
     /**
-     * Returns a single alert.
+     * Returns a single custom alert definition.
      *
      * @param int $idAlert Alert ID to fetch.
      *
-     * @return array{id_sites: list<int>} & array<string, mixed> Alert definition.
-     * @throws \Exception In case alert does not exist or user has no permission to access alert.
+     * @return array{id_sites: list<int>} & array<string, mixed> Alert definition including the configured site IDs.
      */
     public function getAlert($idAlert)
     {
@@ -84,13 +85,13 @@ class API extends \Piwik\Plugin\API
     }
 
     /**
-     * Returns the Alerts that are defined on the idSites given.
+     * Returns the custom alerts configured for the requested sites.
      *
      * @param string|array $idSites Website ID(s) to query.
      *                              Accepts comma-separated IDs, "all", numeric IDs as strings, or ["all"].
-     * @param bool $ifSuperUserReturnAllAlerts Whether to return all users' alerts when the current user is super user.
+     * @param bool $ifSuperUserReturnAllAlerts Whether a super user should receive alerts created by all users.
      *
-     * @return list<array<string, mixed>> Alerts accessible to the current user.
+     * @return list<array<string, mixed>> Alert definitions accessible to the current user for the requested sites.
      */
     public function getAlerts($idSites, $ifSuperUserReturnAllAlerts = false)
     {
@@ -114,34 +115,34 @@ class API extends \Piwik\Plugin\API
     }
 
     /**
-     * Creates an Alert for given website(s).
+     * Creates a custom alert for one or more sites.
      *
      * @param string $name Alert name.
      * @param string|array $idSites Website ID(s) to query.
      *                              Accepts comma-separated IDs, "all", numeric IDs as strings, or ["all"].
      * @param 'day'|'week'|'month' $period Alert period.
      *                                     Allowed values: day, week, month.
-     * @param bool $emailMe Whether to send email notifications to the current user.
-     * @param list<string> $additionalEmails Additional email recipients.
-     * @param list<string> $phoneNumbers Mobile Messaging recipients.
-     * @param string $metric Metric unique ID (for example nb_uniq_visits, sum_visit_length).
-     * @param string $metricCondition Metric comparison condition.
+     * @param bool $emailMe Whether to notify the current user by email when the alert triggers.
+     * @param list<string> $additionalEmails Additional email recipients for email notifications.
+     * @param list<string> $phoneNumbers Mobile Messaging recipients when the mobile channel is enabled.
+     * @param string $metric Metric unique ID to evaluate, for example nb_uniq_visits or sum_visit_length.
+     * @param string $metricCondition Comparison rule to apply to the metric.
      *                                Allowed values: less_than, greater_than, decrease_more_than,
      *                                increase_more_than, percentage_decrease_more_than,
      *                                percentage_increase_more_than.
-     * @param float|int|string $metricValue Metric to check for the selected report.
+     * @param float|int|string $metricValue Threshold value to compare the selected metric against.
      * @param int $comparedTo Number of prior periods to compare against.
      *                        Allowed values by period: day => 1, 7, 365; week => 1; month => 1, 12.
-     * @param string $reportUniqueId Report unique ID in format module_action.
-     * @param false|string $reportCondition Group condition to apply.
+     * @param string $reportUniqueId Report unique ID in module_action format.
+     * @param false|string $reportCondition Optional dimension filter condition for report rows.
      *                                      Allowed values: matches_any, matches_exactly, does_not_match_exactly,
      *                                      matches_regex, does_not_match_regex, contains, does_not_contain,
      *                                      starts_with, does_not_start_with, ends_with, does_not_end_with.
-     * @param false|string $reportValue Value used by $reportCondition.
-     * @param list<'email'|'mobile'|'slack'|'teams'> $reportMediums Delivery channels.
+     * @param false|string $reportValue Value to match when $reportCondition is provided.
+     * @param list<'email'|'mobile'|'slack'|'teams'> $reportMediums Delivery channels to use for notifications.
      *                                                Allowed values: email, mobile, slack, teams.
-     * @param string $slackChannelID Slack channel ID when "slack" medium is enabled.
-     * @param string $msTeamsWebhookUrl Microsoft Teams webhook URL when "teams" medium is enabled.
+     * @param string $slackChannelID Slack channel ID when the slack channel is enabled.
+     * @param string $msTeamsWebhookUrl Microsoft Teams webhook URL when the teams channel is enabled.
      * @return int ID of the newly created alert.
      */
     public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false, array $reportMediums = [], string $slackChannelID = '', string $msTeamsWebhookUrl = '')
@@ -222,35 +223,35 @@ class API extends \Piwik\Plugin\API
     }
 
     /**
-     * Edits an Alert for given website(s).
+     * Updates an existing custom alert.
      *
      * @param int $idAlert Alert ID to update.
-     * @param string $name Name of alert.
+     * @param string $name Alert name.
      * @param string|array $idSites Website ID(s) to query.
      *                              Accepts comma-separated IDs, "all", numeric IDs as strings, or ["all"].
      * @param 'day'|'week'|'month' $period Alert period.
      *                                     Allowed values: day, week, month.
-     * @param bool $emailMe Whether to send email notifications to the current user.
-     * @param list<string> $additionalEmails Additional email recipients.
-     * @param list<string> $phoneNumbers Mobile Messaging recipients.
-     * @param string $metric Metric unique ID (for example nb_uniq_visits, sum_visit_length).
-     * @param string $metricCondition Metric comparison condition.
+     * @param bool $emailMe Whether to notify the current user by email when the alert triggers.
+     * @param list<string> $additionalEmails Additional email recipients for email notifications.
+     * @param list<string> $phoneNumbers Mobile Messaging recipients when the mobile channel is enabled.
+     * @param string $metric Metric unique ID to evaluate, for example nb_uniq_visits or sum_visit_length.
+     * @param string $metricCondition Comparison rule to apply to the metric.
      *                                Allowed values: less_than, greater_than, decrease_more_than,
      *                                increase_more_than, percentage_decrease_more_than,
      *                                percentage_increase_more_than.
-     * @param float|int|string $metricValue Metric to check for the selected report.
+     * @param float|int|string $metricValue Threshold value to compare the selected metric against.
      * @param int $comparedTo Number of prior periods to compare against.
      *                        Allowed values by period: day => 1, 7, 365; week => 1; month => 1, 12.
-     * @param string $reportUniqueId Report unique ID in format module_action.
-     * @param false|string $reportCondition Group condition to apply.
+     * @param string $reportUniqueId Report unique ID in module_action format.
+     * @param false|string $reportCondition Optional dimension filter condition for report rows.
      *                                      Allowed values: matches_any, matches_exactly, does_not_match_exactly,
      *                                      matches_regex, does_not_match_regex, contains, does_not_contain,
      *                                      starts_with, does_not_start_with, ends_with, does_not_end_with.
-     * @param false|string $reportValue Value used by $reportCondition.
-     * @param list<'email'|'mobile'|'slack'|'teams'> $reportMediums Delivery channels.
+     * @param false|string $reportValue Value to match when $reportCondition is provided.
+     * @param list<'email'|'mobile'|'slack'|'teams'> $reportMediums Delivery channels to use for notifications.
      *                                                Allowed values: email, mobile, slack, teams.
-     * @param string $slackChannelID Slack channel ID when "slack" medium is enabled.
-     * @param string $msTeamsWebhookUrl Microsoft Teams webhook URL when "teams" medium is enabled.
+     * @param string $slackChannelID Slack channel ID when the slack channel is enabled.
+     * @param string $msTeamsWebhookUrl Microsoft Teams webhook URL when the teams channel is enabled.
      *
      * @return int Updated alert ID.
      */
@@ -276,10 +277,11 @@ class API extends \Piwik\Plugin\API
     }
 
     /**
-     * Delete alert by id.
+     * Deletes an existing custom alert.
      *
      * @param int $idAlert Alert ID to delete.
-     * @throws \Exception In case alert does not exist or user has no permission to access alert.
+     *
+     * @return void
      */
     public function deleteAlert($idAlert)
     {
@@ -290,12 +292,12 @@ class API extends \Piwik\Plugin\API
     }
 
     /**
-     * Get triggered alerts.
+     * Returns triggered alerts for the current user and requested sites.
      *
      * @param string|array $idSites Website ID(s) to query.
      *                              Accepts comma-separated IDs, "all", numeric IDs as strings, or ["all"].
      *
-     * @return list<array<string, mixed>> Triggered alerts for the current user and requested sites.
+     * @return list<array<string, mixed>> Triggered alert entries for the current user and requested sites.
      */
     public function getTriggeredAlerts($idSites)
     {
