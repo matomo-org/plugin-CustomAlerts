@@ -72,8 +72,15 @@ class Validator
             throw new Exception(Piwik::translate("General_PleaseSpecifyValue", "name"));
         }
 
-        if (Common::mb_strlen($name) > 100) {
+        if (mb_strlen($name, 'UTF-8') > 100) {
             throw new Exception(Piwik::translate("CustomAlerts_ParmeterIsTooLong", array(Piwik::translate('General_Name'), 100)));
+        }
+    }
+
+    public function checkDescription($description)
+    {
+        if (mb_strlen($description, 'UTF-8') > 255) {
+            throw new Exception(Piwik::translate("CustomAlerts_ParmeterIsTooLong", array(Piwik::translate('General_Description'), 255)));
         }
     }
 

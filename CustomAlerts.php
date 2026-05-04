@@ -248,6 +248,9 @@ class CustomAlerts extends \Piwik\Plugin
         $translations[] = 'CustomAlerts_CreateNewAlert';
         $translations[] = 'CustomAlerts_AlertsHistory';
         $translations[] = 'CustomAlerts_AlertName';
+        $translations[] = 'CustomAlerts_AlertNameInlineHelp';
+        $translations[] = 'CustomAlerts_AlertDescriptionOptional';
+        $translations[] = 'CustomAlerts_AlertDescriptionInlineHelp';
         $translations[] = 'CustomAlerts_ApplyTo';
         $translations[] = 'ScheduledReports_SendReportTo';
         $translations[] = 'ScheduledReports_SentToMe';
@@ -268,6 +271,7 @@ class CustomAlerts extends \Piwik\Plugin
         $translations[] = 'CustomAlerts_ThisAppliesToHelp';
         $translations[] = 'General_Yes';
         $translations[] = 'General_No';
+        $translations[] = 'General_Description';
         $translations[] = 'CustomAlerts_MediumTitle';
         $translations[] = 'CustomAlerts_MediumDescription';
         $translations[] = 'CustomAlerts_ManageTooltip';
