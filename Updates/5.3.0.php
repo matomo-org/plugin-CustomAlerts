@@ -16,7 +16,7 @@ use Piwik\Updates;
 
 /**
  */
-class Updates_5_2_6 extends Updates
+class Updates_5_3_0 extends Updates
 {
     /**
      * @var MigrationFactory
