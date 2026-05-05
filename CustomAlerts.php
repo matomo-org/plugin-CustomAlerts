@@ -249,8 +249,10 @@ class CustomAlerts extends \Piwik\Plugin
         $translations[] = 'CustomAlerts_AlertsHistory';
         $translations[] = 'CustomAlerts_AlertName';
         $translations[] = 'CustomAlerts_AlertNameInlineHelp';
+        $translations[] = 'CustomAlerts_AlertNamePlaceholder';
         $translations[] = 'CustomAlerts_AlertDescriptionOptional';
         $translations[] = 'CustomAlerts_AlertDescriptionInlineHelp';
+        $translations[] = 'CustomAlerts_AlertDescriptionPlaceholder';
         $translations[] = 'CustomAlerts_ApplyTo';
         $translations[] = 'ScheduledReports_SendReportTo';
         $translations[] = 'ScheduledReports_SentToMe';

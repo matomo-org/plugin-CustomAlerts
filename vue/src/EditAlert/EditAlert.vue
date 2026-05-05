@@ -18,6 +18,7 @@
           v-model="actualAlert.name"
           :maxlength="100"
           :title="translate('CustomAlerts_AlertName')"
+          :placeholder="translate('CustomAlerts_AlertNamePlaceholder')"
           :inline-help="translate('CustomAlerts_AlertNameInlineHelp')"
         >
         </Field>
@@ -30,6 +31,7 @@
           :maxlength="255"
           :rows="3"
           :title="translate('CustomAlerts_AlertDescriptionOptional')"
+          :placeholder="translate('CustomAlerts_AlertDescriptionPlaceholder')"
           :inline-help="translate('CustomAlerts_AlertDescriptionInlineHelp')"
         />
       </div>
