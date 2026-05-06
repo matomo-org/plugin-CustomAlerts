@@ -30,6 +30,7 @@
           v-model="actualAlert.description"
           :maxlength="255"
           :rows="3"
+          :ui-control-attributes="{ class: 'compact-textarea' }"
           :title="translate('CustomAlerts_AlertDescriptionOptional')"
           :placeholder="translate('CustomAlerts_AlertDescriptionPlaceholder')"
           :inline-help="translate('CustomAlerts_AlertDescriptionInlineHelp')"
