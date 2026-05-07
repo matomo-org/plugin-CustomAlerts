@@ -143,6 +143,7 @@ class API extends \Piwik\Plugin\API
      *                                                Allowed values: email, mobile, slack, teams.
      * @param string $slackChannelID Slack channel ID when the slack channel is enabled.
      * @param string $msTeamsWebhookUrl Microsoft Teams webhook URL when the teams channel is enabled.
+     * @param string $description Optional alert description (max 255 characters).
      * @return int ID of the newly created alert.
      */
     public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false, array $reportMediums = [], string $slackChannelID = '', string $msTeamsWebhookUrl = '', string $description = '')
@@ -254,6 +255,7 @@ class API extends \Piwik\Plugin\API
      *                                                Allowed values: email, mobile, slack, teams.
      * @param string $slackChannelID Slack channel ID when the slack channel is enabled.
      * @param string $msTeamsWebhookUrl Microsoft Teams webhook URL when the teams channel is enabled.
+     * @param string $description Optional alert description (max 255 characters).
      *
      * @return int Updated alert ID.
      */
