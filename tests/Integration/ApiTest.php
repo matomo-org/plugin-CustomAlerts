@@ -38,7 +38,8 @@ class ApiTest extends BaseTest
         $metricCondition = 'less_than',
         $reportCondition = 'matches_exactly',
         $emails = array('test1@example.com', 'test2@example.com'),
-        $comparedTo = 1
+        $comparedTo = 1,
+        $description = ''
     ) {
         if (is_null($idSites)) {
             $idSites = $this->idSite;
@@ -63,7 +64,8 @@ class ApiTest extends BaseTest
             'Piwik',
             ['email', 'mobile'],
             '',
-            ''
+            '',
+            $description
         );
         return $id;
     }
@@ -188,10 +190,19 @@ class ApiTest extends BaseTest
     {
         $this->setSuperUser();
 
-        $id = $this->createAlert('MyCustomAlert', 'week');
+        $id = $this->createAlert('MyCustomAlert', 'week', null, 'nb_visits', 'MultiSites_getOne', 'less_than', 'matches_exactly', array('test1@example.com', 'test2@example.com'), 1, 'Description text');
         $this->assertGreaterThan(3, $id);
 
-        $this->assertIsAlert($id, 'MyCustomAlert', 'week');
+        $this->assertIsAlert($id, 'MyCustomAlert', 'week', null, 'superUserLogin', 'nb_visits', 'less_than', 5, 'MultiSites_getOne', 'matches_exactly', 'Piwik', 'Description text');
+    }
+
+    public function test_addAlert_ShouldFail_IfDescriptionTooLong()
+    {
+        $this->setSuperUser();
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_ParmeterIsTooLong');
+
+        $this->createAlert('MyCustomAlert', 'week', null, 'nb_visits', 'MultiSites_getOne', 'less_than', 'matches_exactly', array('test1@example.com', 'test2@example.com'), 1, str_repeat('x', 256));
     }
 
     protected function assertIsAlert(
@@ -205,7 +216,8 @@ class ApiTest extends BaseTest
         $metricMatched = 5,
         $report = 'MultiSites_getOne',
         $reportCondition = 'matches_exactly',
-        $reportMatched = 'Piwik'
+        $reportMatched = 'Piwik',
+        $description = ''
     ) {
         if (is_null($idSites)) {
             $idSites = array($this->idSite);
@@ -216,6 +228,7 @@ class ApiTest extends BaseTest
         $expected = array(
             'idalert'           => $id,
             'name'              => $name,
+            'description'       => $description,
             'login'             => $login,
             'period'            => $period,
             'report'            => $report,
@@ -254,7 +267,8 @@ class ApiTest extends BaseTest
         $report = 'MultiSites_getOne',
         $metricCondition = 'less_than',
         $reportCondition = 'matches_exactly',
-        $emails = array('test1@example.com', 'test2@example.com')
+        $emails = array('test1@example.com', 'test2@example.com'),
+        $description = ''
     ) {
         if (is_null($idSites)) {
             $idSites = $this->idSite;
@@ -279,7 +293,10 @@ class ApiTest extends BaseTest
             $report,
             $reportCondition,
             'Piwik',
-            ['email', 'mobile']
+            ['email', 'mobile'],
+            '',
+            '',
+            $description
         );
         return $id;
     }
@@ -349,10 +366,10 @@ class ApiTest extends BaseTest
     {
         $this->setSuperUser();
 
-        $id = $this->editAlert(2, 'MyCustomAlert', 'day');
+        $id = $this->editAlert(2, 'MyCustomAlert', 'day', null, 'nb_visits', 'MultiSites_getOne', 'less_than', 'matches_exactly', array('test1@example.com', 'test2@example.com'), 'Updated description');
         $this->assertEquals(2, $id);
 
-        $this->assertIsAlert(2, 'MyCustomAlert', 'day', array(1));
+        $this->assertIsAlert(2, 'MyCustomAlert', 'day', array(1), 'superUserLogin', 'nb_visits', 'less_than', 5, 'MultiSites_getOne', 'matches_exactly', 'Piwik', 'Updated description');
     }
 
     public function test_getAlert_ShouldLoadAlertAndRelatedWebsiteIds_IfExists()
@@ -572,6 +589,7 @@ class ApiTest extends BaseTest
             'idsite'            => 1,
             'ts_last_sent'      => null,
             'name'              => 'Initial2',
+            'description'       => '',
             'period'            => 'week',
             'login'             => 'superUserLogin',
             'report'            => 'MultiSites_getOne',

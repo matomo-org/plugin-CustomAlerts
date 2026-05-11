@@ -1,5 +1,6 @@
 ## Changelog
 
+* 5.3.0 - 2026-05-11 - Added alert description and helptexts
 * 5.2.6 - 2026-04-27 - Updated API documentation
 * 5.2.5 - 2026-03-30 - Added escaping for report_matched value
 * 5.2.4 - 2026-03-02 - Updated API documentation

@@ -143,15 +143,17 @@ class API extends \Piwik\Plugin\API
      *                                                Allowed values: email, mobile, slack, teams.
      * @param string $slackChannelID Slack channel ID when the slack channel is enabled.
      * @param string $msTeamsWebhookUrl Microsoft Teams webhook URL when the teams channel is enabled.
+     * @param string $description Optional alert description (max 255 characters).
      * @return int ID of the newly created alert.
      */
-    public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false, array $reportMediums = [], string $slackChannelID = '', string $msTeamsWebhookUrl = '')
+    public function addAlert($name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false, array $reportMediums = [], string $slackChannelID = '', string $msTeamsWebhookUrl = '', string $description = '')
     {
         $idSites          = Site::getIdSitesFromIdSitesString($idSites);
 
-        $this->checkAlert($idSites, $name, $period, $emailMe, $additionalEmails, $phoneNumbers, $slackChannelID, $msTeamsWebhookUrl, $metricCondition, $metric, $comparedTo, $reportCondition, $reportUniqueId, $reportMediums);
+        $this->checkAlert($idSites, $name, $description, $period, $emailMe, $additionalEmails, $phoneNumbers, $slackChannelID, $msTeamsWebhookUrl, $metricCondition, $metric, $comparedTo, $reportCondition, $reportUniqueId, $reportMediums);
 
-        $name  = Common::unsanitizeInputValue($name);
+        $name = Common::unsanitizeInputValue($name);
+        $description = Common::unsanitizeInputValue($description);
         $login = Piwik::getCurrentUserLogin();
 
         if (empty($reportCondition) || empty($reportValue)) {
@@ -161,7 +163,7 @@ class API extends \Piwik\Plugin\API
 
         $metricValue = Common::forceDotAsSeparatorForDecimalPoint((float)$metricValue);
 
-        return $this->getModel()->createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums, $slackChannelID, $msTeamsWebhookUrl);
+        return $this->getModel()->createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums, $slackChannelID, $msTeamsWebhookUrl, $description);
     }
 
     private function filterAdditionalEmails($additionalEmails)
@@ -195,7 +197,7 @@ class API extends \Piwik\Plugin\API
         return array_values($phoneNumbers);
     }
 
-    private function checkAlert($idSites, $name, $period, &$emailMe, &$additionalEmails, &$phoneNumbers, &$slackChannelID, &$msTeamsWebhookUrl, $metricCondition, $metricValue, $comparedTo, $reportCondition, $reportUniqueId, $reportMediums)
+    private function checkAlert($idSites, $name, $description, $period, &$emailMe, &$additionalEmails, &$phoneNumbers, &$slackChannelID, &$msTeamsWebhookUrl, $metricCondition, $metricValue, $comparedTo, $reportCondition, $reportUniqueId, $reportMediums)
     {
         Piwik::checkUserHasViewAccess($idSites);
         $additionalEmails = in_array('email', $reportMediums) ? $this->filterAdditionalEmails($additionalEmails) : [];
@@ -205,6 +207,7 @@ class API extends \Piwik\Plugin\API
         $msTeamsWebhookUrl = in_array('teams', $reportMediums) ? $msTeamsWebhookUrl : '';
 
         $this->validator->checkName($name);
+        $this->validator->checkDescription($description);
         $this->validator->checkPeriod($period);
         $this->validator->checkComparedTo($period, $comparedTo);
         $this->validator->checkMetricCondition($metricCondition);
@@ -252,19 +255,21 @@ class API extends \Piwik\Plugin\API
      *                                                Allowed values: email, mobile, slack, teams.
      * @param string $slackChannelID Slack channel ID when the slack channel is enabled.
      * @param string $msTeamsWebhookUrl Microsoft Teams webhook URL when the teams channel is enabled.
+     * @param string $description Optional alert description (max 255 characters).
      *
      * @return int Updated alert ID.
      */
-    public function editAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false, array $reportMediums = [], string $slackChannelID = '', string $msTeamsWebhookUrl = '')
+    public function editAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false, array $reportMediums = [], string $slackChannelID = '', string $msTeamsWebhookUrl = '', string $description = '')
     {
         // make sure alert exists and user has permission to read
         $this->getAlert($idAlert);
 
         $idSites          = Site::getIdSitesFromIdSitesString($idSites);
 
-        $this->checkAlert($idSites, $name, $period, $emailMe, $additionalEmails, $phoneNumbers, $slackChannelID, $msTeamsWebhookUrl, $metricCondition, $metric, $comparedTo, $reportCondition, $reportUniqueId, $reportMediums);
+        $this->checkAlert($idSites, $name, $description, $period, $emailMe, $additionalEmails, $phoneNumbers, $slackChannelID, $msTeamsWebhookUrl, $metricCondition, $metric, $comparedTo, $reportCondition, $reportUniqueId, $reportMediums);
 
         $name = Common::unsanitizeInputValue($name);
+        $description = Common::unsanitizeInputValue($description);
 
         if (empty($reportCondition) || empty($reportValue)) {
             $reportCondition = null;
@@ -273,7 +278,7 @@ class API extends \Piwik\Plugin\API
 
         $metricValue = Common::forceDotAsSeparatorForDecimalPoint((float)$metricValue);
 
-        return $this->getModel()->updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums, $slackChannelID, $msTeamsWebhookUrl);
+        return $this->getModel()->updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums, $slackChannelID, $msTeamsWebhookUrl, $description);
     }
 
     /**

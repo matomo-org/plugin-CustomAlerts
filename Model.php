@@ -24,6 +24,7 @@ class Model
     {
         $tableAlert = "`idalert` INT NOT NULL PRIMARY KEY ,
                        `name` VARCHAR(100) NOT NULL ,
+                       `description` VARCHAR(255) NOT NULL DEFAULT '',
                        `login` VARCHAR(100) NOT NULL ,
                        `period` VARCHAR(5) NOT NULL ,
                        `report` VARCHAR(150) NOT NULL ,
@@ -56,6 +57,7 @@ class Model
 			              `value_old` DECIMAL (20,3) DEFAULT NULL,
 			              `value_new` DECIMAL (20,3) DEFAULT NULL,
                           `name` VARCHAR(100) NOT NULL ,
+                          `description` VARCHAR(255) NOT NULL DEFAULT '',
 			              `login` VARCHAR(100) NOT NULL ,
 			              `period` VARCHAR(5) NOT NULL ,
 			              `report` VARCHAR(150) NOT NULL ,
@@ -261,13 +263,14 @@ class Model
      * @return int ID of new Alert
      * @throws \Exception
      */
-    public function createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums, $slackChannelID, $msTeamsWebhookUrl)
+    public function createAlert($name, $idSites, $login, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums, $slackChannelID, $msTeamsWebhookUrl, $description = '')
     {
         $idAlert = $this->getNextAlertId();
 
         $newAlert = array(
             'idalert'           => $idAlert,
             'name'              => $name,
+            'description'       => $description,
             'period'            => $period,
             'login'             => $login,
             'email_me'          => $emailMe ? 1 : 0,
@@ -346,10 +349,11 @@ class Model
      * @return int
      * @throws \Exception
      */
-    public function updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums, $slackChannelID, $msTeamsWebhookUrl)
+    public function updateAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition, $reportValue, $reportMediums, $slackChannelID, $msTeamsWebhookUrl, $description = '')
     {
         $alert = array(
             'name'              => $name,
+            'description'       => $description,
             'period'            => $period,
             'email_me'          => $emailMe ? 1 : 0,
             'additional_emails' => json_encode($additionalEmails),
@@ -393,7 +397,7 @@ class Model
     {
         $alert = $this->getAlert($idAlert);
 
-        $keysToKeep = array('idalert', 'name', 'login', 'period', 'metric', 'metric_condition', 'metric_matched', 'report', 'report_condition', 'report_matched', 'report_mediums', 'compared_to', 'email_me', 'additional_emails', 'phone_numbers', 'slack_channel_id', 'ms_teams_webhook_url');
+        $keysToKeep = array('idalert', 'name', 'description', 'login', 'period', 'metric', 'metric_condition', 'metric_matched', 'report', 'report_condition', 'report_matched', 'report_mediums', 'compared_to', 'email_me', 'additional_emails', 'phone_numbers', 'slack_channel_id', 'ms_teams_webhook_url');
 
         $triggeredAlert = array();
         foreach ($keysToKeep as $key) {

@@ -8,6 +8,7 @@
 interface Alert {
   idalert: string|number;
   name: string;
+  description: string;
   login: string;
   period: string;
   report: string;

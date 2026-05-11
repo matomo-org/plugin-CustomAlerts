@@ -18,8 +18,23 @@
           v-model="actualAlert.name"
           :maxlength="100"
           :title="translate('CustomAlerts_AlertName')"
+          :placeholder="translate('CustomAlerts_AlertNamePlaceholder')"
+          :inline-help="translate('CustomAlerts_AlertNameInlineHelp')"
         >
         </Field>
+      </div>
+      <div>
+        <Field
+          uicontrol="textarea"
+          name="alertDescription"
+          v-model="actualAlert.description"
+          :maxlength="255"
+          :rows="3"
+          :ui-control-attributes="{ class: 'compact-textarea' }"
+          :title="translate('CustomAlerts_AlertDescriptionOptional')"
+          :placeholder="translate('CustomAlerts_AlertDescriptionPlaceholder')"
+          :inline-help="translate('CustomAlerts_AlertDescriptionInlineHelp')"
+        />
       </div>
       <div>
         <Field
@@ -256,7 +271,7 @@ import {
   externalLink,
 } from 'CoreHome';
 import { Form, Field, SaveButton } from 'CorePluginsAdmin';
-import { Alert as AlertType } from '../types';
+import type { Alert as AlertType } from '../types';
 
 const SelectPhoneNumbers = useExternalPluginComponent('MobileMessaging', 'SelectPhoneNumbers');
 const SelectSlackChannel = useExternalPluginComponent('Slack', 'SelectSlackChannel');
@@ -374,6 +389,7 @@ export default defineComponent({
       actualReportMetadata: reportMetadata,
       reportValuesAutoComplete: null,
       actualAlert: alert ? { ...alert } : {
+        description: '',
         period: 'day',
         id_sites: [currentSite?.id || Matomo.idSite],
         report_mediums: [],
@@ -565,6 +581,7 @@ export default defineComponent({
         idAlert: this.actualAlert.idalert,
         format: 'json',
         name: this.actualAlert.name,
+        description: this.actualAlert.description,
         metric: this.actualAlert.metric,
         metricCondition: this.actualAlert.metric_condition,
         metricValue: this.actualAlert.metric_matched,

@@ -37,7 +37,8 @@ class ModelTest extends BaseTest
         $idSites = null,
         $metric = 'nb_visits',
         $report = 'MultiSites_getOne',
-        $login = 'superUserLogin'
+        $login = 'superUserLogin',
+        $description = ''
     ) {
         if (is_null($idSites)) {
             $idSites = $this->idSite;
@@ -49,7 +50,7 @@ class ModelTest extends BaseTest
         $emails       = array('test1@example.com', 'test2@example.com');
         $phoneNumbers = array('0123456789');
 
-        $id = $this->model->createAlert($name, $idSites, $login, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $comparedTo = 1, $report, 'matches_exactly', 'Piwik', ['email', 'mobile'], '', '');
+        $id = $this->model->createAlert($name, $idSites, $login, $period, 0, $emails, $phoneNumbers, $metric, 'less_than', 5, $comparedTo = 1, $report, 'matches_exactly', 'Piwik', ['email', 'mobile'], '', '', $description);
         return $id;
     }
 
@@ -58,13 +59,13 @@ class ModelTest extends BaseTest
         $this->assertContainTables(array('alert', 'alert_site', 'alert_triggered'));
 
         $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert'));
-        $this->assertCount(17, $columns);
+        $this->assertCount(18, $columns);
 
         $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert_site'));
         $this->assertCount(2, $columns);
 
         $columns = Db::fetchAll('show columns from ' . Common::prefixTable('alert_triggered'));
-        $this->assertCount(23, $columns);
+        $this->assertCount(24, $columns);
     }
 
     private function assertContainTables($expectedTables)
@@ -108,10 +109,10 @@ class ModelTest extends BaseTest
 
     public function test_addAlert_ShouldCreateANewAlert()
     {
-        $id = $this->createAlert('MyCustomAlert', 'week');
+        $id = $this->createAlert('MyCustomAlert', 'week', null, 'nb_visits', 'MultiSites_getOne', 'superUserLogin', 'Description text');
         $this->assertGreaterThan(3, $id);
 
-        $this->assertIsAlert($id, 'MyCustomAlert', 'week');
+        $this->assertIsAlert($id, 'MyCustomAlert', 'week', null, 'superUserLogin', 'nb_visits', 'less_than', 5, 'MultiSites_getOne', 'matches_exactly', 'Piwik', 'Description text');
     }
 
     private function assertIsAlert(
@@ -125,7 +126,8 @@ class ModelTest extends BaseTest
         $metricMatched = 5,
         $report = 'MultiSites_getOne',
         $reportCondition = 'matches_exactly',
-        $reportMatched = 'Piwik'
+        $reportMatched = 'Piwik',
+        $description = ''
     ) {
         if (is_null($idSites)) {
             $idSites = array($this->idSite);
@@ -136,6 +138,7 @@ class ModelTest extends BaseTest
         $expected = array(
             'idalert'           => $id,
             'name'              => $name,
+            'description'       => $description,
             'login'             => $login,
             'period'            => $period,
             'report'            => $report,
@@ -166,10 +169,10 @@ class ModelTest extends BaseTest
 
     public function test_editAlert_ShouldUpdateExistingEntry()
     {
-        $id = $this->editAlert(2, 'MyCustomAlert', 'day');
+        $id = $this->editAlert(2, 'MyCustomAlert', 'day', null, 'nb_visits', 'MultiSites_getOne', 'Updated description');
         $this->assertEquals(2, $id);
 
-        $this->assertIsAlert(2, 'MyCustomAlert', 'day', array(1));
+        $this->assertIsAlert(2, 'MyCustomAlert', 'day', array(1), 'superUserLogin', 'nb_visits', 'less_than', 5, 'MultiSites_getOne', 'matches_exactly', 'Piwik', 'Updated description');
     }
 
     private function editAlert(
@@ -178,7 +181,8 @@ class ModelTest extends BaseTest
         $period = 'week',
         $idSites = null,
         $metric = 'nb_visits',
-        $report = 'MultiSites_getOne'
+        $report = 'MultiSites_getOne',
+        $description = ''
     ) {
         if (is_null($idSites)) {
             $idSites = $this->idSite;
@@ -207,7 +211,8 @@ class ModelTest extends BaseTest
             'Piwik',
             ['email', 'mobile'],
             '',
-            ''
+            '',
+            $description
         );
         return $id;
     }
@@ -312,6 +317,7 @@ class ModelTest extends BaseTest
             'idsite'            => 1,
             'ts_last_sent'      => null,
             'name'              => 'Initial2',
+            'description'       => '',
             'period'            => 'week',
             'login'             => 'superUserLogin',
             'report'            => 'MultiSites_getOne',
