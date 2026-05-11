@@ -3,6 +3,7 @@
         "AccessException": "No sou el propietari de l'alerta amb ID %d",
         "Alert": "Alerta",
         "AlertCondition": "Condició d'alerta",
+        "AlertDescriptionOptional": "Descripció (opcional)",
         "AlertDoesNotExist": "L'alerta amb ID %d no existeix!",
         "AlertMeWhen": "Avisa'm quan",
         "AlertName": "Nom de l'alerta",
