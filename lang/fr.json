@@ -3,6 +3,7 @@
         "AccessException": "Vous n'êtes pas le propriétaire de l'alerte avec l'ID %d",
         "Alert": "Alerte",
         "AlertCondition": "Condition de l'alerte",
+        "AlertDescriptionOptional": "Description (facultatif)",
         "AlertDoesNotExist": "L'alerte avec l'ID %d n'existe pas !",
         "AlertMeWhen": "M'alerter quand",
         "AlertName": "Nom de l'alerte",

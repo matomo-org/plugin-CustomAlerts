@@ -3,6 +3,7 @@
         "AccessException": "U bent niet de eigenaar van het alarm met ID %d",
         "Alert": "Alarm",
         "AlertCondition": "Voorwaarde alarm",
+        "AlertDescriptionOptional": "Beschrijving (optioneel)",
         "AlertDoesNotExist": "Alarm met ID %d bestaat niet!",
         "AlertMeWhen": "Alarmeer mij wanneer",
         "AlertName": "Naam alarm",

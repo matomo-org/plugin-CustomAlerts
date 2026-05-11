@@ -3,6 +3,7 @@
         "AccessException": "Ní tusa úinéir an Fholaimh le haitheantas %d",
         "Alert": "Airdeall",
         "AlertCondition": "Coinníoll Foláirimh",
+        "AlertDescriptionOptional": "Cur síos (roghnach)",
         "AlertDoesNotExist": "Níl foláireamh le haitheantas %d ann!",
         "AlertMeWhen": "Tabhair foláireamh dom nuair",
         "AlertName": "Ainm Foláirimh",

@@ -3,6 +3,7 @@
         "AccessException": "Δεν είστε ο ιδιοκτήτης του Συναγερμού με αναγνωριστικό %d",
         "Alert": "Ειδοποίηση",
         "AlertCondition": "Συνθήκη Ειδοποίησης",
+        "AlertDescriptionOptional": "Περιγραφή (προαιρετικά)",
         "AlertDoesNotExist": "Ο Συναγερμός με το αναγνωριστικό %d δεν υπάρχει!",
         "AlertMeWhen": "Ειδοποίησέ με όταν",
         "AlertName": "Όνομα Ειδοποίησης",
