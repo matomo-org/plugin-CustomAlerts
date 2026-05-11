@@ -3,6 +3,7 @@
         "AccessException": "Nuk jeni i zoti i Sinjalizimit me ID %d",
         "Alert": "Sinjalizim",
         "AlertCondition": "Kusht Sinjalizimi",
+        "AlertDescriptionOptional": "Përshkrim (opsional)",
         "AlertDoesNotExist": "S’ekziston Sinjalizim me ID %d!",
         "AlertMeWhen": "Sinjalizomë kur",
         "AlertName": "Emër Sinjalizimi",
