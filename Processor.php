@@ -239,7 +239,7 @@ class Processor
             'filter_limit'           => -1
         );
 
-        if ($this->supportsArchiveStateMetadata()) {
+        if (version_compare(\Piwik\Version::VERSION, '5.1.0-b1', '>=')) {
             $params['fetch_archive_state'] = 1;
         }
 
@@ -294,29 +294,21 @@ class Processor
      */
     protected function checkWhetherArchiveIsComplete(array $alert, DataTable $table): void
     {
-        if (!$this->supportsArchiveStateMetadata()) {
+        if (version_compare(\Piwik\Version::VERSION, '5.1.0-b1', '<')) {
             return;
         }
 
-        $archiveStateMetadataName = constant(DataTable::class . '::ARCHIVE_STATE_METADATA_NAME');
-        $archiveState = $table->getMetadata($archiveStateMetadataName);
+        $archiveState = $table->getMetadata(DataTable::ARCHIVE_STATE_METADATA_NAME);
         if (empty($archiveState)) {
             return;
         }
 
-        $completeArchiveState = constant(\Piwik\Archive\ArchiveState::class . '::COMPLETE');
-        if ($archiveState === $completeArchiveState) {
+        if ($archiveState === \Piwik\Archive\ArchiveState::COMPLETE) {
             return;
         }
 
         // Throw an exception since the archive status was provided and isn't complete
         throw new RetryableException('This alert is not ready to process due to incomplete archiving');
-    }
-
-    private function supportsArchiveStateMetadata(): bool
-    {
-        return defined(DataTable::class . '::ARCHIVE_STATE_METADATA_NAME')
-            && defined(\Piwik\Archive\ArchiveState::class . '::COMPLETE');
     }
 
     private function getDateForAlertInPast($idSite, $period, $subPeriodN)
