@@ -214,7 +214,7 @@ class Processor
      * @param int $idSite
      * @param int $subPeriodN
      *
-     * @return array
+     * @return mixed|null
      * @throws RetryableException If the report has an archive status, and it's something other than complete
      */
     public function getValueForAlertInPast($alert, $idSite, $subPeriodN)
@@ -239,10 +239,7 @@ class Processor
             'filter_limit'           => -1
         );
 
-        // Only include the archive state param for versions of Matomo that allow it
-        if (version_compare(\Piwik\Version::VERSION, '5.1.0-b1', '>=')) {
-            $params['fetch_archive_state'] = 1;
-        }
+        $params['fetch_archive_state'] = 1;
 
         if (!empty($report['parameters'])) {
             $params = array_merge($params, $report['parameters']);
@@ -295,11 +292,6 @@ class Processor
      */
     protected function checkWhetherArchiveIsComplete(array $alert, DataTable $table): void
     {
-        // Don't bother checking older versions of Matomo since the data and constants won't be there
-        if (version_compare(\Piwik\Version::VERSION, '5.1.0-b1', '<')) {
-            return;
-        }
-
         $archiveState = $table->getMetadata(DataTable::ARCHIVE_STATE_METADATA_NAME);
         if (empty($archiveState)) {
             return;
