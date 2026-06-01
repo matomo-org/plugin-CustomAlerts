@@ -239,7 +239,6 @@ class Processor
             'filter_limit'           => -1
         );
 
-        // @phpstan-ignore if.alwaysTrue
         if (version_compare(\Piwik\Version::VERSION, '5.1.0-b1', '>=')) {
             $params['fetch_archive_state'] = 1;
         }
@@ -295,7 +294,6 @@ class Processor
      */
     protected function checkWhetherArchiveIsComplete(array $alert, DataTable $table): void
     {
-        // @phpstan-ignore if.alwaysFalse
         if (version_compare(\Piwik\Version::VERSION, '5.1.0-b1', '<')) {
             return;
         }
