@@ -7,7 +7,7 @@
         "AlertMeWhen": "Alert me when",
         "AlertDescriptionOptional": "Description (optional)",
         "AlertDescriptionInlineHelp": "Enter a description to provide additional context, such as the purpose or usage.",
-        "AlertDescriptionPlaceholder": "Alert me when visits decrease by 40%",
+        "AlertDescriptionPlaceholder": "Alert me when visits decrease by 40%%",
         "AlertName": "Alert Name",
         "AlertNameInlineHelp": "Enter a unique name to clearly identify this custom alert.",
         "AlertNamePlaceholder": "Visits drop detected",
