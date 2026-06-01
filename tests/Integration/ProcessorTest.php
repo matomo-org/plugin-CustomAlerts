@@ -68,6 +68,11 @@ class CustomProcessor extends Processor
     {
         return parent::shouldBeTriggered($alert, $metricOne, $metricTwo);
     }
+
+    public function restrictMultiSitesReportToAlertOwner(array $params, array $report, array $alert): array
+    {
+        return parent::restrictMultiSitesReportToAlertOwner($params, $report, $alert);
+    }
 }
 
 /**
@@ -617,6 +622,39 @@ class ProcessorTest extends BaseTest
             ->method('triggerAlert');
 
         $processorMock->processAlert($alert, 1);
+    }
+
+    public function test_restrictMultiSitesReportToAlertOwner_shouldRestrictMultiSitesGetAllForAlertOwner()
+    {
+        $params = $this->processor->restrictMultiSitesReportToAlertOwner(
+            [],
+            ['module' => 'MultiSites', 'action' => 'getAll'],
+            ['login' => 'aUser']
+        );
+
+        $this->assertSame('aUser', $params['_restrictSitesToLogin']);
+    }
+
+    public function test_restrictMultiSitesReportToAlertOwner_shouldNotRestrictSuperUserAlertOwner()
+    {
+        $params = $this->processor->restrictMultiSitesReportToAlertOwner(
+            [],
+            ['module' => 'MultiSites', 'action' => 'getAll'],
+            ['login' => 'superUserLogin']
+        );
+
+        $this->assertArrayNotHasKey('_restrictSitesToLogin', $params);
+    }
+
+    public function test_restrictMultiSitesReportToAlertOwner_shouldNotRestrictOtherReports()
+    {
+        $params = $this->processor->restrictMultiSitesReportToAlertOwner(
+            [],
+            ['module' => 'VisitsSummary', 'action' => 'get'],
+            ['login' => 'aUser']
+        );
+
+        $this->assertArrayNotHasKey('_restrictSitesToLogin', $params);
     }
 
     public function test_shouldBeTriggered_ShouldFail_IfInvalidConditionGiven()
