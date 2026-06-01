@@ -295,6 +295,7 @@ class Processor
      */
     protected function checkWhetherArchiveIsComplete(array $alert, DataTable $table): void
     {
+        // Don't bother checking older versions of Matomo since the data and constants won't be there
         if (version_compare(\Piwik\Version::VERSION, '5.1.0-b1', '<')) {
             return;
         }
