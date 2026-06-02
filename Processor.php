@@ -248,6 +248,8 @@ class Processor
             $params = array_merge($params, $report['parameters']);
         }
 
+        $params = $this->restrictMultiSitesReportToAlertOwner($params, $report, $alert);
+
         $subtableId = DataTable\Manager::getInstance()->getMostRecentTableId();
 
         $table = ApiRequest::processRequest($report['module'] . '.' . $report['action'], $params, $default = []);
@@ -262,6 +264,22 @@ class Processor
         DataTable\Manager::getInstance()->deleteAll($subtableId);
 
         return $value;
+    }
+
+    protected function restrictMultiSitesReportToAlertOwner(array $params, array $report, array $alert): array
+    {
+        if (
+            $report['module'] !== 'MultiSites'
+            || $report['action'] !== 'getAll'
+            || empty($alert['login'])
+            || Piwik::hasTheUserSuperUserAccess($alert['login'])
+        ) {
+            return $params;
+        }
+
+        $params['_restrictSitesToLogin'] = $alert['login'];
+
+        return $params;
     }
 
     /**
