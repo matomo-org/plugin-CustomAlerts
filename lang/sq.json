@@ -5,7 +5,7 @@
         "AlertCondition": "Kusht Sinjalizimi",
         "AlertDescriptionInlineHelp": "Jepni një përshkrim për të ofruar kontekst shtesë, fjala vjen, qëllimi, ose përdorimi.",
         "AlertDescriptionOptional": "Përshkrim (opsional)",
-        "AlertDescriptionPlaceholder": "Sinjalizomë, kur vizitat bien me 40%",
+        "AlertDescriptionPlaceholder": "Sinjalizomë, kur vizitat bien me 40%%",
         "AlertDoesNotExist": "S’ekziston Sinjalizim me ID %d!",
         "AlertMeWhen": "Sinjalizomë kur",
         "AlertName": "Emër Sinjalizimi",
