@@ -5,7 +5,7 @@
         "AlertCondition": "Coinníoll Foláirimh",
         "AlertDescriptionInlineHelp": "Cuir isteach cur síos chun comhthéacs breise a sholáthar, amhail an cuspóir nó an úsáid.",
         "AlertDescriptionOptional": "Cur síos (roghnach)",
-        "AlertDescriptionPlaceholder": "Cuir foláireamh orm nuair a laghdaíonn cuairteanna faoi 40%",
+        "AlertDescriptionPlaceholder": "Cuir foláireamh orm nuair a laghdaíonn cuairteanna faoi 40%%",
         "AlertDoesNotExist": "Níl foláireamh le haitheantas %d ann!",
         "AlertMeWhen": "Tabhair foláireamh dom nuair",
         "AlertName": "Ainm Foláirimh",
