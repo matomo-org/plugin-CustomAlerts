@@ -5,7 +5,7 @@
         "AlertCondition": "Condition de l'alerte",
         "AlertDescriptionInlineHelp": "Saisissez une description pour fournir un contexte supplémentaire, comme le but ou l'utilisation.",
         "AlertDescriptionOptional": "Description (facultatif)",
-        "AlertDescriptionPlaceholder": "M'avertir lorsque les visites diminuent de 40 %",
+        "AlertDescriptionPlaceholder": "M'avertir lorsque les visites diminuent de 40%%",
         "AlertDoesNotExist": "L'alerte avec l'ID %d n'existe pas !",
         "AlertMeWhen": "M'alerter quand",
         "AlertName": "Nom de l'alerte",
