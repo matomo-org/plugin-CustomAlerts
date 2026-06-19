@@ -29,4 +29,4 @@ interface Alert {
   report_mediums: string[];
 }
 
-export { Alert };
+export type { Alert };
