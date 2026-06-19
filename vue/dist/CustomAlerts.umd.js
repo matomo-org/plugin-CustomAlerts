@@ -66,25 +66,16 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
   };
   const _hoisted_1$3 = { key: 0 };
   const _hoisted_2$3 = { colspan: "6" };
-  const _hoisted_3$3 = /* @__PURE__ */ vue.createElementVNode("br", null, null, -1);
-  const _hoisted_4$1 = /* @__PURE__ */ vue.createElementVNode("br", null, null, -1);
-  const _hoisted_5$1 = /* @__PURE__ */ vue.createElementVNode("br", null, null, -1);
-  const _hoisted_6$1 = { class: "name" };
-  const _hoisted_7$1 = { class: "site" };
-  const _hoisted_8$1 = { class: "period" };
-  const _hoisted_9$1 = { class: "reportName" };
-  const _hoisted_10$1 = { class: "edit" };
-  const _hoisted_11$1 = ["href", "title"];
-  const _hoisted_12$1 = ["onClick", "id", "title"];
-  const _hoisted_13$1 = /* @__PURE__ */ vue.createElementVNode("span", { class: "icon-delete" }, null, -1);
-  const _hoisted_14$1 = [
-    _hoisted_13$1
-  ];
-  const _hoisted_15$1 = { class: "tableActionBar" };
-  const _hoisted_16$1 = ["href"];
-  const _hoisted_17$1 = /* @__PURE__ */ vue.createElementVNode("span", { class: "icon-add" }, null, -1);
-  const _hoisted_18$1 = ["href"];
-  const _hoisted_19$1 = /* @__PURE__ */ vue.createElementVNode("span", { class: "icon-table" }, null, -1);
+  const _hoisted_3$2 = { class: "name" };
+  const _hoisted_4$1 = { class: "site" };
+  const _hoisted_5$1 = { class: "period" };
+  const _hoisted_6$1 = { class: "reportName" };
+  const _hoisted_7$1 = { class: "edit" };
+  const _hoisted_8$1 = ["href", "title"];
+  const _hoisted_9$1 = ["onClick", "id", "title"];
+  const _hoisted_10$1 = { class: "tableActionBar" };
+  const _hoisted_11$1 = ["href"];
+  const _hoisted_12$1 = ["href"];
   function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     var _a;
     const _directive_content_table = vue.resolveDirective("content-table");
@@ -102,21 +93,21 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
         vue.createElementVNode("tbody", null, [
           !((_a = _ctx.alerts) == null ? void 0 : _a.length) ? (vue.openBlock(), vue.createElementBlock("tr", _hoisted_1$3, [
             vue.createElementVNode("td", _hoisted_2$3, [
-              _hoisted_3$3,
+              _cache[0] || (_cache[0] = vue.createElementVNode("br", null, null, -1)),
               vue.createTextVNode(" " + vue.toDisplayString(_ctx.translate("CustomAlerts_NoAlertsDefined")) + " ", 1),
-              _hoisted_4$1,
-              _hoisted_5$1
+              _cache[1] || (_cache[1] = vue.createElementVNode("br", null, null, -1)),
+              _cache[2] || (_cache[2] = vue.createElementVNode("br", null, null, -1))
             ])
           ])) : vue.createCommentVNode("", true),
           (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.alerts, (alert) => {
             return vue.openBlock(), vue.createElementBlock("tr", {
               key: alert.idalert
             }, [
-              vue.createElementVNode("td", _hoisted_6$1, vue.toDisplayString(alert.name), 1),
-              vue.createElementVNode("td", _hoisted_7$1, vue.toDisplayString(_ctx.decode(alert.siteName)), 1),
-              vue.createElementVNode("td", _hoisted_8$1, vue.toDisplayString(_ctx.ucfirst(_ctx.translate(`Intl_Period${_ctx.ucfirst(alert.period)}`))), 1),
-              vue.createElementVNode("td", _hoisted_9$1, vue.toDisplayString(alert.reportName || "-"), 1),
-              vue.createElementVNode("td", _hoisted_10$1, [
+              vue.createElementVNode("td", _hoisted_3$2, vue.toDisplayString(alert.name), 1),
+              vue.createElementVNode("td", _hoisted_4$1, vue.toDisplayString(_ctx.decode(alert.siteName)), 1),
+              vue.createElementVNode("td", _hoisted_5$1, vue.toDisplayString(_ctx.ucfirst(_ctx.translate(`Intl_Period${_ctx.ucfirst(alert.period)}`))), 1),
+              vue.createElementVNode("td", _hoisted_6$1, vue.toDisplayString(alert.reportName || "-"), 1),
+              vue.createElementVNode("td", _hoisted_7$1, [
                 vue.createElementVNode("a", {
                   class: "table-action icon-edit",
                   href: _ctx.linkTo({
@@ -125,13 +116,15 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
                     "idAlert": alert.idalert
                   }),
                   title: _ctx.translate("General_Edit")
-                }, null, 8, _hoisted_11$1),
+                }, null, 8, _hoisted_8$1),
                 vue.createElementVNode("button", {
                   class: "deleteAlert table-action",
                   onClick: ($event) => _ctx.deleteAlert(alert.idalert),
                   id: alert.idalert,
                   title: _ctx.translate("General_Delete")
-                }, _hoisted_14$1, 8, _hoisted_12$1)
+                }, [..._cache[3] || (_cache[3] = [
+                  vue.createElementVNode("span", { class: "icon-delete" }, null, -1)
+                ])], 8, _hoisted_9$1)
               ])
             ]);
           }), 128))
@@ -139,19 +132,19 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
       ])), [
         [_directive_content_table]
       ]),
-      vue.createElementVNode("div", _hoisted_15$1, [
+      vue.createElementVNode("div", _hoisted_10$1, [
         vue.createElementVNode("a", {
           href: _ctx.linkTo({ "module": "CustomAlerts", "action": "addNewAlert" })
         }, [
-          _hoisted_17$1,
+          _cache[4] || (_cache[4] = vue.createElementVNode("span", { class: "icon-add" }, null, -1)),
           vue.createTextVNode(" " + vue.toDisplayString(_ctx.translate("CustomAlerts_CreateNewAlert")), 1)
-        ], 8, _hoisted_16$1),
+        ], 8, _hoisted_11$1),
         vue.createElementVNode("a", {
           href: _ctx.linkTo({ "module": "CustomAlerts", "action": "historyTriggeredAlerts" })
         }, [
-          _hoisted_19$1,
+          _cache[5] || (_cache[5] = vue.createElementVNode("span", { class: "icon-table" }, null, -1)),
           vue.createTextVNode(" " + vue.toDisplayString(_ctx.translate("CustomAlerts_AlertsHistory")), 1)
-        ], 8, _hoisted_18$1)
+        ], 8, _hoisted_12$1)
       ])
     ]);
   }
@@ -513,7 +506,7 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
     class: "inline-help-node"
   };
   const _hoisted_2$2 = { class: "report-mediums" };
-  const _hoisted_3$2 = { key: 0 };
+  const _hoisted_3$1 = { key: 0 };
   const _hoisted_4 = { key: 1 };
   const _hoisted_5 = { key: 0 };
   const _hoisted_6 = {
@@ -632,7 +625,7 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
                 })
               }, null, 8, ["title", "inline-help", "options", "model-value"])
             ]),
-            _ctx.actualAlert.report_mediums && _ctx.actualAlert.report_mediums.includes("email") ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$2, [
+            _ctx.actualAlert.report_mediums && _ctx.actualAlert.report_mediums.includes("email") ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$1, [
               vue.createElementVNode("div", null, [
                 vue.createVNode(_component_Field, {
                   uicontrol: "checkbox",
@@ -665,7 +658,7 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
                   vue.createVNode(_component_Alert, { severity: "info" }, {
                     default: vue.withCtx(() => [
                       vue.createElementVNode("strong", null, vue.toDisplayString(_ctx.translate("MobileMessaging_PhoneNumbers")), 1),
-                      vue.createTextVNode(": "),
+                      _cache[18] || (_cache[18] = vue.createTextVNode(": ", -1)),
                       vue.createElementVNode("span", {
                         innerHTML: _ctx.$sanitize(_ctx.mobileMessagingNotActivated)
                       }, null, 8, _hoisted_8)
@@ -837,7 +830,6 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
   });
   const _hoisted_1$1 = { class: "tableActionBar" };
   const _hoisted_2$1 = ["href"];
-  const _hoisted_3$1 = /* @__PURE__ */ vue.createElementVNode("span", { class: "icon-table" }, null, -1);
   function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_ContentBlock = vue.resolveComponent("ContentBlock");
     return vue.openBlock(), vue.createBlock(_component_ContentBlock, {
@@ -848,7 +840,7 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
         vue.renderSlot(_ctx.$slots, "default"),
         vue.createElementVNode("div", _hoisted_1$1, [
           vue.createElementVNode("a", { href: _ctx.customAlertsIndexLink }, [
-            _hoisted_3$1,
+            _cache[0] || (_cache[0] = vue.createElementVNode("span", { class: "icon-table" }, null, -1)),
             vue.createTextVNode(" " + vue.toDisplayString(_ctx.translate("CustomAlerts_ManageAlerts")), 1)
           ], 8, _hoisted_2$1)
         ])
