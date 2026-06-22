@@ -1,5 +1,6 @@
 ## Changelog
 
+* 5.3.1 - 2026-06-29 - Added code to improve the access check before sending an alert
 * 5.3.1 - 2026-06-08 - Added restrict access check for MultiSites.getAll report for non superusers
 * 5.3.0 - 2026-05-11 - Added alert description and helptexts
 * 5.2.6 - 2026-04-27 - Updated API documentation

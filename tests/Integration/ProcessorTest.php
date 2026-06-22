@@ -73,6 +73,11 @@ class CustomProcessor extends Processor
     {
         return parent::restrictMultiSitesReportToAlertOwner($params, $report, $alert);
     }
+
+    public function hasViewPermissionForAlertOwner(array $alert, int $idSite): bool
+    {
+        return parent::hasViewPermissionForAlertOwner($alert, $idSite);
+    }
 }
 
 /**
@@ -544,6 +549,7 @@ class ProcessorTest extends BaseTest
     ) {
         return array(
             'idalert'          => 1,
+            'login'            => 'superUserLogin',
             'period'           => $period,
             'id_sites'         => $idSites,
             'metric_condition' => 'increase_more_than',
@@ -598,6 +604,28 @@ class ProcessorTest extends BaseTest
         $alert = $this->buildAlert();
 
         $this->assertProcessNotRun($alert, array(99, 85));
+    }
+
+    public function test_processAlert_shouldNotRun_IfAlertOwnerNoLongerHasViewAccess()
+    {
+        $alert = $this->buildAlert([1]);
+
+        $processorMock = $this->getMockBuilder('Piwik\Plugins\CustomAlerts\tests\Integration\CustomProcessor')
+            ->setMethods(['hasViewPermissionForAlertOwner', 'getValueForAlertInPast', 'triggerAlert'])
+            ->getMock();
+
+        $processorMock->expects($this->once())
+            ->method('hasViewPermissionForAlertOwner')
+            ->with($this->equalTo($alert), $this->equalTo(1))
+            ->will($this->returnValue(false));
+
+        $processorMock->expects($this->never())
+            ->method('getValueForAlertInPast');
+
+        $processorMock->expects($this->never())
+            ->method('triggerAlert');
+
+        $processorMock->processAlert($alert, 1);
     }
 
     public function test_processAlert_shouldOnlyBeTriggeredIfAlertMatches()
