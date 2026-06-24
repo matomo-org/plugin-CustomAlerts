@@ -18,6 +18,7 @@ use Piwik\Date;
 use Piwik\Piwik;
 use Piwik\Plugins\API\ProcessedReport;
 use Piwik\Scheduler\RetryableException;
+use Piwik\Plugins\SitesManager\API as SitesManagerApi;
 use Piwik\Site;
 
 /**
@@ -185,6 +186,10 @@ class Processor
             return false;
         }
 
+        if (!$this->hasViewPermissionForAlertOwner($alert, $idSite)) {
+            return false;
+        }
+
         if (!$this->validator->isValidComparableDate($alert['period'], $alert['compared_to'])) {
             // actually it would be nice to log or send a notification or whatever that we have skipped an alert
             return false;
@@ -196,6 +201,17 @@ class Processor
         }
 
         return true;
+    }
+
+    protected function hasViewPermissionForAlertOwner(array $alert, int $idSite): bool
+    {
+        if (empty($alert['login'])) {
+            return false;
+        }
+
+        $idSitesUserHasAccess = SitesManagerApi::getInstance()->getSitesIdWithAtLeastViewAccess($alert['login']);
+
+        return !empty($idSitesUserHasAccess) && in_array($idSite, $idSitesUserHasAccess);
     }
 
     private function reportExists($idSite, $report, $metric)
