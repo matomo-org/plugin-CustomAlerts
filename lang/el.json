@@ -5,7 +5,7 @@
         "AlertCondition": "Συνθήκη Ειδοποίησης",
         "AlertDescriptionInlineHelp": "Εισαγάγετε μια περιγραφή για να παρέχετε περισσότερο γενικό πλαίσιο, όπως το σκοπό ή τη χρήση.",
         "AlertDescriptionOptional": "Περιγραφή (προαιρετικά)",
-        "AlertDescriptionPlaceholder": "Να ειδοποιούμαι αν οι επισκέψεις μειωθούν κατά 40%",
+        "AlertDescriptionPlaceholder": "Να ειδοποιούμαι αν οι επισκέψεις μειωθούν κατά 40%%",
         "AlertDoesNotExist": "Ο Συναγερμός με το αναγνωριστικό %d δεν υπάρχει!",
         "AlertMeWhen": "Ειδοποίησέ με όταν",
         "AlertName": "Όνομα Ειδοποίησης",
