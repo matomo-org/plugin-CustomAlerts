@@ -100,12 +100,13 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
             ])
           ])) : vue.createCommentVNode("", true),
           (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(_ctx.alerts, (alert) => {
+            var _a2;
             return vue.openBlock(), vue.createElementBlock("tr", {
               key: alert.idalert
             }, [
               vue.createElementVNode("td", _hoisted_3$2, vue.toDisplayString(alert.name), 1),
-              vue.createElementVNode("td", _hoisted_4$1, vue.toDisplayString(_ctx.decode(alert.siteName)), 1),
-              vue.createElementVNode("td", _hoisted_5$1, vue.toDisplayString(_ctx.ucfirst(_ctx.translate(`Intl_Period${_ctx.ucfirst(alert.period)}`))), 1),
+              vue.createElementVNode("td", _hoisted_4$1, vue.toDisplayString(_ctx.decode(alert.siteName || "")), 1),
+              vue.createElementVNode("td", _hoisted_5$1, vue.toDisplayString(_ctx.ucfirst(_ctx.translate(`Intl_Period${_ctx.ucfirst(alert.period || "")}`))), 1),
               vue.createElementVNode("td", _hoisted_6$1, vue.toDisplayString(alert.reportName || "-"), 1),
               vue.createElementVNode("td", _hoisted_7$1, [
                 vue.createElementVNode("a", {
@@ -119,8 +120,11 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
                 }, null, 8, _hoisted_8$1),
                 vue.createElementVNode("button", {
                   class: "deleteAlert table-action",
-                  onClick: ($event) => _ctx.deleteAlert(alert.idalert),
-                  id: alert.idalert,
+                  onClick: ($event) => {
+                    var _a3;
+                    return _ctx.deleteAlert((_a3 = alert.idalert) != null ? _a3 : "");
+                  },
+                  id: String((_a2 = alert.idalert) != null ? _a2 : ""),
                   title: _ctx.translate("General_Delete")
                 }, [..._cache[3] || (_cache[3] = [
                   vue.createElementVNode("span", { class: "icon-delete" }, null, -1)
@@ -672,17 +676,15 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
               vue.createVNode(_component_SelectSlackChannel, {
                 "model-value": _ctx.actualAlert.slack_channel_id || "",
                 "is-slack-oauth-token-added": _ctx.isSlackOauthTokenAdded,
-                modelValue: _ctx.actualAlert.slack_channel_id,
                 "onUpdate:modelValue": _cache[8] || (_cache[8] = ($event) => _ctx.actualAlert.slack_channel_id = $event)
-              }, null, 8, ["model-value", "is-slack-oauth-token-added", "modelValue"])
+              }, null, 8, ["model-value", "is-slack-oauth-token-added"])
             ])) : vue.createCommentVNode("", true),
             _ctx.actualAlert.report_mediums && _ctx.actualAlert.report_mediums.includes("teams") ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_10, [
               vue.createVNode(_component_SelectMicrosoftTeamsWebhookUrl, {
                 "is-required-fields-set": true,
                 "model-value": _ctx.actualAlert.ms_teams_webhook_url || "",
-                modelValue: _ctx.actualAlert.ms_teams_webhook_url,
                 "onUpdate:modelValue": _cache[9] || (_cache[9] = ($event) => _ctx.actualAlert.ms_teams_webhook_url = $event)
-              }, null, 8, ["model-value", "modelValue"])
+              }, null, 8, ["model-value"])
             ])) : vue.createCommentVNode("", true),
             vue.createElementVNode("div", null, [
               vue.createVNode(_component_Field, {
@@ -794,7 +796,7 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
             }), 128)),
             ((_c = _ctx.actualAlert) == null ? void 0 : _c.idalert) ? (vue.openBlock(), vue.createBlock(_component_SaveButton, {
               key: 4,
-              onClick: _cache[16] || (_cache[16] = ($event) => _ctx.updateAlert(_ctx.actualAlert.idalert)),
+              onClick: _cache[16] || (_cache[16] = ($event) => _ctx.updateAlert()),
               saving: _ctx.isLoading
             }, null, 8, ["saving"])) : (vue.openBlock(), vue.createBlock(_component_SaveButton, {
               key: 5,

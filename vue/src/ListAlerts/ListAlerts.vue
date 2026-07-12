@@ -26,8 +26,8 @@
         </tr>
         <tr v-for="alert in alerts" :key="alert.idalert">
           <td class="name">{{ alert.name }}</td>
-          <td class="site">{{ decode(alert.siteName) }}</td>
-          <td class="period">{{ ucfirst(translate(`Intl_Period${ucfirst(alert.period)}`)) }}</td>
+          <td class="site">{{ decode(alert.siteName || '') }}</td>
+          <td class="period">{{ ucfirst(translate(`Intl_Period${ucfirst(alert.period || '')}`)) }}</td>
           <td class="reportName">{{ alert.reportName || '-' }}</td>
           <td class="edit">
             <a
@@ -41,8 +41,8 @@
             ></a>
             <button
               class="deleteAlert table-action"
-              @click="deleteAlert(alert.idalert)"
-              :id="alert.idalert"
+              @click="deleteAlert(alert.idalert ?? '')"
+              :id="String(alert.idalert ?? '')"
               :title="translate('General_Delete')"
             >
               <span class="icon-delete" />
@@ -64,7 +64,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
+
+export interface Alert {
+  idalert?: string | number;
+  name?: string;
+  period?: string;
+  reportName?: string;
+  siteName?: string;
+}
 import {
   AjaxHelper,
   Matomo,
@@ -75,7 +83,7 @@ import {
 export default defineComponent({
   props: {
     alerts: {
-      type: Array,
+      type: Array as PropType<Alert[]>,
       default() { return []; },
     },
   },

@@ -124,14 +124,14 @@
         <SelectSlackChannel
             :model-value="actualAlert.slack_channel_id || ''"
             :is-slack-oauth-token-added="isSlackOauthTokenAdded"
-            v-model="actualAlert.slack_channel_id"
+            @update:model-value="actualAlert.slack_channel_id = $event"
         />
       </div>
       <div v-if="actualAlert.report_mediums && actualAlert.report_mediums.includes('teams')">
         <SelectMicrosoftTeamsWebhookUrl
             :is-required-fields-set="true"
             :model-value="actualAlert.ms_teams_webhook_url || ''"
-            v-model="actualAlert.ms_teams_webhook_url"
+            @update:model-value="actualAlert.ms_teams_webhook_url = $event"
         />
       </div>
       <div>
@@ -241,7 +241,7 @@
       </div>
       <SaveButton
         v-if="actualAlert?.idalert"
-        @click="updateAlert(actualAlert.idalert)"
+        @click="updateAlert()"
         :saving="isLoading"
       />
       <SaveButton
