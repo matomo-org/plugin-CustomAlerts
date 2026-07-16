@@ -21,9 +21,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, PropType } from 'vue';
 import { ContentBlock } from 'CoreHome';
 import ListAlerts from './ListAlerts.vue';
+import { Alert } from './ListAlerts.vue';
 
 export default defineComponent({
   props: {
@@ -32,7 +33,7 @@ export default defineComponent({
       required: true,
     },
     alerts: {
-      type: Array,
+      type: Array as PropType<Alert[]>,
       default() { return []; },
     },
   },
