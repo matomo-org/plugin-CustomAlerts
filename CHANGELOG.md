@@ -1,5 +1,6 @@
 ## Changelog
 
+* 5.3.3 - 2026-07-27 - Added strict comparison check
 * 5.3.2 - 2026-06-29 - Added code to improve the access check before sending an alert
 * 5.3.1 - 2026-06-08 - Added restrict access check for MultiSites.getAll report for non superusers
 * 5.3.0 - 2026-05-11 - Added alert description and helptexts

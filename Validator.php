@@ -181,7 +181,7 @@ class Validator
      */
     public function checkUserHasPermissionForAlert($alert)
     {
-        if (Piwik::getCurrentUserLogin() != $alert['login']) {
+        if ((string) Piwik::getCurrentUserLogin() !== (string) $alert['login']) {
             throw new Exception(Piwik::translate('CustomAlerts_AccessException', $alert['idalert']));
         }
     }
