@@ -37,6 +37,7 @@ jobs:
           repository: matomo-org/github-action-tests
           ref: main
           path: github-action-tests
+          persist-credentials: false
 
       - name: checkout matomo for plugin builds
         shell: bash
