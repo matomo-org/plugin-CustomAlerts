@@ -46,7 +46,7 @@ describe("CustomAlerts", function () {
 
     it('should reload alert conditions when site is changed', async function () {
         await page.evaluate(function() {
-            $('.siteSelector .dropdown li:contains("Piwik test"):last').click();
+            $('.siteSelector .piwikSelector__dropdown li:contains("Piwik test"):last').click();
         });
         await page.waitForNetworkIdle();
         await page.evaluate(function() {
@@ -61,7 +61,7 @@ describe("CustomAlerts", function () {
 
     it('should reload alert conditions when site is changed back', async function () {
         await page.evaluate(function() {
-            $('.siteSelector .dropdown li:contains("Piwik test"):first').click();
+            $('.siteSelector .piwikSelector__dropdown li:contains("Piwik test"):first').click();
         });
         await page.waitForNetworkIdle();
         await page.waitForNetworkIdle();
