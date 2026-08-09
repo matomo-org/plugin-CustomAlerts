@@ -112,7 +112,7 @@ class CustomAlerts extends \Piwik\Plugin
         $alerts = $this->getAllAlerts();
 
         foreach ($alerts as $alert) {
-            if ($alert['login'] == $userLogin) {
+            if ((string) $alert['login'] === (string) $userLogin) {
                 $model->deleteAlert($alert['idalert']);
             }
         }
