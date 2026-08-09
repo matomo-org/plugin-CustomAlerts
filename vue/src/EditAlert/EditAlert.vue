@@ -265,11 +265,11 @@ import {
   Alert,
   ActivityIndicator,
   MatomoUrl,
-  SiteRef,
   useExternalPluginComponent,
   ContentBlock,
   externalLink,
 } from 'CoreHome';
+import type { SiteRef } from 'CoreHome';
 import { Form, Field, SaveButton } from 'CorePluginsAdmin';
 import type { Alert as AlertType } from '../types';
 
