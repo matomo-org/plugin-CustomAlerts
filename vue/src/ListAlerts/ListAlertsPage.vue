@@ -24,7 +24,7 @@
 import { defineComponent, PropType } from 'vue';
 import { ContentBlock } from 'CoreHome';
 import ListAlerts from './ListAlerts.vue';
-import { Alert } from './ListAlerts.vue';
+import type { Alert } from './ListAlerts.vue';
 
 export default defineComponent({
   props: {
