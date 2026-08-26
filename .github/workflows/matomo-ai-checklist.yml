@@ -14,6 +14,4 @@ concurrency:
 
 jobs:
   AiChecklist:
-    # Pinned to the plugin-ci-workflows pull request branch for the pilot;
-    # switch to @main once matomo-org/plugin-ci-workflows#2 merges.
-    uses: matomo-org/plugin-ci-workflows/.github/workflows/plugin-ai-checklist.yml@add-plugin-quality-workflows
+    uses: matomo-org/plugin-ci-workflows/.github/workflows/plugin-ai-checklist.yml@main

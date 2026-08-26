@@ -7,10 +7,7 @@ permissions:
 
 jobs:
   phpstan:
-    # Pinned to the plugin-ci-workflows pull request branch for the pilot;
-    # switch to @main and drop workflows-ref once matomo-org/plugin-ci-workflows#2 merges.
-    uses: matomo-org/plugin-ci-workflows/.github/workflows/plugin-phpstan.yml@add-plugin-quality-workflows
+    uses: matomo-org/plugin-ci-workflows/.github/workflows/plugin-phpstan.yml@main
     with:
       plugin-name: CustomAlerts
-      workflows-ref: add-plugin-quality-workflows
     secrets: inherit

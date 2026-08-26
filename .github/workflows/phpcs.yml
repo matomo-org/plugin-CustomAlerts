@@ -7,8 +7,6 @@ permissions:
 
 jobs:
   phpcs:
-    # Pinned to the plugin-ci-workflows pull request branch for the pilot;
-    # switch to @main once matomo-org/plugin-ci-workflows#2 merges.
-    uses: matomo-org/plugin-ci-workflows/.github/workflows/plugin-phpcs.yml@add-plugin-quality-workflows
+    uses: matomo-org/plugin-ci-workflows/.github/workflows/plugin-phpcs.yml@main
     with:
       plugin-name: CustomAlerts
