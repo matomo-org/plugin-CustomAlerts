@@ -55,6 +55,7 @@ describe("CustomAlerts", function () {
         });
         await page.waitForNetworkIdle();
         await page.waitForTimeout(350); // wait for animation
+        await page.mouse.move(0, 0); // move off the dropdown so no option keeps a stray :hover highlight
         expect(await screenshotPageWrap()).to.matchImage('alert_condition_reloaded_site2');
     });
 
@@ -65,6 +66,7 @@ describe("CustomAlerts", function () {
         await page.waitForNetworkIdle();
         await page.waitForNetworkIdle();
         await page.waitForTimeout(350); // wait for animation
+        await page.mouse.move(0, 0); // move off the dropdown so no option keeps a stray :hover highlight
         expect(await screenshotPageWrap()).to.matchImage('alert_condition_reloaded_site1');
     });
 

@@ -29,7 +29,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.2'
+          php-version: '8.1'
 
       - name: Check out github-action-tests repository
         uses: actions/checkout@v4
@@ -37,7 +37,6 @@ jobs:
           repository: matomo-org/github-action-tests
           ref: main
           path: github-action-tests
-          persist-credentials: false
 
       - name: checkout matomo for plugin builds
         shell: bash
