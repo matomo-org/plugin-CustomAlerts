@@ -198,7 +198,7 @@ class Controller extends \Piwik\Plugin\ControllerAdmin
                 $cached[$idSite]['metric'][$report] = array();
             }
 
-            if (is_array($cached[$idSite]['metric'][$report]) && !array_key_exists($metric, $cached[$idSite]['metric'][$report])) {
+            if (!array_key_exists($metric, $cached[$idSite]['metric'][$report])) {
                 $cached[$idSite]['metric'][$report][$metric] = $this->processedReport->translateMetric($metric, $idSite, $alert['report']);
             }
         }
