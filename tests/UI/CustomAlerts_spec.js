@@ -19,6 +19,12 @@ describe("CustomAlerts", function () {
         return screenshot;
     }
 
+    // the expandable select renders its list at the page level, outside .pageWrap, so an element
+    // screenshot cannot reach it and the list has to be named alongside the page
+    async function screenshotPageWrapWithOpenList() {
+        return page.screenshotSelector('.pageWrap,.expandableSelector__list');
+    }
+
     it('should load the triggered custom alerts list correctly', async function () {
         await page.goto("?" + generalParams + "&module=CustomAlerts&action=historyTriggeredAlerts&idSite=1&period=day&date=yesterday");
         expect(await screenshotPageWrap()).to.matchImage('list_triggered');
@@ -51,12 +57,12 @@ describe("CustomAlerts", function () {
         await page.waitForNetworkIdle();
         await page.evaluate(function() {
             $('.expandableSelector .select-wrapper').click();
-            $('.expandableSelector li:contains("Goals"):first:parent .secondLevel').show();
+            $('.expandableList:visible li:contains("Goals"):first:parent .secondLevel').show();
         });
         await page.waitForNetworkIdle();
         await page.waitForTimeout(350); // wait for animation
         await page.mouse.move(0, 0); // move off the dropdown so no option keeps a stray :hover highlight
-        expect(await screenshotPageWrap()).to.matchImage('alert_condition_reloaded_site2');
+        expect(await screenshotPageWrapWithOpenList()).to.matchImage('alert_condition_reloaded_site2');
     });
 
     it('should reload alert conditions when site is changed back', async function () {
@@ -67,7 +73,7 @@ describe("CustomAlerts", function () {
         await page.waitForNetworkIdle();
         await page.waitForTimeout(350); // wait for animation
         await page.mouse.move(0, 0); // move off the dropdown so no option keeps a stray :hover highlight
-        expect(await screenshotPageWrap()).to.matchImage('alert_condition_reloaded_site1');
+        expect(await screenshotPageWrapWithOpenList()).to.matchImage('alert_condition_reloaded_site1');
     });
 
     it('should save changed alert', async function () {
