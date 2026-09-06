@@ -57,7 +57,7 @@ describe("CustomAlerts", function () {
         await page.waitForNetworkIdle();
         await page.evaluate(function() {
             $('.expandableSelector .select-wrapper').click();
-            $('.expandableList:visible li:contains("Goals"):first:parent .secondLevel').show();
+            $('.expandableList li:contains("Goals"):first:parent .secondLevel').show();
         });
         await page.waitForNetworkIdle();
         await page.waitForTimeout(350); // wait for animation
