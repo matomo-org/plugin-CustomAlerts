@@ -19,6 +19,39 @@ describe("CustomAlerts", function () {
         return screenshot;
     }
 
+    // the expandable select renders its list at the page level, outside .pageWrap, so an element
+    // screenshot cannot reach it and the list has to be named alongside the page
+    async function screenshotPageWrapWithOpenList() {
+        return page.screenshotSelector('.pageWrap,.expandableSelector__list');
+    }
+
+    // Opening the list and expanding a category is what a user does; forcing .secondLevel visible
+    // skipped the control entirely and left that path untested.
+    async function openReportCategory(category) {
+        await page.click('.expandableSelector .select-wrapper');
+        await page.waitForFunction(
+            '$(".expandableList:visible").length > 0',
+        );
+
+        // the list keeps the category it last expanded, so clicking that one again would collapse it
+        await page.evaluate(function (cat) {
+            var $category = $('.expandableList:visible h4')
+                .filter(function () { return $(this).text().trim().indexOf(cat) !== -1; });
+
+            if (!$category.closest('li').find('.secondLevel').is(':visible')) {
+                $category.click();
+            }
+        }, category);
+
+        // waiting on the category itself, so a click that misses fails here rather than silently
+        await page.waitForFunction(function (cat) {
+            var $category = window.$('.expandableList:visible h4')
+                .filter(function () { return window.$(this).text().trim().indexOf(cat) !== -1; });
+
+            return $category.closest('li').find('.secondLevel').is(':visible');
+        }, {}, category);
+    }
+
     it('should load the triggered custom alerts list correctly', async function () {
         await page.goto("?" + generalParams + "&module=CustomAlerts&action=historyTriggeredAlerts&idSite=1&period=day&date=yesterday");
         expect(await screenshotPageWrap()).to.matchImage('list_triggered');
@@ -49,14 +82,20 @@ describe("CustomAlerts", function () {
             $('.siteSelector .dropdown li:contains("Piwik test"):last').click();
         });
         await page.waitForNetworkIdle();
-        await page.evaluate(function() {
-            $('.expandableSelector .select-wrapper').click();
-            $('.expandableSelector li:contains("Goals"):first:parent .secondLevel').show();
-        });
+        await openReportCategory('Goals');
         await page.waitForNetworkIdle();
+
+        // the real list scrolls, so the goals belonging to the newly selected site can sit below
+        // the fold. Assert them in the DOM: that this reloaded is what the test is here to show.
+        expect(await page.evaluate(function () {
+            return $('.expandableList:visible .secondLevel:visible li').filter(function () {
+                return $(this).text().indexOf('idSite 2') !== -1;
+            }).length;
+        })).to.be.above(0);
+
         await page.waitForTimeout(350); // wait for animation
         await page.mouse.move(0, 0); // move off the dropdown so no option keeps a stray :hover highlight
-        expect(await screenshotPageWrap()).to.matchImage('alert_condition_reloaded_site2');
+        expect(await screenshotPageWrapWithOpenList()).to.matchImage('alert_condition_reloaded_site2');
     });
 
     it('should reload alert conditions when site is changed back', async function () {
@@ -65,9 +104,22 @@ describe("CustomAlerts", function () {
         });
         await page.waitForNetworkIdle();
         await page.waitForNetworkIdle();
+
+        // the counterpart to the assertion above: the other site's goals are gone. Checking that
+        // options are still listed as well, so a list that simply closed cannot satisfy this.
+        var options = await page.evaluate(function () {
+            return $('.expandableList:visible .secondLevel:visible li').map(function () {
+                return $(this).text().trim();
+            }).get();
+        });
+        expect(options.length).to.be.above(0);
+        expect(options.filter(function (option) {
+            return option.indexOf('idSite 2') !== -1;
+        })).to.have.lengthOf(0);
+
         await page.waitForTimeout(350); // wait for animation
         await page.mouse.move(0, 0); // move off the dropdown so no option keeps a stray :hover highlight
-        expect(await screenshotPageWrap()).to.matchImage('alert_condition_reloaded_site1');
+        expect(await screenshotPageWrapWithOpenList()).to.matchImage('alert_condition_reloaded_site1');
     });
 
     it('should save changed alert', async function () {
