@@ -19,10 +19,13 @@ describe("CustomAlerts", function () {
         return screenshot;
     }
 
-    // the expandable select renders its list at the page level, outside .pageWrap, so an element
-    // screenshot cannot reach it and the list has to be named alongside the page
+    // The list renders at the page level and is taller than the page wrap, so naming it here as
+    // well made the captured height depend on whether the browser had re-laid the list out by the
+    // time the harness measured it - the same image came out 1843px or 1965px tall from one run to
+    // the next. The page wrap alone is stable, and the part of the list that overlaps it is the
+    // same either way; that the right reports are listed is asserted against the DOM below.
     async function screenshotPageWrapWithOpenList() {
-        return page.screenshotSelector('.pageWrap,.expandableSelector__list');
+        return page.screenshotSelector('.pageWrap');
     }
 
     // Opening the list and expanding a category is what a user does; forcing .secondLevel visible
