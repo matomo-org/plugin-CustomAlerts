@@ -15,10 +15,15 @@ permissions:
 
 jobs:
   ci:
-    uses: matomo-org/plugin-ci-workflows/.github/workflows/plugin-ci.yml@PG-5221-compatibility-checks
+    uses: matomo-org/plugin-ci-workflows/.github/workflows/plugin-ci.yml@main
     with:
       plugin-name: CustomAlerts
       verify-hook: true
-      workflows-ref: PG-5221-compatibility-checks
     secrets:
       TESTS_ACCESS_TOKEN: ${{ secrets.TESTS_ACCESS_TOKEN }}
+
+  compatibility:
+    uses: matomo-org/plugin-ci-workflows/.github/workflows/plugin-compatibility.yml@PG-5221-compatibility-checks
+    with:
+      plugin-name: CustomAlerts
+      workflows-ref: PG-5221-compatibility-checks
