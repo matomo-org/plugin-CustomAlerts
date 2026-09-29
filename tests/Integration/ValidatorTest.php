@@ -157,6 +157,9 @@ class ValidatorTest extends BaseTest
             array(1, 'actionwithoutmethod', 'nb_visits', 'CustomAlerts_InvalidReport'),
             array(1, 'MultiSites_NotExisting', 'nb_visits', 'CustomAlerts_InvalidReport'),
             array(1, 'NotExisting_get', 'nb_visits', 'CustomAlerts_InvalidReport'),
+            array(1, 'Goals_get_idGoal--0', 'nb_conversions', 'CustomAlerts_InvalidReport'),
+            array(1, 'Goals_getVisitsUntilConversion_idGoal--0', 'nb_conversions', 'CustomAlerts_InvalidReport'),
+            array(1, 'Goals_getDaysToConversion_idGoal--0', 'nb_conversions', 'CustomAlerts_InvalidReport'),
             array(1, 'MultiSites_getAll', 'nb_notexist', 'CustomAlerts_InvalidMetric')
         );
     }
