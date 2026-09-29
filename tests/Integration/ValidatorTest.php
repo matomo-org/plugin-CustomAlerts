@@ -157,9 +157,6 @@ class ValidatorTest extends BaseTest
             array(1, 'actionwithoutmethod', 'nb_visits', 'CustomAlerts_InvalidReport'),
             array(1, 'MultiSites_NotExisting', 'nb_visits', 'CustomAlerts_InvalidReport'),
             array(1, 'NotExisting_get', 'nb_visits', 'CustomAlerts_InvalidReport'),
-            array(1, 'Goals_get_idGoal--0', 'nb_conversions', 'CustomAlerts_InvalidReport'),
-            array(1, 'Goals_getVisitsUntilConversion_idGoal--0', 'nb_conversions', 'CustomAlerts_InvalidReport'),
-            array(1, 'Goals_getDaysToConversion_idGoal--0', 'nb_conversions', 'CustomAlerts_InvalidReport'),
             array(1, 'MultiSites_getAll', 'nb_notexist', 'CustomAlerts_InvalidMetric')
         );
     }
@@ -167,6 +164,11 @@ class ValidatorTest extends BaseTest
     public function test_checkApiMethodAndMetric_ShouldNotFail_IfValid()
     {
         $this->assertNull($this->validator->checkApiMethodAndMetric(1, 'MultiSites_getAll', 'nb_visits'));
+    }
+
+    public function test_getRenamedReportUniqueId_ShouldResolveToTheAllGoalsReport_IfNoSitesAreGiven()
+    {
+        $this->assertSame('Goals_get', $this->validator->getRenamedReportUniqueId([], 'Goals_get_idGoal--0'));
     }
 
     /**
