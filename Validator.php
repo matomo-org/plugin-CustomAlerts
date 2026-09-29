@@ -20,6 +20,16 @@ use Piwik\Plugins\API\ProcessedReport;
 class Validator
 {
     /**
+     * Goal overview reports carrying `idGoal=0`, which reported ecommerce order or all-goals figures
+     * under a goals overview name. Matomo cores that still advertise them must not have them selected.
+     */
+    private const RETIRED_REPORT_UNIQUE_IDS = [
+        'Goals_get_idGoal--0',
+        'Goals_getVisitsUntilConversion_idGoal--0',
+        'Goals_getDaysToConversion_idGoal--0',
+    ];
+
+    /**
      * @var ProcessedReport
      */
     private $processedReport;
@@ -161,7 +171,11 @@ class Validator
     public function checkApiMethodAndMetric($idSite, $apiMethodUniqueId, $metric)
     {
         Context::changeIdSite($idSite, function () use ($idSite, $apiMethodUniqueId, $metric) {
-            if (empty($apiMethodUniqueId) || false === strpos($apiMethodUniqueId, '_')) {
+            if (
+                empty($apiMethodUniqueId)
+                || false === strpos($apiMethodUniqueId, '_')
+                || in_array($apiMethodUniqueId, self::RETIRED_REPORT_UNIQUE_IDS, true)
+            ) {
                 throw new Exception(Piwik::translate('CustomAlerts_InvalidReport'));
             }
 
