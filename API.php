@@ -197,9 +197,10 @@ class API extends \Piwik\Plugin\API
         return array_values($phoneNumbers);
     }
 
-    private function checkAlert($idSites, $name, $description, $period, &$emailMe, &$additionalEmails, &$phoneNumbers, &$slackChannelID, &$msTeamsWebhookUrl, $metricCondition, $metricValue, $comparedTo, $reportCondition, $reportUniqueId, $reportMediums)
+    private function checkAlert($idSites, $name, $description, $period, &$emailMe, &$additionalEmails, &$phoneNumbers, &$slackChannelID, &$msTeamsWebhookUrl, $metricCondition, $metricValue, $comparedTo, $reportCondition, &$reportUniqueId, $reportMediums)
     {
         Piwik::checkUserHasViewAccess($idSites);
+        $reportUniqueId = $this->validator->getRenamedReportUniqueId($idSites, $reportUniqueId);
         $additionalEmails = in_array('email', $reportMediums) ? $this->filterAdditionalEmails($additionalEmails) : [];
         $phoneNumbers = in_array('mobile', $reportMediums) ? $this->filterPhoneNumbers($phoneNumbers) : [];
         $emailMe = in_array('email', $reportMediums) && $emailMe;

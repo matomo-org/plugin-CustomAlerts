@@ -10,6 +10,8 @@
 namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
 use Piwik\Date;
+use Piwik\Plugin\Manager;
+use Piwik\Tests\Framework\Fixture;
 use Piwik\Tests\Framework\Mock\FakeAccess;
 
 /**
@@ -103,6 +105,62 @@ class ApiTest extends BaseTest
 
         $this->setSuperUser();
         $this->createAlert('InvalidReport', 'week', null, 'nb_visits', 'IkReport_NotExisTing');
+    }
+
+    /**
+     * @dataProvider getRetiredReports
+     */
+    public function test_addAlert_ShouldStoreTheReportHoldingTheFiguresOfARetiredReport($report, $ecommerceSites, $expectedReport)
+    {
+        $this->setSuperUser();
+        $idSites = [$this->idSite];
+
+        if ($ecommerceSites) {
+            $idSites = [
+                Fixture::createWebsite('2012-08-11 11:22:33', $ecommerce = 1),
+                Fixture::createWebsite('2012-08-12 11:22:33', $ecommerce = 1),
+            ];
+        }
+
+        $id = $this->createAlert('RetiredReport', 'week', $idSites, 'nb_conversions', $report);
+
+        $this->assertSame($expectedReport, $this->api->getAlert($id)['report']);
+    }
+
+    public function getRetiredReports()
+    {
+        return [
+            ['Goals_get_idGoal--0', true, 'Goals_get_idGoal--ecommerceOrder'],
+            ['Goals_get_idGoal--0', false, 'Goals_get'],
+            ['Goals_getVisitsUntilConversion_idGoal--0', true, 'Goals_getVisitsUntilConversion'],
+            ['Goals_getDaysToConversion_idGoal--0', false, 'Goals_getDaysToConversion'],
+        ];
+    }
+
+    public function test_addAlert_ShouldStoreTheAllGoalsReport_IfOnlySomeSitesHaveEcommerce()
+    {
+        $this->setSuperUser();
+        $idSites = [$this->idSite, Fixture::createWebsite('2012-08-11 11:22:33', $ecommerce = 1)];
+
+        $id = $this->createAlert('RetiredReport', 'week', $idSites, 'nb_conversions', 'Goals_get_idGoal--0');
+
+        $this->assertSame('Goals_get', $this->api->getAlert($id)['report']);
+    }
+
+    public function test_addAlert_ShouldFail_IfAllSitesHaveEcommerce_WhileTheEcommercePluginIsInactive()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_InvalidReport');
+
+        $this->setSuperUser();
+        $idSites = [
+            Fixture::createWebsite('2012-08-11 11:22:33', $ecommerce = 1),
+            Fixture::createWebsite('2012-08-12 11:22:33', $ecommerce = 1),
+        ];
+
+        Manager::getInstance()->loadPlugins(array_diff(Manager::getInstance()->getActivatedPlugins(), ['Ecommerce']));
+
+        $this->createAlert('RetiredReport', 'week', $idSites, 'nb_conversions', 'Goals_get_idGoal--0');
     }
 
     public function test_addAlert_ShouldFail_ShouldFailIfPeriodNotValid()
@@ -360,6 +418,17 @@ class ApiTest extends BaseTest
 
         $id = $this->createAlert('MyAlert');
         $this->editAlert($id, 'InvalidEmail', 'week', null, 'nb_visits', 'MultiSites_getOne', 'less_than', 'matches_any', array('test@example.com', 'inv+34i32s?y', 'test2@example.com'));
+    }
+
+    public function test_editAlert_ShouldStoreTheReportHoldingTheFiguresOfARetiredReport()
+    {
+        $this->setSuperUser();
+        $idSite = Fixture::createWebsite('2012-08-11 11:22:33', $ecommerce = 1);
+
+        $id = $this->createAlert('MyAlert', 'week', [$idSite]);
+        $this->editAlert($id, 'MyAlert', 'week', [$idSite], 'nb_conversions', 'Goals_get_idGoal--0');
+
+        $this->assertSame('Goals_get_idGoal--ecommerceOrder', $this->api->getAlert($id)['report']);
     }
 
     public function test_editAlert_ShouldUpdateExistingEntry()
