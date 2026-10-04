@@ -82,7 +82,7 @@
         "StartsWith": "şununla başlayan",
         "TaskRetryExceptionMessage": "İlgili raporlar için arşivleme tamamlanmadığından şu uyarılar işlenemedi: %1$s",
         "ThisAppliesTo": "Bunlar rapora uygulanan",
-        "ThisAppliesToHelp": "Birçok farklı türde uyarı durumu kullanabilirsiniz. Özel uyarılar oluşturmak hakkında ayrıntılı bilgi almak için %1$sburaya tıklayın%2$s. %3$sEtkinliklerin tetiklediği uyarılar%4$s hakkında bilgi edinmek için %5$sburaya tıklayın%6$s.",
+        "ThisAppliesToHelp": "Birçok farklı türde uyarı durumu kullanabilirsiniz. Özel uyarılar oluşturmak ile ilgili ayrıntılı bilgi almak için %1$sburaya tıklayın%2$s. %3$sEtkinliklerin tetiklediği uyarılar%4$s ile ilgili bilgi almak için %5$sburaya tıklayın%6$s.",
         "ValueDecreasedMoreThan": "%2$s ile %3$s arasında %1$s değerinden daha fazla azaldı",
         "ValueIncreasedMoreThan": "%2$s ile %3$s arasında %1$s değerinden daha fazla arttı",
         "ValueIsGreaterThan": "%2$s, %1$s değerinden büyük",
