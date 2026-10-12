@@ -131,7 +131,14 @@ describe("CustomAlerts", function () {
             $('.expandableSelector .select-wrapper').click();
         });
         await page.type('#alertName', ' changed');
-        await page.click('.matomo-save-button');
+        // the field only passes the typed name on 50ms after the last key, and page.type waits just
+        // those 50ms, so a slow runner could save the old name
+        await page.waitForTimeout(250);
+        // saving redirects to the list; waiting for that first, so the check below runs on the list
+        await Promise.all([
+            page.waitForNavigation(),
+            page.click('.matomo-save-button'),
+        ]);
         await page.waitForNetworkIdle();
         await page.waitForFunction('$(".pageWrap td:contains(\'Test Alert 1 changed\')").length > 0');
     });
@@ -145,7 +152,11 @@ describe("CustomAlerts", function () {
 
     it('should deleted alert', async function () {
         // only check if name isn't in list, no need to make a screenshot
-        await (await page.jQuery('.modal.open .modal-action:contains("Yes")')).click();
+        var confirm = await page.jQuery('.modal.open .modal-action:contains("Yes")');
+        await Promise.all([
+            page.waitForNavigation(),
+            confirm.click(),
+        ]);
         await page.waitForNetworkIdle();
         await page.waitForFunction('$(".pageWrap td:contains(\'Test Alert 1 changed\')").length == 0');
     });
