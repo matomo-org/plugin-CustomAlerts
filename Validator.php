@@ -13,12 +13,31 @@ use Exception;
 use Piwik\Context;
 use Piwik\Piwik;
 use Piwik\Plugins\API\ProcessedReport;
+use Piwik\Site;
 
 /**
  *
  */
 class Validator
 {
+    /**
+     * Goal overview reports carrying `idGoal=0` that reported ecommerce order figures under a goals
+     * overview name, with the ecommerce order report used where every site has ecommerce enabled.
+     */
+    private const ECOMMERCE_ORDER_REPLACEMENTS = [
+        'Goals_get_idGoal--0' => 'Goals_get_idGoal--ecommerceOrder',
+    ];
+
+    /**
+     * Goal overview reports carrying `idGoal=0`, each with the all-goals report used everywhere else.
+     * Mirrors core's `ProcessedReport::RENAMED_REPORT_UNIQUE_IDS`, which not every supported Matomo 6 has.
+     */
+    private const ALL_GOALS_REPLACEMENTS = [
+        'Goals_get_idGoal--0'                      => 'Goals_get',
+        'Goals_getVisitsUntilConversion_idGoal--0' => 'Goals_getVisitsUntilConversion',
+        'Goals_getDaysToConversion_idGoal--0'      => 'Goals_getDaysToConversion',
+    ];
+
     /**
      * @var ProcessedReport
      */
@@ -173,6 +192,32 @@ class Validator
                 throw new Exception(Piwik::translate('CustomAlerts_InvalidMetric'));
             }
         });
+    }
+
+    /**
+     * For backward compatibility: resolves a retired report unique id to the ecommerce order report
+     * where every given site has ecommerce enabled, as the update of existing alerts does, otherwise to
+     * the all-goals report. Any other id is returned unchanged.
+     *
+     * @param int[] $idSites
+     * @param mixed $apiMethodUniqueId
+     * @return mixed
+     */
+    public function getRenamedReportUniqueId(array $idSites, $apiMethodUniqueId)
+    {
+        if (!is_string($apiMethodUniqueId) || !isset(self::ALL_GOALS_REPLACEMENTS[$apiMethodUniqueId])) {
+            return $apiMethodUniqueId;
+        }
+
+        if (isset(self::ECOMMERCE_ORDER_REPLACEMENTS[$apiMethodUniqueId]) && !empty($idSites)) {
+            $sitesWithEcommerce = array_filter($idSites, [Site::class, 'isEcommerceEnabledFor']);
+
+            if (count($sitesWithEcommerce) === count($idSites)) {
+                return self::ECOMMERCE_ORDER_REPLACEMENTS[$apiMethodUniqueId];
+            }
+        }
+
+        return self::ALL_GOALS_REPLACEMENTS[$apiMethodUniqueId];
     }
 
     /**

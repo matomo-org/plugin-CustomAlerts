@@ -166,6 +166,11 @@ class ValidatorTest extends BaseTest
         $this->assertNull($this->validator->checkApiMethodAndMetric(1, 'MultiSites_getAll', 'nb_visits'));
     }
 
+    public function test_getRenamedReportUniqueId_ShouldResolveToTheAllGoalsReport_IfNoSitesAreGiven()
+    {
+        $this->assertSame('Goals_get', $this->validator->getRenamedReportUniqueId([], 'Goals_get_idGoal--0'));
+    }
+
     /**
      * @dataProvider invalidMetricConditionProvider
      */

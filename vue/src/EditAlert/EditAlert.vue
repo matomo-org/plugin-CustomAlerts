@@ -309,8 +309,17 @@ interface EditAlertState {
   actualCurrentSite: SiteRef;
 }
 
+// the goal overview reports carrying idGoal=0 are still listed by older Matomo 6 releases
+const RETIRED_REPORT_UNIQUE_IDS = [
+  'Goals_get_idGoal--0',
+  'Goals_getVisitsUntilConversion_idGoal--0',
+  'Goals_getDaysToConversion_idGoal--0',
+];
+
 function isBlockedReportApiMethod(apiMethodUniqueId: string) {
-  return apiMethodUniqueId === 'MultiSites_getOne' || apiMethodUniqueId === 'MultiSites_getAll';
+  return apiMethodUniqueId === 'MultiSites_getOne'
+    || apiMethodUniqueId === 'MultiSites_getAll'
+    || RETIRED_REPORT_UNIQUE_IDS.includes(apiMethodUniqueId);
 }
 
 const { $ } = window;
