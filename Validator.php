@@ -13,12 +13,29 @@ use Exception;
 use Piwik\Context;
 use Piwik\Piwik;
 use Piwik\Plugins\API\ProcessedReport;
+use Piwik\Site;
 
 /**
  *
  */
 class Validator
 {
+    /**
+     * Used only where every site of the alert has ecommerce enabled.
+     */
+    private const ECOMMERCE_ORDER_REPLACEMENTS = [
+        'Goals_get_idGoal--0' => 'Goals_get_idGoal--ecommerceOrder',
+    ];
+
+    /**
+     * Mirrors core's `ProcessedReport::getRenamedReportUniqueIds()`, which older Matomo 6 releases lack.
+     */
+    private const ALL_GOALS_REPLACEMENTS = [
+        'Goals_get_idGoal--0'                      => 'Goals_get',
+        'Goals_getVisitsUntilConversion_idGoal--0' => 'Goals_getVisitsUntilConversion',
+        'Goals_getDaysToConversion_idGoal--0'      => 'Goals_getDaysToConversion',
+    ];
+
     /**
      * @var ProcessedReport
      */
@@ -173,6 +190,30 @@ class Validator
                 throw new Exception(Piwik::translate('CustomAlerts_InvalidMetric'));
             }
         });
+    }
+
+    /**
+     * Picks the ecommerce order report only when every site has ecommerce enabled, as the 6.0.1 update does.
+     *
+     * @param int[] $idSites
+     * @param mixed $apiMethodUniqueId
+     * @return mixed
+     */
+    public function getRenamedReportUniqueId(array $idSites, $apiMethodUniqueId)
+    {
+        if (!is_string($apiMethodUniqueId) || !isset(self::ALL_GOALS_REPLACEMENTS[$apiMethodUniqueId])) {
+            return $apiMethodUniqueId;
+        }
+
+        if (isset(self::ECOMMERCE_ORDER_REPLACEMENTS[$apiMethodUniqueId]) && !empty($idSites)) {
+            $sitesWithEcommerce = array_filter($idSites, [Site::class, 'isEcommerceEnabledFor']);
+
+            if (count($sitesWithEcommerce) === count($idSites)) {
+                return self::ECOMMERCE_ORDER_REPLACEMENTS[$apiMethodUniqueId];
+            }
+        }
+
+        return self::ALL_GOALS_REPLACEMENTS[$apiMethodUniqueId];
     }
 
     /**
