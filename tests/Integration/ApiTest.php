@@ -310,7 +310,8 @@ class ApiTest extends BaseTest
 
     public function test_editAlert_ShouldFail_IfNotPermission()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
+        $this->expectExceptionCode(403);
         $this->expectExceptionMessage('CustomAlerts_AccessException');
 
         $this->editAlert(2, 'MyCustomAlert', 'day');
@@ -361,7 +362,8 @@ class ApiTest extends BaseTest
 
     public function test_editAlert_ShouldFail_IfNotExists()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Exception\ThingNotFoundException::class);
+        $this->expectExceptionCode(404);
         $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
 
         $this->editAlert(99999, 'MyCustomAlert', 'day');
@@ -532,7 +534,8 @@ class ApiTest extends BaseTest
 
     public function test_getAlert_ShouldFail_IfInvalidIdProvided()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Exception\ThingNotFoundException::class);
+        $this->expectExceptionCode(404);
         $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
 
         $this->setSuperUser();
@@ -542,7 +545,8 @@ class ApiTest extends BaseTest
 
     public function test_getAlert_ShouldFail_IfNotOwnerOfAlert()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
+        $this->expectExceptionCode(403);
         $this->expectExceptionMessage('CustomAlerts_AccessException');
 
         $this->api->getAlert(2);
@@ -550,7 +554,8 @@ class ApiTest extends BaseTest
 
     public function test_getAlert_ShouldFail_IfNotOwnerOfAlertEventIfUserIsSuperUser()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
+        $this->expectExceptionCode(403);
         $this->expectExceptionMessage('CustomAlerts_AccessException');
 
         $this->setSuperUser();
@@ -568,7 +573,8 @@ class ApiTest extends BaseTest
 
     public function test_getValuesForAlertInPast_ShouldFail_IfInvalidIdProvided()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Exception\ThingNotFoundException::class);
+        $this->expectExceptionCode(404);
         $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
 
         $this->setSuperUser();
@@ -578,7 +584,8 @@ class ApiTest extends BaseTest
 
     public function test_getValuesForAlertInPast_ShouldFail_IfNotOwnerOfAlert()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
+        $this->expectExceptionCode(403);
         $this->expectExceptionMessage('CustomAlerts_AccessException');
 
         $this->api->getValuesForAlertInPast(2, 1);
@@ -586,7 +593,8 @@ class ApiTest extends BaseTest
 
     public function test_getValuesForAlertInPast_ShouldFail_IfNotOwnerOfAlertEventIfUserIsSuperUser()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
+        $this->expectExceptionCode(403);
         $this->expectExceptionMessage('CustomAlerts_AccessException');
 
         $this->setSuperUser();
@@ -623,7 +631,8 @@ class ApiTest extends BaseTest
 
     public function test_deleteAlert_ShouldFail_IfNotOwnerOfAlert()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
+        $this->expectExceptionCode(403);
         $this->expectExceptionMessage('CustomAlerts_AccessException');
 
         $this->api->deleteAlert(2);
@@ -631,7 +640,8 @@ class ApiTest extends BaseTest
 
     public function test_deleteAlert_ShouldFail_IfNotOwnerOfAlertEvenIfUserIsSuperuser()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
+        $this->expectExceptionCode(403);
         $this->expectExceptionMessage('CustomAlerts_AccessException');
 
         $this->setSuperUser();

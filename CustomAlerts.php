@@ -11,6 +11,7 @@ namespace Piwik\Plugins\CustomAlerts;
 
 use Piwik\Common;
 use Piwik\Container\StaticContainer;
+use Piwik\Exception\ThingNotFoundException;
 use Piwik\Piwik;
 use Piwik\Plugin\Manager as PluginManager;
 use Piwik\Plugins\SitesManager\API as SitesManagerApi;
@@ -81,7 +82,7 @@ class CustomAlerts extends \Piwik\Plugin
         }
 
         if ($action == 'formatAlerts') {
-            throw new \Exception('This action does not exist');
+            throw new ThingNotFoundException('This action does not exist');
         }
 
         $this->checkPermission();
