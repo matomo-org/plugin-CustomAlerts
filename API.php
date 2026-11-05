@@ -9,7 +9,6 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
-use Exception;
 use Piwik\Common;
 use Piwik\Exception\ThingNotFoundException;
 use Piwik\Piwik;
