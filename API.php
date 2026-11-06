@@ -9,8 +9,8 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
-use Exception;
 use Piwik\Common;
+use Piwik\Exception\ThingNotFoundException;
 use Piwik\Piwik;
 use Piwik\Site;
 
@@ -71,7 +71,7 @@ class API extends \Piwik\Plugin\API
         $alert = $this->getModel()->getAlert($idAlert);
 
         if (empty($alert)) {
-            throw new Exception(Piwik::translate('CustomAlerts_AlertDoesNotExist', $idAlert));
+            throw new ThingNotFoundException(Piwik::translate('CustomAlerts_AlertDoesNotExist', $idAlert));
         }
 
         $this->validator->checkUserHasPermissionForAlert($alert);

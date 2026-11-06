@@ -272,6 +272,7 @@ import {
 import type { SiteRef } from 'CoreHome';
 import { Form, Field, SaveButton } from 'CorePluginsAdmin';
 import type { Alert as AlertType } from '../types';
+import showHttpErrorMessage from '../showHttpErrorMessage';
 
 const SelectPhoneNumbers = useExternalPluginComponent('MobileMessaging', 'SelectPhoneNumbers');
 const SelectSlackChannel = useExternalPluginComponent('Slack', 'SelectSlackChannel');
@@ -490,6 +491,10 @@ export default defineComponent({
           module: 'CustomAlerts',
           action: 'index',
         });
+      }).catch((e) => {
+        if (!showHttpErrorMessage(e)) {
+          throw e;
+        }
       }).finally(() => {
         this.isLoading = false;
       });

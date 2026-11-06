@@ -11,6 +11,7 @@ namespace Piwik\Plugins\CustomAlerts;
 
 use Exception;
 use Piwik\Context;
+use Piwik\Exception\NoPrivilegesException;
 use Piwik\Piwik;
 use Piwik\Plugins\API\ProcessedReport;
 use Piwik\Site;
@@ -223,7 +224,7 @@ class Validator
     public function checkUserHasPermissionForAlert($alert)
     {
         if ((string) Piwik::getCurrentUserLogin() !== (string) $alert['login']) {
-            throw new Exception(Piwik::translate('CustomAlerts_AccessException', $alert['idalert']));
+            throw new NoPrivilegesException(Piwik::translate('CustomAlerts_AccessException', $alert['idalert']), 403);
         }
     }
 
