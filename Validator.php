@@ -9,9 +9,9 @@
 
 namespace Piwik\Plugins\CustomAlerts;
 
-use Exception;
 use Piwik\Context;
 use Piwik\Exception\NoPrivilegesException;
+use Piwik\Http\BadRequestException;
 use Piwik\Piwik;
 use Piwik\Plugins\API\ProcessedReport;
 use Piwik\Site;
@@ -51,7 +51,7 @@ class Validator
     {
         foreach ($additionalEmails as $email) {
             if (!Piwik::isValidEmailString($email)) {
-                throw new \Exception(Piwik::translate('UsersManager_ExceptionInvalidEmail') . ' (' . $email . ')');
+                throw new BadRequestException(Piwik::translate('UsersManager_ExceptionInvalidEmail') . ' (' . $email . ')');
             }
         }
     }
@@ -74,7 +74,7 @@ class Validator
     public function checkPeriod($period)
     {
         if (!$this->isValidPeriod($period)) {
-            throw new Exception(Piwik::translate('CustomAlerts_InvalidPeriod'));
+            throw new BadRequestException(Piwik::translate('CustomAlerts_InvalidPeriod'));
         }
     }
 
@@ -86,18 +86,18 @@ class Validator
     public function checkName($name)
     {
         if (empty($name)) {
-            throw new Exception(Piwik::translate("General_PleaseSpecifyValue", "name"));
+            throw new BadRequestException(Piwik::translate("General_PleaseSpecifyValue", "name"));
         }
 
         if (mb_strlen($name, 'UTF-8') > 100) {
-            throw new Exception(Piwik::translate("CustomAlerts_ParmeterIsTooLong", array(Piwik::translate('General_Name'), 100)));
+            throw new BadRequestException(Piwik::translate("CustomAlerts_ParmeterIsTooLong", array(Piwik::translate('General_Name'), 100)));
         }
     }
 
     public function checkDescription($description)
     {
         if (mb_strlen($description, 'UTF-8') > 255) {
-            throw new Exception(Piwik::translate("CustomAlerts_ParmeterIsTooLong", array(Piwik::translate('General_Description'), 255)));
+            throw new BadRequestException(Piwik::translate("CustomAlerts_ParmeterIsTooLong", array(Piwik::translate('General_Description'), 255)));
         }
     }
 
@@ -130,18 +130,18 @@ class Validator
     public function checkMetricCondition($condition)
     {
         if (empty($condition)) {
-            throw new Exception(Piwik::translate('CustomAlerts_InvalidMetricCondition'));
+            throw new BadRequestException(Piwik::translate('CustomAlerts_InvalidMetricCondition'));
         }
 
         if (!self::isValidMetricCondition($condition)) {
-            throw new Exception(Piwik::translate('CustomAlerts_InvalidMetricCondition'));
+            throw new BadRequestException(Piwik::translate('CustomAlerts_InvalidMetricCondition'));
         }
     }
 
     public function checkReportCondition($condition)
     {
         if (!empty($condition) && !self::isValidGroupCondition($condition)) {
-            throw new Exception(Piwik::translate('CustomAlerts_InvalidReportCondition'));
+            throw new BadRequestException(Piwik::translate('CustomAlerts_InvalidReportCondition'));
         }
     }
 
@@ -149,12 +149,12 @@ class Validator
     {
         $allowedMediums = $this->getAllowedMediums();
         if (empty($reportMediums)) {
-            throw new Exception(Piwik::translate('CustomAlerts_EmptyReportMediums'));
+            throw new BadRequestException(Piwik::translate('CustomAlerts_EmptyReportMediums'));
         }
 
         foreach ($reportMediums as $reportMedium) {
             if (!in_array($reportMedium, $allowedMediums)) {
-                throw new Exception(Piwik::translate('CustomAlerts_InvalidReportMediums', [implode(', ', $allowedMediums)]));
+                throw new BadRequestException(Piwik::translate('CustomAlerts_InvalidReportMediums', [implode(', ', $allowedMediums)]));
             }
         }
     }
@@ -162,7 +162,7 @@ class Validator
     public function checkComparedTo($period, $comparedTo)
     {
         if (!self::isValidComparableDate($period, $comparedTo)) {
-            throw new Exception(Piwik::translate('CustomAlerts_InvalidComparableDate'));
+            throw new BadRequestException(Piwik::translate('CustomAlerts_InvalidComparableDate'));
         }
     }
 
@@ -180,15 +180,15 @@ class Validator
     {
         Context::changeIdSite($idSite, function () use ($idSite, $apiMethodUniqueId, $metric) {
             if (empty($apiMethodUniqueId) || false === strpos($apiMethodUniqueId, '_')) {
-                throw new Exception(Piwik::translate('CustomAlerts_InvalidReport'));
+                throw new BadRequestException(Piwik::translate('CustomAlerts_InvalidReport'));
             }
 
             if (!$this->processedReport->isValidReportForSite($idSite, $apiMethodUniqueId)) {
-                throw new Exception(Piwik::translate('CustomAlerts_InvalidReport'));
+                throw new BadRequestException(Piwik::translate('CustomAlerts_InvalidReport'));
             }
 
             if (!$this->processedReport->isValidMetricForReport($metric, $idSite, $apiMethodUniqueId)) {
-                throw new Exception(Piwik::translate('CustomAlerts_InvalidMetric'));
+                throw new BadRequestException(Piwik::translate('CustomAlerts_InvalidMetric'));
             }
         });
     }

@@ -82,7 +82,8 @@ class ApiTest extends BaseTest
 
     public function test_addAlert_ShouldFail_IfEmptyName()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Http\BadRequestException::class);
+        $this->expectExceptionCode(400);
         $this->expectExceptionMessage('General_PleaseSpecifyValue');
 
         $this->setSuperUser();
@@ -91,7 +92,8 @@ class ApiTest extends BaseTest
 
     public function test_addAlert_ShouldFail_IfInvalidMetricProvided()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Http\BadRequestException::class);
+        $this->expectExceptionCode(400);
         $this->expectExceptionMessage('CustomAlerts_InvalidMetric');
 
         $this->setSuperUser();
@@ -100,7 +102,8 @@ class ApiTest extends BaseTest
 
     public function test_addAlert_ShouldFail_IfInvalidReportProvided()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Http\BadRequestException::class);
+        $this->expectExceptionCode(400);
         $this->expectExceptionMessage('CustomAlerts_InvalidReport');
 
         $this->setSuperUser();
@@ -165,7 +168,8 @@ class ApiTest extends BaseTest
 
     public function test_addAlert_ShouldFail_ShouldFailIfPeriodNotValid()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Http\BadRequestException::class);
+        $this->expectExceptionCode(400);
         $this->expectExceptionMessage('CustomAlerts_InvalidPeriod');
 
         $this->setSuperUser();
@@ -174,7 +178,8 @@ class ApiTest extends BaseTest
 
     public function test_addAlert_ShouldFail_IfInvalidMetricCondition()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Http\BadRequestException::class);
+        $this->expectExceptionCode(400);
         $this->expectExceptionMessage('CustomAlerts_InvalidMetricCondition');
 
         $this->setSuperUser();
@@ -183,7 +188,8 @@ class ApiTest extends BaseTest
 
     public function test_addAlert_ShouldFail_IfEmptyMetricCondition()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Http\BadRequestException::class);
+        $this->expectExceptionCode(400);
         $this->expectExceptionMessage('CustomAlerts_InvalidMetricCondition');
 
         $this->setSuperUser();
@@ -192,7 +198,8 @@ class ApiTest extends BaseTest
 
     public function test_addAlert_ShouldFail_IfInvalidReportCondition()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Http\BadRequestException::class);
+        $this->expectExceptionCode(400);
         $this->expectExceptionMessage('CustomAlerts_InvalidReportCondition');
 
         $this->setSuperUser();
@@ -201,7 +208,8 @@ class ApiTest extends BaseTest
 
     public function test_addAlert_ShouldFail_IfInvalidComparableDate()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Http\BadRequestException::class);
+        $this->expectExceptionCode(400);
         $this->expectExceptionMessage('CustomAlerts_InvalidComparableDate');
 
         $this->setSuperUser();
@@ -210,7 +218,8 @@ class ApiTest extends BaseTest
 
     public function test_addAlert_ShouldFail_IfInvalidEmail()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Http\BadRequestException::class);
+        $this->expectExceptionCode(400);
         $this->expectExceptionMessage('UsersManager_ExceptionInvalidEmail (inv+34i32s?y)');
 
         $this->setSuperUser();
@@ -220,7 +229,8 @@ class ApiTest extends BaseTest
     public function test_addAlert_ShouldFail_IfNoEmailProvided()
     {
         $this->setSuperUser();
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Http\BadRequestException::class);
+        $this->expectExceptionCode(400);
         $this->expectExceptionMessage('CustomAlerts_InvalidEmailReportParameter');
 
         $this->api->addAlert('test', $this->idSite, 'week', false, [], [], 'nb_visits', 'less_than', 3, 1, 'MultiSites_getOne', $reportCondition = false, $reportValue = false, $reportMediums = ['email']);
@@ -229,7 +239,8 @@ class ApiTest extends BaseTest
     public function test_addAlert_ShouldFail_IfReportMediumEmpty()
     {
         $this->setSuperUser();
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Http\BadRequestException::class);
+        $this->expectExceptionCode(400);
         $this->expectExceptionMessage('CustomAlerts_EmptyReportMediums');
 
         $this->api->addAlert('test', $this->idSite, 'week', true, [], [], 'nb_visits', 'less_than', 3, 1, 'MultiSites_getOne', $reportCondition = false, $reportValue = false, $reportMediums = []);
@@ -238,7 +249,8 @@ class ApiTest extends BaseTest
     public function test_addAlert_ShouldFail_IfReportMediumInvalid()
     {
         $this->setSuperUser();
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Http\BadRequestException::class);
+        $this->expectExceptionCode(400);
         $this->expectExceptionMessage('CustomAlerts_InvalidReportMediums');
 
         $this->api->addAlert('test', $this->idSite, 'week', true, [], [], 'nb_visits', 'less_than', 3, 1, 'MultiSites_getOne', $reportCondition = false, $reportValue = false, $reportMediums = ['emailSms']);
@@ -257,7 +269,8 @@ class ApiTest extends BaseTest
     public function test_addAlert_ShouldFail_IfDescriptionTooLong()
     {
         $this->setSuperUser();
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Http\BadRequestException::class);
+        $this->expectExceptionCode(400);
         $this->expectExceptionMessage('CustomAlerts_ParmeterIsTooLong');
 
         $this->createAlert('MyCustomAlert', 'week', null, 'nb_visits', 'MultiSites_getOne', 'less_than', 'matches_exactly', array('test1@example.com', 'test2@example.com'), 1, str_repeat('x', 256));
@@ -380,7 +393,8 @@ class ApiTest extends BaseTest
 
     public function test_editAlert_ShouldFail_IfInvalidMetricCondition()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Http\BadRequestException::class);
+        $this->expectExceptionCode(400);
         $this->expectExceptionMessage('CustomAlerts_InvalidMetricCondition');
 
         $this->setSuperUser();
