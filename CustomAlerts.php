@@ -12,6 +12,7 @@ namespace Piwik\Plugins\CustomAlerts;
 use Piwik\Common;
 use Piwik\Container\StaticContainer;
 use Piwik\Exception\ThingNotFoundException;
+use Piwik\Http\BadRequestException;
 use Piwik\Piwik;
 use Piwik\Plugin\Manager as PluginManager;
 use Piwik\Plugins\SitesManager\API as SitesManagerApi;
@@ -295,12 +296,12 @@ class CustomAlerts extends \Piwik\Plugin
     public function validateReportParameters($parameters, $alertMedium)
     {
         if ($alertMedium === 'email' && empty($parameters['emailMe']) && empty($parameters['additionalEmails'])) {
-            throw new \Exception(Piwik::translate('CustomAlerts_InvalidEmailReportParameter'));
+            throw new BadRequestException(Piwik::translate('CustomAlerts_InvalidEmailReportParameter'));
         } elseif ($alertMedium === 'mobile' && empty($parameters['phoneNumbers'])) {
             if (defined('PIWIK_TEST_MODE') && PIWIK_TEST_MODE) {
                 return;
             }
-            throw new \Exception(Piwik::translate('CustomAlerts_InvalidPhoneNumberReportParameter'));
+            throw new BadRequestException(Piwik::translate('CustomAlerts_InvalidPhoneNumberReportParameter'));
         }
     }
 
