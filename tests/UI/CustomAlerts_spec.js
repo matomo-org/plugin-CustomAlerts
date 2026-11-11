@@ -130,7 +130,11 @@ describe("CustomAlerts", function () {
         await page.evaluate(function() {
             $('.expandableSelector .select-wrapper').click();
         });
+        // typing before the form has filled the field in with the alert's name either gets wiped
+        // when the name arrives or saves " changed" on its own, so wait for the loaded name first
+        await page.waitForFunction('$("#alertName").val() === "Test Alert 1"');
         await page.type('#alertName', ' changed');
+        await page.waitForFunction('$("#alertName").val() === "Test Alert 1 changed"');
         // the field only passes the typed name on 50ms after the last key, and page.type waits just
         // those 50ms, so a slow runner could save the old name
         await page.waitForTimeout(250);
