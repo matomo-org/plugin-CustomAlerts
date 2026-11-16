@@ -47,7 +47,8 @@ class ValidatorTest extends BaseTest
 
     public function test_checkUserHasPermissionForAlert_ShouldFail_IfInvalid()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
+        $this->expectExceptionCode(403);
         $this->expectExceptionMessage('CustomAlerts_AccessException');
 
         $this->setUser();
@@ -62,7 +63,8 @@ class ValidatorTest extends BaseTest
 
     public function test_checkUserHasPermissionForAlert_ShouldFail_IfInvalidEventIfUserIsSuperUser()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
+        $this->expectExceptionCode(403);
         $this->expectExceptionMessage('CustomAlerts_AccessException');
 
         $this->setSuperUser();

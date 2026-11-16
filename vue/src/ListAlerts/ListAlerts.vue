@@ -79,6 +79,7 @@ import {
   ContentTable,
   MatomoUrl,
 } from 'CoreHome';
+import showHttpErrorMessage from '../showHttpErrorMessage';
 
 export default defineComponent({
   props: {
@@ -99,6 +100,10 @@ export default defineComponent({
             idAlert,
           }).then(() => {
             Matomo.helper.redirect();
+          }).catch((e) => {
+            if (!showHttpErrorMessage(e)) {
+              throw e;
+            }
           });
         },
       });

@@ -312,4 +312,12 @@ class CustomAlertsTest extends BaseTest
             ['key' => 'teams', 'value' => 'CustomAlerts_MediumMicrosoftTeams', 'disabled' => true],
         ], CustomAlerts::getReportMediumOptions());
     }
+
+    public function testFormatAlertsActionAnswers404()
+    {
+        $this->expectException(\Piwik\Exception\ThingNotFoundException::class);
+        $this->expectExceptionCode(404);
+
+        $this->plugin->checkControllerPermission('CustomAlerts', 'formatAlerts');
+    }
 }
