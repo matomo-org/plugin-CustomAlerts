@@ -9,11 +9,15 @@
 
 namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
+use Piwik\Common;
 use Piwik\Container\StaticContainer;
 use Piwik\Date;
+use Piwik\Db;
 use Piwik\Piwik;
 use Piwik\Plugin\Manager as PluginManager;
 use Piwik\Plugins\CustomAlerts\CustomAlerts;
+use Piwik\Plugins\UsersManager\API as UsersManagerApi;
+use Piwik\Plugins\UsersManager\Model as UsersManagerModel;
 use Piwik\Scheduler\Task;
 use Piwik\Scheduler\Timetable;
 
@@ -198,6 +202,66 @@ class CustomAlertsTest extends BaseTest
         $this->assertEquals('Initial1', $alerts[0]['name']);
         $this->assertEquals('Initial3', $alerts[1]['name']);
         $this->assertEquals('Initial6', $alerts[2]['name']);
+    }
+
+    public function testAddingAUserRemovesAlertsLeftBehindByAnEarlierAccountWithThatLogin()
+    {
+        $idAlert = $this->addTriggeredAlertForDeletedLogin('recycledLogin');
+        $idOtherAlert = (int) $this->createAlert('OtherLogin', [], [1], 'otherLogin')['idalert'];
+        $this->model->triggerAlert($idOtherAlert, 1, 99, 48, Date::now()->getDatetime());
+
+        UsersManagerApi::getInstance()->addUser('recycledLogin', 'password', 'recycled2@example.org');
+
+        $this->assertAlertRowCounts($idAlert, 0);
+        $this->assertAlertRowCounts($idOtherAlert, 1);
+    }
+
+    public function testAddingAUserThroughTheModelRemovesAlertsLeftBehindByAnEarlierAccountWithThatLogin()
+    {
+        $idAlert = $this->addTriggeredAlertForDeletedLogin('recycledModelLogin');
+
+        // added through the model directly, the way just in time provisioning creates users
+        (new UsersManagerModel())->addUser(
+            'recycledModelLogin',
+            'password',
+            'recycledmodel@example.org',
+            Date::now()->getDatetime()
+        );
+
+        $this->assertAlertRowCounts($idAlert, 0);
+    }
+
+    public function testAddingAUserRemovesAlertsLeftBehindByAnEarlierAccountWhoseLoginDiffersOnlyInCase()
+    {
+        $idAlert = $this->addTriggeredAlertForDeletedLogin('RecycledCaseLogin');
+
+        UsersManagerApi::getInstance()->addUser('recycledcaselogin', 'password', 'recycledcase2@example.org');
+
+        $this->assertAlertRowCounts($idAlert, 0);
+    }
+
+    private function addTriggeredAlertForDeletedLogin(string $login): int
+    {
+        UsersManagerApi::getInstance()->addUser($login, 'password', $login . '@example.org');
+        $idAlert = (int) $this->createAlert('Recycled', [], [1], $login)['idalert'];
+        $this->model->triggerAlert($idAlert, 1, 99, 48, Date::now()->getDatetime());
+
+        // delete the account, leaving its alert in place
+        Db::query('DELETE FROM ' . Common::prefixTable('user') . ' WHERE login = ?', [$login]);
+        $this->assertAlertRowCounts($idAlert, 1);
+
+        return $idAlert;
+    }
+
+    private function assertAlertRowCounts(int $idAlert, int $expected): void
+    {
+        foreach (['alert', 'alert_site', 'alert_triggered'] as $table) {
+            $count = (int) Db::fetchOne(
+                'SELECT COUNT(*) FROM ' . Common::prefixTable($table) . ' WHERE idalert = ?',
+                [$idAlert]
+            );
+            $this->assertSame($expected, $count, $table);
+        }
     }
 
     public function test_removeSiteAccessEventRemovesAlertsForSitesAndLogin()

@@ -42,6 +42,7 @@ class CustomAlerts extends \Piwik\Plugin
             'API.Request.dispatch'                   => 'checkApiPermission',
             'Request.dispatch'                       => 'checkControllerPermission',
             'Translate.getClientSideTranslationKeys' => 'getClientSideTranslationKeys',
+            'UsersManager.createUser'                => 'deleteAlertsForLogin',
             'UsersManager.deleteUser'                => 'deleteAlertsForLogin',
             'UsersManager.removeSiteAccess'          => 'removeAlertsForUser',
             'SitesManager.deleteSite.end'            => 'deleteAlertsForSite',
@@ -108,16 +109,12 @@ class CustomAlerts extends \Piwik\Plugin
         $cssFiles[] = "plugins/CustomAlerts/stylesheets/alerts.less";
     }
 
+    /**
+     * Also runs when a user is created, so a login that is reused starts without alerts.
+     */
     public function deleteAlertsForLogin($userLogin)
     {
-        $model  = $this->getModel();
-        $alerts = $this->getAllAlerts();
-
-        foreach ($alerts as $alert) {
-            if ((string) $alert['login'] === (string) $userLogin) {
-                $model->deleteAlert($alert['idalert']);
-            }
-        }
+        $this->getModel()->deleteAlertsForLogin((string) $userLogin);
     }
 
     private function getModel()
