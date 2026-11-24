@@ -70,11 +70,10 @@ class API extends \Piwik\Plugin\API
     {
         $alert = $this->getModel()->getAlert($idAlert);
 
-        if (empty($alert)) {
+        // Another user's alert is answered like a missing one, so callers cannot tell which alert IDs exist
+        if (empty($alert) || !$this->validator->isAlertOwnedByCurrentUser($alert)) {
             throw new Exception(Piwik::translate('CustomAlerts_AlertDoesNotExist', $idAlert));
         }
-
-        $this->validator->checkUserHasPermissionForAlert($alert);
 
         return $alert;
     }
