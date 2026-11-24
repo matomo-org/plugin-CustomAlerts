@@ -309,6 +309,7 @@ class Model
 
     public function setSiteIds($idAlert, $idSites)
     {
+        $idAlert = (int) $idAlert;
         $this->removeAllSites($idAlert);
 
         $db = $this->getDb();
@@ -322,7 +323,7 @@ class Model
 
     private function removeAllSites($idAlert)
     {
-        $this->getDb()->query("DELETE FROM " . Common::prefixTable("alert_site") . " WHERE idalert = ?", $idAlert);
+        $this->getDb()->query("DELETE FROM " . Common::prefixTable("alert_site") . " WHERE idalert = ?", array((int) $idAlert));
     }
 
     /**
@@ -371,7 +372,8 @@ class Model
         );
 
         $db = $this->getDb();
-        $db->update(Common::prefixTable('alert'), $alert, "idalert = " . intval($idAlert));
+        $idAlert = (int) $idAlert;
+        $db->update(Common::prefixTable('alert'), $alert, "idalert = " . $idAlert);
 
         $this->setSiteIds($idAlert, $idSites);
 
@@ -387,6 +389,7 @@ class Model
      */
     public function deleteAlert($idAlert)
     {
+        $idAlert = (int) $idAlert;
         $db = $this->getDb();
         $db->query("DELETE FROM " . Common::prefixTable("alert") . " WHERE idalert = ?", array($idAlert));
         $db->query("DELETE FROM " . Common::prefixTable("alert_triggered") . " WHERE idalert = ?", array($idAlert));

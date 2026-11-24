@@ -9,6 +9,7 @@
 
 namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
+use Piwik\API\Request;
 use Piwik\Date;
 use Piwik\Plugin\Manager;
 use Piwik\Tests\Framework\Fixture;
@@ -662,6 +663,73 @@ class ApiTest extends BaseTest
         FakeAccess::$identity = 'test';
 
         $this->api->deleteAlert(2);
+    }
+
+    public function test_deleteAlert_ShouldRejectNonScalarAlertId_AndKeepOtherUsersAlertSites()
+    {
+        $idOtherAlert = $this->createAlertOwnedByOtherUser();
+
+        $this->setSuperUser();
+
+        try {
+            Request::processRequest('CustomAlerts.deleteAlert', ['idAlert' => [$idOtherAlert]]);
+            $this->fail('Expected request with non-scalar idAlert to be rejected');
+        } catch (\Exception $e) {
+            $this->assertStringContainsString('General_PleaseSpecifyValue', $e->getMessage());
+        }
+
+        $this->assertOtherUsersAlertIsUnchanged($idOtherAlert);
+    }
+
+    public function test_editAlert_ShouldRejectNonScalarAlertId_AndKeepOtherUsersAlertSites()
+    {
+        $idOtherAlert = $this->createAlertOwnedByOtherUser();
+
+        $this->setSuperUser();
+
+        try {
+            Request::processRequest('CustomAlerts.editAlert', [
+                'idAlert'         => [$idOtherAlert],
+                'name'            => 'Edited',
+                'idSites'         => [$this->idSite],
+                'period'          => 'week',
+                'emailMe'         => 0,
+                'additionalEmails' => [],
+                'phoneNumbers'    => [],
+                'metric'          => 'nb_visits',
+                'metricCondition' => 'less_than',
+                'metricValue'     => 5,
+                'comparedTo'      => 1,
+                'reportUniqueId'  => 'MultiSites_getOne',
+                'reportMediums'   => ['email'],
+            ]);
+            $this->fail('Expected request with non-scalar idAlert to be rejected');
+        } catch (\Exception $e) {
+            $this->assertStringContainsString('General_PleaseSpecifyValue', $e->getMessage());
+        }
+
+        $this->assertOtherUsersAlertIsUnchanged($idOtherAlert);
+        $this->assertSame('Initial1', $this->api->getAlert(1)['name']);
+    }
+
+    private function createAlertOwnedByOtherUser(): int
+    {
+        $this->setSuperUser();
+        FakeAccess::$identity = 'otherUser';
+        $idAlert = (int) $this->createAlert('OtherUsersAlert', 'week', [$this->idSite, $this->idSite2]);
+        FakeAccess::$identity = 'superUserLogin';
+
+        return $idAlert;
+    }
+
+    private function assertOtherUsersAlertIsUnchanged(int $idAlert): void
+    {
+        FakeAccess::$identity = 'otherUser';
+        $alert = $this->api->getAlert($idAlert);
+        FakeAccess::$identity = 'superUserLogin';
+
+        $this->assertSame('OtherUsersAlert', $alert['name']);
+        $this->assertEquals([$this->idSite, $this->idSite2], $alert['id_sites']);
     }
 
     public function test_triggerAlert_getTriggeredAlertsForPeriod_ShouldMarkAlertAsTriggeredForGivenWebsite()
