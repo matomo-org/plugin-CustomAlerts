@@ -331,6 +331,17 @@ class ApiTest extends BaseTest
         $this->editAlert(2, 'MyCustomAlert', 'day');
     }
 
+    public function test_editAlert_ShouldFail_IfNotOwnerOfAlertEvenIfUserIsSuperUser()
+    {
+        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
+        $this->expectExceptionCode(403);
+        $this->expectExceptionMessage('CustomAlerts_AccessException');
+
+        $this->setSuperUser();
+        FakeAccess::$identity = 'test';
+        $this->editAlert(2, 'MyCustomAlert', 'day');
+    }
+
     protected function editAlert(
         $id,
         $name,
@@ -586,6 +597,7 @@ class ApiTest extends BaseTest
         $this->assertInstanceOf(\Piwik\Exception\ThingNotFoundException::class, $foreignAlert);
         $this->assertSame(get_class($missingAlert), get_class($foreignAlert));
         $this->assertSame($missingAlert->getCode(), $foreignAlert->getCode());
+        $this->assertSame($missingAlert->getMessage(), $foreignAlert->getMessage());
     }
 
     private function getAlertException(int $idAlert): \Exception
