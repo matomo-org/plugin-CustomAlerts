@@ -259,6 +259,16 @@ class ApiTest extends BaseTest
         $this->editAlert(2, 'MyCustomAlert', 'day');
     }
 
+    public function test_editAlert_ShouldFail_IfNotOwnerOfAlertEvenIfUserIsSuperUser()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_AccessException');
+
+        $this->setSuperUser();
+        FakeAccess::$identity = 'test';
+        $this->editAlert(2, 'MyCustomAlert', 'day');
+    }
+
     protected function editAlert(
         $id,
         $name,
@@ -497,8 +507,7 @@ class ApiTest extends BaseTest
 
         $this->assertSame(get_class($missingAlert), get_class($foreignAlert));
         $this->assertSame($missingAlert->getCode(), $foreignAlert->getCode());
-        // 5.x answers both with a plain exception, so the class and code alone cannot tell the answers apart
-        $this->assertStringContainsString('CustomAlerts_AlertDoesNotExist', $foreignAlert->getMessage());
+        $this->assertSame($missingAlert->getMessage(), $foreignAlert->getMessage());
     }
 
     private function getAlertException(int $idAlert): \Exception
