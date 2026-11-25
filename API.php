@@ -44,7 +44,7 @@ class API extends \Piwik\Plugin\API
      *
      * @return list<array{idSite: int, value: mixed}> Alert values grouped by site.
      */
-    public function getValuesForAlertInPast($idAlert, $subPeriodN)
+    public function getValuesForAlertInPast(int $idAlert, $subPeriodN)
     {
         $alert = $this->getAlert($idAlert);
 
@@ -66,15 +66,14 @@ class API extends \Piwik\Plugin\API
      *
      * @return array{id_sites: list<int>} & array<string, mixed> Alert definition including the configured site IDs.
      */
-    public function getAlert($idAlert)
+    public function getAlert(int $idAlert)
     {
         $alert = $this->getModel()->getAlert($idAlert);
 
-        if (empty($alert)) {
+        // Another user's alert is answered like a missing one, so callers cannot tell which alert IDs exist
+        if (empty($alert) || !$this->validator->isAlertOwnedByCurrentUser($alert)) {
             throw new ThingNotFoundException(Piwik::translate('CustomAlerts_AlertDoesNotExist', $idAlert));
         }
-
-        $this->validator->checkUserHasPermissionForAlert($alert);
 
         return $alert;
     }
@@ -260,7 +259,7 @@ class API extends \Piwik\Plugin\API
      *
      * @return int Updated alert ID.
      */
-    public function editAlert($idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false, array $reportMediums = [], string $slackChannelID = '', string $msTeamsWebhookUrl = '', string $description = '')
+    public function editAlert(int $idAlert, $name, $idSites, $period, $emailMe, $additionalEmails, $phoneNumbers, $metric, $metricCondition, $metricValue, $comparedTo, $reportUniqueId, $reportCondition = false, $reportValue = false, array $reportMediums = [], string $slackChannelID = '', string $msTeamsWebhookUrl = '', string $description = '')
     {
         // make sure alert exists and user has permission to read
         $this->getAlert($idAlert);
@@ -289,7 +288,7 @@ class API extends \Piwik\Plugin\API
      *
      * @return void
      */
-    public function deleteAlert($idAlert)
+    public function deleteAlert(int $idAlert)
     {
         // make sure alert exists and user has permission to read
         $this->getAlert($idAlert);
