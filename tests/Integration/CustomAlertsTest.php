@@ -194,7 +194,8 @@ class CustomAlertsTest extends BaseTest
         $this->createAlert('Initial5', array(), array(), 'testlogin2');
         $this->createAlert('Initial6', array(), array(), 'testlogin1');
 
-        $this->plugin->deleteAlertsForLogin('testlogin2');
+        // a login differing only in case is the same user, so its alerts go too
+        $this->plugin->deleteAlertsForLogin('TestLogin2');
 
         $alerts = $this->model->getAllAlerts();
 
