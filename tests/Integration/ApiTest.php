@@ -9,6 +9,7 @@
 
 namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
+use Piwik\API\Request;
 use Piwik\Date;
 use Piwik\Plugin\Manager;
 use Piwik\Tests\Framework\Fixture;
@@ -323,9 +324,9 @@ class ApiTest extends BaseTest
 
     public function test_editAlert_ShouldFail_IfNotPermission()
     {
-        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
-        $this->expectExceptionCode(403);
-        $this->expectExceptionMessage('CustomAlerts_AccessException');
+        $this->expectException(\Piwik\Exception\ThingNotFoundException::class);
+        $this->expectExceptionCode(404);
+        $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
 
         $this->editAlert(2, 'MyCustomAlert', 'day');
     }
@@ -559,22 +560,44 @@ class ApiTest extends BaseTest
 
     public function test_getAlert_ShouldFail_IfNotOwnerOfAlert()
     {
-        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
-        $this->expectExceptionCode(403);
-        $this->expectExceptionMessage('CustomAlerts_AccessException');
+        $this->expectException(\Piwik\Exception\ThingNotFoundException::class);
+        $this->expectExceptionCode(404);
+        $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
 
         $this->api->getAlert(2);
     }
 
     public function test_getAlert_ShouldFail_IfNotOwnerOfAlertEventIfUserIsSuperUser()
     {
-        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
-        $this->expectExceptionCode(403);
-        $this->expectExceptionMessage('CustomAlerts_AccessException');
+        $this->expectException(\Piwik\Exception\ThingNotFoundException::class);
+        $this->expectExceptionCode(404);
+        $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
 
         $this->setSuperUser();
         FakeAccess::$identity = 'test';
         $this->api->getAlert(2);
+    }
+
+    public function test_getAlert_ShouldAnswerAnotherUsersAlertLikeAMissingOne()
+    {
+        $foreignAlert = $this->getAlertException(2);
+        $missingAlert = $this->getAlertException(9999);
+
+        $this->assertInstanceOf(\Piwik\Exception\ThingNotFoundException::class, $foreignAlert);
+        $this->assertInstanceOf(\Piwik\Exception\ThingNotFoundException::class, $missingAlert);
+        $this->assertSame($missingAlert->getCode(), $foreignAlert->getCode());
+        $this->assertSame($missingAlert->getMessage(), $foreignAlert->getMessage());
+    }
+
+    private function getAlertException(int $idAlert): \Exception
+    {
+        try {
+            $this->api->getAlert($idAlert);
+        } catch (\Exception $e) {
+            return $e;
+        }
+
+        $this->fail('Expected getAlert(' . $idAlert . ') to fail');
     }
 
     public function test_getAlert_ShouldReturnAlertIfAllowedAndExists()
@@ -598,18 +621,18 @@ class ApiTest extends BaseTest
 
     public function test_getValuesForAlertInPast_ShouldFail_IfNotOwnerOfAlert()
     {
-        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
-        $this->expectExceptionCode(403);
-        $this->expectExceptionMessage('CustomAlerts_AccessException');
+        $this->expectException(\Piwik\Exception\ThingNotFoundException::class);
+        $this->expectExceptionCode(404);
+        $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
 
         $this->api->getValuesForAlertInPast(2, 1);
     }
 
     public function test_getValuesForAlertInPast_ShouldFail_IfNotOwnerOfAlertEventIfUserIsSuperUser()
     {
-        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
-        $this->expectExceptionCode(403);
-        $this->expectExceptionMessage('CustomAlerts_AccessException');
+        $this->expectException(\Piwik\Exception\ThingNotFoundException::class);
+        $this->expectExceptionCode(404);
+        $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
 
         $this->setSuperUser();
         FakeAccess::$identity = 'test';
@@ -645,23 +668,90 @@ class ApiTest extends BaseTest
 
     public function test_deleteAlert_ShouldFail_IfNotOwnerOfAlert()
     {
-        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
-        $this->expectExceptionCode(403);
-        $this->expectExceptionMessage('CustomAlerts_AccessException');
+        $this->expectException(\Piwik\Exception\ThingNotFoundException::class);
+        $this->expectExceptionCode(404);
+        $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
 
         $this->api->deleteAlert(2);
     }
 
     public function test_deleteAlert_ShouldFail_IfNotOwnerOfAlertEvenIfUserIsSuperuser()
     {
-        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
-        $this->expectExceptionCode(403);
-        $this->expectExceptionMessage('CustomAlerts_AccessException');
+        $this->expectException(\Piwik\Exception\ThingNotFoundException::class);
+        $this->expectExceptionCode(404);
+        $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
 
         $this->setSuperUser();
         FakeAccess::$identity = 'test';
 
         $this->api->deleteAlert(2);
+    }
+
+    public function test_deleteAlert_ShouldRejectNonScalarAlertId_AndKeepOtherUsersAlertSites()
+    {
+        $idOtherAlert = $this->createAlertOwnedByOtherUser();
+
+        $this->setSuperUser();
+
+        try {
+            Request::processRequest('CustomAlerts.deleteAlert', ['idAlert' => [$idOtherAlert]]);
+            $this->fail('Expected request with non-scalar idAlert to be rejected');
+        } catch (\Exception $e) {
+            $this->assertStringContainsString('General_PleaseSpecifyValue', $e->getMessage());
+        }
+
+        $this->assertOtherUsersAlertIsUnchanged($idOtherAlert);
+    }
+
+    public function test_editAlert_ShouldRejectNonScalarAlertId_AndKeepOtherUsersAlertSites()
+    {
+        $idOtherAlert = $this->createAlertOwnedByOtherUser();
+
+        $this->setSuperUser();
+
+        try {
+            Request::processRequest('CustomAlerts.editAlert', [
+                'idAlert'         => [$idOtherAlert],
+                'name'            => 'Edited',
+                'idSites'         => [$this->idSite],
+                'period'          => 'week',
+                'emailMe'         => 0,
+                'additionalEmails' => [],
+                'phoneNumbers'    => [],
+                'metric'          => 'nb_visits',
+                'metricCondition' => 'less_than',
+                'metricValue'     => 5,
+                'comparedTo'      => 1,
+                'reportUniqueId'  => 'MultiSites_getOne',
+                'reportMediums'   => ['email'],
+            ]);
+            $this->fail('Expected request with non-scalar idAlert to be rejected');
+        } catch (\Exception $e) {
+            $this->assertStringContainsString('General_PleaseSpecifyValue', $e->getMessage());
+        }
+
+        $this->assertOtherUsersAlertIsUnchanged($idOtherAlert);
+        $this->assertSame('Initial1', $this->api->getAlert(1)['name']);
+    }
+
+    private function createAlertOwnedByOtherUser(): int
+    {
+        $this->setSuperUser();
+        FakeAccess::$identity = 'otherUser';
+        $idAlert = (int) $this->createAlert('OtherUsersAlert', 'week', [$this->idSite, $this->idSite2]);
+        FakeAccess::$identity = 'superUserLogin';
+
+        return $idAlert;
+    }
+
+    private function assertOtherUsersAlertIsUnchanged(int $idAlert): void
+    {
+        FakeAccess::$identity = 'otherUser';
+        $alert = $this->api->getAlert($idAlert);
+        FakeAccess::$identity = 'superUserLogin';
+
+        $this->assertSame('OtherUsersAlert', $alert['name']);
+        $this->assertEquals([$this->idSite, $this->idSite2], $alert['id_sites']);
     }
 
     public function test_triggerAlert_getTriggeredAlertsForPeriod_ShouldMarkAlertAsTriggeredForGivenWebsite()
