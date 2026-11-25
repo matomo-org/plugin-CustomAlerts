@@ -569,9 +569,9 @@ class ApiTest extends BaseTest
 
     public function test_getAlert_ShouldFail_IfNotOwnerOfAlertEventIfUserIsSuperUser()
     {
-        $this->expectException(\Piwik\Exception\ThingNotFoundException::class);
-        $this->expectExceptionCode(404);
-        $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
+        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
+        $this->expectExceptionCode(403);
+        $this->expectExceptionMessage('CustomAlerts_AccessException');
 
         $this->setSuperUser();
         FakeAccess::$identity = 'test';
@@ -584,9 +584,8 @@ class ApiTest extends BaseTest
         $missingAlert = $this->getAlertException(9999);
 
         $this->assertInstanceOf(\Piwik\Exception\ThingNotFoundException::class, $foreignAlert);
-        $this->assertInstanceOf(\Piwik\Exception\ThingNotFoundException::class, $missingAlert);
+        $this->assertSame(get_class($missingAlert), get_class($foreignAlert));
         $this->assertSame($missingAlert->getCode(), $foreignAlert->getCode());
-        $this->assertSame($missingAlert->getMessage(), $foreignAlert->getMessage());
     }
 
     private function getAlertException(int $idAlert): \Exception
@@ -630,9 +629,9 @@ class ApiTest extends BaseTest
 
     public function test_getValuesForAlertInPast_ShouldFail_IfNotOwnerOfAlertEventIfUserIsSuperUser()
     {
-        $this->expectException(\Piwik\Exception\ThingNotFoundException::class);
-        $this->expectExceptionCode(404);
-        $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
+        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
+        $this->expectExceptionCode(403);
+        $this->expectExceptionMessage('CustomAlerts_AccessException');
 
         $this->setSuperUser();
         FakeAccess::$identity = 'test';
@@ -677,9 +676,9 @@ class ApiTest extends BaseTest
 
     public function test_deleteAlert_ShouldFail_IfNotOwnerOfAlertEvenIfUserIsSuperuser()
     {
-        $this->expectException(\Piwik\Exception\ThingNotFoundException::class);
-        $this->expectExceptionCode(404);
-        $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
+        $this->expectException(\Piwik\Exception\NoPrivilegesException::class);
+        $this->expectExceptionCode(403);
+        $this->expectExceptionMessage('CustomAlerts_AccessException');
 
         $this->setSuperUser();
         FakeAccess::$identity = 'test';
@@ -687,51 +686,61 @@ class ApiTest extends BaseTest
         $this->api->deleteAlert(2);
     }
 
-    public function test_deleteAlert_ShouldRejectNonScalarAlertId_AndKeepOtherUsersAlertSites()
+    /**
+     * @dataProvider getAlertIdMethodsAndNonIntegerIds
+     */
+    public function test_alertIdMethods_ShouldRejectNonIntegerAlertId_AndKeepOtherUsersAlert(string $method, bool $isArray)
     {
         $idOtherAlert = $this->createAlertOwnedByOtherUser();
 
         $this->setSuperUser();
 
-        try {
-            Request::processRequest('CustomAlerts.deleteAlert', ['idAlert' => [$idOtherAlert]]);
-            $this->fail('Expected request with non-scalar idAlert to be rejected');
-        } catch (\Exception $e) {
-            $this->assertStringContainsString('General_PleaseSpecifyValue', $e->getMessage());
-        }
-
-        $this->assertOtherUsersAlertIsUnchanged($idOtherAlert);
-    }
-
-    public function test_editAlert_ShouldRejectNonScalarAlertId_AndKeepOtherUsersAlertSites()
-    {
-        $idOtherAlert = $this->createAlertOwnedByOtherUser();
-
-        $this->setSuperUser();
+        $idAlert = $isArray ? [$idOtherAlert] : $idOtherAlert . 'abc';
+        $params  = array_merge(['idAlert' => $idAlert], $this->getRequiredParamsForAlertIdMethod($method));
 
         try {
-            Request::processRequest('CustomAlerts.editAlert', [
-                'idAlert'         => [$idOtherAlert],
-                'name'            => 'Edited',
-                'idSites'         => [$this->idSite],
-                'period'          => 'week',
-                'emailMe'         => 0,
-                'additionalEmails' => [],
-                'phoneNumbers'    => [],
-                'metric'          => 'nb_visits',
-                'metricCondition' => 'less_than',
-                'metricValue'     => 5,
-                'comparedTo'      => 1,
-                'reportUniqueId'  => 'MultiSites_getOne',
-                'reportMediums'   => ['email'],
-            ]);
-            $this->fail('Expected request with non-scalar idAlert to be rejected');
+            Request::processRequest('CustomAlerts.' . $method, $params);
+            $this->fail('Expected request with non-integer idAlert to be rejected');
         } catch (\Exception $e) {
             $this->assertStringContainsString('General_PleaseSpecifyValue', $e->getMessage());
         }
 
         $this->assertOtherUsersAlertIsUnchanged($idOtherAlert);
         $this->assertSame('Initial1', $this->api->getAlert(1)['name']);
+    }
+
+    public function getAlertIdMethodsAndNonIntegerIds(): iterable
+    {
+        foreach (['getAlert', 'getValuesForAlertInPast', 'editAlert', 'deleteAlert'] as $method) {
+            yield $method . ' with array' => [$method, true];
+            yield $method . ' with non-numeric string' => [$method, false];
+        }
+    }
+
+    private function getRequiredParamsForAlertIdMethod(string $method): array
+    {
+        if ($method === 'getValuesForAlertInPast') {
+            return ['subPeriodN' => 1];
+        }
+
+        if ($method !== 'editAlert') {
+            return [];
+        }
+
+        return [
+            'name'             => 'Edited',
+            'idSites'          => [$this->idSite],
+            'period'           => 'week',
+            'emailMe'          => 0,
+            'additionalEmails' => [],
+            'phoneNumbers'     => [],
+            'metric'           => 'nb_visits',
+            'metricCondition'  => 'less_than',
+            'metricValue'      => 5,
+            'comparedTo'       => 1,
+            'reportUniqueId'   => 'MultiSites_getOne',
+            'reportMediums'    => ['email'],
+        ];
     }
 
     private function createAlertOwnedByOtherUser(): int
