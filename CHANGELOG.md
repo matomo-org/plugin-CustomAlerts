@@ -1,5 +1,6 @@
 ## Changelog
 
+* 5.3.5 - Improved validation of the alert ID in `CustomAlerts.getAlert`, `CustomAlerts.editAlert`, `CustomAlerts.deleteAlert` and `CustomAlerts.getValuesForAlertInPast`; a non-integer alert ID is now rejected. Answered requests for another user's alert with the same error as for a missing alert, except for a superuser, who can list every user's alerts and is still told they are not the owner
 * 5.3.4 - 2026-11-23 - Updated translations
 * 5.3.3 - 2026-07-27 - Added strict comparison check
 * 5.3.2 - 2026-06-29 - Added code to improve the access check before sending an alert

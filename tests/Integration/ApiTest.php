@@ -9,6 +9,7 @@
 
 namespace Piwik\Plugins\CustomAlerts\tests\Integration;
 
+use Piwik\API\Request;
 use Piwik\Date;
 use Piwik\Tests\Framework\Mock\FakeAccess;
 
@@ -253,8 +254,18 @@ class ApiTest extends BaseTest
     public function test_editAlert_ShouldFail_IfNotPermission()
     {
         $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
+
+        $this->editAlert(2, 'MyCustomAlert', 'day');
+    }
+
+    public function test_editAlert_ShouldFail_IfNotOwnerOfAlertEvenIfUserIsSuperUser()
+    {
+        $this->expectException(\Exception::class);
         $this->expectExceptionMessage('CustomAlerts_AccessException');
 
+        $this->setSuperUser();
+        FakeAccess::$identity = 'test';
         $this->editAlert(2, 'MyCustomAlert', 'day');
     }
 
@@ -474,7 +485,7 @@ class ApiTest extends BaseTest
     public function test_getAlert_ShouldFail_IfNotOwnerOfAlert()
     {
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('CustomAlerts_AccessException');
+        $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
 
         $this->api->getAlert(2);
     }
@@ -487,6 +498,27 @@ class ApiTest extends BaseTest
         $this->setSuperUser();
         FakeAccess::$identity = 'test';
         $this->api->getAlert(2);
+    }
+
+    public function test_getAlert_ShouldAnswerAnotherUsersAlertLikeAMissingOne()
+    {
+        $foreignAlert = $this->getAlertException(2);
+        $missingAlert = $this->getAlertException(9999);
+
+        $this->assertSame(get_class($missingAlert), get_class($foreignAlert));
+        $this->assertSame($missingAlert->getCode(), $foreignAlert->getCode());
+        $this->assertSame($missingAlert->getMessage(), $foreignAlert->getMessage());
+    }
+
+    private function getAlertException(int $idAlert): \Exception
+    {
+        try {
+            $this->api->getAlert($idAlert);
+        } catch (\Exception $e) {
+            return $e;
+        }
+
+        $this->fail('Expected getAlert(' . $idAlert . ') to fail');
     }
 
     public function test_getAlert_ShouldReturnAlertIfAllowedAndExists()
@@ -510,7 +542,7 @@ class ApiTest extends BaseTest
     public function test_getValuesForAlertInPast_ShouldFail_IfNotOwnerOfAlert()
     {
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('CustomAlerts_AccessException');
+        $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
 
         $this->api->getValuesForAlertInPast(2, 1);
     }
@@ -555,7 +587,7 @@ class ApiTest extends BaseTest
     public function test_deleteAlert_ShouldFail_IfNotOwnerOfAlert()
     {
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('CustomAlerts_AccessException');
+        $this->expectExceptionMessage('CustomAlerts_AlertDoesNotExist');
 
         $this->api->deleteAlert(2);
     }
@@ -569,6 +601,83 @@ class ApiTest extends BaseTest
         FakeAccess::$identity = 'test';
 
         $this->api->deleteAlert(2);
+    }
+
+    /**
+     * @dataProvider getAlertIdMethodsAndNonIntegerIds
+     */
+    public function test_alertIdMethods_ShouldRejectNonIntegerAlertId_AndKeepOtherUsersAlert(string $method, bool $isArray)
+    {
+        $idOtherAlert = $this->createAlertOwnedByOtherUser();
+
+        $this->setSuperUser();
+
+        $idAlert = $isArray ? [$idOtherAlert] : $idOtherAlert . 'abc';
+        $params  = array_merge(['idAlert' => $idAlert], $this->getRequiredParamsForAlertIdMethod($method));
+
+        try {
+            Request::processRequest('CustomAlerts.' . $method, $params);
+            $this->fail('Expected request with non-integer idAlert to be rejected');
+        } catch (\Exception $e) {
+            $this->assertStringContainsString('General_PleaseSpecifyValue', $e->getMessage());
+        }
+
+        $this->assertOtherUsersAlertIsUnchanged($idOtherAlert);
+        $this->assertSame('Initial1', $this->api->getAlert(1)['name']);
+    }
+
+    public function getAlertIdMethodsAndNonIntegerIds(): iterable
+    {
+        foreach (['getAlert', 'getValuesForAlertInPast', 'editAlert', 'deleteAlert'] as $method) {
+            yield $method . ' with array' => [$method, true];
+            yield $method . ' with non-numeric string' => [$method, false];
+        }
+    }
+
+    private function getRequiredParamsForAlertIdMethod(string $method): array
+    {
+        if ($method === 'getValuesForAlertInPast') {
+            return ['subPeriodN' => 1];
+        }
+
+        if ($method !== 'editAlert') {
+            return [];
+        }
+
+        return [
+            'name'             => 'Edited',
+            'idSites'          => [$this->idSite],
+            'period'           => 'week',
+            'emailMe'          => 0,
+            'additionalEmails' => [],
+            'phoneNumbers'     => [],
+            'metric'           => 'nb_visits',
+            'metricCondition'  => 'less_than',
+            'metricValue'      => 5,
+            'comparedTo'       => 1,
+            'reportUniqueId'   => 'MultiSites_getOne',
+            'reportMediums'    => ['email'],
+        ];
+    }
+
+    private function createAlertOwnedByOtherUser(): int
+    {
+        $this->setSuperUser();
+        FakeAccess::$identity = 'otherUser';
+        $idAlert = (int) $this->createAlert('OtherUsersAlert', 'week', [$this->idSite, $this->idSite2]);
+        FakeAccess::$identity = 'superUserLogin';
+
+        return $idAlert;
+    }
+
+    private function assertOtherUsersAlertIsUnchanged(int $idAlert): void
+    {
+        FakeAccess::$identity = 'otherUser';
+        $alert = $this->api->getAlert($idAlert);
+        FakeAccess::$identity = 'superUserLogin';
+
+        $this->assertSame('OtherUsersAlert', $alert['name']);
+        $this->assertEquals([$this->idSite, $this->idSite2], $alert['id_sites']);
     }
 
     public function test_triggerAlert_getTriggeredAlertsForPeriod_ShouldMarkAlertAsTriggeredForGivenWebsite()

@@ -181,9 +181,17 @@ class Validator
      */
     public function checkUserHasPermissionForAlert($alert)
     {
-        if ((string) Piwik::getCurrentUserLogin() !== (string) $alert['login']) {
+        if (!$this->isAlertOwnedByCurrentUser($alert)) {
             throw new Exception(Piwik::translate('CustomAlerts_AccessException', $alert['idalert']));
         }
+    }
+
+    /**
+     * @param array{login: string} $alert
+     */
+    public function isAlertOwnedByCurrentUser(array $alert): bool
+    {
+        return (string) Piwik::getCurrentUserLogin() === (string) $alert['login'];
     }
 
     private function getAllowedMediums(): array
