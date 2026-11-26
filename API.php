@@ -70,10 +70,16 @@ class API extends \Piwik\Plugin\API
     {
         $alert = $this->getModel()->getAlert($idAlert);
 
-        // Another user's alert is answered like a missing one, so callers cannot tell which alert IDs exist
-        if (empty($alert) || !$this->validator->isAlertOwnedByCurrentUser($alert)) {
+        // Another user's alert is answered like a missing one, so callers cannot tell which alert IDs exist.
+        // A superuser can list every user's alerts, so they are told they are not the owner instead.
+        if (
+            empty($alert)
+            || (!$this->validator->isAlertOwnedByCurrentUser($alert) && !Piwik::hasUserSuperUserAccess())
+        ) {
             throw new ThingNotFoundException(Piwik::translate('CustomAlerts_AlertDoesNotExist', $idAlert));
         }
+
+        $this->validator->checkUserHasPermissionForAlert($alert);
 
         return $alert;
     }
