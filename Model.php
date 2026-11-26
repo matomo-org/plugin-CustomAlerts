@@ -396,6 +396,19 @@ class Model
         $this->removeAllSites($idAlert);
     }
 
+    public function deleteAlertsForLogin(string $login): void
+    {
+        // matched in SQL so the login column's case-insensitive collation applies, as it does when alerts are read
+        $idAlerts = $this->getDb()->fetchCol(
+            "SELECT idalert FROM " . Common::prefixTable('alert') . " WHERE login = ?",
+            [$login]
+        );
+
+        foreach ($idAlerts as $idAlert) {
+            $this->deleteAlert($idAlert);
+        }
+    }
+
     public function triggerAlert($idAlert, $idSite, $valueNew, $valueOld, $datetime)
     {
         $alert = $this->getAlert($idAlert);
